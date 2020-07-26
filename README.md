@@ -25,3 +25,18 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## Pages about Mendozarq
+
+[Page one](https://amarillas.bo/empresa/mendozarq)
+[Page two](https://www.directorio.com.bo/71212-mendozarq)
+[Page three](https://bo.imigra.net/e/mendozarq)
+
+## About Mendozarq
+
+MENDOZA GARCIA JHON GUALBERT
+REG. NAL. 3961
+Av. Ingavi Nº 2470 Zona Chimba
+TEL: 4445136 - 4446257
+CEL: 77499792
+mendozarq@hotmail.com 
