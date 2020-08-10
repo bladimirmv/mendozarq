@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "mendozarq"
+    }
+  },
+  "defaultProject": "mendozarq",
+  "cli": {
+    "analytics": "c8a4ea8f-e852-456b-9dd6-460cb453ec7a"
+  }
 }
