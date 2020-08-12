@@ -5,10 +5,11 @@ import { CommonModule } from '@angular/common';
 
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
+import { ExampleModalComponent } from './components/example-modal/example-modal.component';
 
 
 @NgModule({
-  declarations: [HomeComponent],
+  declarations: [HomeComponent, ExampleModalComponent],
   imports: [
     CommonModule,
     HomeRoutingModule,

@@ -27,14 +27,13 @@ mat-toolbar {
 }
 
 .btn-menu {
-  // background-color: #344955;
-  // background-color: #232f34;
-  // background-color: #f9aa33;
-  // background-color: #4a6572;
 
-  background-color: #344955;
+  cursor: pointer;
+  background-color: white;
+  display: none;
 
-  color: white;
+  color: var(--secondary);
+
 }
 
 .btn-closed {
@@ -43,8 +42,14 @@ mat-toolbar {
 
 
 @media screen and (max-width: 600px) {
+
+
   a {
     display: none;
+  }
+
+  .btn-menu {
+    display: block;
   }
 }
 

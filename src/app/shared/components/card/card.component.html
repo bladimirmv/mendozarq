@@ -1,1 +1,13 @@
-<p>card works!</p>
+<mat-card>
+  <mat-card-header>
+    <ng-content select="[slot=header]"></ng-content>
+  </mat-card-header>
+
+  <mat-card-content>
+    <ng-content></ng-content>
+  </mat-card-content>
+
+  <mat-card-footer>
+    <ng-content select="[slot=footer]"></ng-content>
+  </mat-card-footer>
+</mat-card>

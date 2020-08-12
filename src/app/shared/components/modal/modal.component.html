@@ -1,1 +1,9 @@
-<p>modal works!</p>
+<h1 mat-dialog-title class="dialog-title">
+  <ng-content select="[slot=title]"></ng-content>
+</h1>
+<div mat-dialog-content class="dialog-content">
+  <ng-content></ng-content>
+</div>
+<div mat-dialog-actions class="dialog-actions">
+  <ng-content select="[slot=actions]"></ng-content>
+</div>

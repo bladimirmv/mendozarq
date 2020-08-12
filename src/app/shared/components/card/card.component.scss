@@ -1,0 +1,17 @@
+mat-header {
+  padding: 2.5rem;
+  text-align: center;
+
+  &:empty {
+    display: none;
+  }
+}
+
+mat-footer {
+  padding: 2.5rem;
+  text-align: center;
+
+  &:empty {
+    display: none;
+  }
+}

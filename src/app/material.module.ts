@@ -6,14 +6,19 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
-
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const matModules = [
   MatToolbarModule,
   MatIconModule,
   MatButtonModule,
   MatSidenavModule,
-  MatDividerModule
+  MatDividerModule,
+  MatSnackBarModule,
+  MatCardModule,
+  MatDialogModule
 ];
 
 

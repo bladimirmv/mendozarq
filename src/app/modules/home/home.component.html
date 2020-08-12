@@ -1,6 +1,6 @@
 <div class="content ">
   <p>
-    <app-button [color]="'primary'">texto</app-button>
+    <app-button [color]="'primary'" (click)="onChangeLink()">texto</app-button>
   </p>
 
   <p>
@@ -9,6 +9,9 @@
 
   <p>
     <app-button [color]="'warn'">texto</app-button>
+  </p>
+  <p>
+    <app-button [color]="'primary'" (click)="openDialog()">modal</app-button>
   </p>
 
 </div>

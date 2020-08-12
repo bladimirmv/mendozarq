@@ -1,0 +1,19 @@
+.dialog-title {
+  text-align: center;
+
+  &:empty {
+    display: none;
+  }
+}
+
+.dialog-content {
+  &:empty {
+    display: none;
+  }
+}
+
+.dialog-actions {
+  &:empty {
+    display: none;
+  }
+}
