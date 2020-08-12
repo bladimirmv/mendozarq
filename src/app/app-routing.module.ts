@@ -5,8 +5,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'login', loadChildren: () =>
-      import('./modules/login/login.module').then(m => m.LoginModule)
+    path: 'auth', loadChildren: () =>
+      import('./core/auth/auth.module').then(m => m.AuthModule)
   },
   {
     path: '', component: AppContainerComponent,
@@ -21,11 +21,17 @@ const routes: Routes = [
       {
         path: 'contact-us', loadChildren: () =>
           import('./modules/contact-us/contact-us.module').then(m => m.ContactUsModule)
+      },
+      {
+        path: 'about-us', loadChildren: () =>
+          import('./modules/about-us/about-us.module').then(m => m.AboutUsModule)
       }
     ]
   },
-
-
+  {
+    path: '**', loadChildren: () =>
+      import('./core/not-found/not-found.module').then(m => m.NotFoundModule)
+  }
 ];
 
 @NgModule({

@@ -1,11 +1,42 @@
-<mat-toolbar color="primary">
+<mat-sidenav-container class="sidenav-container">
 
-  <span>My App</span>
-  <span class="example-spacer"></span>
-  <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-    <mat-icon>favorite</mat-icon>
-  </button>
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-    <mat-icon>share</mat-icon>
-  </button>
-</mat-toolbar>
+
+  <mat-sidenav #drawer fixedInViewport mode="over" class="drawer">
+    <button mat-mini-fab class="btn-closed btn-menu" (click)="drawer.close()">
+      <mat-icon>closed</mat-icon>
+    </button>
+    <p>menu</p>
+    lorem
+  </mat-sidenav>
+
+
+
+  <mat-sidenav-content>
+    <mat-toolbar>
+      <!-- <button mat-mini-fab class="btn-menu media-sm" (click)="drawer.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button> -->
+      <div class="logo" routerLink="/">
+        <img src="./assets/ma.svg" alt="">
+        <span>MendozArq</span>
+      </div>
+
+      <span class="example-spacer"></span>
+
+      <a routerLink="/home" routerLinkActive="active">Inicio</a>
+      <a routerLink="/contact-us" routerLinkActive="active">Contactanos</a>
+      <a routerLink="/about-us" routerLinkActive="active">Acerca de Nosotros</a>
+
+      <button mat-button>Acceder</button>
+      <!--
+      <button mat-icon-button class="btn-menu">
+        <mat-icon>
+          account_circle</mat-icon>
+      </button> -->
+    </mat-toolbar>
+
+    <ng-content></ng-content>
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>

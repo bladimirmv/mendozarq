@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-export type typeButton = 'primary' | 'secondary' | 'warn' | 'accent';
+
 @Component({
   selector: 'app-button',
   templateUrl: './button.component.html',
@@ -9,11 +9,10 @@ export type typeButton = 'primary' | 'secondary' | 'warn' | 'accent';
 
 export class ButtonComponent implements OnInit {
 
-  @Input() color: typeButton;
+  @Input() color;
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.color);
 
   }
 
