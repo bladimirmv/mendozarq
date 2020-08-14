@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "mendozarq-bb534": {
+      "hosting": {
+        "mendozarq": [
+          "mendozarq-bb534"
+        ]
+      }
+    }
+  }
+}

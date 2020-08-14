@@ -2,20 +2,7 @@
   flex: 1 1 auto;
 }
 
-mat-toolbar {
-  height: 60px;
-  background-color: white;
-  overflow: hidden;
-  position: sticky;
 
-  top: 0;
-  z-index: 1000;
-  margin-bottom: 10px;
-
-  -webkit-box-shadow: 0px 0.5px 5px 0px rgba(103, 103, 120, 0.72);
-  -moz-box-shadow: 0px 0.5px 5px 0px rgba(103, 103, 120, 0.72);
-  box-shadow: 0px 0.5px 5px 0px rgba(103, 103, 120, 0.72);
-}
 
 .sidenav-container {
   height: 100%;
@@ -75,29 +62,7 @@ a {
 
 }
 
-.logo {
-  cursor: pointer;
-  outline: none;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-left: 10px;
 
-
-  img {
-    height: 35px;
-    padding-bottom: 10px;
-  }
-
-  span {
-    padding-left: 5px;
-    // padding-top: 10px;
-    font-size: 20px;
-    color: 425066;
-    // text-transform: uppercase;
-  }
-}
 
 button {
   font-size: 14px;

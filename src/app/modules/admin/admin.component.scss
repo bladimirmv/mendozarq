@@ -1,0 +1,93 @@
+mat-sidenav-container {
+  height: 100%;
+}
+
+.flex-side {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: auto;
+}
+
+mat-sidenav {
+
+  width: 250px;
+  height: 100%;
+  background-color: white;
+
+  mat-icon {
+    cursor: pointer;
+    color: var(--secondary);
+  }
+}
+
+
+.flex-closed {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  overflow: hidden;
+  justify-content: flex-end;
+}
+
+mat-toolbar {
+  background-color: white;
+
+  mat-icon {
+    cursor: pointer;
+    color: var(--secondary);
+    user-select: none;
+  }
+}
+
+.logo {
+  margin: 20px 10px;
+}
+
+.btn-admin {
+  width: 100%;
+  border-radius: 0;
+  height: 45px;
+  text-align: center;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 15px;
+  border-left: 6px solid transparent;
+
+}
+
+.btn-extra {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 50px;
+}
+
+.btn-just-border {
+  // margin-top: 100px;
+  width: 90%;
+
+
+  background-color: var(--primary);
+  color: white;
+
+}
+
+
+.btn-fill {
+
+  margin-top: 10px;
+  width: 90%;
+  background-color: var(--secondary);
+  color: white;
+}
+
+.active {
+  border-left: 6px solid var(--primary);
+  background-color: #EBEBEB;
+}

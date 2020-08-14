@@ -1,3 +1,4 @@
+import { AdminModule } from './modules/admin/admin.module';
 import { AppContainerComponent } from './core/app-container/app-container.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -7,6 +8,10 @@ const routes: Routes = [
   {
     path: 'auth', loadChildren: () =>
       import('./core/auth/auth.module').then(m => m.AuthModule)
+  },
+  {
+    path: 'admin', loadChildren: () =>
+      import('@modules/admin/admin.module').then(m => m.AdminModule)
   },
   {
     path: '', component: AppContainerComponent,
@@ -28,6 +33,7 @@ const routes: Routes = [
       }
     ]
   },
+
   {
     path: '**', loadChildren: () =>
       import('./core/not-found/not-found.module').then(m => m.NotFoundModule)
