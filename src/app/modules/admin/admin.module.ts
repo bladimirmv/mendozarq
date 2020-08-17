@@ -1,5 +1,6 @@
-import { SharedModule } from './../../shared/shared.module';
-import { MaterialModule } from './../../material.module';
+import { CdkMaterialModule } from '@app/cdk-material.module';
+import { SharedModule } from '@shared/shared.module';
+import { MaterialModule } from '@app/material.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -14,7 +15,9 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     CommonModule,
     AdminRoutingModule,
     MaterialModule,
-    SharedModule
+    SharedModule,
+    CdkMaterialModule
+
   ]
 })
 export class AdminModule { }

@@ -1,6 +1,6 @@
 <mat-sidenav-container class="sidenav-container">
 
-  <mat-sidenav #drawer [mode]="modeSidenav" [opened]="true">
+  <mat-sidenav #drawer [mode]="breakpoint ? 'over': 'side'" [opened]="!breakpoint">
 
 
     <div class="flex-side">
@@ -8,11 +8,9 @@
 
       <div>
         <div class="flex-closed">
-
           <mat-icon (click)="drawer.close()">
             closed
           </mat-icon>
-
         </div>
 
         <div class="logo" routerLink="/admin">
@@ -21,19 +19,26 @@
         </div>
 
 
-        <button mat-button class="btn-admin" routerLink="dashboard" routerLinkActive="active">
+        <button mat-button class="btn-admin" routerLink="dashboard" routerLinkActive="active"
+          (click)="breakpoint ? drawer.close() : false">
           <mat-icon class="mat-18 mr-3">dashboard</mat-icon>
           Dashboard
         </button>
 
-        <button mat-button class="btn-admin" routerLink="users" routerLinkActive="active">
+        <button mat-button class="btn-admin" routerLink="proyects" routerLinkActive="active"
+          (click)="breakpoint ? drawer.close() : false">
+          <mat-icon class="mat-18 mr-3">folder</mat-icon>
+          Proyectos
+        </button>
+
+        <button mat-button class="btn-admin" routerLink="users" routerLinkActive="active"
+          (click)="breakpoint ? drawer.close() : false">
           <mat-icon class="mat-18 mr3 ">people</mat-icon>
           Usuarios
         </button>
 
 
       </div>
-
 
 
       <div class="btn-extra">
@@ -51,7 +56,7 @@
 
 
   <mat-sidenav-content>
-    <mat-toolbar *ngIf="drawer.opened === false">
+    <mat-toolbar *ngIf="drawer.opened === false || breakpoint">
       <div mat-mini-fab>
         <mat-icon (click)="drawer.open()">
           menu

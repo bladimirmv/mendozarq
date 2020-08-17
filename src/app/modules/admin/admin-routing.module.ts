@@ -1,3 +1,4 @@
+import { ProyectsModule } from './../proyects/proyects.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -16,8 +17,12 @@ const routes: Routes = [
           import('@modules/users/users.module').then(m => m.UsersModule)
       },
       {
+        path: 'proyects', loadChildren: () =>
+          import('@modules/proyects/proyects.module').then(m => ProyectsModule)
+      },
+      {
         path: '', redirectTo: 'dashboard', pathMatch: 'full'
-      }
+      },
     ]
   }];
 
