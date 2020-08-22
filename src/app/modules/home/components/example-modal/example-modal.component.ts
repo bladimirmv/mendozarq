@@ -12,4 +12,9 @@ export class ExampleModalComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onclick(): void {
+    console.log('onclick');
+
+  }
+
 }

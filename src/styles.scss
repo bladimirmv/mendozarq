@@ -36,13 +36,16 @@ $mendozarq-theme: mat-light-theme((color: (primary: $mendozarq-primary,
 * {
   font-family: Montserrat, sans-serif;
   --primary: #FF6E00;
+
   --secondary: #425066;
   --warn: red;
+
 }
 
 html,
 body {
   height: 100%;
+
 }
 
 body {

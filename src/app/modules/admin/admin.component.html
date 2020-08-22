@@ -2,22 +2,32 @@
 
   <mat-sidenav #drawer [mode]="breakpoint ? 'over': 'side'" [opened]="!breakpoint">
 
-
     <div class="flex-side">
-
-
       <div>
         <div class="flex-closed">
-          <mat-icon (click)="drawer.close()">
-            closed
-          </mat-icon>
+          <div>
+            <a (click)="onback()">
+              <mat-icon>
+                chevron_left
+              </mat-icon>
+            </a>
+            <a (click)="onForward()">
+              <mat-icon>
+                chevron_right
+              </mat-icon>
+            </a>
+          </div>
+          <div>
+            <mat-icon (click)="drawer.close()">
+              closed
+            </mat-icon>
+          </div>
         </div>
 
         <div class="logo" routerLink="/admin">
           <img src="./assets/ma.svg" alt="">
           <span>MendozArq</span>
         </div>
-
 
         <button mat-button class="btn-admin" routerLink="dashboard" routerLinkActive="active"
           (click)="breakpoint ? drawer.close() : false">
@@ -30,19 +40,19 @@
           <mat-icon class="mat-18 mr-3">folder</mat-icon>
           Proyectos
         </button>
-
         <button mat-button class="btn-admin" routerLink="users" routerLinkActive="active"
           (click)="breakpoint ? drawer.close() : false">
-          <mat-icon class="mat-18 mr3 ">people</mat-icon>
+          <mat-icon class="mat-18 mr-3">people</mat-icon>
           Usuarios
         </button>
-
 
       </div>
 
 
       <div class="btn-extra">
-        <button mat-button class="btn-just-border" routerLink="/">
+        {{gg | json}}
+
+        <button mat-button class="btn-just-border" (click)="onback()">
           Volver al inicio
         </button>
         <button mat-button class="btn-fill" (click)="onLogout()">
