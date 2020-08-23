@@ -16,7 +16,7 @@ const routes: Routes = [
     path: '', component: AppContainerComponent,
     children: [
       {
-        path: '', redirectTo: 'contact-us', pathMatch: 'full'
+        path: '', redirectTo: 'admin', pathMatch: 'full'
       },
       {
         path: 'admin', loadChildren: () =>

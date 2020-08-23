@@ -1,0 +1,13 @@
+app-titlebar {
+  overflow: hidden;
+}
+
+
+.outlet {
+  position: relative;
+  width: 100%;
+  height: calc(100% - 35px);
+  overflow: auto;
+
+
+}

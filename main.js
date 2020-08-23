@@ -8,9 +8,9 @@ function createWindow() {
   win = new BrowserWindow({
     width: 1000,
     height: 600,
-    backgroundColor: '#0000',
-    minWidth: 600,
-    minHeight: 400,
+    backgroundColor: '#ffffff',
+    minWidth: 800,
+    minHeight: 500,
     frame: false,
     webPreferences: {
       nodeIntegration: true,

@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 
 import { ElectronService } from 'ngx-electron';
@@ -9,15 +10,14 @@ import { ElectronService } from 'ngx-electron';
 })
 export class TitlebarComponent implements OnInit {
 
-  constructor(private electronSvc: ElectronService) { }
-  ngOnInit(): void {
 
+
+  constructor(private electronSvc: ElectronService, public location: Location) { }
+  ngOnInit(): void {
   }
 
   minimize(): void {
     const win = this.electronSvc.remote.getCurrentWindow();
-    console.log('min');
-
     win.minimize();
   }
   maximize(): void {
@@ -32,6 +32,21 @@ export class TitlebarComponent implements OnInit {
     const win = this.electronSvc.remote.getCurrentWindow();
     win.close();
   }
+
+  reload(): void {
+    const win = this.electronSvc.remote.getCurrentWindow();
+    win.reload();
+  }
+
+
+
+  onback(): void {
+    this.location.back();
+  }
+  onForward(): void {
+    this.location.forward();
+  }
+
 
 
 }

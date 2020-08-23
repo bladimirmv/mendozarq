@@ -1,15 +1,85 @@
 <mat-toolbar>
 
-  <div class="logo">
-    <img src="./assets/ma.svg" alt="">
+  <div class="left-side">
+    <!-- <img src="./assets/ma.svg" alt=""> -->
+    <button [matMenuTriggerFor]="menu" class="btn-titlebar">
+      <mat-icon>settings</mat-icon>
+    </button>
+
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>dialpad</mat-icon>
+        <span>Redial</span>
+      </button>
+      <button mat-menu-item disabled>
+        <mat-icon>voicemail</mat-icon>
+        <span>Check voice mail</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>notifications_off</mat-icon>
+        <span>Disable alerts</span>
+      </button>
+    </mat-menu>
+
+    <button (click)="onback()" class="btn-titlebar">
+      <mat-icon>
+        arrow_back
+      </mat-icon>
+    </button>
+    <button (click)="onForward()" class="btn-titlebar">
+      <mat-icon>
+        arrow_forward
+      </mat-icon>
+    </button>
+    <button (click)="reload()" class="btn-titlebar">
+      <mat-icon>
+        refresh
+      </mat-icon>
+    </button>
+    <button routerLink="/home" class="btn-titlebar">
+      <mat-icon>
+        home
+      </mat-icon>
+    </button>
+  </div>
+
+
+  <div class="title">
+
+    <div class="title">MENDOZARQ</div>
   </div>
 
   <div class="options">
+    <!-- <button> -->
+    <mat-icon>
+      account_circle
+    </mat-icon>
+    <!-- </button> -->
+    <a href="#">Bladimir</a>
+
+    <button [matMenuTriggerFor]="profile" class="btn-titlebar">
+      <mat-icon>
+        keyboard_arrow_down
+      </mat-icon>
+    </button>
 
     <div class="circle minimize" (click)="minimize()"></div>
     <div class="circle maximize" (click)="maximize()"></div>
     <div class="circle close" (click)="close()"></div>
-
+    <mat-menu #profile="matMenu">
+      <button mat-menu-item>
+        <mat-icon>dialpad</mat-icon>
+        <span>Redial</span>
+      </button>
+      <button mat-menu-item disabled>
+        <mat-icon>voicemail</mat-icon>
+        <span>Check voice mail</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>notifications_off</mat-icon>
+        <span>Disable alerts</span>
+      </button>
+    </mat-menu>
   </div>
 
 
