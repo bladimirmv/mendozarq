@@ -3,6 +3,7 @@ import { FooterComponent } from './core/footer/footer.component';
 import { MaterialModule } from './material.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { NgxElectronModule } from 'ngx-electron';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,6 +15,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule, BUCKET } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { TitlebarComponent } from './core/titlebar/titlebar.component';
 
 
 @NgModule({
@@ -21,7 +23,8 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
     AppComponent,
     ToolbarComponent,
     AppContainerComponent,
-    FooterComponent
+    FooterComponent,
+    TitlebarComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +34,8 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireAuthModule,
-    MaterialModule
+    MaterialModule,
+    NgxElectronModule
   ],
   providers: [
     {

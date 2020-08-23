@@ -7,14 +7,15 @@ import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import { ExampleModalComponent } from './components/example-modal/example-modal.component';
 
-
+import { NgxElectronModule } from 'ngx-electron';
 @NgModule({
   declarations: [HomeComponent, ExampleModalComponent],
   imports: [
     CommonModule,
     HomeRoutingModule,
     SharedModule,
-    MaterialModule
+    MaterialModule,
+    NgxElectronModule
   ]
 })
 export class HomeModule { }

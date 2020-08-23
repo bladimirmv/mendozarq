@@ -9,7 +9,13 @@ function createWindow() {
     width: 1000,
     height: 600,
     backgroundColor: '#0000',
-
+    minWidth: 600,
+    minHeight: 400,
+    frame: false,
+    webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: true
+    }
   });
 
 
@@ -26,7 +32,9 @@ function createWindow() {
     callback(true);
   });
 
-
+  // process.once('loaded', () => {
+  //   global.ipcRenderer = electron.ipcRenderer;
+  // });
   // Devtools
   // win.webContents.openDevTools();
 

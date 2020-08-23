@@ -1,0 +1,65 @@
+mat-toolbar {
+  width: 100%;
+  height: 35px;
+  margin-bottom: 100px;
+  background-color: var(--secondary);
+  position: fixed;
+  top: 0;
+  overflow: hidden;
+  -webkit-app-region: drag;
+
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+
+
+}
+
+
+.titlebar {
+  overflow: hidden;
+}
+
+
+.options {
+  display: flex;
+
+
+  .circle {
+    cursor: pointer;
+    background-color: white;
+    width: 15px;
+    height: 15px;
+    margin: 0 5px;
+    border-radius: 100%;
+    -webkit-app-region: no-drag;
+
+  }
+
+  .close {
+    background-color: #FF6058;
+  }
+
+  .maximize {
+    background-color: #FFBD2D;
+  }
+
+  .minimize {
+    background-color: #2AC940;
+  }
+
+}
+
+
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+
+  img {
+    height: 20px;
+  }
+}
