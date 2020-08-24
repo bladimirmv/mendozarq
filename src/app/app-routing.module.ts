@@ -3,7 +3,6 @@ import { AppContainerComponent } from './core/app-container/app-container.compon
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-
 const routes: Routes = [
 
   {
@@ -33,7 +32,11 @@ const routes: Routes = [
       {
         path: 'about-us', loadChildren: () =>
           import('./modules/about-us/about-us.module').then(m => m.AboutUsModule)
-      }
+      },
+      {
+        path: 'logini', loadChildren: () =>
+          import('./core/auth/login/login.component').then(m => m.LoginComponent)
+      },
     ]
   },
   {
