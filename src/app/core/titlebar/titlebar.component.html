@@ -44,18 +44,14 @@
   </div>
 
 
-  <div class="title">
-
+  <div>
     <div class="title">MENDOZARQ</div>
   </div>
 
   <div class="options">
-    <!-- <button> -->
-    <mat-icon>
-      account_circle
-    </mat-icon>
-    <!-- </button> -->
+
     <a href="#">Bladimir</a>
+
 
     <button [matMenuTriggerFor]="profile" class="btn-titlebar">
       <mat-icon>
@@ -68,21 +64,16 @@
     <div class="circle close" (click)="close()"></div>
     <mat-menu #profile="matMenu">
       <button mat-menu-item>
-        <mat-icon>dialpad</mat-icon>
-        <span>Redial</span>
-      </button>
-      <button mat-menu-item disabled>
-        <mat-icon>voicemail</mat-icon>
-        <span>Check voice mail</span>
+        <mat-icon>account_box</mat-icon>
+        <span>Perfil</span>
       </button>
       <button mat-menu-item>
-        <mat-icon>notifications_off</mat-icon>
-        <span>Disable alerts</span>
+        <mat-icon>
+          power_settings_new</mat-icon>
+        <span>Cerrar Sesion</span>
       </button>
+
     </mat-menu>
   </div>
-
-
-
 
 </mat-toolbar>

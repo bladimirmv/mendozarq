@@ -10,32 +10,34 @@ import { ElectronService } from 'ngx-electron';
 })
 export class TitlebarComponent implements OnInit {
 
-
+  private win: any;
 
   constructor(private electronSvc: ElectronService, public location: Location) { }
   ngOnInit(): void {
   }
 
   minimize(): void {
-    const win = this.electronSvc.remote.getCurrentWindow();
-    win.minimize();
+    this.win = this.electronSvc.remote.getCurrentWindow();
+    this.win.minimize();
   }
+
   maximize(): void {
-    const win = this.electronSvc.remote.getCurrentWindow();
-    if (!win.isMaximized()) {
-      win.maximize();
+    this.win = this.electronSvc.remote.getCurrentWindow();
+    if (!this.win.isMaximized()) {
+      this.win.maximize();
     } else {
-      win.unmaximize();
+      this.win.unmaximize();
     }
   }
+
   close(): void {
-    const win = this.electronSvc.remote.getCurrentWindow();
-    win.close();
+    this.win = this.electronSvc.remote.getCurrentWindow();
+    this.win.close();
   }
 
   reload(): void {
-    const win = this.electronSvc.remote.getCurrentWindow();
-    win.reload();
+    this.win = this.electronSvc.remote.getCurrentWindow();
+    this.win.reload();
   }
 
 

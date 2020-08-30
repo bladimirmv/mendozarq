@@ -1,6 +1,7 @@
-const { app, BrowserWindow, Accelerator } = require('electron');
+const { app, BrowserWindow } = require('electron');
 
 let win;
+
 
 function createWindow() {
 
@@ -17,9 +18,6 @@ function createWindow() {
       enableRemoteModule: true
     }
   });
-
-
-
   win.setMenu(null);
 
   // win.loadURL(`file://${__dirname}/dist/mendozarq/index.html`);
@@ -36,7 +34,9 @@ function createWindow() {
   //   global.ipcRenderer = electron.ipcRenderer;
   // });
   // Devtools
-  // win.webContents.openDevTools();
+
+
+  win.webContents.openDevTools();
 
   win.on('closed', () => {
     win = null
@@ -61,3 +61,24 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+
+
+
+class gg {
+  t() {
+    return () => {
+      return () => {
+        return () => {
+          return () => {
+            return () => {
+              return () => {
+
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

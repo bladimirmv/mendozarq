@@ -25,7 +25,6 @@
     "@angular/platform-browser": "~10.0.3",
     "@angular/platform-browser-dynamic": "~10.0.3",
     "@angular/router": "~10.0.3",
-    "custom-electron-titlebar": "^3.2.4",
     "firebase": "^7.13.1",
     "ngx-electron": "^2.2.0",
     "rxjs": "~6.5.5",

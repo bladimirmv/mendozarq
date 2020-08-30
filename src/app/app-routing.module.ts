@@ -5,17 +5,14 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
 
-  {
-    path: 'auth', loadChildren: () =>
-      import('./core/auth/auth.module').then(m => m.AuthModule)
-  },
+
 
 
   {
     path: '', component: AppContainerComponent,
     children: [
       {
-        path: '', redirectTo: 'admin', pathMatch: 'full'
+        path: '', redirectTo: 'auth', pathMatch: 'full'
       },
       {
         path: 'admin', loadChildren: () =>
@@ -34,8 +31,9 @@ const routes: Routes = [
           import('./modules/about-us/about-us.module').then(m => m.AboutUsModule)
       },
       {
-        path: 'logini', loadChildren: () =>
-          import('./core/auth/login/login.component').then(m => m.LoginComponent)
+        path: 'auth', loadChildren: () =>
+          import('./core/auth/auth.module').then(m => m.AuthModule)
+
       },
     ]
   },

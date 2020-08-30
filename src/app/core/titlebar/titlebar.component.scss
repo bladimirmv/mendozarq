@@ -22,9 +22,8 @@ mat-toolbar {
 .options {
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  align-content: center;
   align-items: center;
+
 
 
   a {
@@ -36,7 +35,6 @@ mat-toolbar {
 
   .circle {
     cursor: pointer;
-    background-color: white;
     width: 15px;
     height: 15px;
     margin: 0 5px;
@@ -46,7 +44,7 @@ mat-toolbar {
   }
 
   .close {
-    background-color: #FF6058;
+    background: #FF6058;
     transition: 0.2s;
 
     &:hover {
@@ -76,6 +74,11 @@ mat-toolbar {
   mat-icon {
     color: #9CA2AC;
     padding: 5px;
+  }
+
+
+  .profile {
+    display: inline-block;
   }
 
 }
@@ -130,7 +133,6 @@ mat-toolbar {
   color: white;
   text-transform: uppercase;
   font-size: 12px;
-
   letter-spacing: 5px;
 
 }
