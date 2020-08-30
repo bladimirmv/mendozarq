@@ -1,43 +1,66 @@
 .login-block {
-  background: var(--primary); 
-  background: -webkit-linear-gradient(
-    to bottom,
-    
-    var(--secondary),
-    var(--primary)
-  );
-  background: linear-gradient(
-    to bottom,
-    
-    var(--secondary),
-    var(--primary)
-  ); 
+  background: var(--primary);
+  background: -webkit-linear-gradient(to bottom,
+
+      var(--secondary),
+      var(--primary));
+  background: linear-gradient(to bottom,
+
+      var(--secondary),
+      var(--primary));
   float: left;
   width: 100%;
-  padding: 50px 0;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
 }
+
+.swiper {
+  overflow: hidden;
+}
+
 .banner-sec {
   background-size: cover;
   min-height: 500px;
   border-radius: 0 10px 10px 0;
   padding: 0;
+
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+
+
+  }
 }
+
 .container {
   background: #fff;
   border-radius: 10px;
   box-shadow: 15px 20px 0px rgba(0, 0, 0, 0.1);
 }
+
 .carousel-inner {
   border-radius: 0 10px 10px 0;
 }
+
 .carousel-caption {
   text-align: left;
   left: 5%;
 }
+
 .login-sec {
   padding: 50px 30px;
   position: relative;
 }
+
 .login-sec .copy-text {
   position: absolute;
   width: 80%;
@@ -45,18 +68,22 @@
   font-size: 13px;
   text-align: center;
 }
+
 .login-sec .copy-text i {
   color: #feb58a;
 }
+
 .login-sec .copy-text a {
   color: var(--primary);
 }
+
 .login-sec h2 {
   margin-bottom: 30px;
   font-weight: 800 bold;
   font-size: 30px;
   color: black;
 }
+
 .login-sec h2:after {
   content: " ";
   width: 100px;
@@ -68,21 +95,25 @@
   margin-left: auto;
   margin-right: auto;
 }
+
 .btn-login {
   background: var(--primary);
   color: #fff;
   font-weight: 600;
 }
+
 .banner-text {
   width: 70%;
   position: absolute;
   bottom: 40px;
   padding-left: 20px;
 }
+
 .banner-text h2 {
   color: #fff;
   font-weight: 600;
 }
+
 .banner-text h2:after {
   content: " ";
   width: 100px;
@@ -92,20 +123,24 @@
   margin-top: 20px;
   border-radius: 3px;
 }
+
 .banner-text p {
   color: #fff;
 }
+
 .carousel-inner img {
-    background-size: cover;
-    background-repeat: no-repeat;
-    width: 100%;
-    height:600px;
-  }
-  label{
-      font-weight: bold;
-  }
-  .logo{
-      position: absolute;
-      top: 0;
-      left: 0;
-  }
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 600px;
+}
+
+label {
+  font-weight: bold;
+}
+
+.logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+}

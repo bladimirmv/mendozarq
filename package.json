@@ -27,6 +27,7 @@
     "@angular/router": "~10.0.3",
     "firebase": "^7.13.1",
     "ngx-electron": "^2.2.0",
+    "ngx-swiper-wrapper": "^9.0.1",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"
