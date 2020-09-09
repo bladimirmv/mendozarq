@@ -1,36 +1,49 @@
-<img class="wave" src="./assets/bg-login.svg" alt="">
+<img class="wave" src="./assets/wave-1.svg" alt="">
+<img class="wave-2" src="./assets/wave-2.svg" alt="">
 
 <div class="login-container">
 
-  <div class="login-content">
+  <div class="copyright">
     <a> @copyright - MendozArq - 2020</a>
   </div>
-  <div class="login">
+  <div class="login-content">
+    <div class="login">
 
-    <form class="form">
-      <img class="avatar" src="./assets/avatar.svg" alt="">
-      <h2 class="title">Inicio de sesión</h2>
+      <div class="avatar">
 
-      <mat-form-field>
-        <mat-label>Correo Electronico</mat-label>
-        <button type="button" mat-icon-button matSuffix>
-          <mat-icon>mail</mat-icon>
-        </button>
-        <input matInput type="text" placeholder="ejemplo@email.com">
-      </mat-form-field>
+        <img class="avatar" src="./assets/avatar.svg" alt="">
+      </div>
+      <h2 class="title">Bienvenido</h2>
+      <mat-tab-group>
+        <mat-tab label="Inicio de Sesion">
+          <form class="form">
 
-      <mat-form-field>
-        <mat-label>Contraseña</mat-label>
-        <input matInput formControlName="password" autocomplete="off" [type]="hide ? 'password' : 'text'">
-        <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-          [attr.aria-pressed]="hide">
-          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-        </button>
-      </mat-form-field>
+            <mat-form-field>
+              <mat-label>Correo Electronico</mat-label>
+              <button type="button" mat-icon-button matSuffix>
+                <mat-icon>mail</mat-icon>
+              </button>
+              <input matInput type="text" autocomplete="off" placeholder="ejemplo@email.com">
+            </mat-form-field>
 
-      <button type="submit" class="btn-login" mat-button>Iniciar sesión</button>
+            <mat-form-field>
+              <mat-label>Contraseña</mat-label>
+              <input matInput formControlName="password" autocomplete="off" [type]="hide ? 'password' : 'text'">
+              <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+            </mat-form-field>
 
-    </form>
+            <button type="submit" class="btn-login" mat-button>Iniciar sesión</button>
+
+          </form>
+        </mat-tab>
+        <mat-tab label="Registro"> Registro </mat-tab>
+
+      </mat-tab-group>
+
+    </div>
   </div>
 
 </div>

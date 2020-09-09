@@ -6,19 +6,27 @@
   z-index: -1;
 }
 
+.wave-2 {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
 
+}
 
 .login-container {
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  grid-template-areas: "copyright login";
   grid-gap: 7rem;
   padding: 0 2rem;
 
 }
 
-.login-content {
+.copyright {
+  grid-area: copyright;
   display: flex;
   justify-content: flex-start;
   align-items: flex-end;
@@ -31,11 +39,20 @@
   }
 }
 
-.login {
-  display: grid;
-  display: grid;
-  grid-template-columns: auto;
+.login-content {
+  display: flex;
   align-items: center;
+  justify-content: start;
+
+}
+
+.login {
+  grid-area: login;
+  display: grid;
+  grid-template-columns: minmax(auto, 400px);
+  grid-template-rows: repeat(3, auto);
+
+  align-content: center;
   justify-items: center;
 
   h2 {
@@ -45,13 +62,19 @@
   }
 
   .avatar {
-    width: 100px;
+    width: 100%;
+    text-align: center;
+
+    img {
+      width: 120px;
+    }
+
   }
 }
 
 
 .form {
-  max-width: 360px;
+  max-width: 100%;
   text-align: center;
 
   mat-form-field {
@@ -62,12 +85,10 @@
       color: #999;
       font-size: 16px;
       transition: .3s;
-      padding-left: 10px;
     }
 
     input {
-      font-size: 16px;
-      padding-left: 10px;
+      font-size: 18px;
       color: #555;
       outline: none;
     }
@@ -75,6 +96,7 @@
     mat-icon {
       font-size: 20px;
       color: var(--primary);
+      width: 100%;
     }
   }
 
@@ -99,18 +121,22 @@
 
 @media screen and (max-width: 900px) {
   .login-container {
-    grid-template-columns: 1fr;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  .login-content {
+  .copyright {
     display: none;
   }
 
-  .wave {
+  .wave,
+  .wave-2 {
     display: none;
   }
 
-  .login-content {
+  .copyright {
     justify-content: center;
   }
+
 }
