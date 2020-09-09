@@ -4,7 +4,9 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
-
+  {
+    path: '', redirectTo: 'login', pathMatch: 'full'
+  },
 
   {
     path: 'admin', loadChildren: () =>
@@ -23,9 +25,7 @@ const routes: Routes = [
   {
     path: '', component: AppContainerComponent,
     children: [
-      {
-        path: '', redirectTo: 'auth', pathMatch: 'full'
-      },
+
 
       {
         path: 'home', loadChildren: () =>
