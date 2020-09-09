@@ -3,7 +3,7 @@
 @import '~@angular/material/theming';
 // Plus imports for other components in your app.
 
-@import './bootstrap.min.css';
+@import './bootstrap.css';
 
 
 
@@ -15,7 +15,7 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$mendozarq-primary: mat-palette($mat-indigo, 600);
+$mendozarq-primary: mat-palette($mat-orange, 600);
 $mendozarq-accent: mat-palette($mat-pink, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
@@ -116,8 +116,8 @@ body {
 }
 
 mat-toolbar {
-  height: 60px;
-  background-color: white;
+  height: 1000px;
+  background-color: red;
   overflow: hidden;
   position: sticky;
 

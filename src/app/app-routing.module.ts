@@ -6,40 +6,36 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
 
 
+  {
+    path: 'admin', loadChildren: () =>
+      import('@modules/admin/admin.module').then(m => m.AdminModule)
+  },
 
+  {
+    path: 'login', loadChildren: () =>
+      import('./core/auth/login/login.module').then(m => m.LoginModule)
+  },
 
+  {
+    path: 'register', loadChildren: () =>
+      import('./core/auth/register/register.module').then(m => m.RegisterModule)
+  },
   {
     path: '', component: AppContainerComponent,
     children: [
       {
         path: '', redirectTo: 'auth', pathMatch: 'full'
       },
-      {
-        path: 'admin', loadChildren: () =>
-          import('@modules/admin/admin.module').then(m => m.AdminModule)
-      },
+
       {
         path: 'home', loadChildren: () =>
           import('./modules/home/home.module').then(m => m.HomeModule)
       },
       {
-        path: 'contact-us', loadChildren: () =>
-          import('./modules/contact-us/contact-us.module').then(m => m.ContactUsModule)
-      },
-      {
-        path: 'about-us', loadChildren: () =>
-          import('./modules/about-us/about-us.module').then(m => m.AboutUsModule)
-      },
-      {
-        path: 'auth', loadChildren: () =>
-          import('./core/auth/auth.module').then(m => m.AuthModule)
-
-      },
+        path: '**', loadChildren: () =>
+          import('./core/not-found/not-found.module').then(m => m.NotFoundModule)
+      }
     ]
-  },
-  {
-    path: '**', loadChildren: () =>
-      import('./core/not-found/not-found.module').then(m => m.NotFoundModule)
   }
 ];
 
