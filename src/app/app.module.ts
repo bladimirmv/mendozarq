@@ -1,3 +1,4 @@
+import { LoginComponent } from './core/auth/login/login.component';
 import { environment } from './../environments/environment.prod';
 import { FooterComponent } from './core/footer/footer.component';
 import { MaterialModule } from './material.module';
@@ -24,7 +25,8 @@ import { TitlebarComponent } from './core/titlebar/titlebar.component';
     ToolbarComponent,
     AppContainerComponent,
     FooterComponent,
-    TitlebarComponent
+    TitlebarComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
