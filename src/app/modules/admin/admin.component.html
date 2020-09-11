@@ -4,56 +4,71 @@
   <mat-sidenav #drawer [mode]="breakpoint ? 'over': 'side'" [opened]="!breakpoint">
 
 
+    <img class="wave" src="./assets/wave-2.svg" alt="">
+    <!-- <img class="wave-2" src="./assets/wave-2.svg" alt=""> -->
 
 
 
-    <div class="flex-side">
+    <div class="sidenav-container">
 
       <div>
         <div class="flex-closed">
 
-          <button mat-icon-button>
-            <mat-icon (click)="drawer.close()">
+          <button mat-icon-button (click)="drawer.close()">
+            <mat-icon>
               closed
             </mat-icon>
           </button>
         </div>
 
         <div class="logo" routerLink="/admin">
-          <img src="./assets/ma.svg" alt="">
+          <span>
+            <img src="./assets/ma.svg" alt="">
+          </span>
           <span>MendozArq</span>
         </div>
+      </div>
 
-        <button mat-button class="btn-admin" routerLink="dashboard" routerLinkActive="active"
+
+      <div class="anclas">
+
+        <button mat-button class="btn-admin" routerLink="dashboard" routerLinkActive="active  mat-raised-button"
           (click)="breakpoint ? drawer.close() : false">
+
           <mat-icon class="mat-18 mr-3">dashboard</mat-icon>
           Dashboard
+          <div class="active-wave"></div>
         </button>
 
-        <button mat-button class="btn-admin" routerLink="proyects" routerLinkActive="active"
+        <button mat-button class="btn-admin" routerLink="proyects" routerLinkActive="active mat-raised-button"
           (click)="breakpoint ? drawer.close() : false">
           <mat-icon class="mat-18 mr-3">folder</mat-icon>
           Proyectos
+          <div class="active-wave"></div>
+
         </button>
-        <button mat-button class="btn-admin" routerLink="users" routerLinkActive="active"
+
+        <button mat-button class="btn-admin" routerLink="users" routerLinkActive="active mat-raised-button"
           (click)="breakpoint ? drawer.close() : false">
           <mat-icon class="mat-18 mr-3">people</mat-icon>
           Usuarios
-        </button>
+          <div class="active-wave"></div>
 
+        </button>
       </div>
 
 
       <div class="btn-extra">
         {{gg | json}}
 
-        <button mat-button class="btn-just-border" (click)="onback()">
+        <button mat-raised-button class="btn-just-border" (click)="onback()">
           Volver al inicio
         </button>
-        <button mat-button class="btn-fill" (click)="onLogout()">
+        <button mat-raised-button class="btn-fill" (click)="onLogout()">
           Cerrar sesion
         </button>
       </div>
+
 
 
 
@@ -65,24 +80,24 @@
 
 
   <mat-sidenav-content>
-
+    <!-- -->
     <mat-toolbar *ngIf="drawer.opened===false || breakpoint">
 
-      <button mat-icon-button>
-        <mat-icon (click)=" drawer.open()">
+      <button (click)=" drawer.toggle()" mat-icon-button>
+        <mat-icon>
           menu
         </mat-icon>
       </button>
 
-      <div class="logo" routerLink="/">
-        <img src="./assets/ma.svg" alt="">
+      <div class="logo" routerLink="/admin" *ngIf="drawer.opened===false || breakpoint">
+        <span>
+          <img src="./assets/ma.svg" alt="">
+        </span>
         <span>MendozArq</span>
       </div>
     </mat-toolbar>
 
-    <div class="outlet">
-      <router-outlet></router-outlet>
-    </div>
+    <router-outlet></router-outlet>
 
   </mat-sidenav-content>
 

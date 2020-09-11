@@ -5,6 +5,12 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
+
+
+  // {
+  //   path: '', component: AppContainerComponent,
+  //   children: [
+
   {
     path: '', redirectTo: 'login', pathMatch: 'full'
   },
@@ -16,22 +22,16 @@ const routes: Routes = [
   {
     path: 'login', component: LoginComponent
   },
-
   {
-    path: '', component: AppContainerComponent,
-    children: [
-
-
-      {
-        path: 'home', loadChildren: () =>
-          import('./modules/home/home.module').then(m => m.HomeModule)
-      },
-      {
-        path: '**', loadChildren: () =>
-          import('./core/not-found/not-found.module').then(m => m.NotFoundModule)
-      }
-    ]
+    path: 'home', loadChildren: () =>
+      import('./modules/home/home.module').then(m => m.HomeModule)
+  },
+  {
+    path: '**', loadChildren: () =>
+      import('./core/not-found/not-found.module').then(m => m.NotFoundModule)
   }
+  //   ]
+  // }
 ];
 
 @NgModule({

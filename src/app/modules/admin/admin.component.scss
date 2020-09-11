@@ -1,7 +1,15 @@
-mat-sidenav-container {
-  height: 100%;
+.wave {
 
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 250px;
+  z-index: -2;
 }
+
+
+
+
 
 .flex-side {
   height: 100%;
@@ -11,10 +19,26 @@ mat-sidenav-container {
   overflow: auto;
 }
 
+.sidenav-container {
+  display: grid;
+  height: 100%;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+  overflow: hidden;
+  grid-gap: 5px;
+
+  .anclas {
+    overflow: auto;
+    padding-top: 10px;
+  }
+
+}
+
 mat-sidenav {
   width: 250px;
   height: 100%;
   background-color: white;
+
 
 
 
@@ -36,6 +60,9 @@ mat-sidenav-content {
   overflow: hidden;
   justify-content: flex-end;
 
+  mat-icon {
+    color: white;
+  }
 }
 
 mat-toolbar {
@@ -52,22 +79,32 @@ mat-toolbar {
 }
 
 .btn-admin {
+  padding: 0;
   width: 100%;
   border-radius: 0;
   height: 45px;
   text-align: center;
 
+
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding-left: 15px;
-  border-left: 6px solid transparent;
-  // color: white;
+  // border-left: 6px solid transparent;
+
+  box-sizing: border-box;
   outline: none;
+
+  font-size: 16px;
 
   mat-icon {
     color: var(--secondary);
+    margin: 0 20px;
+    font-size: 22px;
   }
+
+
+
+
 }
 
 .btn-extra {
@@ -99,9 +136,24 @@ mat-toolbar {
 }
 
 .active {
-  border-left: 6px solid var(--primary);
-  background-color: #EBEBEB;
+  // border-right: 2px solid var(--primary);
+  // background-color: #EBEBEB;
   color: var(--secondary);
+  background-color: var(--primary);
+
+  .active-wave {
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    // border-radius: 100% 0% 78% 22% / 0% 100% 0% 100%;
+  }
+
+
+  // color: var(--primary);
 
   mat-icon {
     color: var(--primary);
@@ -110,9 +162,10 @@ mat-toolbar {
 
 
 
-.outlet {
-  position: relative;
-  width: 100%;
-  height: calc(100% - 60px);
-  overflow: auto;
-}
+
+// .outlet {
+//   position: relative;
+//   width: 100%;
+//   height: calc(100% - 60px);
+//   overflow: auto;
+// }
