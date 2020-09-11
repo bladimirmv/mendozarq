@@ -19,6 +19,10 @@
   overflow: auto;
 }
 
+mat-sidenav-container {
+  height: 100%;
+}
+
 .sidenav-container {
   display: grid;
   height: 100%;
@@ -30,6 +34,7 @@
   .anclas {
     overflow: auto;
     padding-top: 10px;
+
   }
 
 }
@@ -39,9 +44,6 @@ mat-sidenav {
   height: 100%;
   background-color: white;
 
-
-
-
   mat-icon {
     cursor: pointer;
     color: var(--secondary);
@@ -49,8 +51,8 @@ mat-sidenav {
 }
 
 mat-sidenav-content {
-  background-color: white;
   color: var(--secondary);
+  overflow: hidden;
 }
 
 .flex-closed {
@@ -89,9 +91,8 @@ mat-toolbar {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  // border-left: 6px solid transparent;
+  border-left: 5px solid transparent;
 
-  box-sizing: border-box;
   outline: none;
 
   font-size: 16px;
@@ -139,7 +140,8 @@ mat-toolbar {
   // border-right: 2px solid var(--primary);
   // background-color: #EBEBEB;
   color: var(--secondary);
-  background-color: var(--primary);
+  // background-color: var(--primary);
+  border-left: 5px solid var(--primary);
 
   .active-wave {
     z-index: -1;
