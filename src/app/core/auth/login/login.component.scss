@@ -17,13 +17,12 @@
 }
 
 .login-container {
-  width: 100vw;
+  width: 100%;
   height: 100%;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-areas: "copyright login";
   grid-gap: 7rem;
-  padding: 0 2rem;
   overflow: auto;
 
 }

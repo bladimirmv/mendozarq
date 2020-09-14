@@ -1,10 +1,14 @@
 .example-container {
-  width: auto;
+  // width: auto;
+  max-width: 100%;
   overflow: auto;
 }
 
 table {
   width: 100%;
+  // max-width: 100%;
+  overflow: auto;
+
 }
 
 .mat-form-field {

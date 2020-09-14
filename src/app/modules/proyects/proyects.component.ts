@@ -29,7 +29,7 @@ const NAMES: string[] = [
 })
 export class ProyectsComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'name', 'progress', 'color'];
+  displayedColumns: string[] = ['id', 'name', 'progress', 'color', 'g1', 'g2', 'g3', 'g4'];
   dataSource: MatTableDataSource<UserData>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;

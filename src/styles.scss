@@ -3,7 +3,7 @@
 @import '~@angular/material/theming';
 // Plus imports for other components in your app.
 
-@import './bootstrap.css';
+
 
 
 
@@ -47,13 +47,12 @@ $mendozarq-theme: mat-light-theme((color: (primary: $mendozarq-primary,
 html,
 body {
   height: 100%;
-  margin: 0
+  width: 100%;
+  padding: 0;
+  margin: 0;
+
 }
 
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}
 
 
 
