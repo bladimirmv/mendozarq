@@ -1,18 +1,3 @@
-.standar-card {
-  background: #33B5E5;
-}
-
-.warn-card {
-  background: #FFBB33;
-}
-
-.success-card {
-  background: #00C851;
-}
-
-
-
-
 .stats-container {
   margin: 30px 0;
   display: grid;
@@ -24,56 +9,24 @@
 
 }
 
-.stats-card {
-  padding: 0;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-rows: 86px;
 
-
-}
-
-.icon-card {
-  margin: 0;
-  padding: 0;
-
-  width: 86px;
-  height: 100%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-
-  mat-icon {
-    width: auto;
-    height: auto;
-    font-size: 50px;
-  }
-}
-
-
-.info-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 5px;
-}
-
-.count-card {
-  font-weight: bold;
-}
 
 @media screen and(max-width: 960px) {
   .stats-container {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  app-status-card:last-child {
+    grid-column: 1 / span 2;
   }
 }
 
 @media screen and(max-width: 490px) {
   .stats-container {
     grid-template-columns: 1fr;
+  }
+
+  app-status-card:last-child {
+    grid-column: span 1;
   }
 }

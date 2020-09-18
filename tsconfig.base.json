@@ -7,7 +7,9 @@
       "@app/*": ["./src/app/*"],
       "@shared/*": ["./src/app/shared/*"],
       "@core/*": ["./src/app/core/*"],
-      "@modules/*": ["./src/app/modules/*"]
+      "@modules/*": ["./src/app/modules/*"],
+      "@models/*": ["./src/app/shared/models/*"],
+      "@services/*": ["./src/app/core/services/*"]
     },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,

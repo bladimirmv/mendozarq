@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ModalComponent } from './components/modal/modal.component';
 import { ButtonComponent } from './components/button/button.component';
 import { CardComponent } from './components/card/card.component';
+import { StatusCardComponent } from './components/status-card/status-card.component';
 
 
 
@@ -11,7 +12,8 @@ import { CardComponent } from './components/card/card.component';
   declarations: [
     ModalComponent,
     ButtonComponent,
-    CardComponent
+    CardComponent,
+    StatusCardComponent
   ],
   imports: [
     CommonModule,
@@ -20,7 +22,8 @@ import { CardComponent } from './components/card/card.component';
   exports: [
     ModalComponent,
     ButtonComponent,
-    CardComponent
+    CardComponent,
+    StatusCardComponent
   ]
 })
 export class SharedModule { }

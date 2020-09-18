@@ -5,6 +5,10 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
 
+
+
+
+
 export interface UserData {
   id: string;
   name: string;
@@ -29,12 +33,14 @@ const NAMES: string[] = [
 })
 export class ProyectsComponent implements OnInit {
 
+
+
   displayedColumns: string[] = ['id', 'name', 'progress', 'color', 'g1', 'g2', 'g3', 'g4'];
   dataSource: MatTableDataSource<UserData>;
-
+  value = 'Clear me';
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-
+  filterValue: string;
   constructor() {
     // Create 100 users
     const users = Array.from({ length: 100 }, (_, k) => createNewUser(k + 1));
@@ -49,8 +55,8 @@ export class ProyectsComponent implements OnInit {
   }
 
   applyFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = this.filterValue.trim().toLowerCase();
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
@@ -65,7 +71,7 @@ function createNewUser(id: number): UserData {
 
   return {
     id: id.toString(),
-    name: name,
+    name,
     progress: Math.round(Math.random() * 100).toString(),
     color: COLORS[Math.round(Math.random() * (COLORS.length - 1))]
   };

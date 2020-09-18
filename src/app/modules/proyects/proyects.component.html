@@ -1,10 +1,58 @@
 <div class="content">
-  <mat-form-field>
-    <mat-label>Filter</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
-  </mat-form-field>
+
+  <div class="stats-container">
+    <app-status-card [icon]="'library_books'" [color]="'#33B5E5'">
+      <div slot="title">
+        Proyectos Totales
+      </div>
+      <div slot="count">
+        50
+      </div>
+    </app-status-card>
+
+    <app-status-card [icon]="'engineering'" [color]="'#FFBB33'">
+      <div slot="title">
+        Proyectos en Curso
+      </div>
+      <div slot="count">
+        50
+      </div>
+    </app-status-card>
+    &nbsp;
+
+    <app-status-card [icon]="'done_all'" [color]="'#00C851'">
+      <div slot="title">
+        Proyectos Finzalizados
+      </div>
+      <div slot="count">
+        50
+      </div>
+    </app-status-card>
+
+  </div>
+
+
+
+
+
+  <mat-card class="header-table">
+    <mat-form-field>
+      <mat-label>Filter</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Pro" [(ngModel)]="filterValue" #input>
+      <button mat-button *ngIf="filterValue" matSuffix mat-icon-button aria-label="Clear" (click)="filterValue=''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <button mat-icon-button matTooltip="Nuevo Proyecto" matTooltipPosition="below" class="btn-add">
+      <mat-icon class="mat-18">
+        add
+      </mat-icon>
+    </button>
+  </mat-card>
 
   <div class="example-container mat-elevation-z8">
+
 
     <table mat-table [dataSource]="dataSource" matSort>
 
@@ -56,7 +104,7 @@
       </tr>
     </table>
 
+    <mat-paginator [pageSizeOptions]="[3, 5, 10, 100]"></mat-paginator>
   </div>
-  <mat-paginator [pageSizeOptions]="[3, 5, 10, 100]"></mat-paginator>
 
 </div>

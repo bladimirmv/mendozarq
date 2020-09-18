@@ -1,0 +1,38 @@
+.stats-card {
+  padding: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: 86px;
+}
+
+.icon-card {
+  margin: 0;
+  padding: 0;
+
+  width: 86px;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+
+  mat-icon {
+    width: auto;
+    height: auto;
+    font-size: 50px;
+  }
+}
+
+.info-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 5px;
+}
+
+.count-card {
+  font-weight: bold;
+}

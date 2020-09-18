@@ -1,0 +1,16 @@
+<mat-card class="stats-card">
+  <mat-card class="icon-card" [style.backgroundColor]="color">
+    <mat-icon>
+      {{icon}}
+    </mat-icon>
+  </mat-card>
+
+  <div class="info-card">
+    <p>
+      <ng-content select="[slot=title]"></ng-content>
+    </p>
+    <p class="count-card">
+      <ng-content select="[slot=count]"></ng-content>
+    </p>
+  </div>
+</mat-card>
