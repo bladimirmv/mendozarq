@@ -76,8 +76,94 @@ mat-toolbar {
   }
 }
 
-.logo {
-  margin: 20px 10px;
+.logo-column {
+  display: grid;
+  place-items: center;
+  outline: none;
+  cursor: pointer;
+  margin: 5px 0;
+  text-decoration: none;
+  color: var(--secondary);
+  font-weight: 450;
+  font-size: 14px;
+
+  text-transform: uppercase;
+  letter-spacing: 8px;
+
+  img {
+    width: 90px;
+    animation: opacity-logo 2s;
+  }
+
+  span {
+    animation: type 1.5s steps(18);
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+
+}
+
+
+@keyframes opacity-logo {
+  from {
+    opacity: 0;
+    transition: opacity;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes type {
+  from {
+    width: 0ch;
+    border-right: 1px solid black;
+  }
+
+  to {
+    border-right: 1px solid black;
+    width: 18ch;
+  }
+}
+
+@keyframes type-2 {
+  from {
+    width: 0ch;
+    border-right: 1px solid black;
+  }
+
+  to {
+    border-right: 1px solid black;
+    width: 9ch;
+  }
+}
+
+
+
+.logo-row {
+  height: 100%;
+  // background-color: red;
+  display: grid;
+  grid-template-columns: auto auto;
+  place-items: center;
+  text-decoration: none;
+  color: var(--secondary);
+  text-transform: uppercase;
+  font-size: 18px;
+
+  img {
+    animation: opacity-logo 1s;
+    height: 40px;
+  }
+
+  span {
+    animation: type-2 1s steps(9);
+    overflow: hidden;
+    white-space: nowrap;
+
+  }
 }
 
 .btn-admin {
