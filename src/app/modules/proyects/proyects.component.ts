@@ -1,10 +1,12 @@
+import { map } from 'rxjs/operators';
 
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
-
+import { SelectionModel } from '@angular/cdk/collections';
+import { empty, pipe } from 'rxjs';
 
 
 
@@ -34,8 +36,10 @@ const NAMES: string[] = [
 export class ProyectsComponent implements OnInit {
 
 
+  isselected = [];
 
-  displayedColumns: string[] = ['id', 'name', 'progress', 'color', 'g1', 'g2', 'g3', 'g4'];
+  selection = new SelectionModel<UserData>(true, []);
+  displayedColumns: string[] = ['select', 'name', 'progress', 'color', 'g1', 'g2', 'g3', 'g4'];
   dataSource: MatTableDataSource<UserData>;
   value = 'Clear me';
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -47,11 +51,25 @@ export class ProyectsComponent implements OnInit {
 
     // Assign the data to the data source for the table to render
     this.dataSource = new MatTableDataSource(users);
+
+    this.selection.changed.pipe(
+      map(a => a.source)
+    ).subscribe(
+      data => {
+        // console.log(data.selected);
+        this.isselected = data.selected;
+
+      }
+    );
   }
 
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+
+
+
+
   }
 
   applyFilter(event: Event): void {
@@ -61,6 +79,32 @@ export class ProyectsComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+
+
+
+
+
+  isAllSelected(): any {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle(): void {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: UserData): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id}`;
   }
 }
 

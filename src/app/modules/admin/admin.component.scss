@@ -25,9 +25,9 @@ mat-sidenav-container {
 
 .sidenav-container {
   display: grid;
-  height: 100%;
+  height: 100vh;
   grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto minmax(50px, 1fr) auto;
   overflow: hidden;
   grid-gap: 5px;
 
@@ -140,6 +140,13 @@ mat-toolbar {
   }
 }
 
+@media screen and(max-width: 500px) {
+  .logo-row {
+    span {
+      // display: none;
+    }
+  }
+}
 
 
 .logo-row {
@@ -190,8 +197,6 @@ mat-toolbar {
   }
 
 
-
-
 }
 
 .btn-extra {
@@ -204,10 +209,7 @@ mat-toolbar {
 }
 
 .btn-just-border {
-  // margin-top: 100px;
   width: 90%;
-
-
   background-color: var(--primary);
   color: white;
 
@@ -223,10 +225,7 @@ mat-toolbar {
 }
 
 .active {
-  // border-right: 2px solid var(--primary);
-  // background-color: #EBEBEB;
   color: var(--secondary);
-  // background-color: var(--primary);
   border-left: 5px solid var(--primary);
 
   .active-wave {
@@ -237,23 +236,12 @@ mat-toolbar {
     width: 100%;
     height: 100%;
     background-color: white;
-    // border-radius: 100% 0% 78% 22% / 0% 100% 0% 100%;
   }
 
 
-  // color: var(--primary);
+
 
   mat-icon {
     color: var(--primary);
   }
 }
-
-
-
-
-// .outlet {
-//   position: relative;
-//   width: 100%;
-//   height: calc(100% - 60px);
-//   overflow: auto;
-// }

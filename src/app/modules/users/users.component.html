@@ -1,56 +1,31 @@
 <div class="content">
 
-
   <div class="stats-container">
-    <mat-card class="stats-card">
-      <mat-card class="icon-card standar-card">
-        <mat-icon>library_books</mat-icon>
-      </mat-card>
-
-      <div class="info-card">
-        <p>
-          Proyectos Totales
-        </p>
-        <p class="count-card">
-          50
-        </p>
+    <app-status-card [icon]="'library_books'" [color]="'#33B5E5'">
+      <div slot="title">
+        Proyectos Totales
       </div>
-
-    </mat-card>
-
-
-
-    <mat-card class="stats-card">
-      <mat-card class="icon-card warn-card">
-        <mat-icon>engineering</mat-icon>
-      </mat-card>
-
-      <div class="info-card">
-        <p>
-          Proyectos en Curso
-        </p>
-        <p class="count-card">
-          50
-        </p>
+      <div slot="count">
+        50
       </div>
+    </app-status-card>
 
-    </mat-card>
-
-    <mat-card class="stats-card">
-      <mat-card class="icon-card success-card">
-        <mat-icon>done_all</mat-icon>
-      </mat-card>
-
-      <div class="info-card">
-        <p>
-          Proyectos Finzalizados
-        </p>
-        <p class="count-card">
-          50
-        </p>
+    <app-status-card [icon]="'engineering'" [color]="'#FFBB33'">
+      <div slot="title">
+        Proyectos en Curso
       </div>
+      <div slot="count">
+        50
+      </div>
+    </app-status-card>
 
-    </mat-card>
+    <app-status-card [icon]="'done_all'" [color]="'#00C851'">
+      <div slot="title">
+        Proyectos Finzalizados
+      </div>
+      <div slot="count">
+        50
+      </div>
+    </app-status-card>
 
   </div>
-</div>

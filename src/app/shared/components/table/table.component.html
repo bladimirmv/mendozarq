@@ -1,0 +1,9 @@
+ <div class="table-container mat-elevation-z8">
+
+   <ng-content select="slot='header-table'"></ng-content>
+
+   <div class="table-content">
+     <ng-content select="slot='table'"></ng-content>
+   </div>
+   <mat-paginator [pageSizeOptions]="[5, 10, 20, 50, 100]"></mat-paginator>
+ </div>

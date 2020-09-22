@@ -1,3 +1,4 @@
+import { SharedModule } from './../../shared/shared.module';
 import { MaterialModule } from '@app/material.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -12,7 +13,8 @@ import { NewUserComponent } from './components/new-user/new-user.component';
   imports: [
     CommonModule,
     UsersRoutingModule,
-    MaterialModule
+    MaterialModule,
+    SharedModule
   ]
 })
 export class UsersModule { }
