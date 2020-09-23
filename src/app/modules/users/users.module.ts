@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import { SharedModule } from './../../shared/shared.module';
 import { MaterialModule } from '@app/material.module';
 import { NgModule } from '@angular/core';
@@ -14,7 +15,8 @@ import { NewUserComponent } from './components/new-user/new-user.component';
     CommonModule,
     UsersRoutingModule,
     MaterialModule,
-    SharedModule
+    SharedModule,
+    FormsModule
   ]
 })
 export class UsersModule { }

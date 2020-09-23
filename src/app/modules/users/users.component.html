@@ -1,4 +1,4 @@
-<div class="content">
+<!-- <div class="content">
 
   <div class="stats-container">
     <app-status-card [icon]="'library_books'" [color]="'#33B5E5'">
@@ -29,3 +29,112 @@
     </app-status-card>
 
   </div>
+
+
+
+  <div class="table-container mat-elevation-z8">
+    <div class="header-table" *ngIf="!selected.length else deleteTable">
+      <mat-form-field>
+        <mat-label>Buscar</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Proyecto" [(ngModel)]="filterValue" #input>
+        <button mat-button *ngIf="filterValue" matSuffix mat-icon-button aria-label="Clear" (click)="input.value = ''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <button mat-icon-button matTooltip="Nuevo Proyecto" matTooltipPosition="below" class="btn-add">
+        <mat-icon class="mat-18">
+          add
+        </mat-icon>
+      </button>
+    </div>
+    <ng-template #deleteTable>
+      <div class="delete-table">
+        <button mat-icon-button (click)="clearCheckbox()" class="btn-clear">
+          <mat-icon>clear</mat-icon>
+        </button>
+        <span>
+          Seleccionados {{selected.length}}
+        </span>
+        <button mat-raised-button class="btn-delete">Elminar</button>
+      </div>
+    </ng-template>
+
+    <div class="table-content">
+      <table mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="select" sticky>
+          <th mat-header-cell *matHeaderCellDef style="min-width: 40px;">
+            <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+              [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+            </mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <mat-checkbox (click)="$event.stopPropagation() " (change)="$event ? selection.toggle(row) : null"
+              [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="docid">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> DocID </th>
+          <td mat-cell *matCellDef="let row"> {{row.docid}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="role">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Rol </th>
+          <td mat-cell *matCellDef="let row"> {{row.role}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+          <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="lastName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Apellidos </th>
+          <td mat-cell *matCellDef="let row"> {{row.lastName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Celular </th>
+          <td mat-cell *matCellDef="let row"> {{row.phone}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="address">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Direccion </th>
+          <td mat-cell *matCellDef="let row"> {{row.address}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo </th>
+          <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="edit" stickyEnd>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="place-items: center;">
+            Editar
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-icon-button (click)="editUser(row)">
+              <mat-icon class="edit-icon">
+                edit
+              </mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">
+            No hay datos que coincidan con el filtro: "{{input.value}}"</td>
+        </tr>
+      </table>
+    </div>
+    <mat-paginator [pageSizeOptions]="[3, 5, 10, 100]"></mat-paginator>
+  </div>
+
+
+</div> -->

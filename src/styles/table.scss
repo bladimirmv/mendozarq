@@ -1,0 +1,119 @@
+// table class
+.table-container {
+  max-width: 100%;
+
+  .header-table {
+    max-width: 100%;
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    grid-gap: 5px;
+    padding: 10px 20px;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+  }
+
+  .table-content {
+    width: 100%;
+    max-width: 100%;
+    overflow: auto;
+  }
+
+
+  table {
+    width: 100%;
+    max-width: 100%;
+    overflow: auto;
+  }
+
+  td,
+  th {
+    width: auto;
+  }
+
+  mat-paginator {
+    width: 100%;
+  }
+
+  .edit-icon {
+    color: var(--secondary);
+  }
+
+}
+
+.delete-table {
+  position: relative;
+  height: 76px;
+  background-color: var(--warn);
+  color: white;
+  animation: opacity-table 0.7s;
+
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  grid-template-rows: 1fr;
+  grid-gap: 20px;
+  grid-template-rows: 1fr;
+  place-items: center;
+  justify-content: space-around;
+  font-size: 18px;
+  text-align: center;
+
+  grid-template-areas:
+    "btn-clear span btn-delete";
+
+  span {
+    grid-area: span;
+  }
+
+  .btn-clear {
+    grid-area: btn-clear;
+    padding-left: 22px;
+
+  }
+
+  .btn-delete {
+    width: auto;
+    margin: 0 5px;
+    color: white;
+    background-color: var(--warn);
+    border: 1px solid white;
+    text-transform: uppercase;
+    grid-area: btn-delete;
+
+    &:hover {
+      background-color: white;
+      color: red;
+    }
+  }
+
+}
+
+.btn-edit {
+  mat-icon {
+    color: var(--secondary);
+
+  }
+}
+
+@keyframes opacity-table {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .delete-table {
+    font-size: 16px;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas:
+      "btn-clear span btn-delete"
+      "btn-clear span btn-delete";
+    grid-gap: 0px;
+
+
+  }
+}
