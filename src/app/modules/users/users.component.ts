@@ -8,19 +8,28 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { map } from 'rxjs/operators';
 
 import { User } from '@models/user.interface';
-
+import { animate, state, style, transition, trigger } from '@angular/animations';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss']
+  styleUrls: ['./users.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class UsersComponent implements OnInit {
-
+  expandedElement: User | null;
 
   selected: User[] = [];
   selection = new SelectionModel<User>(true, []);
   filterValue: string;
-  displayedColumns: string[] = ['docid', 'role', 'name', 'lastName', 'phone', 'address', 'email', 'edit'];
+  // displayedColumns: string[] = ['seleccion', 'docid', 'rol', 'nombre', 'apellidos', 'celular', 'direccion', 'correo', 'edit'];
+  displayedColumns: string[] = ['seleccion', 'rol', 'nombre', 'apellidos', 'edit'];
+
   dataSource: MatTableDataSource<User>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -28,7 +37,26 @@ export class UsersComponent implements OnInit {
 
 
   constructor() {
-    const data: User[] = [];
+    const data: User[] = [
+      {
+        docid: 'DADASD5DAS4D5AS4',
+        nombre: 'Bladimir',
+        apellidos: 'Medrano Vargas',
+        celular: 69509449,
+        rol: 'administrador',
+        direccion: 'Avenida Segunda entre marina nuñes del prado',
+        correo: 'bladimilmedranoblod@gmail.com'
+      },
+      {
+        docid: 'DADASD5DAS4D5AS4',
+        nombre: 'Bladimir',
+        apellidos: 'Medrano Vargas',
+        celular: 46545644566,
+        rol: 'administrador',
+        direccion: 'Avenida Segunda entre marina nuñes del prado',
+        correo: 'bladimilmedranoblod@gmail.com'
+      }
+    ];
     this.dataSource = new MatTableDataSource(data);
   }
 
@@ -79,6 +107,6 @@ export class UsersComponent implements OnInit {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.uid}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.nombre}`;
   }
 }

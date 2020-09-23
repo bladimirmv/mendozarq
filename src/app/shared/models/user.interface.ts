@@ -6,11 +6,11 @@ export interface User {
   uid?: string;
   displayName?: string;
   photoURL?: string;
-  name: string;
-  lastName: string;
-  phone?: string;
-  address?: string;
-  email?: string;
-  password?: string;
-  role: Roles;
+  nombre: string;
+  apellidos: string;
+  celular?: number;
+  direccion?: string;
+  correo?: string;
+  contrasenha?: string;
+  rol: Roles;
 }

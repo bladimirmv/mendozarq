@@ -28,3 +28,28 @@
     grid-column: span 1;
   }
 }
+
+
+
+tr.table-detail-row {
+  height: 0;
+  background-color: whitesmoke;
+
+}
+
+tr.table-element-row:not(.table-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.table-element-row:not(.table-expanded-row):active {
+  background: #efefef;
+}
+
+.table-element-row td {
+  border-bottom-width: 0;
+}
+
+.table-element-detail {
+  overflow: hidden;
+  display: flex;
+}

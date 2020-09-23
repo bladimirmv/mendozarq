@@ -52,7 +52,7 @@
         </mat-icon>
       </button>
     </div>
-    <div #deleteTable *ngIf="selected.length">
+    <div *ngIf="selected.length">
       <div class="delete-table">
         <button mat-icon-button (click)="clearCheckbox()" class="btn-clear">
           <mat-icon>clear</mat-icon>
@@ -133,7 +133,7 @@
         </tr>
       </table>
     </div>
-    <mat-paginator [pageSizeOptions]="[3, 5, 10, 100]"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[ 5, 10, 100]"></mat-paginator>
   </div>
 
 
