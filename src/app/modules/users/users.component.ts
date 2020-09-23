@@ -1,14 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { map } from 'rxjs/operators';
 
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
 
-import { map } from 'rxjs/operators';
-
 import { User } from '@models/user.interface';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -24,6 +25,8 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 export class UsersComponent implements OnInit {
   expandedElement: User | null;
 
+  value = 'hola';
+
   selected: User[] = [];
   selection = new SelectionModel<User>(true, []);
   filterValue: string;
@@ -36,10 +39,10 @@ export class UsersComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
 
-  constructor() {
+  constructor(private _snackBar: MatSnackBar) {
     const data: User[] = [
       {
-        docid: 'DADASD5DAS4D5AS4',
+        docid: 'DADASD5DAS4ddddddddddddddddD5AS4',
         nombre: 'Bladimir',
         apellidos: 'Medrano Vargas',
         celular: 69509449,
@@ -70,10 +73,23 @@ export class UsersComponent implements OnInit {
   }
 
 
+
+
+  openSnackBarCopy(): void {
+    this._snackBar.open('Copiado', 'Cerrar', {
+      duration: 500,
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+    });
+  }
+
+
+
+  // ====================================================================
   deleteUser(): void {
     console.log(this.selected);
   }
-
+  // ====================================================================
   editUser(user: User): void {
     console.log(user);
   }
@@ -81,32 +97,32 @@ export class UsersComponent implements OnInit {
   applyFilter(event: Event): void {
     this.filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
-
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
   }
-
+  // ====================================================================
   isAllSelected(): any {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
-
+  // ====================================================================
   masterToggle(): void {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
-
+  // ====================================================================
   clearCheckbox(): void {
     this.selection.clear();
   }
-
+  // ====================================================================
   checkboxLabel(row?: User): string {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.nombre}`;
   }
+  // ====================================================================
 }

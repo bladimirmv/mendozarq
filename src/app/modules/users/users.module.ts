@@ -8,6 +8,7 @@ import { UsersRoutingModule } from './users-routing.module';
 import { UsersComponent } from './users.component';
 import { NewUserComponent } from './components/new-user/new-user.component';
 
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 @NgModule({
   declarations: [UsersComponent, NewUserComponent],
@@ -16,7 +17,8 @@ import { NewUserComponent } from './components/new-user/new-user.component';
     UsersRoutingModule,
     MaterialModule,
     SharedModule,
-    FormsModule
+    FormsModule,
+    ClipboardModule
   ]
 })
 export class UsersModule { }

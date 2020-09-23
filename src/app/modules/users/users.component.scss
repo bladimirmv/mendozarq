@@ -33,7 +33,7 @@
 
 tr.table-detail-row {
   height: 0;
-  background-color: whitesmoke;
+  // background-color: whitesmoke;
 
 }
 
@@ -52,4 +52,20 @@ tr.table-element-row:not(.table-expanded-row):active {
 .table-element-detail {
   overflow: hidden;
   display: flex;
+}
+
+.detail-title {
+  font-weight: bold;
+  color: var(--secondary);
+}
+
+
+.copy-text {
+  cursor: pointer;
+  color: var(--primary);
+
+  &:hover {
+    text-decoration: underline;
+
+  }
 }
