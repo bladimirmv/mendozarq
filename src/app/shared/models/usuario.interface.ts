@@ -1,7 +1,5 @@
-import { types } from "util";
-
 export type Roles = 'administrador' | 'arquitecto' | 'cliente' | 'vendedor';
-export interface User {
+export interface Usuario {
   docid?: string;
   uid?: string;
   displayName?: string;

@@ -1,0 +1,27 @@
+{
+  "usuario": [
+    {
+      "uid": "t0yB9zM5Hwhm6g3hJeNt6h5baSp2",
+      "nombre": "Bladimir",
+      "apellidos": "Medrano Vargas",
+      "celular": 69509449,
+      "direccion": "Avenida Segunda y Simon Lopez",
+      "correo": "bladimilmedranoblod@gmail.com",
+      "rol": "administrador"
+    }
+  ],
+  "proyecto": [
+    {
+      "nombre": "Edf. Unifranz",
+      "fileref_doc": "docs/contrato.docx",
+      "urldoc": "https://firebasestorage.googleapis.com/v0/b/contrato/5c96d5bf",
+      "fecha_inicio": "2013-09-21T13:30:08.419Z",
+      "fecha_final": "2013-10-21T13:28:06.419Z"
+    }
+  ],
+  "detalle_proyecto": [
+    {
+      "id_proyecto": "DBNNGCNtEh0B1C1R2Onw"
+    }
+  ]
+}

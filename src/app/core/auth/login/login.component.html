@@ -11,7 +11,7 @@
 
       <div class="avatar">
 
-        <img class="avatar" src="./assets/avatar.svg" alt="">
+        <img class="avatar" src="./assets/avatar.svg" alt="avatar">
       </div>
       <h2 class="title">Bienvenido</h2>
       <mat-tab-group animationDuration="0ms">
@@ -44,7 +44,7 @@
           <form class="form">
 
             <mat-form-field>
-              <mat-label>Codigo</mat-label>
+              <mat-label>Codigo de registro</mat-label>
               <input matInput formControlName="password" autocomplete="off" [type]="hide ? 'password' : 'text'">
               <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
                 [attr.aria-pressed]="hide">

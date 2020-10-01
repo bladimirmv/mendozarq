@@ -8,7 +8,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 
 import { map } from 'rxjs/operators';
 
-import { User } from '@models/user.interface';
+import { Usuario } from '@app/shared/models/usuario.interface';
 
 export interface UserData {
   id: string;

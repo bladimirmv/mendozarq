@@ -96,6 +96,11 @@
   }
 }
 
+.mat-cell,
+.mat-header-cell {
+  padding: 0 10px;
+}
+
 @keyframes opacity-table {
   from {
     opacity: 0;

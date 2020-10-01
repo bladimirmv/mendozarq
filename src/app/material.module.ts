@@ -20,7 +20,9 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTreeModule } from '@angular/material/tree';
 
+import { ToastrModule } from 'ngx-toastr';
 const matModules = [
   MatToolbarModule,
   MatIconModule,
@@ -40,7 +42,8 @@ const matModules = [
   MatSortModule,
   MatTabsModule,
   MatTooltipModule,
-  MatCheckboxModule
+  MatCheckboxModule,
+  MatTreeModule
 ];
 
 
@@ -48,8 +51,12 @@ const matModules = [
   declarations: [],
   imports: [
     CommonModule,
-    matModules
+    matModules,
+    ToastrModule.forRoot({
+      timeOut: 2000,
+      positionClass: 'toast-top-right'
+    })
   ],
-  exports: [matModules]
+  exports: [matModules, ToastrModule]
 })
 export class MaterialModule { }

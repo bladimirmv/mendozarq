@@ -16,7 +16,6 @@ export class AdminComponent implements OnInit, OnDestroy {
   public breakpoint: boolean;
   private unsubscribe$: Subscription;
 
-  gg: any;
 
   constructor(private breakpointObserver: BreakpointObserver, private location: Location) {
 
@@ -29,10 +28,6 @@ export class AdminComponent implements OnInit, OnDestroy {
         map(res => res.matches),
         shareReplay()
       ).subscribe(res => this.breakpoint = res);
-    console.log(this.unsubscribe$);
-
-
-
 
   }
 

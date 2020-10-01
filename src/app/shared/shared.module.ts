@@ -7,13 +7,14 @@ import { ButtonComponent } from './components/button/button.component';
 import { CardComponent } from './components/card/card.component';
 import { StatusCardComponent } from './components/status-card/status-card.component';
 import { TableComponent } from './components/table/table.component';
+import { CdkMaterialModule } from '@app/cdk-material.module';
 
 const SharedComponents: any[] = [
   ModalComponent,
   ButtonComponent,
   CardComponent,
   StatusCardComponent,
-  TableComponent
+  TableComponent,
 ];
 
 @NgModule({
@@ -23,7 +24,8 @@ const SharedComponents: any[] = [
   imports: [
     CommonModule,
     MaterialModule,
-    FormsModule
+    FormsModule,
+    CdkMaterialModule
   ],
   exports: [
     SharedComponents
