@@ -4,7 +4,7 @@
       Nuevo Usuario
     </h1>
   </div>
-  <form class="new-user-form" [formGroup]="newUserForm" (ngSubmit)="onAddUser(newUserForm.value)">
+  <form class="new-user-form" [formGroup]="newUsuarioForm" (ngSubmit)="onAddUser(newUsuarioForm.value)">
 
     <mat-form-field class="full-width">
       <mat-label>Nombre</mat-label>
@@ -51,6 +51,9 @@
       <textarea matInput placeholder="Ex. 100 Main St" formControlName="direccion"></textarea>
     </mat-form-field>
 
-    <button mat-raised-button type="submit" class="full-column button-primary">Guardar</button>
+    <button mat-raised-button mat-dialog-close type="submit" class="full-column button-primary"
+      [disabled]="!newUsuarioForm.valid">
+      Guardar
+    </button>
   </form>
 </app-modal>

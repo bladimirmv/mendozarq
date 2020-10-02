@@ -1,3 +1,4 @@
+import { AuthService } from '@services/auth.service';
 import { NewUserComponent } from './components/new-user/new-user.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
@@ -35,37 +36,30 @@ export class UsersComponent implements OnInit {
   // displayedColumns: string[] = ['seleccion', 'docid', 'rol', 'nombre', 'apellidos', 'celular', 'direccion', 'correo', 'edit'];
   displayedColumns: string[] = ['seleccion', 'rol', 'nombre', 'apellidos', 'edit'];
 
-  dataSource: MatTableDataSource<Usuario>;
+  dataSource: MatTableDataSource<Usuario> = new MatTableDataSource();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
+  data: Usuario[];
 
-  constructor(private _snackBar: MatSnackBar, private toastr: ToastrService, public dialog: MatDialog) {
-    const data: Usuario[] = [
-      {
-        docid: 'DADASD5DAS4ddddddddddddddddD5AS4',
-        nombre: 'Bladimir',
-        apellidos: 'Medrano Vargas',
-        celular: 69509449,
-        rol: 'administrador',
-        direccion: 'Avenida Segunda entre marina nuñes del prado',
-        correo: 'bladimilmedranoblod@gmail.com'
-      },
-      {
-        docid: 'DADASD5DAS4D5AS4',
-        nombre: 'Bladimir',
-        apellidos: 'Medrano Vargas',
-        celular: 46545644566,
-        rol: 'administrador',
-        direccion: 'Avenida Segunda entre marina nuñes del prado',
-        correo: 'bladimilmedranoblod@gmail.com'
-      }
-    ];
-    this.dataSource = new MatTableDataSource(data);
+  constructor(
+    private _snackBar: MatSnackBar,
+    private toastr: ToastrService,
+    public dialog: MatDialog,
+    private authSvc: AuthService) {
+
+
+
   }
 
   ngOnInit(): void {
+    this.authSvc.getAllUsuarios()
+      .subscribe(res => {
+        this.dataSource.data = res;
+      });
+
+
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
