@@ -3,13 +3,14 @@
   display: grid;
   grid-template-columns: auto 1fr;
   grid-template-rows: 86px;
+
 }
 
 .icon-card {
   margin: 0;
   padding: 0;
 
-  width: 86px;
+  width: 80px;
   height: 100%;
 
   display: flex;
@@ -22,6 +23,8 @@
     height: auto;
     font-size: 50px;
   }
+
+
 }
 
 .info-card {
@@ -31,8 +34,10 @@
   align-items: center;
   text-align: center;
   padding: 5px;
+
 }
 
 .count-card {
   font-weight: bold;
+
 }

@@ -1,33 +1,41 @@
 <div class="content">
-
+  <!-- *ngIf="usuarios$ | async as usuario" -->
   <div class="stats-container">
-    <app-status-card [icon]="'library_books'" [color]="'#33B5E5'">
+    <app-status-card [icon]="'admin_panel_settings'" [color]="'#FF6058'">
       <div slot="title">
-        Proyectos Totales
+        Administradores
       </div>
       <div slot="count">
-        50
+        {{usuario ? (usuario | userType: 'administrador') : 0}}
       </div>
     </app-status-card>
 
     <app-status-card [icon]="'engineering'" [color]="'#FFBB33'">
       <div slot="title">
-        Proyectos en Curso
+        Arquitectos
       </div>
       <div slot="count">
-        50
+        {{usuario ? (usuario | userType: 'arquitecto') : 0}}
       </div>
     </app-status-card>
 
-    <app-status-card [icon]="'done_all'" [color]="'#00C851'">
+    <app-status-card [icon]="'assignment_ind'" [color]="'#33B5E5'">
       <div slot="title">
-        Proyectos Finzalizados
+        Vendedores
       </div>
       <div slot="count">
-        50
+        {{usuario ? (usuario | userType: 'vendedor') : 0}}
       </div>
     </app-status-card>
 
+    <app-status-card [icon]="'people'" [color]="'#00C851'">
+      <div slot="title">
+        Clientes
+      </div>
+      <div slot="count">
+        {{usuario ? (usuario | userType: 'cliente') : 0}}
+      </div>
+    </app-status-card>
   </div>
 
   <!-- table -->
@@ -35,7 +43,8 @@
     <div class="header-table" [style.display]="selected.length ? 'none' : 'grid'">
       <mat-form-field>
         <mat-label>Buscar</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Proyecto" [(ngModel)]="filterValue" #input>
+        <input matInput autocomplete="off" (keyup)="applyFilter($event)" placeholder="Ex. Proyecto"
+          [(ngModel)]="filterValue" #input>
         <button mat-button *ngIf="filterValue" matSuffix mat-icon-button aria-label="Clear" (click)="input.value = ''">
           <mat-icon>close</mat-icon>
         </button>
@@ -56,7 +65,7 @@
         <span>
           Seleccionados {{selected.length}}
         </span>
-        <button mat-raised-button class="btn-delete">Elminar</button>
+        <button mat-raised-button class="btn-delete" (click)="ondeleteUser()">Elminar</button>
       </div>
     </div>
 
@@ -112,11 +121,11 @@
         </ng-container>
 
         <ng-container matColumnDef="edit" stickyEnd>
-          <th mat-header-cell *matHeaderCellDef mat-sort-header style="place-items: center;">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
             Editar
           </th>
           <td mat-cell *matCellDef="let row">
-            <button mat-icon-button (click)="openSnackBarCopy()">
+            <button mat-icon-button (click)="oneditUser(row)">
               <mat-icon class="edit-icon">
                 edit
               </mat-icon>
@@ -129,14 +138,14 @@
           <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
             <div class="table-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
               <div class="table-detail">
-                <p> <span class="detail-title">DocID:</span>
+                <p>
+                  <span class="detail-title">DocID:</span>
                   <span>
                     <a (click)="openSnackBarCopy()" class="copy-text" matTooltip="Copiar" matTooltipPosition="below"
                       [cdkCopyToClipboard]="element.docid">
                       {{element.docid}}
                     </a>
                   </span>
-
                 </p>
                 <p><span class="detail-title">Celular: </span> {{element.celular}}</p>
                 <p><span class="detail-title">Correo:</span> {{element.correo}}</p>

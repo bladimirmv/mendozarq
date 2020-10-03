@@ -1,6 +1,6 @@
-import { AuthService } from '@services/auth.service';
-import { NewUserComponent } from './components/new-user/new-user.component';
+import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { NewUserComponent } from './components/new-user/new-user.component';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { map } from 'rxjs/operators';
 
@@ -8,11 +8,15 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 
 import { Usuario } from '@app/shared/models/usuario.interface';
-import { MatSnackBar } from '@angular/material/snack-bar';
+
+import { AuthService } from '@services/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import { MatDialog } from '@angular/material/dialog';
+import Swal from 'sweetalert2';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -28,8 +32,6 @@ import { MatDialog } from '@angular/material/dialog';
 export class UsersComponent implements OnInit {
   expandedElement: Usuario | null;
 
-  value = 'hola';
-
   selected: Usuario[] = [];
   selection = new SelectionModel<Usuario>(true, []);
   filterValue: string;
@@ -41,22 +43,21 @@ export class UsersComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  data: Usuario[];
-
+  public usuarios$: Observable<Usuario[]>;
+  public usuario: Usuario[];
   constructor(
-    private _snackBar: MatSnackBar,
-    private toastr: ToastrService,
+    private snackBar: MatSnackBar,
+    private toastSvc: ToastrService,
     public dialog: MatDialog,
     private authSvc: AuthService) {
-
-
-
   }
 
   ngOnInit(): void {
+    this.usuarios$ = this.authSvc.getAllUsuarios();
     this.authSvc.getAllUsuarios()
       .subscribe(res => {
         this.dataSource.data = res;
+        this.usuario = res;
       });
 
 
@@ -67,46 +68,83 @@ export class UsersComponent implements OnInit {
       .pipe(map(a => a.source))
       .subscribe(data => this.selected = data.selected);
   }
-
-  showSuccess(): void {
-    this.toastr.success('Hello world!', 'Toastr fun!', {
-
-      timeOut: 2000,
-      progressBar: true,
-      progressAnimation: 'increasing',
-      easeTime: 500,
-    });
+  // ====================================================================
+  onAddUser(): void {
+    this.dialog.open(NewUserComponent);
+  }
+  // ====================================================================
+  oneditUser(user: Usuario): void {
+    this.dialog.open(EditUserComponent, { data: user });
   }
 
+  // ====================================================================
+  ondeleteUser(): void {
+    Swal.fire({
+      title: 'Estas Seguro?',
+      text: 'No podras revertir el cambio!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#FF0000',
+      cancelButtonColor: '#425066',
+      confirmButtonText: 'Eliminar'
+    }).then(async (result) => {
+      if (result.value) {
 
+        if (this.selected.length === 1) {
+
+          this.authSvc.deleteUsuario(this.selected[0].docid)
+            .then(() => {
+              this.toastSvc.success('Se ha eliminado correctamente', 'Usuario Eliminado', {
+                timeOut: 2000,
+                progressBar: true,
+                progressAnimation: 'increasing'
+              });
+              this.clearCheckbox();
+            })
+            .catch(error => {
+              console.log(error);
+              Swal.fire('Error!', 'Ocurrio un error al eliminar este usuario', 'error');
+            });
+
+        } else {
+          try {
+            this.selected.forEach((usuario, index) => {
+              if (index + 1 === this.selected.length) {
+                this.authSvc.deleteUsuario(usuario.docid)
+                  .then(() => {
+                    this.toastSvc.success('Se han eliminado correctamente', 'Usuarios Eliminados', {
+                      timeOut: 2000,
+                      progressBar: true,
+                      progressAnimation: 'increasing'
+                    });
+                    this.clearCheckbox();
+                  })
+              } else {
+                this.authSvc.deleteUsuario(usuario.docid);
+              }
+            });
+          }
+          catch (error) {
+            console.log('Error:', error);
+            this.toastSvc.error('Se ha producido un error.', 'Error al Eliminar!', {
+              timeOut: 2000,
+              progressBar: true,
+              progressAnimation: 'increasing'
+            });
+          }
+        }
+      }
+    });
+
+  }
+
+  // ====================================================================
   openSnackBarCopy(): void {
-    this._snackBar.open('Copiado', 'Cerrar', {
+    this.snackBar.open('Copiado', 'Cerrar', {
       duration: 500,
       horizontalPosition: 'center',
       verticalPosition: 'bottom',
     });
-  }
-
-  onAddUser(): void {
-    this.openDialog();
-  }
-
-  openDialog(): void {
-    const dialogRef = this.dialog.open(NewUserComponent);
-    dialogRef.afterClosed().subscribe(res => {
-      console.log(res);
-    });
-  }
-
-
-
-  // ====================================================================
-  deleteUser(): void {
-    console.log(this.selected);
-  }
-  // ====================================================================
-  editUser(user: Usuario): void {
-    console.log(user);
   }
   // ====================================================================
   applyFilter(event: Event): void {

@@ -10,9 +10,10 @@ import { NewUserComponent } from './components/new-user/new-user.component';
 
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
+import { UserTypePipe } from './pipes/user-type.pipe';
 
 @NgModule({
-  declarations: [UsersComponent, NewUserComponent, EditUserComponent],
+  declarations: [UsersComponent, NewUserComponent, EditUserComponent, UserTypePipe],
   imports: [
     CommonModule,
     UsersRoutingModule,
