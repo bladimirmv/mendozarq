@@ -5,8 +5,6 @@
   grid-gap: 20px;
   justify-content: center;
   align-items: center;
-  // transition: 00.s ease-in;
-
 }
 
 @media screen and(max-width: 1020px) {
@@ -30,60 +28,11 @@
 }
 
 
-
-tr.table-detail-row {
-  height: 0;
-  // background-color: whitesmoke;
-
-}
-
-tr.table-element-row:not(.table-expanded-row):hover {
-  background: whitesmoke;
-}
-
-tr.table-element-row:not(.table-expanded-row):active {
-  background: #efefef;
-}
-
-.table-element-row td {
-  border-bottom-width: 0;
-}
-
-.table-element-detail {
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  z-index: 1;
-
-  &::after {
-    content: "";
-    background-image: url('./../../../assets/logo-wave.svg');
-    opacity: 0.1;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    position: absolute;
-    z-index: -1;
-    // background-repeat: no-repeat;
-    background-position: center;
-  }
-
-
-}
-
-.detail-title {
-  font-weight: bold;
-  color: var(--secondary);
-}
-
-
 .copy-text {
   cursor: pointer;
   color: var(--primary);
 
   &:hover {
     text-decoration: underline;
-
   }
 }

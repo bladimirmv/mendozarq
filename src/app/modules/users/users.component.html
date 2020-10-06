@@ -73,12 +73,12 @@
       <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
 
         <ng-container matColumnDef="seleccion" sticky>
-          <th mat-header-cell *matHeaderCellDef style="min-width: 40px;">
+          <th *matHeaderCellDef class="actions-table">
             <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
               [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
             </mat-checkbox>
           </th>
-          <td mat-cell *matCellDef="let row">
+          <td *matCellDef="let row" class="actions-table">
             <mat-checkbox (click)="$event.stopPropagation() " (change)="$event ? selection.toggle(row) : null"
               [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
             </mat-checkbox>
@@ -87,22 +87,23 @@
 
         <ng-container matColumnDef="docid">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> DocID </th>
-          <td mat-cell *matCellDef="let row"> {{row.docid}}</td>
+          <td mat-cell *matCellDef="let row" (click)="openSnackBarCopy()" class="copy-text" matTooltip="Copiar"
+            matTooltipPosition="below" [cdkCopyToClipboard]="row.docid"> {{row.docid}}</td>
         </ng-container>
 
         <ng-container matColumnDef="rol">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Rol </th>
-          <td mat-cell *matCellDef="let row"> {{row.rol}} </td>
+          <td mat-cell *matCellDef="let row" class="text-center"> {{row.rol}} </td>
         </ng-container>
 
         <ng-container matColumnDef="nombre">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
-          <td mat-cell *matCellDef="let row"> {{row.nombre}} </td>
+          <td mat-cell *matCellDef="let row" class="text-center"> {{row.nombre}} </td>
         </ng-container>
 
         <ng-container matColumnDef="apellidos">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Apellidos </th>
-          <td mat-cell *matCellDef="let row"> {{row.apellidos}} </td>
+          <td mat-cell *matCellDef="let row" class="text-center"> {{row.apellidos}} </td>
         </ng-container>
 
         <ng-container matColumnDef="celular">
@@ -112,7 +113,7 @@
 
         <ng-container matColumnDef="direccion">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Direccion </th>
-          <td mat-cell *matCellDef="let row"> {{row.direccion}} </td>
+          <td mat-cell *matCellDef="let row" style="white-space: normal; min-width: 150px;"> {{row.direccion}} </td>
         </ng-container>
 
         <ng-container matColumnDef="correo">
@@ -121,10 +122,10 @@
         </ng-container>
 
         <ng-container matColumnDef="edit" stickyEnd>
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>
-            Editar
+          <th *matHeaderCellDef mat-sort-header>
+            <!-- Editar -->
           </th>
-          <td mat-cell *matCellDef="let row">
+          <td *matCellDef="let row" class="text-center">
             <button mat-icon-button (click)="oneditUser(row)">
               <mat-icon class="edit-icon">
                 edit
@@ -133,36 +134,8 @@
           </td>
         </ng-container>
 
-        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-        <ng-container matColumnDef="expandedDetail">
-          <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
-            <div class="table-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-              <div class="table-detail">
-                <p>
-                  <span class="detail-title">DocID:</span>
-                  <span>
-                    <a (click)="openSnackBarCopy()" class="copy-text" matTooltip="Copiar" matTooltipPosition="below"
-                      [cdkCopyToClipboard]="element.docid">
-                      {{element.docid}}
-                    </a>
-                  </span>
-                </p>
-                <p><span class="detail-title">Celular: </span> {{element.celular}}</p>
-                <p><span class="detail-title">Correo:</span> {{element.correo}}</p>
-                <p><span class="detail-title">Direccion:</span> {{element.direccion}}</p>
-              </div>
-            </div>
-          </td>
-        </ng-container>
-
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="table-element-row"
-          [class.table-expanded-row]="expandedElement === element"
-          (click)="expandedElement = expandedElement === element ? null : element">
-        </tr>
-        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="table-detail-row"></tr>
-
-
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         <tr class="mat-row" *matNoDataRow>
           <td class="mat-cell" colspan="4">
             No hay datos que coincidan con el filtro: "{{input.value}}"</td>

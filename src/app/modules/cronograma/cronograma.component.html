@@ -1,0 +1,8 @@
+<div style="display: grid; place-items: center;  text-align: center;">
+  <div style="width: 90%; ">
+    <google-chart #chart [dynamicResize]="true" width="90%" [type]="type" [columns]="columns" [data]="data"
+      style="width: 100%;" [options]="options" (select)="onSelect($event.selection)">
+    </google-chart>
+  </div>
+
+</div>

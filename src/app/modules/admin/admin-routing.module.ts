@@ -23,6 +23,8 @@ const routes: Routes = [
       {
         path: '', redirectTo: 'dashboard', pathMatch: 'full'
       },
+      { path: 'cronograma', loadChildren: () => import('@modules/cronograma/cronograma.module').then(m => m.CronogramaModule) },
+
     ]
   }];
 

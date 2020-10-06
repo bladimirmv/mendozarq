@@ -12,22 +12,46 @@ let db: {
     }
   ],
   mendozarq: {
+
     proyecto: [
       {
+        idProyecto: string;
+        creadoEn?: Date;
         nombre: string;
         descripcion?: string;
-        creadoEn?: Date;
-      }
-    ],
-    detalleProyecto: [
-      {
-        idProyecto: string;
-        idCliente?: string;
+        categoria?: string;
+        tiempo?: Date;
+        estado: boolean;
         fechaInicio?: Date;
         fechaFinal?: Date;
-        encargados: string[];
         filerefdoc?: string;
         urldoc?: string;
+        personal: string[];
+        idCliente?: string;
+      }
+    ],
+    personal: [
+      {
+        idUsuario: string;
+        cargo?: string;
+        sueldo?: number;
+        contrato?: string;
+      }
+    ],
+    cronograma: [
+      {
+        idProyecto: string;
+        fechaInicio?: Date;
+        fechaFinal?: Date;
+        detalle?: string;
+      }
+    ],
+    actividades: [
+      {
+        idCronograma: string;
+        actividad?: Date;
+        fechaInicio?: Date;
+        fechaFinal?: Date;
       }
     ],
     herramienta: [{
@@ -41,7 +65,7 @@ let db: {
       {
         nombre: string;
         descripcion: string;
-        imagen?: any;
+        imagen?: string;
         fileref?: string;
         categorias: string[];
         precio?: number;

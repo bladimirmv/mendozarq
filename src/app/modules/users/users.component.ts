@@ -1,7 +1,6 @@
 import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NewUserComponent } from './components/new-user/new-user.component';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { map } from 'rxjs/operators';
 
 import { MatPaginator } from '@angular/material/paginator';
@@ -20,14 +19,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss'],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({ height: '0px', minHeight: '0' })),
-      state('expanded', style({ height: '*' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ],
+  styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements OnInit {
   expandedElement: Usuario | null;
@@ -35,8 +27,7 @@ export class UsersComponent implements OnInit {
   selected: Usuario[] = [];
   selection = new SelectionModel<Usuario>(true, []);
   filterValue: string;
-  // displayedColumns: string[] = ['seleccion', 'docid', 'rol', 'nombre', 'apellidos', 'celular', 'direccion', 'correo', 'edit'];
-  displayedColumns: string[] = ['seleccion', 'rol', 'nombre', 'apellidos', 'edit'];
+  displayedColumns: string[] = ['seleccion', 'docid', 'rol', 'nombre', 'apellidos', 'celular', 'direccion', 'correo', 'edit'];
 
   dataSource: MatTableDataSource<Usuario> = new MatTableDataSource();
 
