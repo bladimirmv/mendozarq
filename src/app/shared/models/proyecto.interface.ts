@@ -3,13 +3,12 @@ export interface Proyecto {
   creadoEn?: Date;
   nombre: string;
   descripcion?: string;
-  categoria?: string;
-  tiempo?: Date;
+  categoria?: string[];
   estado: boolean;
   fechaInicio?: Date;
   fechaFinal?: Date;
-  filerefdoc?: string;
-  urldoc?: string;
+  filerefCont?: string;
+  urlCont?: string;
   personal: string[];
   idCliente?: string;
 }

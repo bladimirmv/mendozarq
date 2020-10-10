@@ -1,3 +1,4 @@
+import { ProyectoComponent } from './modules/admin/components/proyecto/proyecto.component';
 import { LoginComponent } from './core/auth/login/login.component';
 import { AdminModule } from './modules/admin/admin.module';
 import { AppContainerComponent } from './core/app-container/app-container.component';
@@ -23,10 +24,9 @@ const routes: Routes = [
     path: 'login', component: LoginComponent
   },
   {
-    path: 'home', loadChildren: () =>
-      import('./modules/home/home.module').then(m => m.HomeModule)
+    path: 'perfil', loadChildren: () =>
+      import('@modules/perfil/perfil.module').then(m => m.PerfilModule)
   },
-
 
   {
     path: '**', loadChildren: () =>

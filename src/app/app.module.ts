@@ -17,6 +17,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule, BUCKET } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { TitlebarComponent } from './core/titlebar/titlebar.component';
+import { PersonalModule } from './modules/personal/personal.module';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { TitlebarComponent } from './core/titlebar/titlebar.component';
     AngularFireStorageModule,
     AngularFireAuthModule,
     MaterialModule,
-    NgxElectronModule
+    NgxElectronModule,
+    PersonalModule
   ],
   providers: [
     {

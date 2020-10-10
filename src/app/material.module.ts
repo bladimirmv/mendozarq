@@ -21,6 +21,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTreeModule } from '@angular/material/tree';
+import { MatRippleModule } from '@angular/material/core';
 
 import { ToastrModule } from 'ngx-toastr';
 const matModules = [
@@ -43,7 +44,8 @@ const matModules = [
   MatTabsModule,
   MatTooltipModule,
   MatCheckboxModule,
-  MatTreeModule
+  MatTreeModule,
+  MatRippleModule
 ];
 
 

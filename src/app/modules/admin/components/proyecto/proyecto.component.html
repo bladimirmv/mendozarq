@@ -8,7 +8,11 @@
 
       <div>
         <div class="flex-closed">
-
+          <button mat-icon-button routerLink="/admin/proyectos">
+            <mat-icon class="backIcon">
+              arrow_back
+            </mat-icon>
+          </button>
           <button mat-icon-button (click)="drawer.close()">
             <mat-icon>
               closed
@@ -24,52 +28,40 @@
       </div>
 
       <div class="anclas">
-
-        <button mat-button routerLink="dashboard" class="btn-admin" routerLinkActive="active  mat-raised-button"
+        <button mat-button routerLink="descripcion" class="btn-admin" routerLinkActive="active  mat-raised-button"
           (click)="breakpoint ? drawer.close() : false">
-          <mat-icon class="mat-18 mr-3">dashboard</mat-icon>
-          Dashboard
+          <mat-icon class="mat-18 mr-3">description</mat-icon>
+          Descripcion
         </button>
 
-        <button mat-button class="btn-admin" routerLink="proyectos" routerLinkActive="active mat-raised-button"
+        <button mat-button class="btn-admin" routerLink="cronograma" routerLinkActive="active mat-raised-button"
           (click)="breakpoint ? drawer.close() : false">
-          <mat-icon class="mat-18 mr-3">library_books</mat-icon>
-          Proyectos
+          <mat-icon class="mat-18 mr-3">assignment</mat-icon>
+          Cronograma
         </button>
 
-        <button mat-button class="btn-admin" routerLink="users" routerLinkActive="active mat-raised-button"
+        <button mat-button routerLink="visitas" class="btn-admin" routerLinkActive="active  mat-raised-button"
           (click)="breakpoint ? drawer.close() : false">
-          <mat-icon class="mat-18 mr-3">contacts</mat-icon>
-          Usuarios
+          <mat-icon class="mat-18 mr-3">tour</mat-icon>
+          Visitas de la Obra
         </button>
 
-        <button mat-button class="btn-admin" routerLink="personal" routerLinkActive="active mat-raised-button"
+        <button mat-button class="btn-admin" routerLink="participantes" routerLinkActive="active mat-raised-button"
           (click)="breakpoint ? drawer.close() : false">
-          <mat-icon class="mat-18 mr-3">
-            people</mat-icon>
-          Personal
+          <mat-icon class="mat-18 mr-3">people</mat-icon>
+          Participantes
         </button>
 
+        <button mat-button class="btn-admin" routerLink="documentos" routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false">
+          <mat-icon class="mat-18 mr-3">folder</mat-icon>
+          Documentos
+        </button>
 
-        <button mat-button class="btn-admin" routerLink="producto" routerLinkActive="active mat-raised-button"
+        <button mat-button class="btn-admin" routerLink="servicios" routerLinkActive="active mat-raised-button"
           (click)="breakpoint ? drawer.close() : false">
-          <mat-icon class="mat-18 mr-3">widgets</mat-icon>
-          Producto
-        </button>
-        <button mat-button class="btn-admin" routerLink="categoria-producto" routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
-          <mat-icon class="mat-18 mr-3">category</mat-icon>
-          Categoria
-        </button>
-        <button mat-button class="btn-admin" routerLink="comentario-producto"
-          routerLinkActive="active mat-raised-button" (click)="breakpoint ? drawer.close() : false">
-          <mat-icon class="mat-18 mr-3">feedback</mat-icon>
-          Comentarios
-        </button>
-        <button mat-button class="btn-admin" routerLink="venta-producto" routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
-          <mat-icon class="mat-18 mr-3">storefront</mat-icon>
-          Venta
+          <mat-icon class="mat-18 mr-3">view_list</mat-icon>
+          Servicios
         </button>
 
 
@@ -77,10 +69,10 @@
       </div>
 
       <div class="btn-extra">
-        <button mat-raised-button class="btn-just-border" (click)="onback()">
+        <button mat-raised-button class="btn-just-border">
           Volver al inicio
         </button>
-        <button mat-raised-button class="btn-fill" (click)="onLogout()">
+        <button mat-raised-button class=" btn-fill">
           Cerrar sesion
         </button>
       </div>

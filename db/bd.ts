@@ -15,7 +15,6 @@ let db: {
 
     proyecto: [
       {
-        idProyecto: string;
         creadoEn?: Date;
         nombre: string;
         descripcion?: string;
@@ -32,6 +31,7 @@ let db: {
     ],
     personal: [
       {
+        creadoEn?: Date;
         idUsuario: string;
         cargo?: string;
         sueldo?: number;
@@ -40,6 +40,7 @@ let db: {
     ],
     cronograma: [
       {
+        creadoEn?: Date;
         idProyecto: string;
         fechaInicio?: Date;
         fechaFinal?: Date;
@@ -48,6 +49,7 @@ let db: {
     ],
     actividades: [
       {
+        creadoEn?: Date;
         idCronograma: string;
         actividad?: Date;
         fechaInicio?: Date;

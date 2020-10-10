@@ -4,18 +4,15 @@ import { Subscription } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { BreakpointObserver } from '@angular/cdk/layout';
-
 @Component({
-  selector: 'app-admin',
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.scss']
+  selector: 'app-proyecto',
+  templateUrl: './proyecto.component.html',
+  styleUrls: ['./proyecto.component.scss']
 })
-export class AdminComponent implements OnInit, OnDestroy {
+export class ProyectoComponent implements OnInit {
   public modeSidenav = 'side';
   public breakpoint: boolean;
   private unsubscribe$: Subscription;
-
-
 
   constructor(private breakpointObserver: BreakpointObserver, private location: Location) {
   }
