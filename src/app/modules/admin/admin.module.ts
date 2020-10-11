@@ -9,10 +9,11 @@ import { AdminComponent } from './admin.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProyectoComponent } from './components/proyecto/proyecto.component';
 import { LirakiComponent } from './components/liraki/liraki.component';
+import { VisitaComponent } from './components/visita/visita.component';
 
 
 @NgModule({
-  declarations: [AdminComponent, DashboardComponent, ProyectoComponent, LirakiComponent],
+  declarations: [AdminComponent, DashboardComponent, ProyectoComponent, LirakiComponent, VisitaComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,

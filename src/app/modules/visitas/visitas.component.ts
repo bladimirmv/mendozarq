@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-visitas',
@@ -6,10 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./visitas.component.scss']
 })
 export class VisitasComponent implements OnInit {
-
-  constructor() { }
+  idPost: string;
+  constructor(private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.idPost = this.activatedRoute.snapshot.parent.parent.params.id;
+    console.log(this.idPost);
   }
 
 }

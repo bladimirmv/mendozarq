@@ -6,14 +6,16 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BreakpointObserver } from '@angular/cdk/layout';
 @Component({
-  selector: 'app-proyecto',
-  templateUrl: './proyecto.component.html',
-  styleUrls: ['./proyecto.component.scss']
+  selector: 'app-visita',
+  templateUrl: './visita.component.html',
+  styleUrls: ['./visita.component.scss']
 })
-export class ProyectoComponent implements OnInit, OnDestroy {
+export class VisitaComponent implements OnInit, OnDestroy {
   public modeSidenav = 'side';
   public breakpoint: boolean;
   private unsubscribe$: Subscription;
+  private idProyecto = '';
+  public urlBack = `/admin/proyecto/${this.idProyecto}/visitas`;
 
   constructor(private breakpointObserver: BreakpointObserver, private location: Location, private activatedRoute: ActivatedRoute) {
   }

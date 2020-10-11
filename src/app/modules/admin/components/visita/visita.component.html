@@ -8,7 +8,7 @@
 
       <div>
         <div class="flex-closed">
-          <button mat-icon-button routerLink="/admin/proyectos">
+          <button mat-icon-button [routerLink]="urlBack">
             <mat-icon class="backIcon">
               arrow_back
             </mat-icon>
@@ -34,37 +34,23 @@
           Descripcion
         </button>
 
-        <button mat-button class="btn-admin" routerLink="cronograma" routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
-          <mat-icon class="mat-18 mr-3">assignment</mat-icon>
-          Cronograma
-        </button>
-
-        <button mat-button routerLink="visitas" class="btn-admin" routerLinkActive="active  mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
-          <mat-icon class="mat-18 mr-3">tour</mat-icon>
-          Visitas de la Obra
-        </button>
-
-        <button mat-button class="btn-admin" routerLink="participantes" routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
+        <button mat-button class="btn-admin" routerLink="obervacion-participante"
+          routerLinkActive="active mat-raised-button" (click)="breakpoint ? drawer.close() : false">
           <mat-icon class="mat-18 mr-3">people</mat-icon>
-          Participantes
+          O. Participante
         </button>
 
-        <button mat-button class="btn-admin" routerLink="documentos" routerLinkActive="active mat-raised-button"
+        <button mat-button routerLink="obervacion-servicio" class="btn-admin"
+          routerLinkActive="active  mat-raised-button" (click)="breakpoint ? drawer.close() : false">
+          <mat-icon class="mat-18 mr-3">tour</mat-icon>
+          O. Servicio
+        </button>
+
+        <button mat-button class="btn-admin" routerLink="asistencia" routerLinkActive="active mat-raised-button"
           (click)="breakpoint ? drawer.close() : false">
-          <mat-icon class="mat-18 mr-3">folder</mat-icon>
-          Documentos
+          <mat-icon class="mat-18 mr-3">how_to_reg</mat-icon>
+          Asistencia
         </button>
-
-        <button mat-button class="btn-admin" routerLink="servicios" routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
-          <mat-icon class="mat-18 mr-3">view_list</mat-icon>
-          Servicios
-        </button>
-
-
 
       </div>
 

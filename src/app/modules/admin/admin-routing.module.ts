@@ -1,3 +1,5 @@
+import { VisitaComponent } from './components/visita/visita.component';
+import { EditVisitaComponent } from './../visitas/components/edit-visita/edit-visita.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -44,7 +46,6 @@ const routes: Routes = [
         path: 'venta-producto', loadChildren: () =>
           import('@modules/venta-producto/venta-producto.module').then(m => m.VentaProductoModule)
       },
-
       {
 
         path: '', redirectTo: 'dashboard', pathMatch: 'full'
@@ -57,7 +58,7 @@ const routes: Routes = [
     path: 'proyecto/:id', component: ProyectoComponent,
     children: [
       {
-        path: '', redirectTo: 'description', pathMatch: 'full'
+        path: '', redirectTo: 'descripcion', pathMatch: 'full'
       },
       {
         path: 'descripcion', component: EditProyectoComponent
@@ -84,8 +85,31 @@ const routes: Routes = [
           import('@modules/servicio/servicio.module').then(m => m.ServicioModule)
       },
     ]
-  },
 
+  },
+  {
+    path: 'visita/:id', component: VisitaComponent,
+    children: [
+      {
+        path: '', redirectTo: 'descripcion', pathMatch: 'full'
+      },
+      {
+        path: 'descripcion', component: EditVisitaComponent
+      },
+      {
+        path: 'obervacion-participante', loadChildren: () =>
+          import('@modules/observacion-participante/observacion-participante.module').then(m => m.ObservacionParticipanteModule)
+      },
+      {
+        path: 'obervacion-servicio', loadChildren: () =>
+          import('@modules/observacion-servicio/observacion-servicio.module').then(m => m.ObservacionServicioModule)
+      },
+      {
+        path: 'asistencia', loadChildren: () =>
+          import('@modules/visita-asistencia/visita-asistencia.module').then(m => m.VisitaAsistenciaModule)
+      }
+    ]
+  },
 ];
 
 @NgModule({

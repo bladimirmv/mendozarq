@@ -16,7 +16,7 @@
       <h2 class="title">Bienvenido</h2>
       <mat-tab-group animationDuration="0ms">
         <mat-tab class="mat-tab" label="Inicio de Sesion">
-          <form class="form">
+          <form class="form" (ngSubmit)="onLogIn()">
 
             <mat-form-field>
               <mat-label>Correo Electronico</mat-label>
@@ -35,8 +35,7 @@
               </button>
             </mat-form-field>
 
-            <button type="submit" class="btn-login" mat-button>Iniciar sesión</button>
-
+            <button type="submit" class="btn-login" mat-button (click)="onLogIn()">Iniciar sesión</button>
           </form>
 
         </mat-tab>

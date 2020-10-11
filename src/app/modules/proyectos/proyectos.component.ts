@@ -45,14 +45,8 @@ export class ProyectosComponent implements OnInit {
 
 
   constructor() {
-
-
-
     const users = Array.from({ length: 100 }, (_, k) => createNewUser(k + 1));
     this.dataSource = new MatTableDataSource(users);
-    console.log(this.dataSource);
-
-
   }
 
   ngOnInit(): void {

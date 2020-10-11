@@ -1,0 +1,33 @@
+@import './../../../../../styles/side-nav.scss';
+
+.toolbar-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.logo-row-container {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.img-user {
+
+  img {
+    border-radius: 50px;
+    background-color: whitesmoke;
+    display: grid;
+    place-items: center;
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+
+  }
+}
+
+.flex-closed {
+  justify-content: space-between;
+
+  .backIcon {
+    color: var(--secondary);
+  }
+}
