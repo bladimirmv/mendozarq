@@ -23,3 +23,17 @@
 
   }
 }
+
+.flex-closed {
+  justify-content: space-between;
+
+  .backIcon {
+    color: var(--secondary);
+  }
+}
+
+
+html,
+body {
+  filter: brightness(70%);
+}

@@ -1,8 +1,10 @@
-export interface Herramienta {
+export interface Recurso {
   creadoEn?: Date;
-  idHerramienta: string;
+  idRecurso: string;
   nombre?: Date;
   categoria?: Date;
   filerefImg?: Date;
   urlImg?: number;
+  condicion?: string;
+  estado?: boolean;
 }

@@ -1,4 +1,4 @@
-<mat-sidenav-container class="main-side-nav mat-elevation-z8" [style.filter]="'brightness(7 0%)'">
+<mat-sidenav-container class="main-side-nav mat-elevation-z8">
 
 
   <mat-sidenav #drawer fixedInViewport [mode]="breakpoint ? 'over': 'side'" [opened]="!breakpoint" hasBackdrop="false">
@@ -8,7 +8,20 @@
 
       <div>
         <div class="flex-closed">
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon class="backIcon">
+              brightness_7
+            </mat-icon>
+          </button>
+          <mat-menu #menu="matMenu" style="overflow: hidden;">
+            <mat-slider min="30" max="100" value="100" (change)="onBrightness($event)">
+            </mat-slider>
 
+          </mat-menu>
+          <button mat-icon-button>
+
+
+          </button>
           <button mat-icon-button (click)="drawer.close()">
             <mat-icon>
               closed

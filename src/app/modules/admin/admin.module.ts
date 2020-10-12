@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import { CdkMaterialModule } from '@app/cdk-material.module';
 import { SharedModule } from '@shared/shared.module';
 import { MaterialModule } from '@app/material.module';
@@ -19,7 +20,8 @@ import { VisitaComponent } from './components/visita/visita.component';
     AdminRoutingModule,
     MaterialModule,
     SharedModule,
-    CdkMaterialModule
+    CdkMaterialModule,
+    FormsModule
 
   ]
 })

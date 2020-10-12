@@ -1,7 +1,11 @@
-let db: {
+let Interfaces: {
   usuario: [
     {
+      creadoEn?: Date;
+      docid?: string;
       uid?: string;
+      displayName?: string;
+      photoURL?: string;
       nombre: string;
       apellidos: string;
       celular?: number;
@@ -15,56 +19,81 @@ let db: {
 
     proyecto: [
       {
+        idProyecto?: string;
         creadoEn?: Date;
         nombre: string;
         descripcion?: string;
-        categoria?: string;
-        tiempo?: Date;
+        categoria?: string[];
         estado: boolean;
         fechaInicio?: Date;
         fechaFinal?: Date;
-        filerefdoc?: string;
-        urldoc?: string;
+        filerefCont?: string;
+        urlCont?: string;
         personal: string[];
         idCliente?: string;
+      }
+    ],
+    categoriaProyecto: [
+      {
+        creadoEn?: Date;
+        idCategoria?: string;
+        nombre?: string;
       }
     ],
     personal: [
       {
         creadoEn?: Date;
+        idPersonal?: string;
         idUsuario: string;
         cargo?: string;
         sueldo?: number;
-        contrato?: string;
+        filerefCont?: string;
+        urlCont?: string;
       }
     ],
     cronograma: [
       {
         creadoEn?: Date;
+        idCronograma?: string;
         idProyecto: string;
         fechaInicio?: Date;
         fechaFinal?: Date;
-        detalle?: string;
       }
     ],
-    actividades: [
+    actividad: [
       {
         creadoEn?: Date;
+        creadoPor?: string;
         idCronograma: string;
-        actividad?: Date;
+        nombre?: Date;
         fechaInicio?: Date;
         fechaFinal?: Date;
+        porcentaje?: number;
+        recurso?: string;
       }
     ],
-    herramienta: [{
-      nombre: string;
-      descripcion: string;
-      estado: number;
-    }]
+    recurso: [{
+      creadoEn?: Date;
+      idRecurso: string;
+      nombre?: Date;
+      categoria?: Date;
+      filerefImg?: Date;
+      urlImg?: number;
+      condicion?: string;
+      estado?: boolean;
+    }],
+    categoriaRecurso: [
+      {
+        creadoEn?: Date;
+        idCategoria?: string;
+        nombre?: string;
+      }
+    ],
   },
   liraki: {
     producto: [
       {
+        idProducto?: string;
         nombre: string;
         descripcion: string;
         imagen?: string;
@@ -77,8 +106,9 @@ let db: {
         creadoEn?: Date;
       }
     ],
-    categoria: [
+    categoriaProducto: [
       {
+        idProducto?: string;
         nombre: string;
         description: string;
         image?: any;

@@ -1,3 +1,4 @@
+import { BrightnessService } from './../../core/services/brightness.service';
 import { Location } from '@angular/common';
 import { map, shareReplay } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
@@ -17,7 +18,13 @@ export class AdminComponent implements OnInit, OnDestroy {
 
 
 
-  constructor(private breakpointObserver: BreakpointObserver, private location: Location) {
+
+
+  constructor(private breakpointObserver: BreakpointObserver, private location: Location, public brightnessSvc: BrightnessService) {
+  }
+
+  onBrightness(e): void {
+    this.brightnessSvc.ChangeValue(e.value);
   }
 
   ngOnInit(): void {
