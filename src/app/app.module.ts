@@ -18,6 +18,7 @@ import { AngularFireStorageModule, BUCKET } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { TitlebarComponent } from './core/titlebar/titlebar.component';
 import { PersonalModule } from './modules/personal/personal.module';
+import { RegisterComponent } from './core/auth/register/register.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { PersonalModule } from './modules/personal/personal.module';
     AppContainerComponent,
     FooterComponent,
     TitlebarComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

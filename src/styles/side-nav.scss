@@ -194,19 +194,21 @@ mat-toolbar {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  border-left: 5px solid transparent;
+  border-left: 7px solid transparent;
 
   outline: none;
 
-  font-size: 16px;
+  font-size: 14px;
 
   mat-icon {
     color: var(--secondary);
-    margin: 0 20px;
+    margin: 0 16px;
     font-size: 22px;
   }
 
 }
+
+
 
 .btn-extra {
   margin-top: 10px;
@@ -226,7 +228,6 @@ mat-toolbar {
 
 
 .btn-fill {
-
   margin-top: 10px;
   width: 90%;
   background-color: var(--secondary);
@@ -235,7 +236,7 @@ mat-toolbar {
 
 .active {
   color: var(--secondary);
-  border-left: 5px solid var(--primary);
+  border-left: 7px solid var(--primary);
 
   .active-wave {
     z-index: -1;
@@ -249,6 +250,7 @@ mat-toolbar {
 
   mat-icon {
     color: var(--primary);
+    animation: spin 1s;
   }
 }
 
@@ -258,5 +260,15 @@ mat-toolbar {
 
   button {
     margin: 0 5px;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
   }
 }

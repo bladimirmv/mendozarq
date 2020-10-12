@@ -1,5 +1,6 @@
+import { PresupuestoObraComponent } from '@modules/presupuestos/components/presupuesto-obra/presupuesto-obra.component';
 import { VisitaComponent } from './components/visita/visita.component';
-import { EditVisitaComponent } from './../visitas/components/edit-visita/edit-visita.component';
+import { EditVisitaComponent } from '@modules/visitas/components/edit-visita/edit-visita.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -12,6 +13,10 @@ const routes: Routes = [
   {
     path: '', component: AdminComponent,
     children: [
+      {
+
+        path: '', redirectTo: 'dashboard', pathMatch: 'full'
+      },
       {
         path: 'dashboard', component: DashboardComponent
       },
@@ -47,8 +52,16 @@ const routes: Routes = [
           import('@modules/venta-producto/venta-producto.module').then(m => m.VentaProductoModule)
       },
       {
-
-        path: '', redirectTo: 'dashboard', pathMatch: 'full'
+        path: 'categoria-proyecto', loadChildren: () =>
+          import('@modules/categoria-proyecto/categoria-proyecto.module').then(m => m.CategoriaProyectoModule)
+      },
+      {
+        path: 'presupuestos-obras', loadChildren: () =>
+          import('@modules/presupuestos/presupuestos.module').then(m => m.PresupuestosModule)
+      },
+      {
+        path: 'reservas-producto', loadChildren: () =>
+          import('@modules/reserva-producto/reserva-producto.module').then(m => m.ReservaProductoModule)
       },
 
     ]
@@ -83,6 +96,9 @@ const routes: Routes = [
       {
         path: 'servicios', loadChildren: () =>
           import('@modules/servicio/servicio.module').then(m => m.ServicioModule)
+      },
+      {
+        path: 'presupuestos-obra', component: PresupuestoObraComponent
       },
     ]
 

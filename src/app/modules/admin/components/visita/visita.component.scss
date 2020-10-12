@@ -1,5 +1,15 @@
 @import './../../../../../styles/side-nav.scss';
 
+.btn-admin {
+  font-size: 14px;
+
+  mat-icon {
+    margin: 0 10px;
+    font-size: 22px;
+  }
+
+}
+
 .toolbar-between {
   display: flex;
   justify-content: space-between;

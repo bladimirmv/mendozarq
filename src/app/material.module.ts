@@ -23,6 +23,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatRippleModule } from '@angular/material/core';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatExpansionModule } from '@angular/material/expansion';
+
 import { ToastrModule } from 'ngx-toastr';
 const matModules = [
   MatToolbarModule,
@@ -46,7 +48,8 @@ const matModules = [
   MatCheckboxModule,
   MatTreeModule,
   MatRippleModule,
-  MatSliderModule
+  MatSliderModule,
+  MatExpansionModule
 ];
 
 

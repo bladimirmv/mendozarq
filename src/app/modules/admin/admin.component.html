@@ -14,9 +14,11 @@
             </mat-icon>
           </button>
           <mat-menu #menu="matMenu" style="overflow: hidden;">
-            <mat-slider min="30" max="100" value="100" (change)="onBrightness($event)">
-            </mat-slider>
 
+            <div mat-menu-item>
+              <mat-slider min="40" max="100" value="100" (change)="onBrightness($event)">
+              </mat-slider>
+            </div>
           </mat-menu>
           <button mat-icon-button>
 
@@ -41,13 +43,7 @@
         <button mat-button routerLink="dashboard" class="btn-admin" routerLinkActive="active  mat-raised-button"
           (click)="breakpoint ? drawer.close() : false">
           <mat-icon class="mat-18 mr-3">dashboard</mat-icon>
-          Dashboard
-        </button>
-
-        <button mat-button class="btn-admin" routerLink="proyectos" routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
-          <mat-icon class="mat-18 mr-3">library_books</mat-icon>
-          Proyectos
+          Tablero
         </button>
 
         <button mat-button class="btn-admin" routerLink="users" routerLinkActive="active mat-raised-button"
@@ -63,30 +59,54 @@
           Personal
         </button>
 
+        <button mat-button class="btn-admin" routerLink="proyectos" routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false">
+          <mat-icon class="mat-18 mr-3">library_books</mat-icon>
+          Proyectos
+        </button>
+
+        <button mat-button class="btn-admin" routerLink="categoria-proyecto" routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false">
+          <mat-icon class="mat-18 mr-3">category</mat-icon>
+          Categoria Proyecto
+        </button>
+
+        <button mat-button class="btn-admin" routerLink="presupuestos-obras" routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false">
+          <mat-icon class="mat-18 mr-3">
+            receipt_long</mat-icon>
+          Presupuesto de Obras
+        </button>
 
         <button mat-button class="btn-admin" routerLink="producto" routerLinkActive="active mat-raised-button"
           (click)="breakpoint ? drawer.close() : false">
           <mat-icon class="mat-18 mr-3">widgets</mat-icon>
           Producto
         </button>
+
         <button mat-button class="btn-admin" routerLink="categoria-producto" routerLinkActive="active mat-raised-button"
           (click)="breakpoint ? drawer.close() : false">
           <mat-icon class="mat-18 mr-3">category</mat-icon>
-          Categoria
+          Categoria Producto
         </button>
+
+        <button mat-button class="btn-admin" routerLink="comentario-producto"
+          routerLinkActive="active mat-raised-button" (click)="breakpoint ? drawer.close() : false">
+          <mat-icon class="mat-18 mr-3">list_alt</mat-icon>
+          Reservas Productos
+        </button>
+
         <button mat-button class="btn-admin" routerLink="venta-producto" routerLinkActive="active mat-raised-button"
           (click)="breakpoint ? drawer.close() : false">
           <mat-icon class="mat-18 mr-3">storefront</mat-icon>
           Venta
         </button>
+
         <button mat-button class="btn-admin" routerLink="comentario-producto"
           routerLinkActive="active mat-raised-button" (click)="breakpoint ? drawer.close() : false">
           <mat-icon class="mat-18 mr-3">feedback</mat-icon>
           Comentarios
         </button>
-
-
-
 
       </div>
 
