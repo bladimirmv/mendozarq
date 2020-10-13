@@ -74,11 +74,11 @@
   }
 }
 
-
 .form {
   max-width: 100%;
   text-align: center;
   min-height: 250px;
+  margin: 0 5px;
 
   mat-form-field {
     width: 100%;
@@ -117,6 +117,10 @@
     border-radius: 25px;
     padding: 5px 0;
     margin: 20px 0;
+
+    &:hover {
+      box-shadow: 0 0 2px 2px var(--primary),
+    }
   }
 
 }

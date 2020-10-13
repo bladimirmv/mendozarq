@@ -7,7 +7,7 @@
     <div class="sidenav-container">
 
       <div>
-        <div class="flex-closed">
+        <div class=" flex-closed">
           <button mat-icon-button [matMenuTriggerFor]="menu">
             <mat-icon class="backIcon">
               brightness_7
@@ -78,6 +78,25 @@
           Presupuesto de Obras
         </button>
 
+        <button mat-button class="btn-admin" routerLink="presupuestos-obras" routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false">
+          <mat-icon class="mat-18 mr-3">construction </mat-icon>
+          Recursos
+        </button>
+
+        <button mat-button class="btn-admin" routerLink="presupuestos-obras" routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false">
+          <mat-icon class="mat-18 mr-3">
+            category</mat-icon>
+          Categoria Recurso
+        </button>
+
+        <button mat-button class="btn-admin" routerLink="importaciones" routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false">
+          <mat-icon class="mat-18 mr-3">input</mat-icon>
+          Importaciones
+        </button>
+
         <button mat-button class="btn-admin" routerLink="producto" routerLinkActive="active mat-raised-button"
           (click)="breakpoint ? drawer.close() : false">
           <mat-icon class="mat-18 mr-3">widgets</mat-icon>
@@ -90,8 +109,8 @@
           Categoria Producto
         </button>
 
-        <button mat-button class="btn-admin" routerLink="comentario-producto"
-          routerLinkActive="active mat-raised-button" (click)="breakpoint ? drawer.close() : false">
+        <button mat-button class="btn-admin" routerLink="reservas-producto" routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false">
           <mat-icon class="mat-18 mr-3">list_alt</mat-icon>
           Reservas Productos
         </button>
@@ -110,7 +129,7 @@
 
       </div>
 
-      <div class="btn-extra">
+      <div class="btn-extra ">
         <!-- <button mat-raised-button class="btn-just-border" (click)="onback()">
           Volver al inicio
         </button> -->
@@ -125,7 +144,7 @@
 
   <mat-sidenav-content>
 
-    <mat-toolbar class="mat-elevation-z4 toolbar-between">
+    <mat-toolbar class="mat-elevation-z2 toolbar-between">
 
       <div class="logo-row-container">
         <button (click)=" drawer.toggle()" mat-icon-button *ngIf="drawer.opened===false || breakpoint">

@@ -63,6 +63,11 @@ const routes: Routes = [
         path: 'reservas-producto', loadChildren: () =>
           import('@modules/reserva-producto/reserva-producto.module').then(m => m.ReservaProductoModule)
       },
+      {
+        path: 'importaciones', loadChildren: () =>
+          import('@modules/importaciones/importaciones.module').then(m => m.ImportacionesModule)
+      },
+
 
     ]
 

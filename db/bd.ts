@@ -16,7 +16,17 @@ let Interfaces: {
     }
   ],
   mendozarq: {
-
+    personal: [
+      {
+        creadoEn?: Date;
+        idPersonal?: string;
+        idUsuario: string;
+        cargo?: string;
+        sueldo?: number;
+        filerefCont?: string;
+        urlCont?: string;
+      }
+    ],
     proyecto: [
       {
         idProyecto?: string;
@@ -27,28 +37,18 @@ let Interfaces: {
         estado: boolean;
         fechaInicio?: Date;
         fechaFinal?: Date;
+        lugarProyecto?: string;
         filerefCont?: string;
         urlCont?: string;
-        personal: string[];
         idCliente?: string;
       }
     ],
+
     categoriaProyecto: [
       {
         creadoEn?: Date;
         idCategoria?: string;
         nombre?: string;
-      }
-    ],
-    personal: [
-      {
-        creadoEn?: Date;
-        idPersonal?: string;
-        idUsuario: string;
-        cargo?: string;
-        sueldo?: number;
-        filerefCont?: string;
-        urlCont?: string;
       }
     ],
     cronograma: [
@@ -69,7 +69,72 @@ let Interfaces: {
         fechaInicio?: Date;
         fechaFinal?: Date;
         porcentaje?: number;
-        recurso?: string;
+        recurso?: string[];
+      }
+    ],
+    visitaProyecto: [
+      {
+        creadoEn?: Date;
+        nombre: string;
+        numeroVisita: number;
+        fecha?: Date;
+        descripcion?: string;
+        participantes?: string[];
+        servicios?: string[];
+      }
+    ],
+    observacionParticipante: [
+      {
+        creadoEn?: Date;
+        estado: string;
+        idParticipante?: string;
+        descripcion?: string;
+      }
+    ],
+    observacionServicio: [
+      {
+        creadoEn?: Date;
+        estado: string;
+        idServicio?: string;
+        descripcion?: string;
+      }
+    ],
+    asistenciaVisita: [
+      {
+        creadoEn?: Date;
+        estado: string;
+      }
+    ],
+    participanteProyecto: [
+      {
+        creadoEn?: Date;
+        idProyecto: string;
+        idEmpleado?: string;
+      }
+    ],
+    documentoProyecto: [
+      {
+        creadoEn?: Date;
+        nombre: string;
+        urlDoc: string;
+        filerefDoc: string;
+        pesoDoc: string;
+      }
+    ],
+    servicioProyecto: [
+      {
+        creadoEn?: Date;
+        nombre: string;
+        avance: number;
+        fechaInicio: Date;
+        fechaFinal: string;
+        descripcion: string;
+      }
+    ],
+
+    presupuestoDeObra: [
+      {
+        creadoEn?: Date;
       }
     ],
     recurso: [{
@@ -89,6 +154,17 @@ let Interfaces: {
         nombre?: string;
       }
     ],
+    importacion: [
+      {
+        creadoEn?: Date;
+      }
+    ]
+    material: [
+      {
+        creadoEn?: Date;
+      }
+    ]
+
   },
   liraki: {
     producto: [
@@ -115,8 +191,22 @@ let Interfaces: {
         fileref?: string;
         creadoEn?: Date;
       }
+    ],
+    reservaProducto: [
+      {
+        creadoEn?: Date;
+      }
+    ],
+    ventaProducto: [
+      {
+        creadoEn?: Date;
+      }
+    ],
+    comentarioProducto: [
+      {
+        creadoEn?: Date;
+      }
     ]
-
   }
 };
 

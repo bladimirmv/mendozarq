@@ -25,11 +25,10 @@ mat-sidenav-container {
   grid-template-columns: 1fr;
   grid-template-rows: auto minmax(50px, 1fr) auto;
   overflow: hidden;
-  grid-gap: 5px;
 
   .anclas {
     overflow: auto;
-    padding-top: 10px;
+    padding-top: 5px;
 
   }
 
@@ -216,7 +215,7 @@ mat-toolbar {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  margin-bottom: 50px;
+  padding-bottom: 20px;
 }
 
 .btn-just-border {
@@ -224,6 +223,9 @@ mat-toolbar {
   background-color: var(--primary);
   color: white;
 
+  &:hover {
+    box-shadow: 0 0 2px 2px var(--primary),
+  }
 }
 
 
@@ -232,6 +234,11 @@ mat-toolbar {
   width: 90%;
   background-color: var(--secondary);
   color: white;
+  font-size: 14px;
+
+  &:hover {
+    box-shadow: 0 0 2px 2px var(--secondary),
+  }
 }
 
 .active {

@@ -21,7 +21,7 @@ import { VisitaComponent } from './components/visita/visita.component';
     MaterialModule,
     SharedModule,
     CdkMaterialModule,
-    FormsModule
+    FormsModule,
 
   ]
 })
