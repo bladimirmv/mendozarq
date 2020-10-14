@@ -259,6 +259,7 @@ let bd: {
         idComentario?: string;
         creadoEn?: Date;
         idUsuario: string;
+        idProducto: string;
         comentario: string;
       }
     ],
