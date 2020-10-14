@@ -1,7 +1,8 @@
 <mat-sidenav-container class="main-side-nav mat-elevation-z8">
 
 
-  <mat-sidenav #drawer fixedInViewport [mode]="breakpoint ? 'over': 'side'" [opened]="!breakpoint" hasBackdrop="false">
+  <mat-sidenav #drawer fixedInViewport [mode]="breakpoint ? 'over': 'side'" [opened]="!breakpoint" hasBackdrop="false"
+    class="mat-elevation-z2">
 
     <img class="wave" src="./assets/wave-2.svg" alt="">
     <div class="sidenav-container">
@@ -46,7 +47,7 @@
           Tablero
         </button>
 
-        <button mat-button class="btn-admin" routerLink="users" routerLinkActive="active mat-raised-button"
+        <button mat-button class="btn-admin" routerLink="usuarios" routerLinkActive="active mat-raised-button"
           (click)="breakpoint ? drawer.close() : false">
           <mat-icon class="mat-18 mr-3">contacts</mat-icon>
           Usuarios
@@ -78,13 +79,13 @@
           Presupuesto de Obras
         </button>
 
-        <button mat-button class="btn-admin" routerLink="presupuestos-obras" routerLinkActive="active mat-raised-button"
+        <button mat-button class="btn-admin" routerLink="recursos" routerLinkActive="active mat-raised-button"
           (click)="breakpoint ? drawer.close() : false">
           <mat-icon class="mat-18 mr-3">construction </mat-icon>
           Recursos
         </button>
 
-        <button mat-button class="btn-admin" routerLink="presupuestos-obras" routerLinkActive="active mat-raised-button"
+        <button mat-button class="btn-admin" routerLink="categoria-recurso" routerLinkActive="active mat-raised-button"
           (click)="breakpoint ? drawer.close() : false">
           <mat-icon class="mat-18 mr-3">
             category</mat-icon>

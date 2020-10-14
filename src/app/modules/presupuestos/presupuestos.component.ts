@@ -7,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PresupuestosComponent implements OnInit {
 
+
   constructor() { }
 
   ngOnInit(): void {
+
   }
+
 
 }

@@ -1,3 +1,5 @@
+import { CdkMaterialModule } from '@app/cdk-material.module';
+import { SharedModule } from '@app/shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -10,7 +12,9 @@ import { PresupuestoObraComponent } from './components/presupuesto-obra/presupue
   declarations: [PresupuestosComponent, PresupuestoObraComponent],
   imports: [
     CommonModule,
-    PresupuestosRoutingModule
+    PresupuestosRoutingModule,
+    SharedModule,
+    CdkMaterialModule
   ]
 })
 export class PresupuestosModule { }

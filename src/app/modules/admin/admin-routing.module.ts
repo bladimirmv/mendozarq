@@ -21,7 +21,7 @@ const routes: Routes = [
         path: 'dashboard', component: DashboardComponent
       },
       {
-        path: 'users', loadChildren: () =>
+        path: 'usuarios', loadChildren: () =>
           import('@modules/users/users.module').then(m => m.UsersModule)
       },
       {
@@ -67,8 +67,14 @@ const routes: Routes = [
         path: 'importaciones', loadChildren: () =>
           import('@modules/importaciones/importaciones.module').then(m => m.ImportacionesModule)
       },
-
-
+      {
+        path: 'recursos', loadChildren: () =>
+          import('@modules/recurso/recurso.module').then(m => m.RecursoModule)
+      },
+      {
+        path: 'categoria-recurso', loadChildren: () =>
+          import('@modules/categoria-recurso/categoria-recurso.module').then(m => m.CategoriaRecursoModule)
+      },
     ]
 
   },

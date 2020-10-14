@@ -1,8 +1,8 @@
-let Interfaces: {
+let bd: {
   usuario: [
     {
-      creadoEn?: Date;
       docid?: string;
+      creadoEn?: Date;
       uid?: string;
       displayName?: string;
       photoURL?: string;
@@ -18,8 +18,8 @@ let Interfaces: {
   mendozarq: {
     personal: [
       {
-        creadoEn?: Date;
         idPersonal?: string;
+        creadoEn?: Date;
         idUsuario: string;
         cargo?: string;
         sueldo?: number;
@@ -41,20 +41,21 @@ let Interfaces: {
         filerefCont?: string;
         urlCont?: string;
         idCliente?: string;
+        porcentaje?: number;
       }
     ],
 
     categoriaProyecto: [
       {
+        idCatProyecto?: string;
         creadoEn?: Date;
-        idCategoria?: string;
         nombre?: string;
       }
     ],
     cronograma: [
       {
-        creadoEn?: Date;
         idCronograma?: string;
+        creadoEn?: Date;
         idProyecto: string;
         fechaInicio?: Date;
         fechaFinal?: Date;
@@ -62,6 +63,7 @@ let Interfaces: {
     ],
     actividad: [
       {
+        idActividad?: string;
         creadoEn?: Date;
         creadoPor?: string;
         idCronograma: string;
@@ -72,19 +74,51 @@ let Interfaces: {
         recurso?: string[];
       }
     ],
-    visitaProyecto: [
+    participanteProyecto: [
       {
+        idParticipante?: string;
+        creadoEn?: Date;
+        idProyecto: string;
+        idPersonal?: string;
+      }
+    ],
+    documentoProyecto: [
+      {
+        idDocumento?: string;
+        creadoEn?: Date;
+        idProyecto: string;
+        nombre: string;
+        urlDoc: string;
+        filerefDoc: string;
+        tipo: string;
+      }
+    ],
+    servicioProyecto: [
+      {
+        idServicio?: string;
         creadoEn?: Date;
         nombre: string;
+        descripcion: string;
+        avance: number;
+        fechaInicio: Date;
+        fechaFinal: string;
+      }
+    ],
+    visitaProyecto: [
+      {
+        idVisita?: string;
+        creadoEn?: Date;
+        nombre: string;
+        descripcion?: string;
         numeroVisita: number;
         fecha?: Date;
-        descripcion?: string;
         participantes?: string[];
         servicios?: string[];
       }
     ],
     observacionParticipante: [
       {
+        idObsrParticipante?: string;
         creadoEn?: Date;
         estado: string;
         idParticipante?: string;
@@ -93,58 +127,57 @@ let Interfaces: {
     ],
     observacionServicio: [
       {
+        idServicio?: string;
         creadoEn?: Date;
         estado: string;
-        idServicio?: string;
         descripcion?: string;
       }
     ],
     asistenciaVisita: [
       {
         creadoEn?: Date;
+        idParticipante?: string;
+        idVisitaProyecto: string;
         estado: string;
-      }
-    ],
-    participanteProyecto: [
-      {
-        creadoEn?: Date;
-        idProyecto: string;
-        idEmpleado?: string;
-      }
-    ],
-    documentoProyecto: [
-      {
-        creadoEn?: Date;
-        nombre: string;
-        urlDoc: string;
-        filerefDoc: string;
-        pesoDoc: string;
-      }
-    ],
-    servicioProyecto: [
-      {
-        creadoEn?: Date;
-        nombre: string;
-        avance: number;
-        fechaInicio: Date;
-        fechaFinal: string;
-        descripcion: string;
       }
     ],
 
     presupuestoDeObra: [
       {
+        idPresupuesto?: string;
         creadoEn?: Date;
+        nombre: string;
+        descripcion?: string;
+        idProyecto?: string;
+        idCliente?: string;
+        totalPresupuesto: number;
+      }
+    ],
+    detallePresupuesto: [
+      {
+        idDetallePresupuesto?: string;
+        creadoEn?: Date;
+        nombre: string;
+        idPresupuesto?: string;
+        totalDetalle?: number;
+        subDetalle?: [
+          {
+            nombre: string;
+            medida: string;
+            cantidad: number;
+            precioUnitario: number;
+            totalSubDetalle?: number;
+          }
+        ]
       }
     ],
     recurso: [{
-      creadoEn?: Date;
       idRecurso: string;
+      creadoEn?: Date;
       nombre?: Date;
       categoria?: Date;
       filerefImg?: Date;
       urlImg?: number;
-      condicion?: string;
       estado?: boolean;
     }],
     categoriaRecurso: [
@@ -156,12 +189,10 @@ let Interfaces: {
     ],
     importacion: [
       {
+        idImportacion?: string;
         creadoEn?: Date;
-      }
-    ]
-    material: [
-      {
-        creadoEn?: Date;
+        nombre: string;
+        descripcion: string;
       }
     ]
 
@@ -170,6 +201,7 @@ let Interfaces: {
     producto: [
       {
         idProducto?: string;
+        creadoEn?: Date;
         nombre: string;
         descripcion: string;
         imagen?: string;
@@ -179,32 +211,53 @@ let Interfaces: {
         moneda?: string;
         stock: number;
         disponible?: boolean;
-        creadoEn?: Date;
       }
     ],
     categoriaProducto: [
       {
         idProducto?: string;
+        creadoEn?: Date;
         nombre: string;
         description: string;
-        image?: any;
-        fileref?: string;
-        creadoEn?: Date;
+        urlImg?: any;
+        filerefImg?: string;
       }
     ],
     reservaProducto: [
       {
+        idReservaProducto?: string;
         creadoEn?: Date;
+        idUsuario: string;
+        estado: boolean;
+        detalleReserva: [
+          {
+            idProducto: string;
+            cantidad: number;
+          }
+        ]
       }
     ],
     ventaProducto: [
       {
+        idVentaProducto?: string;
         creadoEn?: Date;
+        idUsuario: string;
+        totalVenta?: number;
+        detalleVenta: [
+          {
+            idProducto: string;
+            cantidad: number;
+            totalDetalle: number;
+          }
+        ]
       }
     ],
     comentarioProducto: [
       {
+        idComentario?: string;
         creadoEn?: Date;
+        idUsuario: string;
+        comentario: string;
       }
     ]
   }
