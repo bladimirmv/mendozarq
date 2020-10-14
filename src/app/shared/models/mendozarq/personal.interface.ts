@@ -1,6 +1,6 @@
 export interface Personal {
-  creadoEn?: Date;
   idPersonal?: string;
+  creadoEn?: Date;
   idUsuario: string;
   cargo?: string;
   sueldo?: number;

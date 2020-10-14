@@ -1,7 +1,7 @@
 export type Roles = 'administrador' | 'arquitecto' | 'cliente' | 'vendedor';
 export interface Usuario {
-  creadoEn?: Date;
   docid?: string;
+  creadoEn?: Date;
   uid?: string;
   displayName?: string;
   photoURL?: string;

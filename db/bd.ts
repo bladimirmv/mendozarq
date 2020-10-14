@@ -127,14 +127,16 @@ let bd: {
     ],
     observacionServicio: [
       {
-        idServicio?: string;
+        idObsrServicio?: string;
         creadoEn?: Date;
         estado: string;
+        idServicio?: string;
         descripcion?: string;
       }
     ],
     asistenciaVisita: [
       {
+        idAsistencia?: string;
         creadoEn?: Date;
         idParticipante?: string;
         idVisitaProyecto: string;
@@ -182,8 +184,8 @@ let bd: {
     }],
     categoriaRecurso: [
       {
-        creadoEn?: Date;
         idCategoria?: string;
+        creadoEn?: Date;
         nombre?: string;
       }
     ],
@@ -204,13 +206,13 @@ let bd: {
         creadoEn?: Date;
         nombre: string;
         descripcion: string;
-        imagen?: string;
-        fileref?: string;
+        urlImg?: string;
+        filerefImg?: string;
         categorias: string[];
         precio?: number;
         moneda?: string;
         stock: number;
-        disponible?: boolean;
+        estado?: boolean;
       }
     ],
     categoriaProducto: [
@@ -228,7 +230,7 @@ let bd: {
         idReservaProducto?: string;
         creadoEn?: Date;
         idUsuario: string;
-        estado: boolean;
+        estado: string;
         detalleReserva: [
           {
             idProducto: string;
@@ -258,6 +260,19 @@ let bd: {
         creadoEn?: Date;
         idUsuario: string;
         comentario: string;
+      }
+    ],
+    carritoProducto: [
+      {
+        idCarrito?: string;
+        idUsuario: string;
+        detalleCarrito: [
+          {
+            idProducto: string;
+            cantidad: number;
+            totalDetalle: number;
+          }
+        ]
       }
     ]
   }

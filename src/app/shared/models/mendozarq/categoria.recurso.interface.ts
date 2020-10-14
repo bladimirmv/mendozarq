@@ -1,5 +1,5 @@
 export interface CategoriaRecurso {
-  creadoEn?: Date;
   idCategoria?: string;
+  creadoEn?: Date;
   nombre?: string;
 }

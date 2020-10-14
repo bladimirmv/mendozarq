@@ -7,8 +7,9 @@ export interface Proyecto {
   estado: boolean;
   fechaInicio?: Date;
   fechaFinal?: Date;
+  lugarProyecto?: string;
   filerefCont?: string;
   urlCont?: string;
-  personal: string[];
   idCliente?: string;
+  porcentaje?: number;
 }

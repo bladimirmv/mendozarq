@@ -1,4 +1,5 @@
 export interface Actividad {
+  idActividad?: string;
   creadoEn?: Date;
   creadoPor?: string;
   idCronograma: string;
@@ -6,5 +7,5 @@ export interface Actividad {
   fechaInicio?: Date;
   fechaFinal?: Date;
   porcentaje?: number;
-  recurso?: string;
+  recurso?: string[];
 }
