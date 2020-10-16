@@ -33,7 +33,7 @@ export class EditUserComponent implements OnInit {
     data.docid = this.data.docid;
 
 
-    this.authSvc.editUsuario(data)
+    this.authSvc.updateUsuario(data)
       .then(() => {
         this.toastSvc.success('Correctamente', 'Usuario Editado', {
           timeOut: 2000,

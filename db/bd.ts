@@ -7,7 +7,8 @@ let bd: {
       displayName?: string;
       photoURL?: string;
       nombre: string;
-      apellidos: string;
+      apellidoPaterno: string;
+      apellidoMaterno: string;
       celular?: number;
       direccion?: string;
       correo?: string;
@@ -31,6 +32,7 @@ let bd: {
       {
         idProyecto?: string;
         creadoEn?: Date;
+        idCliente?: string;
         nombre: string;
         descripcion?: string;
         categoria?: string[];
@@ -40,7 +42,6 @@ let bd: {
         lugarProyecto?: string;
         filerefCont?: string;
         urlCont?: string;
-        idCliente?: string;
         porcentaje?: number;
       }
     ],
@@ -49,6 +50,7 @@ let bd: {
       {
         idCatProyecto?: string;
         creadoEn?: Date;
+        idProyecto: string;
         nombre?: string;
       }
     ],
@@ -97,6 +99,7 @@ let bd: {
       {
         idServicio?: string;
         creadoEn?: Date;
+        idProyecto: string;
         nombre: string;
         descripcion: string;
         avance: number;
@@ -120,6 +123,7 @@ let bd: {
       {
         idObsrParticipante?: string;
         creadoEn?: Date;
+        idVisita: string;
         estado: string;
         idParticipante?: string;
         descripcion?: string;
@@ -129,6 +133,7 @@ let bd: {
       {
         idObsrServicio?: string;
         creadoEn?: Date;
+        idVisita: string;
         estado: string;
         idServicio?: string;
         descripcion?: string;

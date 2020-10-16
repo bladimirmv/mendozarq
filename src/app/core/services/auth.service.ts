@@ -24,7 +24,7 @@ export class AuthService {
     return this.usuarioCollection.add(data);
   }
 
-  public editUsuario(data: Usuario): Promise<void> {
+  public updateUsuario(data: Usuario): Promise<void> {
     return this.usuarioCollection.doc(data.docid).update(data);
   }
   // ====================================================================
@@ -46,7 +46,7 @@ export class AuthService {
     return this.afs.doc<Usuario>(`usuarios/${docid}`).valueChanges();
   }
   // ====================================================================
-  public deleteUsuario(docid): Promise<void> {
+  public deleteUsuario(docid: string): Promise<void> {
     return this.usuarioCollection.doc(docid).delete();
   }
 }

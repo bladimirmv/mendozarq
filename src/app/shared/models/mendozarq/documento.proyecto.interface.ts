@@ -1,4 +1,4 @@
-export interface ParticipanteProyecto {
+export interface DocumentoProyecto {
   idParticipante?: string;
   creadoEn?: Date;
   idProyecto: string;
