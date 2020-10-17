@@ -1,6 +1,6 @@
 export type Estado = 'En curso' | 'Pendiente' | 'Finalizado';
 export interface ReservaProducto {
-  idReservaProducto?: string;
+  idReserva?: string;
   creadoEn?: Date;
   idUsuario: string;
   estado: string;

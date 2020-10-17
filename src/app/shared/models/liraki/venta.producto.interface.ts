@@ -1,3 +1,4 @@
+import { Producto } from './producto.interface';
 export interface VentaProducto {
   idVentaProducto?: string;
   creadoEn?: Date;
@@ -5,7 +6,7 @@ export interface VentaProducto {
   totalVenta?: number;
   detalleVenta: [
     {
-      idProducto: string;
+      producto: Producto[];
       cantidad: number;
       totalDetalle: number;
     }

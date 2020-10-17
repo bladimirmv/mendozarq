@@ -144,7 +144,7 @@ let bd: {
         idAsistencia?: string;
         creadoEn?: Date;
         idParticipante?: string;
-        idVisitaProyecto: string;
+        idVisita: string;
         estado: string;
       }
     ],
@@ -222,6 +222,7 @@ let bd: {
     ],
     categoriaProducto: [
       {
+        idCategoria?: string;
         idProducto?: string;
         creadoEn?: Date;
         nombre: string;
@@ -232,7 +233,7 @@ let bd: {
     ],
     reservaProducto: [
       {
-        idReservaProducto?: string;
+        idReserva?: string;
         creadoEn?: Date;
         idUsuario: string;
         estado: string;
@@ -246,13 +247,13 @@ let bd: {
     ],
     ventaProducto: [
       {
-        idVentaProducto?: string;
+        idVenta?: string;
         creadoEn?: Date;
         idUsuario: string;
         totalVenta?: number;
         detalleVenta: [
           {
-            idProducto: string;
+            producto: any[];
             cantidad: number;
             totalDetalle: number;
           }
@@ -274,7 +275,7 @@ let bd: {
         idUsuario: string;
         detalleCarrito: [
           {
-            idProducto: string;
+            producto: any[];
             cantidad: number;
             totalDetalle: number;
           }
