@@ -1,3 +1,4 @@
+import { Producto } from './producto.interface';
 export type Estado = 'En curso' | 'Pendiente' | 'Finalizado';
 export interface ReservaProducto {
   idReserva?: string;
@@ -6,7 +7,7 @@ export interface ReservaProducto {
   estado: string;
   detalleReserva: [
     {
-      idProducto: string;
+      producto: Producto;
       cantidad: number;
     }
   ]

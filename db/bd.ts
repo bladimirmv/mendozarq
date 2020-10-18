@@ -181,9 +181,9 @@ let bd: {
     recurso: [{
       idRecurso: string;
       creadoEn?: Date;
-      nombre?: Date;
-      categoria?: Date;
-      filerefImg?: Date;
+      nombre?: string;
+      categoria?: string;
+      filerefImg?: string;
       urlImg?: number;
       estado?: boolean;
     }],
@@ -239,7 +239,7 @@ let bd: {
         estado: string;
         detalleReserva: [
           {
-            idProducto: string;
+            producto: string;
             cantidad: number;
           }
         ]
