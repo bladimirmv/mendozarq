@@ -119,7 +119,7 @@ let bd: {
         servicios?: string[];
       }
     ],
-    observacionParticipante: [
+    observacionParticipante: [  
       {
         idObsrParticipante?: string;
         creadoEn?: Date;
@@ -248,7 +248,7 @@ let bd: {
     ventaProducto: [
       {
         idVenta?: string;
-        creadoEn?: Date;
+        creadoEn?: Date;  
         idUsuario: string;
         totalVenta?: number;
         detalleVenta: [
@@ -270,7 +270,7 @@ let bd: {
       }
     ],
     carritoProducto: [
-      {
+      { 
         idCarrito?: string;
         idUsuario: string;
         detalleCarrito: [

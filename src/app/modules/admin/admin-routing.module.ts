@@ -110,7 +110,7 @@ const routes: Routes = [
       },
       {
         path: 'presupuestos-obra', component: PresupuestoObraComponent
-      },
+      }
     ]
 
   },

@@ -1,5 +1,5 @@
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 import { Usuario } from '@app/shared/models/usuario.interface';
@@ -49,4 +49,9 @@ export class AuthService {
   public deleteUsuario(docid: string): Promise<void> {
     return this.usuarioCollection.doc(docid).delete();
   }
+  // ====================================================================
+
+
+
+
 }

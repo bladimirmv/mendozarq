@@ -23,7 +23,7 @@ const routes: Routes = [
     path: 'login', component: LoginComponent
   },
   {
-    path: 'registro', component: RegisterComponent
+    path: 'registro/:id', component: RegisterComponent
   },
   {
     path: 'perfil', loadChildren: () =>

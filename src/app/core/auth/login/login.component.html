@@ -16,42 +16,42 @@
       <h2 class="title">Bienvenido</h2>
       <mat-tab-group animationDuration="0ms">
         <mat-tab class="mat-tab" label="Inicio de Sesion">
-          <form class="form" (ngSubmit)="onLogIn()">
+          <form class="form" [formGroup]="loginForm" (ngSubmit)="onLogIn(loginForm.value)">
 
             <mat-form-field>
               <mat-label>Correo Electronico</mat-label>
-              <input matInput type="text" autocomplete="off" placeholder="ejemplo@email.com">
+              <input matInput type="email" formControlName="correo" autocomplete="off" placeholder="ejemplo@email.com">
               <button type="button" mat-icon-button matSuffix>
-                <mat-icon>mail</mat-icon>
+                <mat-icon>email</mat-icon>
               </button>
             </mat-form-field>
 
             <mat-form-field>
               <mat-label>Contraseña</mat-label>
-              <input matInput formControlName="password" autocomplete="off" [type]="hide ? 'password' : 'text'">
+              <input matInput formControlName="contrasenha" autocomplete="off" [type]="hide ? 'password' : 'text'">
               <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
                 [attr.aria-pressed]="hide">
                 <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
               </button>
             </mat-form-field>
 
-            <button type="submit" class="btn-login" mat-button (click)="onLogIn()">Iniciar sesión</button>
+            <button type="submit" class="btn-login" mat-button>Iniciar sesión</button>
           </form>
 
         </mat-tab>
         <mat-tab label="Registro">
-          <form class="form">
+          <form class="form" [formGroup]="registerForm" (ngSubmit)="onRegister(registerForm.value)">
 
             <mat-form-field>
               <mat-label>Codigo de registro</mat-label>
-              <input matInput formControlName="password" autocomplete="off" [type]="hide ? 'password' : 'text'">
+              <input matInput formControlName="docid" autocomplete="off" [type]="hide ? 'password' : 'text'">
               <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
                 [attr.aria-pressed]="hide">
                 <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
               </button>
             </mat-form-field>
 
-            <button type="submit" routerLink="/admin" class="btn-login" mat-button>Acceder</button>
+            <button type="submit" class="btn-login" mat-button>Acceder</button>
           </form>
         </mat-tab>
 

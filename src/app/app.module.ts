@@ -19,6 +19,8 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { TitlebarComponent } from './core/titlebar/titlebar.component';
 import { PersonalModule } from './modules/personal/personal.module';
 import { RegisterComponent } from './core/auth/register/register.component';
+import { RouterModule } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -41,7 +43,9 @@ import { RegisterComponent } from './core/auth/register/register.component';
     AngularFireAuthModule,
     MaterialModule,
     NgxElectronModule,
-    PersonalModule
+    PersonalModule,
+    RouterModule,
+    ReactiveFormsModule
   ],
   providers: [
     {
