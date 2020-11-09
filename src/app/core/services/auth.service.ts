@@ -4,19 +4,43 @@ import { Injectable } from '@angular/core';
 
 import { Usuario } from '@app/shared/models/usuario.interface';
 import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from '@angular/fire/firestore';
-import { firestore } from 'firebase';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
+  public userData$: Observable<firebase.User>;
   private usuarioCollection: AngularFirestoreCollection<Usuario>;
+  public user$: Observable<Usuario>;
 
   constructor(
-    private afs: AngularFirestore
+    private afs: AngularFirestore,
+    private afAuth: AngularFireAuth
   ) {
+    this.userData$ = afAuth.authState;
     this.usuarioCollection = afs.collection<Usuario>('usuarios');
+    this.user$ = afAuth.authState.pipe(
+      switchMap(user => {
+        if (user) {
+
+          return this.afs.collection<Usuario>('usuarios', ref => ref.where('uid', '==', user.uid))
+            .snapshotChanges()
+            .pipe(
+              map(actions =>
+                actions.map(a => {
+                  const data = a.payload.doc.data() as Usuario;
+                  const docid = a.payload.doc.id;
+                  return { docid, ...data };
+                })
+              )
+            );
+        } else {
+          return of(null);
+        }
+      })
+    )
   }
   // ====================================================================
   public addUsuario(data: Usuario): Promise<DocumentReference> {
@@ -25,6 +49,8 @@ export class AuthService {
   }
 
   public updateUsuario(data: Usuario): Promise<void> {
+    console.log(data);
+
     return this.usuarioCollection.doc(data.docid).update(data);
   }
   // ====================================================================
@@ -51,7 +77,14 @@ export class AuthService {
   }
   // ====================================================================
 
+  public registerUsuario(usr: Usuario): Promise<any> {
 
+    return this.afAuth.createUserWithEmailAndPassword(usr.correo, usr.contrasenha)
+      .then((res) => {
+        const { correo, docid } = usr;
+        this.updateUsuario({ docid, correo, activo: true, uid: res.user.uid });
+      });
+  }
 
 
 }

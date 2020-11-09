@@ -165,10 +165,13 @@
             settings
           </mat-icon>
         </button> -->
-        <a routerLink="/perfil" class="img-user">
-          <picture>
+        <a routerLink="/perfil" class="usuarioSide" *ngIf="$usr | async as usr">
+          <h3>
+            {{usr[0].nombre+ ' ' +usr[0].apellidos }}
+          </h3>
+          <span>
             <img src="./assets/avatar.svg" alt="">
-          </picture>
+          </span>
         </a>
       </div>
 

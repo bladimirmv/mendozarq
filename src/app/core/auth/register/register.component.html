@@ -1,7 +1,8 @@
-<div class="main">
-  <form [formGroup]="formRegistro" class="form-register">
-    <h1 class="full-width full-column title">Registro Usuario</h1>
+<div class="main" *ngIf="( usuarioData  || usuarioData === null)  else loading">
 
+  <form [formGroup]="formRegistro" class="form-register" *ngIf="usuarioData else notExist"
+    (ngSubmit)="onRegister(formRegistro.value)">
+    <h1 class="full-width full-column title">Registro Usuario</h1>
     <mat-form-field class="full-width">
       <mat-label>Nombre</mat-label>
       <input matInput formControlName="nombre">
@@ -24,7 +25,7 @@
 
     <mat-form-field class="full-width full-column">
       <mat-label>Direccion</mat-label>
-      <textarea matInput placeholder="Ex. 100 Main St" formControlName="direccion"></textarea>
+      <textarea matInput placeholder="Ex. 100 Main St" formControlName="direccion" style="resize: none;"></textarea>
     </mat-form-field>
 
     <mat-form-field class="full-width  full-column">
@@ -41,12 +42,29 @@
       </button>
     </mat-form-field>
 
-    <button mat-raised-button mat-dialog-close type="submit" class="full-column button-primary">
+    <button mat-raised-button type="submit" class="full-column button-primary">
       Guardar
     </button>
   </form>
+
+  <ng-template #notExist>
+    <div class="notExist">
+      <img src="./assets/no_data.svg" alt="">
+      <br>
+      <h3>
+        No se encontro ningun usuario con el codigo "{{id}}".
+      </h3>
+    </div>
+  </ng-template>
+
+
   <div class="rigth-side">
     <img src="./assets/register.svg" alt="" class="img-register">
     <div class="bar-side"></div>
   </div>
 </div>
+<ng-template #loading>
+  <div class="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>

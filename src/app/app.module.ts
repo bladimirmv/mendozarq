@@ -31,7 +31,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     FooterComponent,
     TitlebarComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,

@@ -5,11 +5,12 @@ export interface Usuario {
   uid?: string;
   displayName?: string;
   photoURL?: string;
-  nombre: string;
-  apellidos: string;
+  nombre?: string;
+  apellidos?: string;
   celular?: number;
   direccion?: string;
   correo?: string;
   contrasenha?: string;
-  rol: Roles;
+  rol?: Roles;
+  activo?: boolean;
 }

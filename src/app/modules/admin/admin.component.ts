@@ -1,7 +1,8 @@
+import { AuthService } from '@services/auth.service';
 import { BrightnessService } from './../../core/services/brightness.service';
 import { Location } from '@angular/common';
 import { map, shareReplay } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { BreakpointObserver } from '@angular/cdk/layout';
@@ -16,11 +17,16 @@ export class AdminComponent implements OnInit, OnDestroy {
   public breakpoint: boolean;
   private unsubscribe$: Subscription;
 
+  $usr: Observable<any>;
 
 
 
 
-  constructor(private breakpointObserver: BreakpointObserver, private location: Location, public brightnessSvc: BrightnessService) {
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    private location: Location,
+    public brightnessSvc: BrightnessService,
+    private authSvc: AuthService) {
   }
 
   onBrightness(e): void {
@@ -33,7 +39,11 @@ export class AdminComponent implements OnInit, OnDestroy {
         map(res => res.matches),
         shareReplay()
       ).subscribe(res => this.breakpoint = res);
+    this.$usr = this.authSvc.user$;
+    this.authSvc.user$.subscribe(res => {
+      console.log(res);
 
+    });
   }
 
   onback(): void {

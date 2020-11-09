@@ -1,3 +1,26 @@
+.button-primary {
+  &:hover {
+    box-shadow: 0 0 2px 2px var(--primary);
+  }
+}
+
+.loading {
+  display: grid;
+  height: 100%;
+  place-items: center;
+}
+
+.notExist {
+  display: grid;
+  grid-template-columns: 1fr;
+  place-items: center;
+  text-align: center;
+
+  img {
+    width: 200px;
+  }
+}
+
 .main {
   width: 100%;
   height: 100%;
@@ -5,7 +28,6 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   // grid-template-rows: auto;
-  // background-color: blue;
   grid-gap: 10px;
   align-content: center;
 
@@ -13,7 +35,7 @@
 
 .main .bar-side {
   width: 320px;
-  height: 100vh;
+  height: 100%;
   background-color: var(--primary);
   position: absolute;
   right: 0;
@@ -80,8 +102,9 @@
   .form-register {
     height: auto;
     justify-content: center;
-
   }
+
+
 }
 
 @media screen and (max-width:400px) {
