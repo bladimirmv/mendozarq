@@ -62,7 +62,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authSvc.getOneUsuario(usr.docid)
       .subscribe(res => {
         if (res) {
-          this.router.navigate([`registro/${usr.docid}`]);
+          if (res.activo === true) {
+            this.toastrSvc.error('Cuenta en uso', 'Ocurrio un Error!');
+          } else {
+
+            this.router.navigate([`registro/${usr.docid}`]);
+          }
         } else {
           this.toastrSvc.error('Codigo incorrecto', 'Ocurrio un Error!');
         }
@@ -70,7 +75,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.unsubscribe$.unsubscribe();
+    if (this.unsubscribe$) {
+      this.unsubscribe$.unsubscribe();
+    }
   }
 
 }

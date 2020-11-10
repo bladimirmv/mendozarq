@@ -1,52 +1,64 @@
 <div class="main" *ngIf="( usuarioData  || usuarioData === null)  else loading">
 
-  <form [formGroup]="formRegistro" class="form-register" *ngIf="usuarioData else notExist"
-    (ngSubmit)="onRegister(formRegistro.value)">
-    <h1 class="full-width full-column title">Registro Usuario</h1>
-    <mat-form-field class="full-width">
-      <mat-label>Nombre</mat-label>
-      <input matInput formControlName="nombre">
-    </mat-form-field>
-    <mat-form-field class="full-width">
-      <mat-label>Apellidos</mat-label>
-      <input matInput formControlName="apellidos">
-    </mat-form-field>
+  <div *ngIf="usuarioData else notExist">
 
-    <mat-form-field class="full-width">
-      <mat-label>Celular</mat-label>
-      <span matPrefix>+591 &nbsp;</span>
-      <input type="tel" matInput placeholder="69409749" formControlName="celular">
-    </mat-form-field>
+    <form [formGroup]="formRegistro" class="form-register" (ngSubmit)="onRegister(formRegistro.value)"
+      *ngIf="(usuarioData.activo === false || !usuarioData.activo) else used">
+      <h1 class="full-width full-column title">Registro Usuario</h1>
+      <mat-form-field class="full-width">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre">
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Apellidos</mat-label>
+        <input matInput formControlName="apellidos">
+      </mat-form-field>
 
-    <mat-form-field class="full-width">
-      <mat-label>Rol</mat-label>
-      <input matInput formControlName="rol">
-    </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Celular</mat-label>
+        <span matPrefix>+591 &nbsp;</span>
+        <input type="tel" matInput placeholder="69409749" formControlName="celular">
+      </mat-form-field>
 
-    <mat-form-field class="full-width full-column">
-      <mat-label>Direccion</mat-label>
-      <textarea matInput placeholder="Ex. 100 Main St" formControlName="direccion" style="resize: none;"></textarea>
-    </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Rol</mat-label>
+        <input matInput formControlName="rol">
+      </mat-form-field>
 
-    <mat-form-field class="full-width  full-column">
-      <mat-label>Correo</mat-label>
-      <input matInput formControlName="correo">
-    </mat-form-field>
+      <mat-form-field class="full-width full-column">
+        <mat-label>Direccion</mat-label>
+        <textarea matInput placeholder="Ex. 100 Main St" formControlName="direccion" style="resize: none;"></textarea>
+      </mat-form-field>
 
-    <mat-form-field class="full-width  full-column">
-      <mat-label>Contraseña</mat-label>
-      <input matInput formControlName="contrasenha" autocomplete="off" [type]="hide ? 'password' : 'text'">
-      <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-        [attr.aria-pressed]="hide">
-        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      <mat-form-field class="full-width  full-column">
+        <mat-label>Correo</mat-label>
+        <input matInput formControlName="correo">
+      </mat-form-field>
+
+      <mat-form-field class="full-width  full-column">
+        <mat-label>Contraseña</mat-label>
+        <input matInput formControlName="contrasenha" autocomplete="off" [type]="hide ? 'password' : 'text'">
+        <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <button mat-raised-button type="submit" class="full-column button-primary">
+        Guardar
       </button>
-    </mat-form-field>
+    </form>
 
-    <button mat-raised-button type="submit" class="full-column button-primary">
-      Guardar
-    </button>
-  </form>
-
+    <ng-template #used>
+      <div class="notExist">
+        <img src="./assets/no_data.svg" alt="">
+        <br>
+        <h3>
+          La cuenta con el codigo "{{id}}" ya esta en uso.
+        </h3>
+      </div>
+    </ng-template>
+  </div>
   <ng-template #notExist>
     <div class="notExist">
       <img src="./assets/no_data.svg" alt="">
