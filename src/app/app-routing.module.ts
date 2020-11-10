@@ -1,3 +1,4 @@
+import { AdminGuard } from './core/guards/admin.guard';
 import { RegisterComponent } from '@core/auth/register/register.component';
 import { LoginComponent } from '@core/auth/login/login.component';
 import { AppContainerComponent } from '@core/app-container/app-container.component';
@@ -16,6 +17,7 @@ const routes: Routes = [
   },
 
   {
+    // canActivate: [AdminGuard],
     path: 'admin', loadChildren: () =>
       import('@modules/admin/admin.module').then(m => m.AdminModule)
   },

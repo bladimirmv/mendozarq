@@ -67,8 +67,6 @@ export class RegisterComponent implements OnInit {
           case 'administrador':
             this.router.navigate(['/admin']);
             break;
-
-
           default:
             break;
         }

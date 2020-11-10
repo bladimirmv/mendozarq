@@ -1,3 +1,4 @@
+import { RoleValidator } from './../helpers/roleValidator';
 import { map, switchMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -9,7 +10,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService extends RoleValidator {
 
   public userData$: Observable<firebase.User>;
   private usuarioCollection: AngularFirestoreCollection<Usuario>;
@@ -19,12 +20,12 @@ export class AuthService {
     private afs: AngularFirestore,
     private afAuth: AngularFireAuth
   ) {
+    super();
     this.userData$ = afAuth.authState;
     this.usuarioCollection = afs.collection<Usuario>('usuarios');
     this.user$ = afAuth.authState.pipe(
       switchMap(user => {
         if (user) {
-
           return this.afs.collection<Usuario>('usuarios', ref => ref.where('uid', '==', user.uid))
             .snapshotChanges()
             .pipe(
@@ -40,7 +41,7 @@ export class AuthService {
           return of(null);
         }
       })
-    )
+    );
   }
   // ====================================================================
   public addUsuario(data: Usuario): Promise<DocumentReference> {
@@ -49,8 +50,6 @@ export class AuthService {
   }
 
   public updateUsuario(data: Usuario): Promise<void> {
-    console.log(data);
-
     return this.usuarioCollection.doc(data.docid).update(data);
   }
   // ====================================================================
@@ -78,13 +77,16 @@ export class AuthService {
   // ====================================================================
 
   public registerUsuario(usr: Usuario): Promise<any> {
-
     return this.afAuth.createUserWithEmailAndPassword(usr.correo, usr.contrasenha)
       .then((res) => {
         const { correo, docid } = usr;
         this.updateUsuario({ docid, correo, activo: true, uid: res.user.uid });
       });
   }
+  // ====================================================================
+  public loginByEmailAndPassword(correo, contrasenha): Promise<any> {
+    return this.afAuth.signInWithEmailAndPassword(correo, contrasenha);
 
+  }
 
 }
