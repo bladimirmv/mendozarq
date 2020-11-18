@@ -22,6 +22,8 @@ export class PersonalService {
   }
   // ====================================================================
   public updatePersonal(personal: Personal): Promise<void> {
+
+
     return this.personalCollection.doc(personal.idPersonal).update(personal);
   }
   // ====================================================================

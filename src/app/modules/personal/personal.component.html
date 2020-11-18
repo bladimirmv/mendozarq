@@ -46,10 +46,6 @@
           </td>
         </ng-container>
 
-
-
-
-
         <ng-container matColumnDef="nombre">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
           <td mat-cell *matCellDef="let row" class="text-center"> {{row.nombre}} </td>
@@ -77,18 +73,18 @@
         </ng-container>
         <ng-container matColumnDef="cargo">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Cargo </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> {{row.correo}} </td>
+          <td mat-cell *matCellDef="let row" class="text-center"> {{row.cargo}} </td>
         </ng-container>
         <ng-container matColumnDef="sueldo">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Sueldo </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> {{row.correo}} </td>
+          <td mat-cell *matCellDef="let row" class="text-center"> {{row.sueldo + ' ' + row.moneda}}. </td>
         </ng-container>
         <ng-container matColumnDef="edit" stickyEnd>
           <th *matHeaderCellDef mat-sort-header>
             <!-- Editar -->
           </th>
           <td *matCellDef="let row" class="text-center">
-            <button mat-icon-button (click)="oneditPersonal(row)">
+            <button mat-icon-button (click)="onUpdatePersonal(row)">
               <mat-icon class="edit-icon">
                 edit
               </mat-icon>

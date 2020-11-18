@@ -60,7 +60,7 @@ export class PersonalComponent implements OnInit {
     this.dialog.open(NewPersonalComponent);
   }
   // ====================================================================
-  oneditPersonal(personal: Personal): void {
+  onUpdatePersonal(personal: Personal): void {
     this.dialog.open(EditPersonalComponent, { data: personal });
   }
 

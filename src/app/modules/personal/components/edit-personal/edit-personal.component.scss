@@ -1,0 +1,30 @@
+.new-personal-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px;
+  padding: 10px;
+}
+
+.subGrid {
+  display: grid;
+  grid-template-columns: 1fr 60px;
+  grid-gap: 5px;
+}
+
+.full-column {
+  grid-column: span 2;
+}
+
+
+@media screen and (max-width:625px) {
+  .new-personal-form {
+    display: grid;
+    grid-template-columns: minmax(100%, 1fr);
+    grid-gap: 0;
+    padding: 0;
+  }
+
+  .full-column {
+    grid-column: 1;
+  }
+}

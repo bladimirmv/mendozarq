@@ -9,6 +9,7 @@ export interface Personal {
   activo?: boolean;
   cargo?: string;
   sueldo?: number;
+  moneda?: 'bs' | 'usd';
   filerefCont?: string;
   urlCont?: string;
 }
