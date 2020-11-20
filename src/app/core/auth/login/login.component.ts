@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
       })
       .catch(error => {
-        this.toastrSvc.success(error, 'Ocurrio un error!');
+        this.toastrSvc.error(error, 'Ocurrio un error!');
       });
 
 

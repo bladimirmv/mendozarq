@@ -14,17 +14,16 @@
               brightness_7
             </mat-icon>
           </button>
-          <mat-menu #menu="matMenu" style="overflow: hidden;">
 
+
+          <mat-menu #menu="matMenu" style="overflow: hidden;">
             <div mat-menu-item>
               <mat-slider min="40" max="100" value="100" (change)="onBrightness($event)">
               </mat-slider>
             </div>
           </mat-menu>
-          <button mat-icon-button>
 
 
-          </button>
           <button mat-icon-button (click)="drawer.close()">
             <mat-icon>
               closed
