@@ -1,1 +1,25 @@
-<p>new-categoria-proyecto works!</p>
+<app-modal>
+  <div slot="title">
+    <h1>
+      Nuevo Categoria Proyecto
+    </h1>
+  </div>
+  <form class="new-personal-form" [formGroup]="newCategoriaProyecto"
+    (ngSubmit)="onAddCategotiProyecto(newCategoriaProyecto.value)">
+
+    <mat-form-field class="full-width">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Color</mat-label>
+      <input matInput type="color" formControlName="color">
+    </mat-form-field>
+
+    <button mat-raised-button mat-dialog-close type="submit" class="full-width button-primary"
+      [disabled]="!newCategoriaProyecto.valid">
+      Guardar
+    </button>
+  </form>
+</app-modal>

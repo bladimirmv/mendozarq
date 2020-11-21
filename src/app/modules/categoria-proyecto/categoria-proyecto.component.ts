@@ -147,7 +147,7 @@ export class CategoriaProyectoComponent implements OnInit {
     this.selection.clear();
   }
   // ====================================================================
-  checkboxLabel(row?: Personal): string {
+  checkboxLabel(row?: CategoriaProyecto): string {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }

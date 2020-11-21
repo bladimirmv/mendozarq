@@ -17,6 +17,7 @@ export class CategoriaProyectoService {
 
   // ====================================================================
   public addCategoriaProyecto(catProyecto: CategoriaProyecto): Promise<DocumentReference> {
+    catProyecto.creadoEn = new Date();
     return this.categoriaProyectoCollection.add(catProyecto);
   }
   // ====================================================================

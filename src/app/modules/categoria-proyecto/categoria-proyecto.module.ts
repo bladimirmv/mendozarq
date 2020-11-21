@@ -1,3 +1,4 @@
+import { SharedModule } from './../../shared/shared.module';
 import { MaterialModule } from './../../material.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -16,8 +17,8 @@ import { EditCategoriaProyectoComponent } from './components/edit-categoria-proy
     CategoriaProyectoRoutingModule,
     MaterialModule,
     ReactiveFormsModule,
-    FormsModule
-
+    FormsModule,
+    SharedModule
   ]
 })
 export class CategoriaProyectoModule { }
