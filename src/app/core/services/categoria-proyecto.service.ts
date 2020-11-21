@@ -1,9 +1,8 @@
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { CategoriaProyecto } from './../../shared/models/mendozarq/categoria.proyecto.interface';
 import { Injectable } from '@angular/core';
 
 import { AngularFirestoreCollection, AngularFirestore, DocumentReference } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { CategoriaProyecto } from '@models/mendozarq/categoria.proyecto.interface';
 
