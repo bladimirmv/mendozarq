@@ -18,8 +18,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subscription;
   hide = true;
   public loginForm: FormGroup = new FormGroup({
-    correo: new FormControl('', Validators.required),
-    contrasenha: new FormControl('', Validators.required)
+    correo: new FormControl('franco123445@gmail.com', Validators.required),
+    contrasenha: new FormControl('contrasenha159753123', Validators.required)
   });
 
   public registerForm: FormGroup = new FormGroup({

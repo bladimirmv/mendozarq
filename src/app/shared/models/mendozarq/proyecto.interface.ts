@@ -5,8 +5,8 @@ export interface Proyecto {
   descripcion?: string;
   categoria?: string[];
   estado: boolean;
-  fechaInicio?: Date;
-  fechaFinal?: Date;
+  fechaInicio?: any;
+  fechaFinal?: any;
   lugarProyecto?: string;
   filerefCont?: string;
   urlCont?: string;

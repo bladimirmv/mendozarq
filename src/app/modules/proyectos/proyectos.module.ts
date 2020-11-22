@@ -6,18 +6,20 @@ import { CommonModule } from '@angular/common';
 import { ProyectosRoutingModule } from './proyectos-routing.module';
 import { ProyectosComponent } from './proyectos.component';
 
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditProyectoComponent } from './components/edit-proyecto/edit-proyecto.component';
+import { NewProyectoComponent } from './components/new-proyecto/new-proyecto.component';
 
 
 @NgModule({
-  declarations: [ProyectosComponent, EditProyectoComponent],
+  declarations: [ProyectosComponent, EditProyectoComponent, NewProyectoComponent],
   imports: [
     CommonModule,
     ProyectosRoutingModule,
     MaterialModule,
     SharedModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class ProyectosModule { }

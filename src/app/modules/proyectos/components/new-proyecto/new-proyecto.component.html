@@ -1,0 +1,92 @@
+<app-modal>
+  <div slot="title">
+    <h1>
+      Nuevo Proyecto
+    </h1>
+  </div>
+  <form class="new-proyecto-form" [formGroup]="newProyecto" (ngSubmit)="onAddProyecto(newProyecto.value)">
+
+    <mat-form-field class="full-width full-column">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre">
+    </mat-form-field>
+
+    <mat-form-field class="full-width full-column" *ngIf="$clientes | async as cliente">
+      <mat-label>Cliente</mat-label>
+      <mat-select formControlName="idCliente">
+        <mat-option value="none">
+          Ninguno
+        </mat-option>
+        <mat-option *ngFor="let item of cliente" [value]="item.docid">
+          {{item.nombre  + ' ' + item.apellidos}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="full-width" *ngIf="$categoriasProyecto | async as cat">
+
+      <mat-label>Categoria</mat-label>
+      <mat-select formControlName="categoria" multiple>
+        <mat-option value=" ninguno" *ngIf="cat.length === 0">
+          Ninguno
+        </mat-option>
+        <mat-option [value]="item.nombre" *ngFor="let item of cat">
+          {{item.nombre}}
+        </mat-option>
+      </mat-select>
+
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Estado</mat-label>
+      <mat-select formControlName="estado">
+        <mat-option value="activo">
+          Activo
+        </mat-option>
+        <mat-option value="inactivo">
+          Inactivo
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+    <mat-form-field class="full-width" appearance="fill">
+      <mat-label>Fecha Inicio</mat-label>
+      <input matInput formControlName="fechaInicio" [matDatepicker]="picker">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+
+
+    <mat-form-field class="full-width" appearance="fill">
+      <mat-label>Fecha Final</mat-label>
+      <input matInput formControlName="fechaFinal" [matDatepicker]="picker2">
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="full-width full-column">
+      <mat-label>Lugar</mat-label>
+      <textarea matInput placeholder="Ex. 100 Main St." formControlName="lugarProyecto"></textarea>
+    </mat-form-field>
+
+    <mat-form-field class="full-width full-column">
+      <mat-label>Descripcion</mat-label>
+      <textarea matInput placeholder="Descrpcion..." formControlName="descripcion"></textarea>
+    </mat-form-field>
+
+
+
+
+    <!-- <mat-form-field class="full-width">
+      <mat-label>Contrato</mat-label>
+      <input matInput type="file" formControlName="">
+    </mat-form-field> -->
+
+    <button mat-raised-button mat-dialog-close type="submit" class="full-column button-primary"
+      [disabled]="!newProyecto.valid">
+      Guardar
+    </button>
+  </form>
+</app-modal>

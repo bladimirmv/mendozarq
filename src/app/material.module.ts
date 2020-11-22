@@ -21,9 +21,11 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTreeModule } from '@angular/material/tree';
-import { MatRippleModule } from '@angular/material/core';
+import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { ToastrModule } from 'ngx-toastr';
 const matModules = [
@@ -49,7 +51,10 @@ const matModules = [
   MatTreeModule,
   MatRippleModule,
   MatSliderModule,
-  MatExpansionModule
+  MatExpansionModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatProgressBarModule
 ];
 
 

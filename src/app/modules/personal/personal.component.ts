@@ -6,7 +6,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 
-import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ToastrService } from 'ngx-toastr';

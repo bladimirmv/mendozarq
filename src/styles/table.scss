@@ -126,6 +126,11 @@
   padding: 0 10px;
 }
 
+.long-txt {
+  white-space: normal;
+  min-width: 150px;
+}
+
 @keyframes opacity-table {
   from {
     opacity: 0;

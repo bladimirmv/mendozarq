@@ -47,6 +47,18 @@
   }
 }
 
+.link-proyecto {
+  color: var(--secondary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--secondary);
+
+  &:hover {
+    color: var(--primary);
+    border-bottom: 1px solid var(--primary);
+
+  }
+}
+
 @media screen and(max-width: 1150px) {
   .proyect-content {
     padding: 20px;

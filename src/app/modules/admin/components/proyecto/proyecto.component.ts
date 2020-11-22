@@ -29,7 +29,6 @@ export class ProyectoComponent implements OnInit, OnDestroy {
   }
 
   onback(): void {
-
     this.location.back();
   }
   onForward(): void {
