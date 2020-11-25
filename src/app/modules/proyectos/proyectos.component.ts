@@ -1,3 +1,4 @@
+import { Usuario } from './../../shared/models/usuario.interface';
 import { AuthService } from '@services/auth.service';
 import Swal from 'sweetalert2';
 import { EditProyectoComponent } from '@modules/proyectos/components/edit-proyecto/edit-proyecto.component';
@@ -15,6 +16,7 @@ import { MatSort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
 
 import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-proyectos',
@@ -36,6 +38,7 @@ export class ProyectosComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   public proyecto: Proyecto[];
+  public $cliente: Observable<Usuario>;
   constructor(
     private toastSvc: ToastrService,
     public dialog: MatDialog,
@@ -57,6 +60,10 @@ export class ProyectosComponent implements OnInit {
     this.selection.changed
       .pipe(map(a => a.source))
       .subscribe(data => this.selected = data.selected);
+  }
+
+  getCliente(id: string): Observable<Usuario> {
+    return this.authSvc.getOneUsuario(id);
   }
   // ====================================================================
   onAddProyecto(): void {

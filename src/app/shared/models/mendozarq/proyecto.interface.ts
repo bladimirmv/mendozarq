@@ -11,5 +11,6 @@ export interface Proyecto {
   filerefCont?: string;
   urlCont?: string;
   idCliente?: string;
+  nombreCliente?: string;
   porcentaje?: number;
 }
