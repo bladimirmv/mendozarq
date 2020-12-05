@@ -5,6 +5,7 @@ const useCases = {
     registroCredenciales: false
   },
   GestionDeProyectos: {
+    registroProyecto: false,
 
   },
   PresupuestoDeObras: {

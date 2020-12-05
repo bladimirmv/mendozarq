@@ -1,6 +1,6 @@
-import { Usuario } from './../../shared/models/usuario.interface';
+
 import { CategoriaProyectoService } from './categoria-proyecto.service';
-import { map, switchMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Personal } from './../../shared/models/mendozarq/personal.interface';
 import { AngularFirestoreCollection, DocumentReference } from '@angular/fire/firestore';
@@ -8,8 +8,7 @@ import { Injectable } from '@angular/core';
 import { Proyecto } from '@app/shared/models/mendozarq/proyecto.interface';
 import { AngularFirestore } from '@angular/fire/firestore';
 
-import { uniq, flatten } from 'lodash';
-import { combineLatest, of } from 'rxjs'
+
 @Injectable({
   providedIn: 'root'
 })
@@ -29,8 +28,8 @@ export class ProyectoService {
     return this.proyectoCollection.doc(proyecto.idProyecto).update(proyecto);
   }
   // ==================================================================================
-  public deleteProyecto(personal: Personal): Promise<void> {
-    return this.proyectoCollection.doc(personal.idPersonal).delete();
+  public deleteProyecto(personal: Proyecto): Promise<void> {
+    return this.proyectoCollection.doc(personal.idProyecto).delete();
   }
   // ==================================================================================
   public getOneProyecto(idProyecto: string): Observable<Proyecto> {
@@ -53,23 +52,11 @@ export class ProyectoService {
             };
             data.fechaInicio = data.fechaInicio.toDate().toLocaleString('es', dateOptions);
             data.fechaFinal = data.fechaFinal.toDate().toLocaleString('es', dateOptions);
-            data.nombreCliente = this.afs.collection<Usuario>('usuarios', ref => ref.where('id', '==', data.idCliente)).valueChanges()
-              .pipe(
-                map(actions =>
-                  actions.map(a => {
-                    const data = a.pay.doc.data() as Usuario;
-                    const docid = a.payload.doc.id;
-                    return { docid, ...data };
-                  })
-                )
-              )
-
-
-
             return { idProyecto, ...data };
           })
         )
       );
   }
   // ==================================================================================
+
 }

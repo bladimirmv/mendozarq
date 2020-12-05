@@ -31,7 +31,7 @@ export class NewProyectoComponent implements OnInit {
       lugarProyecto: new FormControl('', Validators.required),
       filerefCont: new FormControl(''),
       urlCont: new FormControl(''),
-      idCliente: new FormControl('', Validators.required),
+      cliente: new FormControl('', Validators.required),
       porcentaje: new FormControl(0),
 
     });

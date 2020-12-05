@@ -47,6 +47,7 @@ export class ProyectosComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.proyectoSvc.getAllProyectos()
       .subscribe(res => {
         this.dataSource.data = res;

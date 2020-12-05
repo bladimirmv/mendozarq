@@ -9,10 +9,11 @@ import { ProyectosComponent } from './proyectos.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditProyectoComponent } from './components/edit-proyecto/edit-proyecto.component';
 import { NewProyectoComponent } from './components/new-proyecto/new-proyecto.component';
+import { GetCategoriesPipe } from './pipes/get-categories.pipe';
 
 
 @NgModule({
-  declarations: [ProyectosComponent, EditProyectoComponent, NewProyectoComponent],
+  declarations: [ProyectosComponent, EditProyectoComponent, NewProyectoComponent, GetCategoriesPipe],
   imports: [
     CommonModule,
     ProyectosRoutingModule,

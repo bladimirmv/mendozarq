@@ -41,8 +41,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       ).subscribe(res => this.breakpoint = res);
     this.$usr = this.authSvc.user$;
     this.authSvc.user$.subscribe(res => {
-      console.log(res);
-
+      // console.log(res);
     });
   }
 
