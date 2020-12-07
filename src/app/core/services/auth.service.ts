@@ -1,6 +1,7 @@
-import { catchError, map, take } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
+import { catchError, map, switchMap, take } from 'rxjs/operators';
 import { UsuarioResponse } from './../../shared/models/usuario.interface';
-import { Observable, throwError, BehaviorSubject } from 'rxjs';
+import { Observable, throwError, BehaviorSubject, of, onErrorResumeNext } from 'rxjs';
 import { RoleValidator } from './../helpers/roleValidator';
 import { Injectable } from '@angular/core';
 
@@ -22,15 +23,15 @@ export class AuthService extends RoleValidator {
 
   private usuario = new BehaviorSubject<Usuario>(null);
 
-  public usuario$ = this.usuario.asObservable();
+  public usuario$: Observable<Usuario> = this.usuario.asObservable();
 
 
 
   private API_URL = environment.API_URL;
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private toastrSvc: ToastrService) {
     super();
-    // this.socket = io(this.server);
     this.checkToken();
+    // this.socket = io(this.server);
   }
 
   get isLogged(): Observable<boolean> {
@@ -57,11 +58,30 @@ export class AuthService extends RoleValidator {
     this.usuario.next(null);
   }
 
-  public checkToken(): void {
+  public checkToken(): any {
     const usuarioToken = localStorage.getItem('token');
     const isExpired = helper.isTokenExpired(usuarioToken);
-    isExpired ? this.logout() : this.loggedIn.next(true);
-    // set UsuarioIsLogged = true
+    const decodeToken = helper.decodeToken(usuarioToken);
+
+    if (usuarioToken) {
+      if (isExpired) {
+        this.logout();
+        this.toastrSvc.error('La sesion ha expirado, porfavor inicia sesion nuevamente', 'Sesion Expirada!', {
+          timeOut: 5000
+        });
+
+      } else {
+        this.loggedIn.next(true);
+        this.usuario$ = this.http.get<Usuario>(`${this.API_URL}/api/usuario/${decodeToken.uuid}`)
+          .pipe(
+            map(res => {
+              return res[0] as Usuario;
+            })
+          );
+      }
+    }
+
+
   }
   public saveToken(token: string): void {
     localStorage.setItem('token', token);
