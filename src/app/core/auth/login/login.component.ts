@@ -1,6 +1,7 @@
+import { BrightnessService } from './../../services/brightness.service';
 import { AuthService } from '@services/auth.service';
 import { Usuario, UsuarioResponse } from '@app/shared/models/usuario.interface';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
@@ -15,7 +16,7 @@ import { Subscription } from 'rxjs';
 })
 
 export class LoginComponent implements OnInit, OnDestroy {
-  private unsubscribe$: Subscription;
+  private unsubscribe$: Subscription = new Subscription();
   hide = true;
   public loginForm: FormGroup = new FormGroup({
     username: new FormControl('blado959', Validators.required),
@@ -29,13 +30,13 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private authSvc: AuthService,
-    private toastrSvc: ToastrService
-  ) { }
+    private toastrSvc: ToastrService,
+    private brigthtnessSvc: BrightnessService
+  ) {
+    this.brigthtnessSvc.reset();
+  }
 
   ngOnInit(): void {
-
-
-
 
     // fetch('http://localhost:3000/api/usuario', {
     //   method: 'get'
@@ -64,21 +65,31 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   }
 
-  onLogIn(usr: Usuario): void {
-    this.authSvc.login(usr)
-      .subscribe((res: UsuarioResponse) => {
-        if (res) {
-          switch (res.body.rol) {
-            case 'administrador':
-              this.router.navigate(['/admin']);
-              this.toastrSvc.info(res.body.nombre, 'Bienvenido!');
-              break;
-            default:
-              break;
-          }
 
-        }
-      });
+  ngOnDestroy(): void {
+    if (this.unsubscribe$) {
+      this.unsubscribe$.unsubscribe();
+    }
+  }
+
+  onLogIn(usr: Usuario): void {
+    this.unsubscribe$.add(
+      this.authSvc.login(usr)
+        .subscribe((res: UsuarioResponse) => {
+          if (res) {
+            switch (res.body.rol) {
+              case 'administrador':
+                this.router.navigate(['/admin']);
+                this.toastrSvc.info(res.body.nombre, 'Bienvenido!');
+                break;
+              default:
+                break;
+            }
+          }
+        })
+    );
+
+
 
 
 
@@ -121,10 +132,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     //   });
   }
 
-  ngOnDestroy(): void {
-    if (this.unsubscribe$) {
-      this.unsubscribe$.unsubscribe();
-    }
-  }
+
 
 }

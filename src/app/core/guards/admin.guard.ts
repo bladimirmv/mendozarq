@@ -1,3 +1,4 @@
+import { Usuario } from './../../shared/models/usuario.interface';
 import { AuthService } from '@services/auth.service';
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
@@ -12,16 +13,14 @@ export class AdminGuard implements CanActivate {
 
   }
   canActivate(): Observable<boolean> | boolean {
-    return of(true)
-    // return this.authSvc.user$.pipe(
-    //   take(1),
-    //   map(usr => usr[0] && this.authSvc.isAdmin(usr[0])),
-    //   tap(canEdit => {
-    //     if (!canEdit) {
-    //       this.router.navigate(['/login']);
-    //     }
-    //   })
-    // )
+    return this.authSvc.usuario$.pipe(
+      take(1),
+      map((usuario: Usuario) => usuario && this.authSvc.isAdmin(usuario)),
+      tap(canEdit => {
+        if (!canEdit) {
+          this.router.navigate(['/login']);
+        }
+      })
+    );
   }
-
 }

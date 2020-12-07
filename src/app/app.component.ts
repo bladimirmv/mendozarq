@@ -1,5 +1,5 @@
 import { BrightnessService } from './core/services/brightness.service';
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -12,4 +12,5 @@ export class AppComponent {
   constructor(private brightnessSvc: BrightnessService) {
     this.brightnessSvc.brightness$.subscribe(res => this.value = res);
   }
+
 }

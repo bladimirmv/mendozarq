@@ -16,7 +16,7 @@ export class EditUserComponent implements OnInit {
 
   public editUsuarioForm: FormGroup = new FormGroup({
     nombre: new FormControl(this.data.nombre, Validators.required),
-    apellidos: new FormControl(this.data.apellidos, Validators.required),
+    apellidos: new FormControl(this.data.apellidoPaterno, Validators.required),
     celular: new FormControl(this.data.celular, Validators.required),
     direccion: new FormControl(this.data.direccion, Validators.required),
     correo: new FormControl(this.data.correo, Validators.email),
@@ -30,7 +30,7 @@ export class EditUserComponent implements OnInit {
 
   oneditUser(data: Usuario): void {
 
-    data.docid = this.data.docid;
+    data.uuid = this.data.uuid;
 
 
     this.authSvc.updateUsuario(data)

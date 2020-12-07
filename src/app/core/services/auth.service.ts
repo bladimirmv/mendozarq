@@ -1,4 +1,4 @@
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, take } from 'rxjs/operators';
 import { UsuarioResponse } from './../../shared/models/usuario.interface';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { RoleValidator } from './../helpers/roleValidator';
@@ -20,6 +20,12 @@ export class AuthService extends RoleValidator {
 
   private loggedIn = new BehaviorSubject<boolean>(false);
 
+  private usuario = new BehaviorSubject<Usuario>(null);
+
+  public usuario$ = this.usuario.asObservable();
+
+
+
   private API_URL = environment.API_URL;
   constructor(private http: HttpClient) {
     super();
@@ -37,6 +43,7 @@ export class AuthService extends RoleValidator {
         map((res: UsuarioResponse) => {
           this.saveToken(res.token);
           this.loggedIn.next(true);
+          this.usuario.next(res.body);
           return res;
         }),
         catchError((err) => this.handdleError(err))
@@ -47,8 +54,9 @@ export class AuthService extends RoleValidator {
   public logout(): void {
     localStorage.removeItem('token');
     this.loggedIn.next(false);
-
+    this.usuario.next(null);
   }
+
   public checkToken(): void {
     const usuarioToken = localStorage.getItem('token');
     const isExpired = helper.isTokenExpired(usuarioToken);
