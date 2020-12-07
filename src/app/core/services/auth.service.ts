@@ -1,106 +1,104 @@
+import { catchError, map } from 'rxjs/operators';
+import { UsuarioResponse } from './../../shared/models/usuario.interface';
+import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { RoleValidator } from './../helpers/roleValidator';
-import { map, switchMap } from 'rxjs/operators';
-import { Observable, of, empty } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 import { Usuario, Roles } from '@app/shared/models/usuario.interface';
-import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from '@angular/fire/firestore';
-import { AngularFireAuth } from '@angular/fire/auth';
 
+
+import { environment } from '@env/environment';
+import { HttpClient } from '@angular/common/http';
+
+import { JwtHelperService } from '@auth0/angular-jwt';
+
+const helper = new JwtHelperService();
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService extends RoleValidator {
 
-  public userData$: Observable<firebase.User>;
-  private usuarioCollection: AngularFirestoreCollection<Usuario>;
-  public user$: Observable<Usuario>;
+  private loggedIn = new BehaviorSubject<boolean>(false);
 
-  constructor(
-    private afs: AngularFirestore,
-    private afAuth: AngularFireAuth
-  ) {
+  private API_URL = environment.API_URL;
+  constructor(private http: HttpClient) {
     super();
-    this.userData$ = afAuth.authState;
-    this.usuarioCollection = afs.collection<Usuario>('usuarios');
-    this.user$ = afAuth.authState.pipe(
-      switchMap(user => {
-        if (user) {
-          return this.afs.collection<Usuario>('usuarios', ref => ref.where('uid', '==', user.uid))
-            .snapshotChanges()
-            .pipe(
-              map(actions =>
-                actions.map(a => {
-                  const data = a.payload.doc.data() as Usuario;
-                  const docid = a.payload.doc.id;
-                  return { docid, ...data };
-                })
-              )
-            );
-        } else {
-          return of(null);
-        }
-      })
-    );
-  }
-  // ====================================================================
-  public addUsuario(data: Usuario): Promise<DocumentReference> {
-    data.creadoEn = new Date();
-    return this.usuarioCollection.add(data);
+    // this.socket = io(this.server);
+    this.checkToken();
   }
 
-  public updateUsuario(data: Usuario): Promise<void> {
-    return this.usuarioCollection.doc(data.docid).update(data);
+  get isLogged(): Observable<boolean> {
+    return this.loggedIn.asObservable();
   }
-  // ====================================================================
-  public getAllUsuarios(): Observable<Usuario[]> {
-    return this.afs.collection<Usuario>('usuarios', ref => ref.orderBy('creadoEn'))
-      .snapshotChanges()
+
+  public login(authData: Usuario): Observable<UsuarioResponse | void> {
+    return this.http.post<UsuarioResponse>(`${this.API_URL}/api/auth/login`, authData)
       .pipe(
-        map(actions =>
-          actions.map(a => {
-            const data = a.payload.doc.data() as Usuario;
-            const docid = a.payload.doc.id;
-            return { docid, ...data };
-          })
-        )
+        map((res: UsuarioResponse) => {
+          this.saveToken(res.token);
+          this.loggedIn.next(true);
+          return res;
+        }),
+        catchError((err) => this.handdleError(err))
       );
-  }
-  // ====================================================================
-  public getAllUsuariosByTipo(tipoUsuario: Roles): Observable<Usuario[]> {
-    return this.afs.collection<Usuario>('usuarios', ref => ref.orderBy('creadoEn').where('rol', '==', tipoUsuario))
-      .snapshotChanges()
-      .pipe(
-        map(actions =>
-          actions.map(a => {
 
-            const data = a.payload.doc.data() as Usuario;
-            const docid = a.payload.doc.id;
-            return { docid, ...data };
-          })
-        )
-      );
+  }
+
+  public logout(): void {
+    localStorage.removeItem('token');
+    this.loggedIn.next(false);
+
+  }
+  public checkToken(): void {
+    const usuarioToken = localStorage.getItem('token');
+    const isExpired = helper.isTokenExpired(usuarioToken);
+    isExpired ? this.logout() : this.loggedIn.next(true);
+    // set UsuarioIsLogged = true
+  }
+  public saveToken(token: string): void {
+    localStorage.setItem('token', token);
+  }
+  public handdleError(error: any): Observable<never> {
+    let errorMessage = 'Ocurrio un error al recuperar los datos';
+    if (error) {
+      errorMessage = `Error: code ${error.message}`;
+    }
+    // window.alert(errorMessage);
+    return throwError(errorMessage);
+  }
+
+  // ====================================================================
+  public addUsuario(data: Usuario): any {
+
+  }
+
+  public updateUsuario(data: Usuario): any {
+
   }
   // ====================================================================
-  public getOneUsuario(docid: string): Observable<Usuario> {
-    return this.afs.doc<Usuario>(`usuarios/${docid}`).valueChanges();
+  public getAllUsuarios(): any {
+
   }
   // ====================================================================
-  public deleteUsuario(docid: string): Promise<void> {
-    return this.usuarioCollection.doc(docid).delete();
+  public getAllUsuariosByTipo(tipoUsuario: Roles): any {
+
+  }
+  // ====================================================================
+  public getOneUsuario(docid: string): any {
+
+  }
+  // ====================================================================
+  public deleteUsuario(docid: string): any {
+
   }
   // ====================================================================
 
-  public registerUsuario(usr: Usuario): Promise<any> {
-    return this.afAuth.createUserWithEmailAndPassword(usr.correo, usr.contrasenha)
-      .then((res) => {
-        const { correo, docid } = usr;
-        this.updateUsuario({ docid, correo, activo: true, uid: res.user.uid });
-      });
+  public registerUsuario(usr: Usuario): any {
+
   }
   // ====================================================================
-  public loginByEmailAndPassword(correo, contrasenha): Promise<any> {
-    return this.afAuth.signInWithEmailAndPassword(correo, contrasenha);
+  public loginByEmailAndPassword(correo, contrasenha): any {
+
 
   }
 

@@ -36,46 +36,45 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.id = this.route.snapshot.paramMap.get('id');
-    this.authSvc.getOneUsuario(this.id)
-      .subscribe(res => {
-        this.usuarioData = res;
-        if (res) {
-          this.formRegistro.patchValue({
-            nombre: res.nombre ? res.nombre : 'sin nombre',
-            apellidos: res.apellidos ? res.apellidos : 'sin apellidos',
-            celular: res.celular ? res.celular : 'sin celular',
-            direccion: res.direccion ? res.direccion : 'sin direccion',
-            correo: res.correo,
-            rol: res.rol
-          });
-          this.rol = res.rol;
-        } else {
-          this.usuarioData = null;
-        }
-        // console.log(this.usuarioData);
+    // this.id = this.route.snapshot.paramMap.get('id');
+    // this.authSvc.getOneUsuario(this.id)
+    //   .subscribe(res => {
+    //     this.usuarioData = res;
+    //     if (res) {
+    //       this.formRegistro.patchValue({
+    //         nombre: res.nombre ? res.nombre : 'sin nombre',
+    //         apellidos: res.apellidos ? res.apellidos : 'sin apellidos',
+    //         celular: res.celular ? res.celular : 'sin celular',
+    //         direccion: res.direccion ? res.direccion : 'sin direccion',
+    //         correo: res.correo,
+    //         rol: res.rol
+    //       });
+    //       this.rol = res.rol;
+    //     } else {
+    //       this.usuarioData = null;
+    //     }
 
-      });
+    //   });
   }
 
   onRegister(usr: Usuario): void {
-    usr.docid = this.id;
-    this.authSvc.registerUsuario(usr)
-      .then(() => {
-        this.toastrSvc.success('Cuenta creada exitosamente.', 'Bienvenido!');
-        switch (this.rol) {
-          case 'administrador':
-            this.router.navigate(['/admin']);
-            break;
-          default:
-            break;
-        }
-      })
-      .catch((error) => {
-        this.toastrSvc.error(error, 'Ocurrio un Error!');
-        console.log(error);
+    // usr.docid = this.id;
+    // this.authSvc.registerUsuario(usr)
+    //   .then(() => {
+    //     this.toastrSvc.success('Cuenta creada exitosamente.', 'Bienvenido!');
+    //     switch (this.rol) {
+    //       case 'administrador':
+    //         this.router.navigate(['/admin']);
+    //         break;
+    //       default:
+    //         break;
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     this.toastrSvc.error(error, 'Ocurrio un Error!');
+    //     console.log(error);
 
-      });
+    //   });
   }
 
 }

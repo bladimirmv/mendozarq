@@ -12,15 +12,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToolbarComponent } from './core/toolbar/toolbar.component';
 import { AppContainerComponent } from './core/app-container/app-container.component';
 
-import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { AngularFireStorageModule, BUCKET } from '@angular/fire/storage';
-import { AngularFireAuthModule } from '@angular/fire/auth';
+
 import { TitlebarComponent } from './core/titlebar/titlebar.component';
 import { PersonalModule } from './modules/personal/personal.module';
 import { RegisterComponent } from './core/auth/register/register.component';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -37,22 +35,14 @@ import { ReactiveFormsModule } from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFirestoreModule,
-    AngularFireStorageModule,
-    AngularFireAuthModule,
     MaterialModule,
     NgxElectronModule,
     PersonalModule,
     RouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [
-    {
-      provide: BUCKET,
-      useValue: 'gs://mendozarq-bb534.appspot.com'
-    }
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

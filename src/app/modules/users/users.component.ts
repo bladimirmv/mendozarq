@@ -44,12 +44,12 @@ export class UsersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.usuarios$ = this.authSvc.getAllUsuarios();
-    this.authSvc.getAllUsuarios()
-      .subscribe(res => {
-        this.dataSource.data = res;
-        this.usuario = res;
-      });
+    // this.usuarios$ = this.authSvc.getAllUsuarios();
+    // this.authSvc.getAllUsuarios()
+    //   .subscribe(res => {
+    //     this.dataSource.data = res;
+    //     this.usuario = res;
+    //   });
 
 
     this.dataSource.paginator = this.paginator;
@@ -83,45 +83,45 @@ export class UsersComponent implements OnInit {
 
         if (this.selected.length === 1) {
 
-          this.authSvc.deleteUsuario(this.selected[0].docid)
-            .then(() => {
-              this.toastSvc.success('Se ha eliminado correctamente', 'Usuario Eliminado', {
-                timeOut: 2000,
-                progressBar: true,
-                progressAnimation: 'increasing'
-              });
-              this.clearCheckbox();
-            })
-            .catch(error => {
-              console.log(error);
-              Swal.fire('Error!', 'Ocurrio un error al eliminar este usuario', 'error');
-            });
+          // this.authSvc.deleteUsuario(this.selected[0].docid)
+          //   .then(() => {
+          //     this.toastSvc.success('Se ha eliminado correctamente', 'Usuario Eliminado', {
+          //       timeOut: 2000,
+          //       progressBar: true,
+          //       progressAnimation: 'increasing'
+          //     });
+          //     this.clearCheckbox();
+          //   })
+          //   .catch(error => {
+          //     console.log(error);
+          //     Swal.fire('Error!', 'Ocurrio un error al eliminar este usuario', 'error');
+          //   });
 
         } else {
           try {
-            this.selected.forEach((usuario, index) => {
-              if (index + 1 === this.selected.length) {
-                this.authSvc.deleteUsuario(usuario.docid)
-                  .then(() => {
-                    this.toastSvc.success('Se han eliminado correctamente', 'Usuarios Eliminados', {
-                      timeOut: 2000,
-                      progressBar: true,
-                      progressAnimation: 'increasing'
-                    });
-                    this.clearCheckbox();
-                  })
-              } else {
-                this.authSvc.deleteUsuario(usuario.docid);
-              }
-            });
+            // this.selected.forEach((usuario, index) => {
+            //   if (index + 1 === this.selected.length) {
+            //     this.authSvc.deleteUsuario(usuario.docid)
+            //       .then(() => {
+            //         this.toastSvc.success('Se han eliminado correctamente', 'Usuarios Eliminados', {
+            //           timeOut: 2000,
+            //           progressBar: true,
+            //           progressAnimation: 'increasing'
+            //         });
+            //         this.clearCheckbox();
+            //       })
+            //   } else {
+            //     this.authSvc.deleteUsuario(usuario.docid);
+            //   }
+            // });
           }
           catch (error) {
             console.log('Error:', error);
-            this.toastSvc.error('Se ha producido un error.', 'Error al Eliminar!', {
-              timeOut: 2000,
-              progressBar: true,
-              progressAnimation: 'increasing'
-            });
+            // this.toastSvc.error('Se ha producido un error.', 'Error al Eliminar!', {
+            //   timeOut: 2000,
+            //   progressBar: true,
+            //   progressAnimation: 'increasing'
+            // });
           }
         }
       }

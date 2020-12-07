@@ -164,9 +164,10 @@
             settings
           </mat-icon>
         </button> -->
-        <a routerLink="/perfil" class="usuarioSide" *ngIf="$usr | async as usr">
+        <a routerLink="/perfil" class="usuarioSide" *ngIf="authSvc.isLogged | async">
           <h3>
-            {{usr[0].nombre+ ' ' +usr[0].apellidos }}
+            login
+            <!-- {{usr[0].nombre+ ' ' +usr[0].apellidos }} -->
           </h3>
           <span>
             <img src="./assets/avatar.svg" alt="">

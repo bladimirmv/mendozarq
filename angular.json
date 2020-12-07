@@ -19,19 +19,8 @@
           "options": {
             "allowedCommonJsDependencies": [
               "lodash",
-              "firebase",
               "@angular/common/locales/fr",
-              "lodash/dropRight",
-              "@firebase/app",
-              "firebase/app",
-              "@firebase/database",
-              "@firebase/firestore",
-              "@firebase/functions",
-              "@firebase/performance",
-              "@firebase/remote-config",
-              "@firebase/component",
-              "@firebase/auth",
-              "@firebase/util"
+              "lodash/dropRight"
             ],
             "outputPath": "dist/mendozarq",
             "index": "src/index.html",
