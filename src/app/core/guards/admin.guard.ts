@@ -10,7 +10,6 @@ import { take, map, tap } from 'rxjs/operators';
 })
 export class AdminGuard implements CanActivate {
   constructor(private authSvc: AuthService, private router: Router) {
-
   }
   canActivate(): Observable<boolean> | boolean {
     return this.authSvc.usuario$.pipe(

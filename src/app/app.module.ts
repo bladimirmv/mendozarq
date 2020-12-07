@@ -1,25 +1,25 @@
-import { LoginComponent } from './core/auth/login/login.component';
-import { environment } from './../environments/environment.prod';
-import { FooterComponent } from './core/footer/footer.component';
-import { MaterialModule } from './material.module';
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { NgxElectronModule } from 'ngx-electron';
+import { BrowserModule } from '@angular/platform-browser';
 
+import { NgxElectronModule } from 'ngx-electron';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToolbarComponent } from './core/toolbar/toolbar.component';
 import { AppContainerComponent } from './core/app-container/app-container.component';
-
-
-import { TitlebarComponent } from './core/titlebar/titlebar.component';
-import { PersonalModule } from './modules/personal/personal.module';
-import { RegisterComponent } from './core/auth/register/register.component';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { MaterialModule } from './material.module';
+import { PersonalModule } from './modules/personal/personal.module';
 
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+
+
+import { LoginComponent } from './core/auth/login/login.component';
+import { TitlebarComponent } from './core/titlebar/titlebar.component';
+import { RegisterComponent } from './core/auth/register/register.component';
+import { FooterComponent } from './core/footer/footer.component';
+import { AdminInterceptor } from './core/interceptors/admin.interceptor';
 
 @NgModule({
   declarations: [
@@ -42,7 +42,9 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AdminInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

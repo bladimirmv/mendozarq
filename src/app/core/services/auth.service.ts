@@ -19,47 +19,49 @@ const helper = new JwtHelperService();
 })
 export class AuthService extends RoleValidator {
 
-  private loggedIn = new BehaviorSubject<boolean>(false);
-
-  private usuario = new BehaviorSubject<Usuario>(null);
-
-  public usuario$: Observable<Usuario> = this.usuario.asObservable();
-
-
-
   private API_URL = environment.API_URL;
+  private loggedIn = new BehaviorSubject<boolean>(false);
+  private usuario = new BehaviorSubject<Usuario>(null);
+  public usuario$: Observable<Usuario> = this.usuario.asObservable();
+  private usuarioToken = new BehaviorSubject<string>(null);
+  // ====================================================================
   constructor(private http: HttpClient, private toastrSvc: ToastrService) {
     super();
     this.checkToken();
-    // this.socket = io(this.server);
   }
-
+  // ====================================================================
   get isLogged(): Observable<boolean> {
     return this.loggedIn.asObservable();
   }
 
+  get userTokenValue(): string {
+    return this.usuarioToken.getValue();
+  }
+  // ====================================================================
   public login(authData: Usuario): Observable<UsuarioResponse | void> {
     return this.http.post<UsuarioResponse>(`${this.API_URL}/api/auth/login`, authData)
       .pipe(
-        map((res: UsuarioResponse) => {
-          this.saveToken(res.token);
+        map((usuario: UsuarioResponse) => {
+          this.saveToken(usuario.token);
           this.loggedIn.next(true);
-          this.usuario.next(res.body);
-          return res;
+          this.usuario.next(usuario.body);
+          this.usuarioToken.next(usuario.token);
+          return usuario;
         }),
         catchError((err) => this.handdleError(err))
       );
 
   }
-
+  // ====================================================================
   public logout(): void {
     localStorage.removeItem('token');
     this.loggedIn.next(false);
     this.usuario.next(null);
+    this.usuarioToken.next(null);
   }
-
+  // ====================================================================
   public checkToken(): any {
-    const usuarioToken = localStorage.getItem('token');
+    const usuarioToken = localStorage.getItem('token') || null;
     const isExpired = helper.isTokenExpired(usuarioToken);
     const decodeToken = helper.decodeToken(usuarioToken);
 
@@ -72,6 +74,7 @@ export class AuthService extends RoleValidator {
 
       } else {
         this.loggedIn.next(true);
+        this.usuarioToken.next(usuarioToken);
         this.usuario$ = this.http.get<Usuario>(`${this.API_URL}/api/usuario/${decodeToken.uuid}`)
           .pipe(
             map(res => {
@@ -80,18 +83,20 @@ export class AuthService extends RoleValidator {
           );
       }
     }
-
-
   }
+  // ====================================================================
   public saveToken(token: string): void {
     localStorage.setItem('token', token);
   }
+  // ====================================================================
   public handdleError(error: any): Observable<never> {
     let errorMessage = 'Ocurrio un error al recuperar los datos';
     if (error) {
       errorMessage = `Error: code ${error.message}`;
     }
-    // window.alert(errorMessage);
+    this.toastrSvc.error(errorMessage, 'Ocurrio un Error!', {
+      timeOut: 5000
+    });
     return throwError(errorMessage);
   }
 
@@ -122,11 +127,6 @@ export class AuthService extends RoleValidator {
   // ====================================================================
 
   public registerUsuario(usr: Usuario): any {
-
-  }
-  // ====================================================================
-  public loginByEmailAndPassword(correo, contrasenha): any {
-
 
   }
 
