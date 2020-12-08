@@ -42,8 +42,8 @@ export class NewProyectoComponent implements OnInit {
     private catProyecto: CategoriaProyectoService) { }
 
   ngOnInit(): void {
-    this.$clientes = this.authSvc.getAllUsuariosByTipo('cliente');
-    this.$categoriasProyecto = this.catProyecto.getAllCategoriaProyecto();
+    // this.$clientes = this.authSvc.getAllUsuariosByTipo('cliente');
+    // this.$categoriasProyecto = this.catProyecto.getAllCategoriaProyecto();
   }
 
   onAddProyecto(proyecto: Proyecto): void {

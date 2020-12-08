@@ -12,16 +12,20 @@ export class AdminInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<any> {
 
     const url: Array<string> = [
-      // '/api/usuario',
+      '/api/usuario/',
+      '/api/usuario',
     ];
 
     if (url.some(path => req.url.includes(path))) {
       const authToken = this.authSvc.userTokenValue;
       const authRequest = req.clone({
         setHeaders: {
-          Authorization: authToken,
+          Authorization: `Bearer ${authToken}`
         }
       });
+      // debugger;
+
+
       return next.handle(authRequest);
     }
 

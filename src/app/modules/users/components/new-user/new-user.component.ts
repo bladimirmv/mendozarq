@@ -29,22 +29,22 @@ export class NewUserComponent implements OnInit {
 
   onAddUser(data: Usuario): void {
 
-    this.authSvc.addUsuario(data)
-      .then(() => {
-        this.toastSvc.success('Creado correctamente', 'Nuevo Usuario', {
-          timeOut: 2000,
-          progressBar: true,
-          progressAnimation: 'increasing'
-        });
-      })
-      .catch((error) => {
-        console.log('Error:', error);
-        this.toastSvc.error('Se ha producido un error.', 'Error al Crear!', {
-          timeOut: 2000,
-          progressBar: true,
-          progressAnimation: 'increasing'
-        });
-      });
+    // this.authSvc.addUsuario(data)
+    //   .then(() => {
+    //     this.toastSvc.success('Creado correctamente', 'Nuevo Usuario', {
+    //       timeOut: 2000,
+    //       progressBar: true,
+    //       progressAnimation: 'increasing'
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     console.log('Error:', error);
+    //     this.toastSvc.error('Se ha producido un error.', 'Error al Crear!', {
+    //       timeOut: 2000,
+    //       progressBar: true,
+    //       progressAnimation: 'increasing'
+    //     });
+    //   });
   }
 
 }

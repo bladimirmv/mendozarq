@@ -30,25 +30,25 @@ export class EditUserComponent implements OnInit {
 
   oneditUser(data: Usuario): void {
 
-    data.uuid = this.data.uuid;
+    // data.uuid = this.data.uuid;
 
 
-    this.authSvc.updateUsuario(data)
-      .then(() => {
-        this.toastSvc.success('Correctamente', 'Usuario Editado', {
-          timeOut: 2000,
-          progressBar: true,
-          progressAnimation: 'increasing'
-        });
-      })
-      .catch((error) => {
-        console.log('Error:', error);
-        this.toastSvc.error('Se ha producido un error.', 'Error al Editar!', {
-          timeOut: 2000,
-          progressBar: true,
-          progressAnimation: 'increasing'
-        });
-      });
+    // this.authSvc.updateUsuario(data)
+    //   .then(() => {
+    //     this.toastSvc.success('Correctamente', 'Usuario Editado', {
+    //       timeOut: 2000,
+    //       progressBar: true,
+    //       progressAnimation: 'increasing'
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     console.log('Error:', error);
+    //     this.toastSvc.error('Se ha producido un error.', 'Error al Editar!', {
+    //       timeOut: 2000,
+    //       progressBar: true,
+    //       progressAnimation: 'increasing'
+    //     });
+    //   });
   }
 
 }

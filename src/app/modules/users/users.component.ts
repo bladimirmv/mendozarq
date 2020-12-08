@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Usuario } from '@app/shared/models/usuario.interface';
 
 import { AuthService } from '@services/auth.service';
+import { UsuarioService } from '@services/usuario.service';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
@@ -27,7 +28,7 @@ export class UsersComponent implements OnInit {
   selected: Usuario[] = [];
   selection = new SelectionModel<Usuario>(true, []);
   filterValue: string;
-  displayedColumns: string[] = ['seleccion', 'docid', 'rol', 'nombre', 'apellidos', 'celular', 'direccion', 'correo', 'edit'];
+  displayedColumns: string[] = ['seleccion', 'uuid', 'rol', 'nombre', 'apellidos', 'celular', 'direccion', 'correo', 'username', 'edit'];
 
   dataSource: MatTableDataSource<Usuario> = new MatTableDataSource();
 
@@ -40,16 +41,17 @@ export class UsersComponent implements OnInit {
     private snackBar: MatSnackBar,
     private toastSvc: ToastrService,
     public dialog: MatDialog,
-    private authSvc: AuthService) {
+    private authSvc: AuthService,
+    private usuarioSvc: UsuarioService) {
   }
 
   ngOnInit(): void {
-    // this.usuarios$ = this.authSvc.getAllUsuarios();
-    // this.authSvc.getAllUsuarios()
-    //   .subscribe(res => {
-    //     this.dataSource.data = res;
-    //     this.usuario = res;
-    //   });
+    this.usuarios$ = this.usuarioSvc.getAllUsuarios();
+    this.usuarioSvc.getAllUsuarios()
+      .subscribe(res => {
+        this.dataSource.data = res;
+        this.usuario = res;
+      });
 
 
     this.dataSource.paginator = this.paginator;

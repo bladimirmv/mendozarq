@@ -63,8 +63,8 @@ export class ProyectosComponent implements OnInit {
       .subscribe(data => this.selected = data.selected);
   }
 
-  getCliente(id: string): Observable<Usuario> {
-    return this.authSvc.getOneUsuario(id);
+  getCliente(id: string): any {
+    // return this.authSvc.getOneUsuario(id);
   }
   // ====================================================================
   onAddProyecto(): void {

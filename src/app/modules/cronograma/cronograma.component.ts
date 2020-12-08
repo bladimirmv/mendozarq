@@ -1,3 +1,4 @@
+import { UsuarioService } from './../../core/services/usuario.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ChartType, getPackageForChart, ScriptLoaderService } from 'angular-google-charts';
 import { AuthService } from '@services/auth.service';
@@ -39,7 +40,7 @@ export class CronogramaComponent implements OnInit {
 
   }
 
-  constructor(private authSvc: AuthService) { }
+  constructor(private authSvc: UsuarioService) { }
 
 
   toDateTime(secs): any {

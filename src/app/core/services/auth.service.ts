@@ -99,35 +99,6 @@ export class AuthService extends RoleValidator {
     });
     return throwError(errorMessage);
   }
-
   // ====================================================================
-  public addUsuario(data: Usuario): any {
-
-  }
-
-  public updateUsuario(data: Usuario): any {
-
-  }
-  // ====================================================================
-  public getAllUsuarios(): any {
-
-  }
-  // ====================================================================
-  public getAllUsuariosByTipo(tipoUsuario: Roles): any {
-
-  }
-  // ====================================================================
-  public getOneUsuario(docid: string): any {
-
-  }
-  // ====================================================================
-  public deleteUsuario(docid: string): any {
-
-  }
-  // ====================================================================
-
-  public registerUsuario(usr: Usuario): any {
-
-  }
 
 }

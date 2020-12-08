@@ -85,18 +85,24 @@
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="docid">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> DocID </th>
+        <ng-container matColumnDef="uuid">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> UUID</th>
           <td mat-cell *matCellDef="let row" (click)="openSnackBarCopy()" class="copy-text" matTooltip="Copiar"
-            matTooltipPosition="below" [cdkCopyToClipboard]="row.docid"> {{row.docid}}</td>
+            matTooltipPosition="below" [cdkCopyToClipboard]="row.docid"> {{row.uuid}}</td>
         </ng-container>
 
         <ng-container matColumnDef="rol">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Rol </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> {{row.rol}} </td>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            <!-- <div style="background-color: red; color: white; font-weight: bold;"> -->
+            <!-- <mat-chip-list aria-label="Fish selection"> -->
+            <!-- <mat-chip selected [style]="row.rol | chipColor"> {{row.rol}}</mat-chip> -->
+            <div [style]="row.rol | chipColor">{{row.rol}}</div>
+            <!-- </mat-chip-list> -->
+          </td>
         </ng-container>
 
-        <ng-container matColumnDef="nombre">
+        <ng-container matColumnDef="nombre" style="">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
           <td mat-cell *matCellDef="let row" class="text-center"> {{row.nombre}} </td>
         </ng-container>
@@ -119,6 +125,11 @@
         <ng-container matColumnDef="correo">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo </th>
           <td mat-cell *matCellDef="let row"> {{row.correo}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="username">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo </th>
+          <td mat-cell *matCellDef="let row"> {{row.username}} </td>
         </ng-container>
 
         <ng-container matColumnDef="edit" stickyEnd>
