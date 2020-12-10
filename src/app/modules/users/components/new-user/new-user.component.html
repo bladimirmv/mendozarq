@@ -68,11 +68,6 @@
         <input matInput formControlName="contrasenha">
 
       </mat-form-field>
-
-
-
-
-
     </span>
     <!-- <mat-slide-toggle>Auto</mat-slide-toggle> -->
 
@@ -93,9 +88,10 @@
       <textarea matInput placeholder="Ex. 100 Main St" formControlName="direccion"></textarea>
     </mat-form-field>
 
-    <button mat-raised-button mat-dialog-close type="submit" class="full-column button-primary"
+    <button mat-button mat-dialog-close type="submit" class="full-column mat-btn-primary" style="border-radius: 25px;"
       [disabled]="!newUsuarioForm.valid">
       Guardar
     </button>
+
   </form>
 </app-modal>

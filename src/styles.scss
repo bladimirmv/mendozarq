@@ -63,10 +63,18 @@ mat-toolbar {
   font-weight: bold;
 }
 
-.button-primary {
+.mat-btn-primary {
+  border-radius: 25px;
   background-color: var(--primary);
   color: white;
+  font-size: 16px;
+  font-weight: bold;
 
+
+  &:hover {
+    color: white;
+    box-shadow: 0 0 3px 3px var(--primary);
+  }
 }
 
 ::-webkit-scrollbar {
