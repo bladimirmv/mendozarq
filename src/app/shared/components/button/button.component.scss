@@ -4,31 +4,38 @@ button {
 }
 
 .mat-btn-primary {
-  color: var(--secondary);
-  border: 1.5px solid var(--primary);
+  background-color: var(--primary);
+  color: white;
+  font-size: 14px;
+  border-radius: 25px;
 
   &:hover {
     color: white;
-    background-color: var(--primary);
+    box-shadow: 0 0 3px 3px var(--primary);
   }
 }
 
 .mat-btn-secondary {
-  color: var(--secondary);
-  border: 1.5px solid var(--secondary);
+  background-color: var(--secondary);
+  color: white;
+  font-size: 14px;
+  border-radius: 25px;
+
 
   &:hover {
     color: white;
-    background-color: var(--secondary);
+    box-shadow: 0 0 3px 3px var(--secondary);
   }
 }
 
 .mat-btn-warn {
-  color: red;
-  border: 1.5px solid red;
+  background-color: var(--warn);
+  color: white;
+  font-size: 14px;
+  border-radius: 25px;
 
   &:hover {
     color: white;
-    background-color: red;
+    box-shadow: 0 0 3px 3px var(--warn);
   }
 }

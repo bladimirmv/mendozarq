@@ -10,6 +10,7 @@ import { Component, OnInit, Input, Pipe } from '@angular/core';
 export class ButtonComponent implements OnInit {
 
   @Input() color;
+  @Input() width;
   constructor() { }
 
   ngOnInit(): void {

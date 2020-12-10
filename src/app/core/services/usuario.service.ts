@@ -45,13 +45,20 @@ export class UsuarioService {
   }
   // ====================================================================
   public handdleError(error: any): Observable<never> {
-    let errorMessage = 'Ocurrio un error al recuperar los datos';
+    let errorMessage = '';
     if (error) {
-      errorMessage = `Error: ${error.message}`;
+      error.error.message ? errorMessage = `Error: ${error.error.message}</br>`
+        : errorMessage = `
+        Error: ${error.statusText} </br>
+        Status: ${error.status}`;
     }
+    // console.log('this error', error);
+
     this.toastrSvc.error(errorMessage, 'Ocurrio un Error!', {
-      timeOut: 5000
+      timeOut: 7000,
+      enableHtml: true
     });
+
     return throwError(errorMessage);
   }
   // ====================================================================

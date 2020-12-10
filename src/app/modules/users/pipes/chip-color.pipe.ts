@@ -11,7 +11,7 @@ export class ChipColorPipe implements PipeTransform {
     color: white;
     font-weight: bold;
     border-radius: 25px;
-    padding: 3px 0;`;
+    padding: 3px;`;
 
     switch (rol) {
       case 'administrador':
@@ -21,10 +21,10 @@ export class ChipColorPipe implements PipeTransform {
         return `${basicStyle} background-color: #FFBB33`;
         break;
       case 'vendedor':
-        return `${basicStyle} background-color: #FF6058`;
+        return `${basicStyle} background-color: #33B5E5`;
         break;
       case 'cliente':
-        return `${basicStyle} background-color: #33B5E5`;
+        return `${basicStyle} background-color: #00C851`;
         break;
       default:
         break;

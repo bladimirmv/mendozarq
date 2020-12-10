@@ -30,7 +30,7 @@ export class UsersComponent implements OnInit {
   filterValue: string;
   displayedColumns: string[] = ['seleccion', 'uuid', 'rol', 'nombre', 'apellidos', 'celular', 'direccion', 'correo', 'username', 'edit'];
 
-  dataSource: MatTableDataSource<Usuario> = new MatTableDataSource();
+  dataSource: MatTableDataSource<Usuario> = new MatTableDataSource<Usuario>();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -63,7 +63,15 @@ export class UsersComponent implements OnInit {
   }
   // ====================================================================
   onAddUser(): void {
-    this.dialog.open(NewUserComponent);
+    const dialogRef = this.dialog.open(NewUserComponent);
+    dialogRef.afterClosed()
+      .subscribe(() => {
+        this.usuarioSvc.getAllUsuarios()
+          .subscribe(res => {
+            this.dataSource.data = res;
+            this.usuario = res;
+          });
+      });
   }
   // ====================================================================
   oneditUser(user: Usuario): void {
@@ -71,7 +79,7 @@ export class UsersComponent implements OnInit {
   }
 
   // ====================================================================
-  ondeleteUser(): void {
+  async ondeleteUser(): Promise<void> {
     Swal.fire({
       title: 'Estas Seguro?',
       text: 'No podras revertir el cambio!',
@@ -128,6 +136,24 @@ export class UsersComponent implements OnInit {
         }
       }
     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   }
 

@@ -6,14 +6,20 @@
   </div>
   <form class="new-user-form" [formGroup]="newUsuarioForm" (ngSubmit)="onAddUser(newUsuarioForm.value)">
 
-    <mat-form-field class="full-width">
+    <mat-form-field class="full-width full-column">
       <mat-label>Nombre</mat-label>
       <input matInput formControlName="nombre">
     </mat-form-field>
 
+
     <mat-form-field class="full-width">
-      <mat-label>Apellidos</mat-label>
-      <input matInput formControlName="apellidos">
+      <mat-label>Apellido Paterno</mat-label>
+      <input matInput formControlName="apellidoPaterno">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Apellido Materno</mat-label>
+      <input matInput formControlName="apellidoMaterno">
     </mat-form-field>
 
     <mat-form-field class="full-width">
@@ -40,6 +46,42 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+
+
+    <div class="full-width full-column" style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+      <mat-checkbox class="example-margin" style="margin-right: 10px;" matTooltip="Generar Usuario"
+        matTooltipPosition="below" formControlName="autoUsuario" (change)="onCheckBox(newUsuarioForm.value)">
+      </mat-checkbox>
+      <mat-form-field>
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username">
+
+      </mat-form-field>
+
+    </div>
+    <span class="full-width full-column" style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
+      <mat-checkbox formControlName="autoContrasenha" class="example-margin" style="margin-right: 10px;"
+        matTooltip="Generar Contraseña" matTooltipPosition="below" (change)="onCheckBox(newUsuarioForm.value)">
+      </mat-checkbox>
+      <mat-form-field>
+        <mat-label>Contraseña</mat-label>
+        <input matInput formControlName="contrasenha">
+
+      </mat-form-field>
+
+
+
+
+
+    </span>
+    <!-- <mat-slide-toggle>Auto</mat-slide-toggle> -->
+
+
+
+    <!-- <mat-form-field class="full-width full-column">
+      <mat-label>Contrasenha</mat-label>
+      <input matInput formControlName="nombre">
+    </mat-form-field> -->
 
     <mat-form-field class="full-width  full-column">
       <mat-label>Correo</mat-label>

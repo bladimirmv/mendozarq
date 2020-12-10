@@ -1,3 +1,4 @@
+import { ShowContrasenhaComponent } from './../users/components/show-contrasenha/show-contrasenha.component';
 import { PresupuestoObraComponent } from '@modules/presupuestos/components/presupuesto-obra/presupuesto-obra.component';
 import { VisitaComponent } from './components/visita/visita.component';
 import { EditVisitaComponent } from '@modules/visitas/components/edit-visita/edit-visita.component';
@@ -19,6 +20,9 @@ const routes: Routes = [
       },
       {
         path: 'dashboard', component: DashboardComponent
+      },
+      {
+        path: 'showusr', component: ShowContrasenhaComponent
       },
       {
         path: 'usuarios', loadChildren: () =>

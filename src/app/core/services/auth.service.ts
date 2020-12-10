@@ -9,7 +9,7 @@ import { Usuario, Roles } from '@app/shared/models/usuario.interface';
 
 
 import { environment } from '@env/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { JwtHelperService } from '@auth0/angular-jwt';
 
@@ -62,6 +62,7 @@ export class AuthService extends RoleValidator {
   // ====================================================================
   public checkToken(): any {
     const usuarioToken = localStorage.getItem('token') || null;
+
     const isExpired = helper.isTokenExpired(usuarioToken);
     const decodeToken = helper.decodeToken(usuarioToken);
 
@@ -89,13 +90,19 @@ export class AuthService extends RoleValidator {
     localStorage.setItem('token', token);
   }
   // ====================================================================
-  public handdleError(error: any): Observable<never> {
-    let errorMessage = 'Ocurrio un error al recuperar los datos';
-    if (error) {
-      errorMessage = `Error: code ${error.message}`;
+  public handdleError(httpError: HttpErrorResponse): Observable<never> {
+    let errorMessage = '';
+    if (httpError) {
+      httpError.error.message ? errorMessage = `Error: ${JSON.stringify(httpError.error.message)}</br>`
+        : errorMessage = `
+        Error: ${httpError.statusText} </br>
+        Status: ${httpError.status}`;
     }
+    console.log('this error', httpError);
+
     this.toastrSvc.error(errorMessage, 'Ocurrio un Error!', {
-      timeOut: 5000
+      timeOut: 7000,
+      enableHtml: true
     });
     return throwError(errorMessage);
   }

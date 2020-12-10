@@ -27,6 +27,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { ToastrModule } from 'ngx-toastr';
 const matModules = [
@@ -56,7 +57,8 @@ const matModules = [
   MatDatepickerModule,
   MatNativeDateModule,
   MatProgressBarModule,
-  MatChipsModule
+  MatChipsModule,
+  MatSlideToggleModule
 ];
 
 

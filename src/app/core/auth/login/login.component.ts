@@ -36,7 +36,15 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.brigthtnessSvc.reset();
   }
 
+
+  getapi() {
+
+
+  }
+
   ngOnInit(): void {
+
+
 
     // fetch('http://localhost:3000/api/usuario', {
     //   method: 'get'
@@ -73,6 +81,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   onLogIn(usr: Usuario): void {
+
     this.unsubscribe$.add(
       this.authSvc.login(usr)
         .subscribe((res: UsuarioResponse) => {
@@ -88,31 +97,6 @@ export class LoginComponent implements OnInit, OnDestroy {
           }
         })
     );
-
-
-
-
-
-    // this.authSvc.loginByEmailAndPassword(usr.correo, usr.contrasenha)
-    //   .then(() => {
-
-    //     this.unsubscribe$ = this.authSvc.user$
-    //       .subscribe(res => {
-    //         switch (res[0].rol) {
-    //           case 'administrador':
-    //             this.router.navigate(['/admin']);
-    //             break;
-    //           default:
-    //             break;
-    //         }
-    //         this.toastrSvc.info(res[0].nombre, 'Bienvenido!');
-    //       });
-
-    //   })
-    //   .catch(error => {
-    //     this.toastrSvc.error(error, 'Ocurrio un error!');
-    //   });
-
 
   }
 
