@@ -1,0 +1,31 @@
+<app-modal>
+    <div slot="title">
+      <h1>
+        Nueva Categoria de Recurso
+      </h1>
+    </div>
+    <form class="new-user-form" [formGroup]="newCategoriaRecursoForm" (ngSubmit)="onAddUser(newCategoriaRecursoForm.value)">
+  
+      <mat-form-field class="full-width full-column">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre">
+      </mat-form-field>
+  
+      <mat-form-field class="full-width">
+        <mat-label>Color</mat-label>
+        <input matInput type="color" formControlName="color">
+      </mat-form-field>
+  
+      <mat-form-field class="full-width full-column">
+        <mat-label>Descripcion</mat-label>
+        <textarea matInput placeholder="Recursos duros" formControlName="descripcion"></textarea>
+      </mat-form-field>
+  
+      <button mat-button mat-dialog-close type="submit" class="full-column mat-btn-primary" style="border-radius: 25px;"
+        [disabled]="!newCategoriaRecursoForm.valid">
+        Guardar
+      </button>
+  
+    </form>
+  </app-modal>
+  

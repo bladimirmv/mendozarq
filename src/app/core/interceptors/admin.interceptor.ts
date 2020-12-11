@@ -14,6 +14,10 @@ export class AdminInterceptor implements HttpInterceptor {
     const url: Array<string> = [
       '/api/usuario/',
       '/api/usuario',
+      '/api/categoriarecurso',
+      '/api/categoriarecurso/',
+      '/api/recurso',
+      '/api/recurso/'
     ];
 
     if (url.some(path => req.url.includes(path))) {
