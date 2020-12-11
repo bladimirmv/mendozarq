@@ -29,7 +29,7 @@ export class CategoriaRecursoComponent implements OnInit {
   selected: CategoriaRecurso[] = [];
   selection = new SelectionModel<CategoriaRecurso>(true, []);
   filterValue: string;
-  displayedColumns: string[] = ['uuid', 'nombre', 'descripcion'];
+  displayedColumns: string[] = ['seleccion', 'nombre', 'color', 'descripcion', 'edit'];
 
   dataSource: MatTableDataSource<CategoriaRecurso> = new MatTableDataSource<CategoriaRecurso>();
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -53,16 +53,16 @@ export class CategoriaRecursoComponent implements OnInit {
     this.dataSource.sort = this.sort;
 
     this.selection.changed
-    .pipe(map(a => a.source))
-    .subscribe(data => this.selected = data.selected);
+      .pipe(map(a => a.source))
+      .subscribe(data => this.selected = data.selected);
 
   }
   ngOnDestroy(): void {
     this.destroy$.next({});
     this.destroy$.complete();
   }
-   // ====================================================================
-   getAllCategoriasRecursos(): void {
+  // ====================================================================
+  getAllCategoriasRecursos(): void {
     this.categoriasRecursos$ = this.categoriaRecursoSvc.getAllCategoriasRecurso();
     this.categoriaRecursoSvc.getAllCategoriasRecurso()
       .subscribe(res => {
@@ -70,34 +70,50 @@ export class CategoriaRecursoComponent implements OnInit {
         this.categoriaRecurso = res;
       });
   }
-    // ====================================================================
-    onAddCategoriaRecurso(): void {
-      const dialogRef = this.dialog.open(NewCategoriaRecursoComponent);
-      dialogRef.afterClosed()
-        .subscribe(() => {
-          this.categoriaRecursoSvc.getAllCategoriasRecurso()
-            .subscribe(res => {
-              this.dataSource.data = res;
-              this.categoriaRecurso = res;
-            });
-        });
-    }
-    // ====================================================================
-    openSnackBarCopy(): void {
-      this.snackBar.open('Copiado', 'Cerrar', {
-        duration: 500,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom',
+  // ====================================================================
+  onAddCategoriaRecurso(): void {
+    const dialogRef = this.dialog.open(NewCategoriaRecursoComponent);
+    dialogRef.afterClosed()
+      .subscribe(() => {
+        this.categoriaRecursoSvc.getAllCategoriasRecurso()
+          .subscribe(res => {
+            this.dataSource.data = res;
+            this.categoriaRecurso = res;
+          });
       });
-    }
-    // ====================================================================
-    applyFilter(event: Event): void {
-      this.filterValue = (event.target as HTMLInputElement).value;
+  }
+  // ====================================================================
+  applyFilter(event: Event): void {
+    this.filterValue = (event.target as HTMLInputElement).value;
 
-      this.dataSource.filter = this.filterValue.trim().toLowerCase();
-      if (this.dataSource.paginator) {
-        this.dataSource.paginator.firstPage();
-      }
+    this.dataSource.filter = this.filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
     }
+  }
+  // ====================================================================
+  isAllSelected(): any {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+  // ====================================================================
+  masterToggle(): void {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+  // ====================================================================
+  clearCheckbox(): void {
+    this.selection.clear();
+  }
+  // ====================================================================
+  checkboxLabel(row?: CategoriaRecurso): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.nombre}`;
+  }
+  // ====================================================================
 
 }

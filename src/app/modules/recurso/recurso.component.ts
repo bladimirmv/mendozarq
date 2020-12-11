@@ -24,7 +24,7 @@ export class RecursoComponent implements OnInit {
   selected: Recurso[] = [];
   selection = new SelectionModel<Recurso>(true, []);
   filterValue: string;
-  displayedColumns: string[] = ['id_recurso','nombre', 'descripcion', 'categoria'];
+  displayedColumns: string[] = ['seleccion', 'nombre', 'descripcion', 'categoria', 'edit'];
 
   dataSource: MatTableDataSource<Recurso> = new MatTableDataSource<Recurso>();
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -46,8 +46,8 @@ export class RecursoComponent implements OnInit {
     this.dataSource.sort = this.sort;
 
     this.selection.changed
-    .pipe(map(a => a.source))
-    .subscribe(data => this.selected = data.selected);
+      .pipe(map(a => a.source))
+      .subscribe(data => this.selected = data.selected);
   }
   ngOnDestroy(): void {
     this.destroy$.next({});
@@ -78,14 +78,6 @@ export class RecursoComponent implements OnInit {
   }
 
   // ====================================================================
-  openSnackBarCopy(): void {
-    this.snackBar.open('Copiado', 'Cerrar', {
-      duration: 500,
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom',
-    });
-  }
-  // ====================================================================
   applyFilter(event: Event): void {
     this.filterValue = (event.target as HTMLInputElement).value;
 
@@ -94,5 +86,30 @@ export class RecursoComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
+  // ====================================================================
+  isAllSelected(): any {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+  // ====================================================================
+  masterToggle(): void {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+  // ====================================================================
+  clearCheckbox(): void {
+    this.selection.clear();
+  }
+  // ====================================================================
+  checkboxLabel(row?: Recurso): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.nombre}`;
+  }
+  // ====================================================================
+
 
 }

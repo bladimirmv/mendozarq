@@ -17,15 +17,17 @@
   .table-content {
     width: 100%;
     max-width: 100%;
+    scrollbar-width: thin;
     overflow: auto;
-
+    scrollbar-width: 100px;
 
   }
 
   table {
     width: 100%;
     max-width: 100%;
-    overflow: auto;
+    // overflow: auto;
+
   }
 
 
@@ -152,4 +154,23 @@
 
 
   }
+}
+
+.table-content::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+.table-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+.table-content::-webkit-scrollbar-thumb {
+  background: rgb(212, 212, 212);
+}
+
+/* Handle on hover */
+.table-content::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
 }
