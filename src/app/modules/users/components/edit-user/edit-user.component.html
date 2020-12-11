@@ -60,7 +60,8 @@
 
 
       <div class="full-column full-width">
-        <mat-slide-toggle (change)="onSlideToggle($event)">Nueva Contraseña</mat-slide-toggle>
+        <mat-slide-toggle (change)="onSlideToggle($event)" formControlName="newContrasenha">Nueva Contraseña
+        </mat-slide-toggle>
       </div>
 
 
@@ -86,8 +87,8 @@
       <textarea matInput placeholder="Ex. 100 Main St" formControlName="direccion"></textarea>
     </mat-form-field>
 
-    <button mat-button mat-dialog-close type="submit" class="full-column mat-btn-primary" style="border-radius: 25px;"
-      [disabled]="!editUsuarioForm.valid">
+    <button mat-button [mat-dialog-close]="true" cdkFocusInitial type="submit" class="full-column mat-btn-primary"
+      style="border-radius: 25px;" [disabled]="!editUsuarioForm.valid">
       Guardar
     </button>
 

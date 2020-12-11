@@ -1,3 +1,4 @@
+import { UsuarioService } from '@services/usuario.service';
 import { Usuario } from '@app/shared/models/usuario.interface';
 import { Component, Inject, OnInit } from '@angular/core';
 
@@ -5,7 +6,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '@services/auth.service';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ShowContrasenhaComponent } from '../show-contrasenha/show-contrasenha.component';
 
 @Component({
   selector: 'app-edit-user',
@@ -27,43 +29,42 @@ export class EditUserComponent implements OnInit {
     autoUsuario: new FormControl(),
     autoContrasenha: new FormControl({ value: '', disabled: true }),
     newContrasenha: new FormControl(),
+
   });
 
   disabled = false;
 
-  constructor(private toastSvc: ToastrService, private authSvc: AuthService, @Inject(MAT_DIALOG_DATA) public data: Usuario) { }
+  constructor(
+    private toastSvc: ToastrService,
+    private usuarioSvc: UsuarioService,
+    @Inject(MAT_DIALOG_DATA) public data: Usuario,
+    private matDialog: MatDialog,
+    private dialogRef: MatDialogRef<EditUserComponent>) { }
 
   ngOnInit(): void {
   }
 
-  oneditUser(data: Usuario): void {
-    console.log(this.editUsuarioForm.value);
-
-
-    // data.uuid = this.data.uuid;
-
-
-    // this.authSvc.updateUsuario(data)
-    //   .then(() => {
-    //     this.toastSvc.success('Correctamente', 'Usuario Editado', {
-    //       timeOut: 2000,
-    //       progressBar: true,
-    //       progressAnimation: 'increasing'
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     console.log('Error:', error);
-    //     this.toastSvc.error('Se ha producido un error.', 'Error al Editar!', {
-    //       timeOut: 2000,
-    //       progressBar: true,
-    //       progressAnimation: 'increasing'
-    //     });
-    //   });
+  oneditUser(usuario: Usuario): void {
+    usuario.uuid = this.data.uuid;
+    const { newContrasenha, ...usr }: any = usuario;
+    this.usuarioSvc
+      .updateUsuario(usuario.uuid, usr)
+      .subscribe(usr => {
+        if (usr) {
+          this.toastSvc.success('Correctamente', 'Usuario Editado', {
+            timeOut: 2000,
+            progressBar: true,
+            progressAnimation: 'increasing'
+          });
+          if (newContrasenha) {
+            this.matDialog.open(ShowContrasenhaComponent, { data: usr });
+            this.dialogRef.close(this.editUsuarioForm.value);
+          }
+        }
+      });
   }
 
   onCheckBox(usr: Usuario): void {
-
-
     if (usr.autoContrasenha === true) {
       this.editUsuarioForm.controls['contrasenha'].disable();
       this.editUsuarioForm.patchValue({
@@ -90,11 +91,7 @@ export class EditUserComponent implements OnInit {
     }
   }
 
-
   onSlideToggle(e): void {
-
-
-
 
     if (!e.checked) {
       this.editUsuarioForm.controls['contrasenha'].disable();

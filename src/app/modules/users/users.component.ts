@@ -66,12 +66,13 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   // ====================================================================
   getAllUsuarios(): void {
-    this.usuarios$ = this.usuarioSvc.getAllUsuarios();
+
     this.usuarioSvc.getAllUsuarios()
       .subscribe(res => {
         this.dataSource.data = res;
         this.usuario = res;
       });
+    this.usuarios$ = this.usuarioSvc.getAllUsuarios();
   }
   // ====================================================================
   onAddUser(): void {
@@ -83,7 +84,12 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
   // ====================================================================
   oneditUser(user: Usuario): void {
-    this.dialog.open(EditUserComponent, { data: user });
+
+    const dialogRef = this.dialog.open(EditUserComponent, { data: user });
+    dialogRef.afterClosed()
+      .subscribe((res) => {
+        this.getAllUsuarios();
+      });
   }
   // ====================================================================
   async ondeleteUser(): Promise<void> {

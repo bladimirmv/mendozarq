@@ -1,5 +1,5 @@
 import { ShowContrasenhaComponent } from './../show-contrasenha/show-contrasenha.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UsuarioService } from '@services/usuario.service';
 import { Usuario, UsuarioResponse } from '@app/shared/models/usuario.interface';
 import { Component, OnInit } from '@angular/core';
@@ -35,7 +35,8 @@ export class NewUserComponent implements OnInit {
     private toastrSvc: ToastrService,
     private authSvc: AuthService,
     private usuarioSvc: UsuarioService,
-    private matDialog: MatDialog) {
+    private matDialog: MatDialog,
+    private dialogRef: MatDialogRef<NewUserComponent>) {
 
   }
 
@@ -81,6 +82,7 @@ export class NewUserComponent implements OnInit {
         if (usr) {
           this.toastrSvc.success('El usuario se ha creado correctamente', 'Usuario Creado');
           this.matDialog.open(ShowContrasenhaComponent, { data: usr });
+          this.dialogRef.close(this.newUsuarioForm.value);
         }
       });
   }

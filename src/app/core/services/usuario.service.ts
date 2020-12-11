@@ -52,7 +52,7 @@ export class UsuarioService {
         Error: ${error.statusText} </br>
         Status: ${error.status}`;
     }
-    // console.log('this error', error);
+    console.log('this error', error);
 
     this.toastrSvc.error(errorMessage, 'Ocurrio un Error!', {
       timeOut: 7000,

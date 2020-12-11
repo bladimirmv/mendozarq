@@ -84,10 +84,8 @@
     <textarea matInput placeholder="Ex. 100 Main St" formControlName="direccion"></textarea>
   </mat-form-field>
 
-
-
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial type="submit" class="full-column mat-btn-primary"
-    style="border-radius: 25px;" [disabled]="!newUsuarioForm.valid">
+  <button mat-button type="submit" class="full-column mat-btn-primary" style="border-radius: 25px;"
+    [disabled]="!newUsuarioForm.valid">
     Guardar
   </button>
 
