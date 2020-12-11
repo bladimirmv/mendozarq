@@ -64,7 +64,7 @@ export class AuthService extends RoleValidator {
     const usuarioToken = localStorage.getItem('token') || null;
 
     const isExpired = helper.isTokenExpired(usuarioToken);
-    const decodeToken = helper.decodeToken(usuarioToken);
+    const { iat, exp, ...usuarioJwt } = helper.decodeToken(usuarioToken);
 
     if (usuarioToken) {
       if (isExpired) {
@@ -76,12 +76,15 @@ export class AuthService extends RoleValidator {
       } else {
         this.loggedIn.next(true);
         this.usuarioToken.next(usuarioToken);
-        this.usuario$ = this.http.get<Usuario>(`${this.API_URL}/api/usuario/${decodeToken.uuid}`)
-          .pipe(
-            map(res => {
-              return res[0] as Usuario;
-            })
-          );
+        this.usuario.next(usuarioJwt);
+
+
+        // this.usuario$ = this.http.get<Usuario>(`${this.API_URL}/api/usuario/${decodeToken.uuid}`)
+        //   .pipe(
+        //     map(res => {
+        //       return res[0] as Usuario;
+        //     })
+        //   );
       }
     }
   }

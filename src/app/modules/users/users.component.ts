@@ -1,7 +1,7 @@
 import { EditUserComponent } from './components/edit-user/edit-user.component';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { NewUserComponent } from './components/new-user/new-user.component';
-import { map } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -16,13 +16,14 @@ import { AuthService } from '@services/auth.service';
 import { UsuarioService } from '@services/usuario.service';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<any>();
   expandedElement: Usuario | null;
 
   selected: Usuario[] = [];
@@ -45,14 +46,11 @@ export class UsersComponent implements OnInit {
     private usuarioSvc: UsuarioService) {
   }
 
-  ngOnInit(): void {
-    this.usuarios$ = this.usuarioSvc.getAllUsuarios();
-    this.usuarioSvc.getAllUsuarios()
-      .subscribe(res => {
-        this.dataSource.data = res;
-        this.usuario = res;
-      });
 
+
+  ngOnInit(): void {
+
+    this.getAllUsuarios();
 
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -60,6 +58,20 @@ export class UsersComponent implements OnInit {
     this.selection.changed
       .pipe(map(a => a.source))
       .subscribe(data => this.selected = data.selected);
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next({});
+    this.destroy$.complete();
+  }
+
+  // ====================================================================
+  getAllUsuarios(): void {
+    this.usuarios$ = this.usuarioSvc.getAllUsuarios();
+    this.usuarioSvc.getAllUsuarios()
+      .subscribe(res => {
+        this.dataSource.data = res;
+        this.usuario = res;
+      });
   }
   // ====================================================================
   onAddUser(): void {
@@ -92,8 +104,9 @@ export class UsersComponent implements OnInit {
       if (result.value) {
 
         if (this.selected.length === 1) {
-
-          this.usuarioSvc.deleteUsuario(this.selected[0].uuid)
+          this.usuarioSvc
+            .deleteUsuario(this.selected[0].uuid)
+            .pipe(takeUntil(this.destroy$))
             .subscribe(usr => {
               if (usr) {
                 this.toastSvc.success('Se ha eliminado correctamente', 'Usuario Eliminado', {
@@ -101,11 +114,7 @@ export class UsersComponent implements OnInit {
                   progressBar: true,
                   progressAnimation: 'increasing'
                 });
-                this.usuarioSvc.getAllUsuarios()
-                  .subscribe(res => {
-                    this.dataSource.data = res;
-                    this.usuario = res;
-                  });
+                this.getAllUsuarios();
                 this.clearCheckbox();
               } else {
                 Swal.fire('Error!', 'Ocurrio un error al eliminar este usuario', 'error');
@@ -116,8 +125,11 @@ export class UsersComponent implements OnInit {
         } else {
           try {
             this.selected.forEach((usuario, index) => {
+
               if (index + 1 === this.selected.length) {
-                this.usuarioSvc.deleteUsuario(usuario.uuid)
+                this.usuarioSvc
+                  .deleteUsuario(usuario.uuid)
+                  .pipe(takeUntil(this.destroy$))
                   .subscribe(res => {
                     if (res) {
                       this.toastSvc.success('Se han eliminado correctamente', 'Usuarios Eliminados', {
@@ -125,7 +137,8 @@ export class UsersComponent implements OnInit {
                         progressBar: true,
                         progressAnimation: 'increasing'
                       });
-                      this.usuarioSvc.getAllUsuarios()
+                      this.usuarioSvc
+                        .getAllUsuarios()
                         .subscribe(res => {
                           this.dataSource.data = res;
                           this.usuario = res;
@@ -135,9 +148,13 @@ export class UsersComponent implements OnInit {
                   })
 
               } else {
-                this.usuarioSvc.deleteUsuario(usuario.uuid);
+                this.usuarioSvc
+                  .deleteUsuario(usuario.uuid)
+                  .pipe(takeUntil(this.destroy$))
+                  .subscribe();
               }
             });
+
           }
           catch (error) {
             console.log('Error:', error);

@@ -14,7 +14,9 @@ export class AdminGuard implements CanActivate {
   canActivate(): Observable<boolean> | boolean {
     return this.authSvc.usuario$.pipe(
       take(1),
-      map((usuario: Usuario) => usuario && this.authSvc.isAdmin(usuario)),
+      map((usuario: Usuario) => {
+        return usuario && this.authSvc.isAdmin(usuario)
+      }),
       tap(canEdit => {
         if (!canEdit) {
           this.router.navigate(['/login']);
