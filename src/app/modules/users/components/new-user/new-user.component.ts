@@ -73,31 +73,20 @@ export class NewUserComponent implements OnInit {
     }
   }
 
-  onAddUser(usuario: Usuario): void {
+  onAddUser(usr?: Usuario): void {
+    const usuario = this.newUsuarioForm.value;
 
     this.usuarioSvc.addUsuario(usuario)
       .subscribe(usr => {
         if (usr) {
           this.toastrSvc.success('El usuario se ha creado correctamente', 'Usuario Creado');
-          this.matDialog.open(ShowContrasenhaComponent, { data: usr })
+          this.matDialog.open(ShowContrasenhaComponent, { data: usr });
         }
       });
+  }
 
-    // .then(() => {
-    //   this.toastSvc.success('Creado correctamente', 'Nuevo Usuario', {
-    //     timeOut: 2000,
-    //     progressBar: true,
-    //     progressAnimation: 'increasing'
-    //   });
-    // })
-    // .catch((error) => {
-    //   console.log('Error:', error);
-    //   this.toastSvc.error('Se ha producido un error.', 'Error al Crear!', {
-    //     timeOut: 2000,
-    //     progressBar: true,
-    //     progressAnimation: 'increasing'
-    //   });
-    // });
+  onCloseDialog(): void {
+    this.matDialog.closeAll();
   }
 
 }

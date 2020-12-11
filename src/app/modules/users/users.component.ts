@@ -1,7 +1,7 @@
-import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { NewUserComponent } from './components/new-user/new-user.component';
 import { map, takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -11,12 +11,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Usuario } from '@app/shared/models/usuario.interface';
+import { EditUserComponent } from './components/edit-user/edit-user.component';
 
 import { AuthService } from '@services/auth.service';
 import { UsuarioService } from '@services/usuario.service';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
-import { Observable, Subject } from 'rxjs';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -77,19 +77,14 @@ export class UsersComponent implements OnInit, OnDestroy {
   onAddUser(): void {
     const dialogRef = this.dialog.open(NewUserComponent);
     dialogRef.afterClosed()
-      .subscribe(() => {
-        this.usuarioSvc.getAllUsuarios()
-          .subscribe(res => {
-            this.dataSource.data = res;
-            this.usuario = res;
-          });
+      .subscribe((res) => {
+        this.getAllUsuarios();
       });
   }
   // ====================================================================
   oneditUser(user: Usuario): void {
     this.dialog.open(EditUserComponent, { data: user });
   }
-
   // ====================================================================
   async ondeleteUser(): Promise<void> {
     Swal.fire({
