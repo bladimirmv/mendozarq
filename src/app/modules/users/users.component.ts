@@ -102,74 +102,51 @@ export class UsersComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Eliminar'
     }).then(async (result) => {
       if (result.value) {
-
-        if (this.selected.length === 1) {
-          this.usuarioSvc
-            .deleteUsuario(this.selected[0].uuid)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(usr => {
-              if (usr) {
-                this.toastSvc.success('Se ha eliminado correctamente', 'Usuario Eliminado', {
-                  timeOut: 2000,
-                  progressBar: true,
-                  progressAnimation: 'increasing'
-                });
-                this.getAllUsuarios();
-                this.clearCheckbox();
-              } else {
-                Swal.fire('Error!', 'Ocurrio un error al eliminar este usuario', 'error');
-              }
-            })
-
-
-        } else {
-          try {
-            this.selected.forEach((usuario, index) => {
-
-              if (index + 1 === this.selected.length) {
-                this.usuarioSvc
-                  .deleteUsuario(usuario.uuid)
-                  .pipe(takeUntil(this.destroy$))
-                  .subscribe(res => {
-                    if (res) {
-                      this.toastSvc.success('Se han eliminado correctamente', 'Usuarios Eliminados', {
-                        timeOut: 2000,
-                        progressBar: true,
-                        progressAnimation: 'increasing'
-                      });
-                      this.usuarioSvc
-                        .getAllUsuarios()
-                        .subscribe(res => {
-                          this.dataSource.data = res;
-                          this.usuario = res;
-                        });
-                      this.clearCheckbox();
-                    }
-                  })
-
-              } else {
-                this.usuarioSvc
-                  .deleteUsuario(usuario.uuid)
-                  .pipe(takeUntil(this.destroy$))
-                  .subscribe();
-              }
-            });
-
-          }
-          catch (error) {
-            console.log('Error:', error);
-            this.toastSvc.error('Se ha producido un error.', 'Error al Eliminar!', {
-              timeOut: 2000,
-              progressBar: true,
-              progressAnimation: 'increasing'
-            });
-          }
-        }
+        this.selected.length === 1 ? this.deleteOneUsuario() : this.deleteMoreThanOneUsuario();
       }
     });
 
   }
+  // ====================================================================
+  deleteOneUsuario(): void {
+    this.usuarioSvc
+      .deleteUsuario(this.selected[0].uuid)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(usr => {
+        if (usr) {
+          this.toastSvc.success('Se ha eliminado correctamente', 'Usuario Eliminado', {
+            timeOut: 2000,
+            progressBar: true,
+            progressAnimation: 'increasing'
+          });
+          this.getAllUsuarios();
+          this.clearCheckbox();
+        } else {
+          Swal.fire('Error!', 'Ocurrio un error al eliminar este usuario', 'error');
+        }
+      });
+  }
+  // ====================================================================
+  deleteMoreThanOneUsuario(): void {
+    this.selected.forEach((usuario, index) => {
+      const isLast: boolean = index + 1 === this.selected.length;
+      this.usuarioSvc
+        .deleteUsuario(usuario.uuid)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(res => {
+          if (res && isLast) {
+            this.toastSvc.success('Se han eliminado correctamente', 'Usuarios Eliminados', {
+              timeOut: 2000,
+              progressBar: true,
+              progressAnimation: 'increasing'
+            });
+            this.getAllUsuarios()
+            this.clearCheckbox();
+          }
+        });
 
+    });
+  }
   // ====================================================================
   openSnackBarCopy(): void {
     this.snackBar.open('Copiado', 'Cerrar', {
