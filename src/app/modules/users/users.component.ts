@@ -17,6 +17,7 @@ import { AuthService } from '@services/auth.service';
 import { UsuarioService } from '@services/usuario.service';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
+import { LocationBarService } from '@app/core/services/location-bar.service';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -43,7 +44,8 @@ export class UsersComponent implements OnInit, OnDestroy {
     private toastSvc: ToastrService,
     public dialog: MatDialog,
     private authSvc: AuthService,
-    private usuarioSvc: UsuarioService) {
+    private usuarioSvc: UsuarioService,
+    public locationBarSvc: LocationBarService) {
   }
 
 
@@ -58,10 +60,23 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.selection.changed
       .pipe(map(a => a.source))
       .subscribe(data => this.selected = data.selected);
+
+    this.locationBarSvc.pushLocation({
+      icon: 'contacts',
+      name: 'Usuarios',
+      link: 'usuarios'
+    });
+    this.locationBarSvc.pushLocation({
+      icon: 'contacts',
+      name: 'Usuarios',
+      link: 'usuarios'
+    });
+
   }
   ngOnDestroy(): void {
     this.destroy$.next({});
     this.destroy$.complete();
+    this.locationBarSvc.popLocation();
   }
 
   // ====================================================================

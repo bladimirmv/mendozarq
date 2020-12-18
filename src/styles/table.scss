@@ -130,7 +130,7 @@
 
 .long-txt {
   white-space: normal;
-  min-width: 150px;
+  min-width: 100px;
 }
 
 @keyframes opacity-table {
@@ -156,21 +156,21 @@
   }
 }
 
-.table-content::-webkit-scrollbar {
-  width: 5px;
-}
+// .table-content::-webkit-scrollbar {
+//   width: 5px;
+// }
 
-/* Track */
-.table-content::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
+// /* Track */
+// .table-content::-webkit-scrollbar-track {
+//   background: #f1f1f1;
+// }
 
-/* Handle */
-.table-content::-webkit-scrollbar-thumb {
-  background: rgb(212, 212, 212);
-}
+// /* Handle */
+// .table-content::-webkit-scrollbar-thumb {
+//   background: rgb(212, 212, 212);
+// }
 
-/* Handle on hover */
-.table-content::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
-}
+// /* Handle on hover */
+// .table-content::-webkit-scrollbar-thumb:hover {
+//   background: var(--primary);
+// }

@@ -17,8 +17,8 @@
 
 
           <mat-menu #menu="matMenu" style="overflow: hidden;">
-            <div mat-menu-item>
-              <mat-slider min="40" max="100" value="100" (change)="onBrightness($event)">
+            <div mat-menu-item *ngIf="brightnessSvc.brightness$|async as brValue">
+              <mat-slider min="40" max="100" [value]="brValue" (change)="onBrightness($event)">
               </mat-slider>
             </div>
           </mat-menu>
@@ -166,7 +166,7 @@
         </button> -->
         <a routerLink="/perfil" class="usuarioSide" *ngIf="authSvc.isLogged | async">
           <h3>
-            login
+
             <!-- {{usr[0].nombre+ ' ' +usr[0].apellidos }} -->
           </h3>
           <span>
@@ -178,6 +178,20 @@
 
 
     </mat-toolbar>
+
+    <div class="mat-elevation-z2 " *ngIf="locationBarSvc.locationList$|async as ltnbar"
+      style=" z-index: 1000; background-color: white; color: black; padding: 8px ; display: flex; margin:10px 15px; border-radius: 2.5px; overflow: auto;">
+      <a *ngFor="let location of ltnbar" [routerLink]="location.link"
+        style=" padding-left: 2.5px; text-decoration: none;">
+        <span style="color: black; font-size: 16px; display: flex; align-items: center;">
+          <mat-icon class=" mat-18" style="font-size: 20px; display: grid;place-items: center;">
+            {{location.icon}}</mat-icon>
+          {{location.name}}/
+        </span>
+
+      </a>
+
+    </div>
 
     <router-outlet></router-outlet>
 

@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BrightnessService {
-  private brightness = new BehaviorSubject<number>(100);
+  private brightness: BehaviorSubject<number> = new BehaviorSubject<number>(100);
   public brightness$ = this.brightness.asObservable();
   constructor() {
     this.checkValue();

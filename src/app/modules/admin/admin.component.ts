@@ -1,3 +1,4 @@
+import { LocationBarService } from './../../core/services/location-bar.service';
 import { AuthService } from '@services/auth.service';
 import { BrightnessService } from './../../core/services/brightness.service';
 import { Location } from '@angular/common';
@@ -26,7 +27,8 @@ export class AdminComponent implements OnInit, OnDestroy {
     private breakpointObserver: BreakpointObserver,
     private location: Location,
     public brightnessSvc: BrightnessService,
-    public authSvc: AuthService) {
+    public authSvc: AuthService,
+    public locationBarSvc: LocationBarService) {
   }
 
   onBrightness(e): void {
@@ -41,10 +43,18 @@ export class AdminComponent implements OnInit, OnDestroy {
       ).subscribe(res => this.breakpoint = res);
     this.$usr = of(false);
 
+    this.locationBarSvc.pushLocation({
+      icon: 'dashboard',
+      name: 'Administracion',
+      link: '/admin'
+    });
+
   }
-
+  ngOnDestroy(): void {
+    this.unsubscribe$.unsubscribe();
+    this.locationBarSvc.deleteLocation();
+  }
   onback(): void {
-
     this.location.back();
   }
   onForward(): void {
@@ -55,8 +65,6 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   }
 
-  ngOnDestroy(): void {
-    this.unsubscribe$.unsubscribe();
-  }
+
 
 }

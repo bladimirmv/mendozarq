@@ -18,6 +18,7 @@ $mendozarq-theme: mat-light-theme((color: (primary: $mendozarq-primary,
 
 * {
   font-family: Montserrat, sans-serif;
+  // font-size: 1px;
   --primary: #FF6E00;
   --secondary: #425066;
   --warn: red;
@@ -77,21 +78,21 @@ mat-toolbar {
   }
 }
 
-::-webkit-scrollbar {
-  width: 5px;
-}
+// ::-webkit-scrollbar {
+//   width: 5px;
+// }
 
-/* Track */
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
+// /* Track */
+// ::-webkit-scrollbar-track {
+//   background: #f1f1f1;
+// }
 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: rgb(212, 212, 212);
-}
+// /* Handle */
+// ::-webkit-scrollbar-thumb {
+//   background: rgb(212, 212, 212);
+// }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
-}
+// /* Handle on hover */
+// ::-webkit-scrollbar-thumb:hover {
+//   background: var(--primary);
+// }

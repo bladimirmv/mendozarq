@@ -17,6 +17,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { getTreeMultipleDefaultNodeDefsError } from '@angular/cdk/tree';
 
 @Component({
   selector: 'app-proyectos',
@@ -47,12 +48,51 @@ export class ProyectosComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this.proyectoSvc.getAllProyectos()
-      .subscribe(res => {
-        this.dataSource.data = res;
-        this.proyecto = res;
-      });
+    this.dataSource.data = [{
+      idProyecto: '123',
+      categoria: ['construccion'],
+      nombre: 'PROYECTO 1',
+      descripcion: 'primero proyecto creado',
+      estado: true,
+      fechaInicio: new Date(),
+      fechaFinal: new Date(),
+      lugarProyecto: 'av segunda',
+      cliente: 'bladimir',
+      nombreCliente: 'blaidmir',
+      porcentaje: 90,
+    }, {
+      idProyecto: '123',
+      categoria: ['construccion'],
+      nombre: 'PROYECTO 2',
+      descripcion: 'primero proyecto creado',
+      estado: true,
+      fechaInicio: new Date(),
+      fechaFinal: new Date(),
+      lugarProyecto: 'av segunda',
+      cliente: 'bladimir',
+      nombreCliente: 'blaidmir',
+      porcentaje: 10,
+    },
+    {
+      idProyecto: '123',
+      categoria: ['construccion'],
+      nombre: 'ejemplo proyecto',
+      descripcion: 'primero proyecto creado',
+      estado: true,
+      fechaInicio: new Date(),
+      fechaFinal: new Date(),
+      lugarProyecto: 'av segunda',
+      cliente: 'bladimir',
+      nombreCliente: 'blaidmir',
+      porcentaje: 60,
+    }
+    ] as Proyecto[];
+    // this.proyecto = ;
+    // this.proyectoSvc.getAllProyectos()
+    //   .subscribe(res => {
+    //     this.dataSource.data = res;
+    //     this.proyecto = res;
+    //   });
 
 
     this.dataSource.paginator = this.paginator;

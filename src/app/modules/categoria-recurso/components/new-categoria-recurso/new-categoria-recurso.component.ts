@@ -14,9 +14,9 @@ import { AuthService } from '@app/core/services/auth.service';
 export class NewCategoriaRecursoComponent implements OnInit {
 
   public newCategoriaRecursoForm: FormGroup = new FormGroup({
-    nombre: new FormControl('Duro', Validators.required),
-    color: new FormControl('#000000',Validators.required),
-    descripcion: new FormControl('Recursos de consistencia dura', Validators.required),
+    nombre: new FormControl('', Validators.required),
+    color: new FormControl('', Validators.required),
+    descripcion: new FormControl('', Validators.required),
   });
 
 

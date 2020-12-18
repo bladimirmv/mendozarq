@@ -1,24 +1,22 @@
-import { ToastrService } from 'ngx-toastr';
-import { catchError, map, switchMap, take } from 'rxjs/operators';
-import { UsuarioResponse } from './../../shared/models/usuario.interface';
-import { Observable, throwError, BehaviorSubject, of, onErrorResumeNext } from 'rxjs';
-import { RoleValidator } from './../helpers/roleValidator';
 import { Injectable } from '@angular/core';
-
-import { Usuario, Roles } from '@app/shared/models/usuario.interface';
-
-
-import { environment } from '@env/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
+import { ToastrService } from 'ngx-toastr';
 import { JwtHelperService } from '@auth0/angular-jwt';
+
+import { Observable, throwError, BehaviorSubject } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+
+import { RoleValidator } from '@core/helpers/roleValidator';
+import { Usuario } from '@app/shared/models/usuario.interface';
+import { UsuarioResponse } from '@shared/models/usuario.interface';
+import { environment } from '@env/environment';
 
 const helper = new JwtHelperService();
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService extends RoleValidator {
-
   private API_URL = environment.API_URL;
   private loggedIn = new BehaviorSubject<boolean>(false);
   private usuario = new BehaviorSubject<Usuario>(null);
@@ -62,29 +60,19 @@ export class AuthService extends RoleValidator {
   // ====================================================================
   public checkToken(): any {
     const usuarioToken = localStorage.getItem('token') || null;
-
-    const isExpired = helper.isTokenExpired(usuarioToken);
-    const { iat, exp, ...usuarioJwt } = helper.decodeToken(usuarioToken);
-
     if (usuarioToken) {
+      const isExpired = helper.isTokenExpired(usuarioToken);
+      const { iat, exp, ...usuarioJwt } = helper.decodeToken(usuarioToken);
+
       if (isExpired) {
         this.logout();
         this.toastrSvc.error('La sesion ha expirado, porfavor inicia sesion nuevamente', 'Sesion Expirada!', {
           timeOut: 5000
         });
-
       } else {
         this.loggedIn.next(true);
         this.usuarioToken.next(usuarioToken);
         this.usuario.next(usuarioJwt);
-
-
-        // this.usuario$ = this.http.get<Usuario>(`${this.API_URL}/api/usuario/${decodeToken.uuid}`)
-        //   .pipe(
-        //     map(res => {
-        //       return res[0] as Usuario;
-        //     })
-        //   );
       }
     }
   }

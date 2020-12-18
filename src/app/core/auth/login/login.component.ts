@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   hide = true;
   public loginForm: FormGroup = new FormGroup({
     username: new FormControl('blado959', Validators.required),
-    contrasenha: new FormControl('bmv123', Validators.required)
+    contrasenha: new FormControl('bmvmendo123', Validators.required)
   });
 
   public registerForm: FormGroup = new FormGroup({
