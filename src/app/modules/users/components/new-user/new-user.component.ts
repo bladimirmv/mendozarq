@@ -80,7 +80,7 @@ export class NewUserComponent implements OnInit {
     this.usuarioSvc.addUsuario(usuario)
       .subscribe(usr => {
         if (usr) {
-          this.toastrSvc.success('El usuario se ha creado correctamente', 'Usuario Creado');
+          this.toastrSvc.success('El usuario se ha creado correctamente. 😀', 'Usuario Creado');
           this.matDialog.open(ShowContrasenhaComponent, { data: usr });
           this.dialogRef.close(this.newUsuarioForm.value);
         }

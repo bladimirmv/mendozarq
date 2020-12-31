@@ -7,6 +7,20 @@
   align-items: center;
 }
 
+.usuario-activo {
+  width: 15px;
+  height: 15px;
+  background-color: var(--success);
+  border-radius: 25px;
+}
+
+.usuario-no-activo {
+  width: 15px;
+  height: 15px;
+  background-color: var(--warn);
+  border-radius: 25px;
+}
+
 @media screen and(max-width: 1020px) {
   .stats-container {
     grid-template-columns: repeat(2, 1fr);

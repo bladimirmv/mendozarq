@@ -30,7 +30,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   selected: Usuario[] = [];
   selection = new SelectionModel<Usuario>(true, []);
   filterValue: string;
-  displayedColumns: string[] = ['seleccion', 'uuid', 'nombre', 'apellidos', 'rol', 'celular', 'direccion', 'correo', 'username', 'edit'];
+  displayedColumns: string[] = ['seleccion', 'activo', 'nombre', 'apellidos', 'rol', 'celular', 'direccion', 'correo', 'username', 'edit'];
 
   dataSource: MatTableDataSource<Usuario> = new MatTableDataSource<Usuario>();
 
@@ -66,11 +66,6 @@ export class UsersComponent implements OnInit, OnDestroy {
       name: 'Usuarios',
       link: 'usuarios'
     });
-    this.locationBarSvc.pushLocation({
-      icon: 'contacts',
-      name: 'Usuarios',
-      link: 'usuarios'
-    });
 
   }
   ngOnDestroy(): void {
@@ -86,6 +81,8 @@ export class UsersComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         this.dataSource.data = res;
         this.usuario = res;
+        console.log(res);
+
       });
     this.usuarios$ = this.usuarioSvc.getAllUsuarios();
   }

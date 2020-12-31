@@ -89,7 +89,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             switch (res.body.rol) {
               case 'administrador':
                 this.router.navigate(['/admin']);
-                this.toastrSvc.info(res.body.nombre, 'Bienvenido!');
+                this.toastrSvc.info(res.body.nombre, 'Bienvenido! 👋');
                 break;
               default:
                 break;

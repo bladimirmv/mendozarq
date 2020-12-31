@@ -15,7 +15,8 @@ export class ProyectoComponent implements OnInit, OnDestroy {
   public breakpoint: boolean;
   private unsubscribe$: Subscription;
 
-  constructor(private breakpointObserver: BreakpointObserver, private location: Location, private activatedRoute: ActivatedRoute) {
+  constructor(private breakpointObserver: BreakpointObserver, private location: Location,
+    private activatedRoute: ActivatedRoute) {
   }
   idPost: string;
   ngOnInit(): void {
@@ -25,6 +26,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
         shareReplay()
       ).subscribe(res => this.breakpoint = res);
     this.idPost = this.activatedRoute.snapshot.params.id;
+
 
   }
 

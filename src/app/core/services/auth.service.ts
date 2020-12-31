@@ -84,13 +84,13 @@ export class AuthService extends RoleValidator {
   public handdleError(httpError: HttpErrorResponse): Observable<never> {
     let errorMessage = '';
     if (httpError) {
-      httpError.error.message ? errorMessage = `Error: ${JSON.stringify(httpError.error.message)}</br>`
+      typeof httpError.error.message === 'string' ?
+        errorMessage = `${JSON.stringify(httpError.error.message)}`
         : errorMessage = `
         Error: ${httpError.statusText} </br>
         Status: ${httpError.status}`;
     }
     console.log('this error', httpError);
-
     this.toastrSvc.error(errorMessage, 'Ocurrio un Error!', {
       timeOut: 7000,
       enableHtml: true
