@@ -1,5 +1,5 @@
 <div class="text-center">
-  <h1>
+  <h1 style="text-align: center;">
     Nuevo Usuario
   </h1>
 </div>
@@ -7,7 +7,7 @@
 
 <form class="new-user-form" [formGroup]="newUsuarioForm" (ngSubmit)="onAddUser(newUsuarioForm.value)">
 
-  <mat-form-field class="full-width full-column">
+  <mat-form-field class="full-width">
     <mat-label>Nombre</mat-label>
     <input matInput formControlName="nombre">
   </mat-form-field>
@@ -44,6 +44,18 @@
       </mat-option>
       <mat-option value="cliente">
         Cliente
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="full-width">
+    <mat-label>Estado</mat-label>
+    <mat-select formControlName="activo">
+      <mat-option [value]="true">
+        Activo
+      </mat-option>
+      <mat-option [value]="false">
+        Inactivo
       </mat-option>
     </mat-select>
   </mat-form-field>

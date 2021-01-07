@@ -28,6 +28,7 @@ export class NewUserComponent implements OnInit {
     contrasenha: new FormControl('bmv123', Validators.required),
     autoUsuario: new FormControl(),
     autoContrasenha: new FormControl(),
+    activo: new FormControl(true, Validators.required)
 
   });
 

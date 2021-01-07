@@ -20,7 +20,8 @@
             "allowedCommonJsDependencies": [
               "lodash",
               "@angular/common/locales/fr",
-              "lodash/dropRight"
+              "lodash/dropRight",
+              "socket.io-client"
             ],
             "outputPath": "dist/mendozarq",
             "index": "src/index.html",

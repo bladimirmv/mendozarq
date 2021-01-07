@@ -111,8 +111,9 @@ export class UsersComponent implements OnInit, OnDestroy {
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#FF0000',
+      confirmButtonText: 'Eliminar',
       cancelButtonColor: '#425066',
-      confirmButtonText: 'Eliminar'
+      cancelButtonText: 'Cancelar'
     }).then(async (result) => {
       if (result.value) {
         this.selected.length === 1 ? this.deleteOneUsuario() : this.deleteMoreThanOneUsuario();

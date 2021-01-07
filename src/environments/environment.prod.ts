@@ -1,6 +1,5 @@
 export const environment = {
   production: true,
-  apiConfig: {
-
-  }
+  API_URL: 'http://localhost:3000',
+  WS_URL: 'http://localhost:3000'
 };
