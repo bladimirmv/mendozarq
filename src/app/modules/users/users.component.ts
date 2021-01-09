@@ -1,3 +1,4 @@
+import { WebsocketService } from './../../core/services/sockets/websocket.service';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { NewUserComponent } from './components/new-user/new-user.component';
 import { map, takeUntil } from 'rxjs/operators';
@@ -27,6 +28,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<any>();
   expandedElement: Usuario | null;
 
+
   selected: Usuario[] = [];
   selection = new SelectionModel<Usuario>(true, []);
   filterValue: string;
@@ -45,7 +47,9 @@ export class UsersComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private authSvc: AuthService,
     private usuarioSvc: UsuarioService,
-    public locationBarSvc: LocationBarService) {
+    public locationBarSvc: LocationBarService,
+    public ws: WebsocketService
+  ) {
   }
 
 
@@ -82,7 +86,6 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.dataSource.data = res;
         this.usuario = res;
         console.log(res);
-
       });
     this.usuarios$ = this.usuarioSvc.getAllUsuarios();
   }

@@ -10,7 +10,8 @@
       "@modules/*": ["./src/app/modules/*"],
       "@models/*": ["./src/app/shared/models/*"],
       "@services/*": ["./src/app/core/services/*"],
-      "@env/*": ["./src/environments/*"]
+      "@env/*": ["./src/environments/*"],
+      "rxjs": ["node_modules/rxjs"]
     },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,

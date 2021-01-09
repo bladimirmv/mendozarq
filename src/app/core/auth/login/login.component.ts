@@ -1,3 +1,4 @@
+import { WebsocketService } from './../../services/sockets/websocket.service';
 import { BrightnessService } from './../../services/brightness.service';
 import { AuthService } from '@services/auth.service';
 import { Usuario, UsuarioResponse } from '@app/shared/models/usuario.interface';
@@ -31,7 +32,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private router: Router,
     private authSvc: AuthService,
     private toastrSvc: ToastrService,
-    private brigthtnessSvc: BrightnessService
+    private brigthtnessSvc: BrightnessService,
+    public gg: WebsocketService
   ) {
     this.brigthtnessSvc.reset();
   }

@@ -23,7 +23,6 @@ import { RegisterComponent } from './core/auth/register/register.component';
 import { FooterComponent } from './core/footer/footer.component';
 import { AdminInterceptor } from './core/interceptors/admin.interceptor';
 
-const config: SocketIoConfig = { url: environment.WS_URL, options: {} };
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,7 +43,7 @@ const config: SocketIoConfig = { url: environment.WS_URL, options: {} };
     RouterModule,
     ReactiveFormsModule,
     HttpClientModule,
-    SocketIoModule.forRoot(config)
+    SocketIoModule.forRoot(environment.socketConfig)
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AdminInterceptor, multi: true }
