@@ -1,36 +1,55 @@
 import { Injectable } from '@angular/core';
-import { io } from 'socket.io-client';
-import { Socket } from 'ngx-socket-io';
+import { io, Socket } from 'socket.io-client';
+import { environment } from '@env/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebsocketService {
   socketStatus: boolean = false;
+  private socket: Socket;
 
-  // private socket: any;
-  // private socket: Socket;
-  constructor(private socket: Socket) {
-    // this.socket = io('http://localhost:3000');
+  constructor() {
+    this.socket = io(environment.socketConfig.url);
     this.checkStatus();
   }
 
-  checkStatus() {
-    console.log('hola?');
+  // ==========> server status
+  private checkStatus() {
+    const usuarioToken = localStorage.getItem('token') || null;
 
     this.socket.on('connect', () => {
-      console.log('Se conecto al socket');
+      console.log('Socket connected');
       this.socketStatus = true;
-    });
 
-    this.socket.on('msg', (data) => {
-      console.log('llego esto: ', data);
-      this.socketStatus = true;
+      this.socket.emit('ws:logIn', usuarioToken, () => {
+        console.log('login successfuly');
+      });
     });
 
     this.socket.on('disconnect', () => {
-      console.log('Se desconecto al socket');
+      console.log('Socket disconnected');
       this.socketStatus = true;
     });
+
+
+
   }
+
+  // ==========> emit function
+  public emit(event: string, payload?: any, callback?: Function) {
+    this.socket.emit(event, payload, callback);
+  }
+
+  // ==========> listen function
+  public listen(eventName: string) {
+    return new Observable((subscriber) => {
+      this.socket.on(eventName, (data) => {
+        subscriber.next(data);
+      })
+    })
+  }
+
+
 }

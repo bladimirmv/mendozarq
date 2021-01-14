@@ -33,16 +33,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     private authSvc: AuthService,
     private toastrSvc: ToastrService,
     private brigthtnessSvc: BrightnessService,
-    public gg: WebsocketService
+    // public gg: WebsocketService
   ) {
     this.brigthtnessSvc.reset();
   }
 
-
-  getapi() {
-
-
-  }
 
   ngOnInit(): void {
 

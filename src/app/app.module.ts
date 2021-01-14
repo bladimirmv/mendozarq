@@ -43,7 +43,7 @@ import { AdminInterceptor } from './core/interceptors/admin.interceptor';
     RouterModule,
     ReactiveFormsModule,
     HttpClientModule,
-    SocketIoModule.forRoot(environment.socketConfig)
+    // SocketIoModule.forRoot(environment.socketConfig)
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AdminInterceptor, multi: true }

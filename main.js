@@ -64,21 +64,3 @@ app.on('activate', () => {
 
 
 
-
-class gg {
-  t() {
-    return () => {
-      return () => {
-        return () => {
-          return () => {
-            return () => {
-              return () => {
-
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
