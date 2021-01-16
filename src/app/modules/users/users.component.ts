@@ -71,15 +71,15 @@ export class UsersComponent implements OnInit, OnDestroy {
       link: 'usuarios'
     });
 
-    this.ws.emit('mensaje', { from: 'angularjs', to: 'nodejs' });
+    // this.ws.emit('mensaje', { from: 'angularjs', to: 'nodejs' });
 
-    this.ws.listen('mensaje-nuevo')
-      .subscribe(res => {
-        console.log('new-message', res);
+    // this.ws.listen('mensaje-nuevo')
+    //   .subscribe(res => {
+    //     console.log('new-message', res);
 
-      });
+    //   });
 
-    this.ws.emit('mensaje', { from: 'angular', to: 'nodets' });
+    // this.ws.emit('mensaje', { from: 'angular', to: 'nodets' });
 
   }
   ngOnDestroy(): void {

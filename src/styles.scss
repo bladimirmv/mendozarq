@@ -8,12 +8,15 @@
 @include mat-core();
 // hue. Available color palettes: https://material.io/design/color/
 $mendozarq-primary: mat-palette($mat-orange, 600);
-$mendozarq-accent: mat-palette($mat-pink, A200, A100, A400);
+// $mendozarq-accent: mat-palette($mat-pink, A200, A100, A400);
+$mendozarq-accent: mat-palette($mat-green);
+$mendozarq-success: mat-palette($mat-green);
 $mendozarq-warn: mat-palette($mat-red);
+
 $mendozarq-theme: mat-light-theme((color: (primary: $mendozarq-primary,
       accent: $mendozarq-accent,
       warn: $mendozarq-warn,
-    )));
+      success: $mendozarq-success)));
 @include angular-material-theme($mendozarq-theme);
 
 * {
@@ -26,6 +29,23 @@ $mendozarq-theme: mat-light-theme((color: (primary: $mendozarq-primary,
   --success: #2AC940;
   --error: #FF6058;
   --info: #33B5E5;
+}
+
+.mat-d {
+  color: green !important;
+  border-color: green !important;
+
+  mat-label {
+    color: green !important;
+  }
+
+  input {
+    border-color: green !important;
+  }
+}
+
+.mat-d[disabled] {
+  background-color: rgba(0, 0, 0, 0.12) !important;
 }
 
 html,
@@ -65,6 +85,7 @@ mat-toolbar {
 }
 
 .mat-btn-primary {
+  margin-top: 100px;
   border-radius: 25px;
   background-color: var(--primary);
   color: white;
@@ -77,6 +98,34 @@ mat-toolbar {
     box-shadow: 0 0 3px 3px var(--primary);
   }
 }
+
+.mat-btn-secondary {
+  border-radius: 25px;
+  background-color: var(--secondary);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+
+
+  &:hover {
+    color: white;
+    box-shadow: 0 0 3px 3px var(--secondary);
+  }
+}
+
+
+// ===========> Forms
+
+.is-valid {
+  border-color: blue;
+}
+
+.is-invalid {
+  border: solid 5px red;
+  border-color: green;
+}
+
+
 
 // ::-webkit-scrollbar {
 //   width: 5px;
