@@ -29,6 +29,19 @@
       <mat-icon matSuffix>mode_edit</mat-icon>
     </mat-form-field>
 
+    <!-- *Estado -->
+    <mat-form-field class="full-width" color="accent">
+      <mat-label>Estado</mat-label>
+      <mat-select formControlName="activo">
+        <mat-option [value]="true">
+          Activo
+        </mat-option>
+        <mat-option [value]="false">
+          Inactivo
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
     <mat-form-field class="full-width">
       <mat-label>Rol</mat-label>
       <mat-select formControlName="rol">

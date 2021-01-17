@@ -44,7 +44,7 @@ export class NewUserComponent implements OnInit {
       autoUsuario: [''],
       autoContrasenha: [''],
       activo: [true, [Validators.required]],
-    })
+    });
   }
 
   // ===========> isValidField
