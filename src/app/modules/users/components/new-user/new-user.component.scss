@@ -23,6 +23,16 @@
   }
 }
 
+mat-dialog-actions {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+}
+
+.mat-btn-primary,
+.mat-btn-secondary {
+
+  border-radius: 25px;
+}
 
 // .close {
 //   float: right;

@@ -1,12 +1,13 @@
-<app-modal>
-  <div class="text-center">
-    <h1 style="text-align: center;">
-      Nuevo Usuario
-    </h1>
-  </div>
+<h2 mat-dialog-title align="center">Nuevo Usuario</h2>
 
-  <form class="new-user-form" [formGroup]="usuarioForm" (ngSubmit)="onAddUser(usuarioForm.value)">
-
+<!-- <div class="text-center">
+  <h1 style="text-align: center;">
+    Nuevo Usuario
+  </h1>
+</div> -->
+<mat-dialog-content class="mat-typography">
+  <form class="new-user-form" [formGroup]="usuarioForm">
+    <!-- (ngSubmit)="onAddUser(usuarioForm.value)" -->
     <!-- *Nombre -->
     <mat-form-field class="full-width" [color]="isValidField('nombre').color">
       <mat-label>Nombre</mat-label>
@@ -175,10 +176,14 @@
       </mat-error>
     </mat-form-field>
 
-    <button mat-button type="submit" class="full-column mat-btn-primary" style="border-radius: 25px;"
-      [disabled]="!usuarioForm.valid">
-      Guardar
-    </button>
-
   </form>
-</app-modal>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close class="mat-btn-secondary">Cancelar</button>
+  <button mat-button type="submit" class="mat-btn-primary" (click)="onAddUser(usuarioForm.value)"
+    [disabled]="!usuarioForm.valid">
+    Guardar
+  </button>
+</mat-dialog-actions>

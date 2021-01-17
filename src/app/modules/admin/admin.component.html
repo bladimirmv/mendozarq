@@ -18,7 +18,7 @@
 
           <mat-menu #menu="matMenu" style="overflow: hidden;">
             <div mat-menu-item *ngIf="brightnessSvc.brightness$|async as brValue">
-              <mat-slider min="40" max="100" [value]="brValue" (change)="onBrightness($event)">
+              <mat-slider min="40" max="100" [value]="brValue" (change)="onBrightness($event)" color="primary">
               </mat-slider>
             </div>
           </mat-menu>

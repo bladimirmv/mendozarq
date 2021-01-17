@@ -230,11 +230,13 @@ mat-toolbar {
 
 
 .btn-fill {
+  border-radius: 25px;
   margin-top: 10px;
   width: 90%;
   background-color: var(--secondary);
   color: white;
   font-size: 14px;
+  font-weight: bold;
 
   &:hover {
     box-shadow: 0 0 2px 2px var(--secondary),
