@@ -105,44 +105,61 @@
     </mat-form-field>
 
     <!-- *Username -->
-    <div class="full-width full-column" style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
-      <mat-checkbox class="example-margin" style="margin-right: 10px;" matTooltip="Generar Usuario"
-        matTooltipPosition="below" formControlName="autoUsuario" (change)="onCheckBox(usuarioForm.value)">
+    <mat-form-field [color]="isValidField('username').color">
+      <mat-checkbox matPrefix align="start" matTooltip="Generar Usuario" matTooltipPosition="below"
+        formControlName="autoUsuario" (change)="onCheckBox(usuarioForm.value)" style="margin-right: 10px;">
       </mat-checkbox>
-      <mat-form-field [color]="isValidField('username').color">
-        <mat-label>Username</mat-label>
-        <input matInput formControlName="username">
-        <mat-error *ngIf="usuarioForm.get('username').errors?.required">
-          Ingrese un nombre de usuario.
-        </mat-error>
-        <mat-error *ngIf="usuarioForm.get('username').errors?.minlength">
-          Debe contener {{usuarioForm.get('username').errors?.minlength?.requiredLength}} digitos como minimo.
-        </mat-error>
-        <mat-error *ngIf="usuarioForm.get('username').errors?.maxlength">
-          Debe contener {{usuarioForm.get('username').errors?.maxlength?.requiredLength}} digitos como maximo.
-        </mat-error>
-      </mat-form-field>
-    </div>
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="username">
+      <mat-icon matSuffix [color]="isValidField('username').color"
+        *ngIf="!usuarioForm.value.autoUsuario else isValidUsername">
+        {{isValidField('username').icon}}
+      </mat-icon>
+      <ng-template #isValidUsername>
+        <mat-icon matSuffix color="accent">
+          done
+        </mat-icon>
+      </ng-template>
+      <mat-error *ngIf="usuarioForm.get('username').errors?.required">
+        Ingrese un nombre de usuario.
+      </mat-error>
+      <mat-error *ngIf="usuarioForm.get('username').errors?.minlength">
+        Debe contener {{usuarioForm.get('username').errors?.minlength?.requiredLength}} digitos como minimo.
+      </mat-error>
+      <mat-error *ngIf="usuarioForm.get('username').errors?.maxlength">
+        Debe contener {{usuarioForm.get('username').errors?.maxlength?.requiredLength}} digitos como maximo.
+      </mat-error>
+    </mat-form-field>
 
     <!-- *Contrasenha -->
-    <span class="full-width full-column" style="display: grid; grid-template-columns: auto 1fr; align-items: center;">
-      <mat-checkbox formControlName="autoContrasenha" class="example-margin" style="margin-right: 10px;"
+
+
+    <mat-form-field [color]="isValidField('contrasenha').color">
+      <mat-checkbox matPrefix formControlName="autoContrasenha" style="margin-right: 10px;"
         matTooltip="Generar Contraseña" matTooltipPosition="below" (change)="onCheckBox(usuarioForm.value)">
       </mat-checkbox>
-      <mat-form-field [color]="isValidField('contrasenha').color">
-        <mat-label>Contraseña</mat-label>
-        <input matInput formControlName="contrasenha">
-        <mat-error *ngIf="usuarioForm.get('contrasenha').errors?.required">
-          Ingrese una contraseña.
-        </mat-error>
-        <mat-error *ngIf="usuarioForm.get('contrasenha').errors?.minlength">
-          Debe contener {{usuarioForm.get('contrasenha').errors?.minlength?.requiredLength}} digitos como minimo.
-        </mat-error>
-        <mat-error *ngIf="usuarioForm.get('contrasenha').errors?.maxlength">
-          Debe contener {{usuarioForm.get('contrasenha').errors?.maxlength?.requiredLength}} digitos como maximo.
-        </mat-error>
-      </mat-form-field>
-    </span>
+      <mat-label>Contraseña</mat-label>
+      <input matInput formControlName="contrasenha">
+      <mat-icon matSuffix [color]="isValidField('contrasenha').color"
+        *ngIf="!usuarioForm.value.autoContrasenha else isValidContrasenha">
+        {{isValidField('contrasenha').icon}}
+      </mat-icon>
+      <ng-template #isValidContrasenha>
+        <mat-icon matSuffix color="accent">
+          done
+        </mat-icon>
+      </ng-template>
+      <mat-error *ngIf="usuarioForm.get('contrasenha').errors?.required">
+        Ingrese una contraseña.
+      </mat-error>
+      <mat-error *ngIf="usuarioForm.get('contrasenha').errors?.minlength">
+        Debe contener {{usuarioForm.get('contrasenha').errors?.minlength?.requiredLength}} digitos como minimo.
+      </mat-error>
+      <mat-error *ngIf="usuarioForm.get('contrasenha').errors?.maxlength">
+        Debe contener {{usuarioForm.get('contrasenha').errors?.maxlength?.requiredLength}} digitos como maximo.
+      </mat-error>
+    </mat-form-field>
+
 
     <!-- *Correo -->
     <mat-form-field class="full-width  full-column" [color]="isValidField('correo').color">

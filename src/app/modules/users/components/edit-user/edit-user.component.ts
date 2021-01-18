@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '@services/auth.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ShowContrasenhaComponent } from '../show-contrasenha/show-contrasenha.component';
+import { Interface } from 'readline';
 
 @Component({
   selector: 'app-edit-user',
@@ -44,10 +45,10 @@ export class EditUserComponent implements OnInit {
       rol: [this.data.rol, [Validators.required]],
       username: [this.data.username, [Validators.required, Validators.minLength(8), Validators.maxLength(10)]],
       contrasenha: [{ value: '', disabled: true }, [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
-      autoUsuario: [],
-      autoContrasenha: [{ value: '', disabled: true }],
+      autoUsuario: [false],
+      autoContrasenha: [{ value: false, disabled: true }],
       activo: [this.data.activo ? true : false, [Validators.required]],
-      newContrasenha: []
+      newContrasenha: [false]
     });
   }
 
@@ -86,42 +87,28 @@ export class EditUserComponent implements OnInit {
 
   // ===========> onCheckBox
   onCheckBox(usr: Usuario): void {
-    if (usr.autoContrasenha === true) {
-      this.usuarioForm.controls['contrasenha'].disable();
-      this.usuarioForm.patchValue({
-        autoContrasenha: true
-      });
-    } else {
-      this.usuarioForm.controls['contrasenha'].enable();
-      this.usuarioForm.patchValue({
-        autoContrasenha: false
-      });
-    }
+    // *check autoUsuario
+    usr.autoUsuario
+      ? this.usuarioForm.controls.username.disable()
+      : this.usuarioForm.controls.username.enable();
 
-    if (usr.autoUsuario === true) {
-      this.usuarioForm.controls['username'].disable();
-      this.usuarioForm.patchValue({
-        autoUsuario: true
-      });
-    } else {
-      this.usuarioForm.controls['username'].enable();
-      this.usuarioForm.patchValue({
-        autoUsuario: false
-      });
-
-    }
+    // *check autoContrasenha
+    usr.autoContrasenha
+      ? this.usuarioForm.controls.contrasenha.disable()
+      : this.usuarioForm.controls.contrasenha.enable();
   }
 
   // ===========> onSlideToggle
-  onSlideToggle(e): void {
-
-    if (!e.checked) {
-      this.usuarioForm.controls['contrasenha'].disable();
-      this.usuarioForm.controls['autoContrasenha'].disable();
-
+  onSlideToggle(usr: { newContrasenha: boolean } & Usuario): any {
+    if (usr.newContrasenha) {
+      this.usuarioForm.controls.autoContrasenha.enable();
+      this.usuarioForm.controls.contrasenha.enable();
+      this.usuarioForm.patchValue({
+        autoContrasenha: false
+      });
     } else {
-      this.usuarioForm.controls['autoContrasenha'].enable();
-      this.usuarioForm.controls['contrasenha'].enable();
+      this.usuarioForm.controls.autoContrasenha.disable();
+      this.usuarioForm.controls.contrasenha.disable();
 
     }
 

@@ -16,7 +16,13 @@ mat-dialog-actions {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 10px;
-  padding: 10px;
+  // padding: 10px;
+
+  mat-slide-toggle,
+  mat-checkbox {
+    margin-right: 5px;
+  }
+
 }
 
 .full-column {

@@ -41,8 +41,8 @@ export class NewUserComponent implements OnInit {
       rol: ['cliente', [Validators.required]],
       username: ['blado123', [Validators.required, Validators.minLength(8), Validators.maxLength(10)]],
       contrasenha: ['example12345', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
-      autoUsuario: [''],
-      autoContrasenha: [''],
+      autoUsuario: [false],
+      autoContrasenha: [false],
       activo: [true, [Validators.required]],
     });
   }
@@ -59,29 +59,15 @@ export class NewUserComponent implements OnInit {
 
   // ===========> onCheckBox
   onCheckBox(usr: Usuario): void {
-    if (usr.autoContrasenha === true) {
-      this.usuarioForm.controls['contrasenha'].disable();
-      this.usuarioForm.patchValue({
-        autoContrasenha: true
-      });
-    } else {
-      this.usuarioForm.controls['contrasenha'].enable();
-      this.usuarioForm.patchValue({
-        autoContrasenha: false
-      });
-    }
+    // *check autoUsuario
+    usr.autoUsuario
+      ? this.usuarioForm.controls.username.disable()
+      : this.usuarioForm.controls.username.enable();
 
-    if (usr.autoUsuario === true) {
-      this.usuarioForm.controls['username'].disable();
-      this.usuarioForm.patchValue({
-        autoUsuario: true
-      });
-    } else {
-      this.usuarioForm.controls['username'].enable();
-      this.usuarioForm.patchValue({
-        autoUsuario: false
-      });
-    }
+    // *check autoContrasenha
+    usr.autoContrasenha
+      ? this.usuarioForm.controls.contrasenha.disable()
+      : this.usuarioForm.controls.contrasenha.enable();
   }
 
   // ===========> onAddUusario
