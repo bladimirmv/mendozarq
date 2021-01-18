@@ -1,10 +1,5 @@
 <h2 mat-dialog-title align="center">Nuevo Usuario</h2>
 
-<!-- <div class="text-center">
-  <h1 style="text-align: center;">
-    Nuevo Usuario
-  </h1>
-</div> -->
 <mat-dialog-content class="mat-typography">
   <form class="new-user-form" [formGroup]="usuarioForm">
     <!-- (ngSubmit)="onAddUser(usuarioForm.value)" -->
@@ -180,7 +175,7 @@
 
 </mat-dialog-content>
 
-<mat-dialog-actions>
+<mat-dialog-actions mat-dialog-actions>
   <button mat-button mat-dialog-close class="mat-btn-secondary">Cancelar</button>
   <button mat-button type="submit" class="mat-btn-primary" (click)="onAddUser(usuarioForm.value)"
     [disabled]="!usuarioForm.valid">

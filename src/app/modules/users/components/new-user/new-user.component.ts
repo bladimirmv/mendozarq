@@ -57,7 +57,6 @@ export class NewUserComponent implements OnInit {
         : {};
   }
 
-
   // ===========> onCheckBox
   onCheckBox(usr: Usuario): void {
     if (usr.autoContrasenha === true) {

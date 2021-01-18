@@ -27,12 +27,14 @@ import { LocationBarService } from '@app/core/services/location-bar.service';
 export class UsersComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<any>();
   expandedElement: Usuario | null;
-
-
   selected: Usuario[] = [];
   selection = new SelectionModel<Usuario>(true, []);
   filterValue: string;
-  displayedColumns: string[] = ['seleccion', 'activo', 'nombre', 'apellidos', 'rol', 'celular', 'direccion', 'correo', 'username', 'edit'];
+  displayedColumns: string[] = [
+    'seleccion', 'activo', 'nombre',
+    'apellidos', 'rol', 'celular', 'direccion',
+    'correo', 'username', 'edit'
+  ];
 
   dataSource: MatTableDataSource<Usuario> = new MatTableDataSource<Usuario>();
 
@@ -45,17 +47,13 @@ export class UsersComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private toastSvc: ToastrService,
     public dialog: MatDialog,
-    private authSvc: AuthService,
     private usuarioSvc: UsuarioService,
-    public locationBarSvc: LocationBarService,
-    public ws: WebsocketService
+    public locationBarSvc: LocationBarService
   ) {
   }
 
-
-
+  // =====================> onInit
   ngOnInit(): void {
-
     this.getAllUsuarios();
 
     this.dataSource.paginator = this.paginator;
@@ -70,53 +68,47 @@ export class UsersComponent implements OnInit, OnDestroy {
       name: 'Usuarios',
       link: 'usuarios'
     });
-
-    // this.ws.emit('mensaje', { from: 'angularjs', to: 'nodejs' });
-
-    // this.ws.listen('mensaje-nuevo')
-    //   .subscribe(res => {
-    //     console.log('new-message', res);
-
-    //   });
-
-    // this.ws.emit('mensaje', { from: 'angular', to: 'nodets' });
-
   }
+  // =====================> onDestroy
   ngOnDestroy(): void {
     this.destroy$.next({});
     this.destroy$.complete();
     this.locationBarSvc.popLocation();
   }
 
-  // ====================================================================
+  // =====================> getAllUsuarios
   getAllUsuarios(): void {
 
     this.usuarioSvc.getAllUsuarios()
+      .pipe(takeUntil(this.destroy$))
       .subscribe(res => {
         this.dataSource.data = res;
         this.usuario = res;
-        console.log(res);
       });
     this.usuarios$ = this.usuarioSvc.getAllUsuarios();
   }
-  // ====================================================================
+
+  // =====================> onAddUser
   onAddUser(): void {
     const dialogRef = this.dialog.open(NewUserComponent);
     dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         this.getAllUsuarios();
       });
   }
-  // ====================================================================
-  oneditUser(user: Usuario): void {
 
+  // =====================> oneditUser
+  oneditUser(user: Usuario): void {
     const dialogRef = this.dialog.open(EditUserComponent, { data: user });
     dialogRef.afterClosed()
-      .subscribe((res) => {
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
         this.getAllUsuarios();
       });
   }
-  // ====================================================================
+
+  // =====================> ondeleteUser
   async ondeleteUser(): Promise<void> {
     Swal.fire({
       title: 'Estas Seguro?',
@@ -134,7 +126,8 @@ export class UsersComponent implements OnInit, OnDestroy {
     });
 
   }
-  // ====================================================================
+
+  // =====================> deleteOneUsuario
   deleteOneUsuario(): void {
     this.usuarioSvc
       .deleteUsuario(this.selected[0].uuid)
@@ -153,7 +146,8 @@ export class UsersComponent implements OnInit, OnDestroy {
         }
       });
   }
-  // ====================================================================
+
+  // =====================> deleteMoreThanOneUsuario
   deleteMoreThanOneUsuario(): void {
     this.selected.forEach((usuario, index) => {
       const isLast: boolean = index + 1 === this.selected.length;
@@ -174,7 +168,8 @@ export class UsersComponent implements OnInit, OnDestroy {
 
     });
   }
-  // ====================================================================
+
+  // =====================> openSnackBarCopy
   openSnackBarCopy(): void {
     this.snackBar.open('Copiado', 'Cerrar', {
       duration: 500,
@@ -182,7 +177,8 @@ export class UsersComponent implements OnInit, OnDestroy {
       verticalPosition: 'bottom',
     });
   }
-  // ====================================================================
+
+  // =====================> applyFilter
   applyFilter(event: Event): void {
     this.filterValue = (event.target as HTMLInputElement).value;
 
@@ -191,28 +187,31 @@ export class UsersComponent implements OnInit, OnDestroy {
       this.dataSource.paginator.firstPage();
     }
   }
-  // ====================================================================
+
+  // =====================> isAllSelected
   isAllSelected(): any {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
-  // ====================================================================
+
+  // =====================> masterToggle
   masterToggle(): void {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
-  // ====================================================================
+
+  // =====================> clearCheckbox
   clearCheckbox(): void {
     this.selection.clear();
   }
-  // ====================================================================
+
+  // =====================> checkboxLabel
   checkboxLabel(row?: Usuario): string {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.nombre}`;
   }
-  // ====================================================================
 }

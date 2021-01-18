@@ -71,17 +71,19 @@
     </div>
 
     <div class="table-content">
-      <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
+      <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort color="primary">
 
         <ng-container matColumnDef="seleccion" sticky>
           <th *matHeaderCellDef class="actions-table">
-            <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+            <mat-checkbox color="warn" (change)="$event ? masterToggle() : null"
+              [checked]="selection.hasValue() && isAllSelected()"
               [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
             </mat-checkbox>
           </th>
           <td *matCellDef="let row" class="actions-table">
-            <mat-checkbox (click)="$event.stopPropagation() " (change)="$event ? selection.toggle(row) : null"
-              [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+            <mat-checkbox color="warn" (click)="$event.stopPropagation() "
+              (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
+              [aria-label]="checkboxLabel(row)">
             </mat-checkbox>
           </td>
         </ng-container>

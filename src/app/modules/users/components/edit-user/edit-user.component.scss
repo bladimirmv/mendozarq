@@ -2,6 +2,16 @@
   width: 100%;
 }
 
+mat-dialog-actions {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+
+  .mat-btn-primary,
+  .mat-btn-secondary {
+    border-radius: 25px;
+  }
+}
+
 .new-user-form {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

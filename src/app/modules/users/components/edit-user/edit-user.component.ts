@@ -17,23 +17,6 @@ import { ShowContrasenhaComponent } from '../show-contrasenha/show-contrasenha.c
 export class EditUserComponent implements OnInit {
 
   public usuarioForm: FormGroup;
-
-  public editUsuarioForm: FormGroup = new FormGroup({
-    nombre: new FormControl(this.data.nombre, Validators.required),
-    apellidoPaterno: new FormControl(this.data.apellidoPaterno, Validators.required),
-    apellidoMaterno: new FormControl(this.data.apellidoMaterno, Validators.required),
-    celular: new FormControl(this.data.celular, Validators.required),
-    direccion: new FormControl(this.data.direccion, Validators.required),
-    correo: new FormControl(this.data.correo, Validators.email),
-    rol: new FormControl(this.data.rol, Validators.required),
-    username: new FormControl(this.data.username, Validators.required),
-    contrasenha: new FormControl({ value: '', disabled: true }, Validators.required),
-    autoUsuario: new FormControl(),
-    autoContrasenha: new FormControl({ value: '', disabled: true }),
-    newContrasenha: new FormControl(),
-
-  });
-
   disabled = false;
 
   constructor(
@@ -63,71 +46,83 @@ export class EditUserComponent implements OnInit {
       contrasenha: [{ value: '', disabled: true }, [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
       autoUsuario: [],
       autoContrasenha: [{ value: '', disabled: true }],
-      activo: [true, [Validators.required]]
+      activo: [this.data.activo ? true : false, [Validators.required]],
+      newContrasenha: []
     });
   }
 
-  oneditUser(usuario: Usuario): void {
+  // ===========> isValidField
+  public isValidField(field: string): { color?: string; status?: boolean; icon?: string; } {
+    const validateFIeld = this.usuarioForm.get(field);
+    return (!validateFIeld.valid && validateFIeld.touched)
+      ? { color: 'warn', status: false, icon: 'close' }
+      : validateFIeld.valid
+        ? { color: 'accent', status: true, icon: 'done' }
+        : {};
+  }
+
+  // ===========> oneditUser
+  onEditUser(usuario: Usuario): void {
     usuario.uuid = this.data.uuid;
     const { newContrasenha, ...usr }: any = usuario;
     this.usuarioSvc
       .updateUsuario(usuario.uuid, usr)
       .subscribe(usr => {
         if (usr) {
-          this.toastSvc.success('Correctamente', 'Usuario Editado', {
+          this.toastSvc.success('El usuario se ha editado correctamente 😀', 'Usuario Editado', {
             timeOut: 2000,
             progressBar: true,
             progressAnimation: 'increasing'
           });
           if (newContrasenha) {
             this.matDialog.open(ShowContrasenhaComponent, { data: usr });
-            this.dialogRef.close(this.editUsuarioForm.value);
+            this.dialogRef.close(this.usuarioForm.value);
           }
+          this.dialogRef.close(this.usuarioForm.value);
+
         }
       });
   }
 
+  // ===========> onCheckBox
   onCheckBox(usr: Usuario): void {
     if (usr.autoContrasenha === true) {
-      this.editUsuarioForm.controls['contrasenha'].disable();
-      this.editUsuarioForm.patchValue({
+      this.usuarioForm.controls['contrasenha'].disable();
+      this.usuarioForm.patchValue({
         autoContrasenha: true
       });
     } else {
-      this.editUsuarioForm.controls['contrasenha'].enable();
-      this.editUsuarioForm.patchValue({
+      this.usuarioForm.controls['contrasenha'].enable();
+      this.usuarioForm.patchValue({
         autoContrasenha: false
       });
     }
 
     if (usr.autoUsuario === true) {
-      this.editUsuarioForm.controls['username'].disable();
-      this.editUsuarioForm.patchValue({
+      this.usuarioForm.controls['username'].disable();
+      this.usuarioForm.patchValue({
         autoUsuario: true
       });
     } else {
-      this.editUsuarioForm.controls['username'].enable();
-      this.editUsuarioForm.patchValue({
+      this.usuarioForm.controls['username'].enable();
+      this.usuarioForm.patchValue({
         autoUsuario: false
       });
 
     }
   }
 
+  // ===========> onSlideToggle
   onSlideToggle(e): void {
 
     if (!e.checked) {
-      this.editUsuarioForm.controls['contrasenha'].disable();
-      this.editUsuarioForm.controls['autoContrasenha'].disable();
-      // this.editUsuarioForm.patchValue({
-      //   // newContrasenha: true
-      // });
+      this.usuarioForm.controls['contrasenha'].disable();
+      this.usuarioForm.controls['autoContrasenha'].disable();
+
     } else {
-      this.editUsuarioForm.controls['autoContrasenha'].enable();
-      this.editUsuarioForm.controls['contrasenha'].enable();
-      // this.editUsuarioForm.patchValue({
-      //   // newContrasenha: false
-      // });
+      this.usuarioForm.controls['autoContrasenha'].enable();
+      this.usuarioForm.controls['contrasenha'].enable();
+
     }
 
   }
