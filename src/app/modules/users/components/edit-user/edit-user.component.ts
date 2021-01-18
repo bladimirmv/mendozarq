@@ -86,16 +86,18 @@ export class EditUserComponent implements OnInit {
   }
 
   // ===========> onCheckBox
-  onCheckBox(usr: Usuario): void {
+  onCheckBox(usr: { newContrasenha: boolean } & Usuario): void {
     // *check autoUsuario
     usr.autoUsuario
       ? this.usuarioForm.controls.username.disable()
       : this.usuarioForm.controls.username.enable();
 
     // *check autoContrasenha
-    usr.autoContrasenha
-      ? this.usuarioForm.controls.contrasenha.disable()
-      : this.usuarioForm.controls.contrasenha.enable();
+    usr.newContrasenha
+      ? usr.autoContrasenha
+        ? this.usuarioForm.controls.contrasenha.disable()
+        : this.usuarioForm.controls.contrasenha.enable()
+      : false;
   }
 
   // ===========> onSlideToggle

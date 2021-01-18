@@ -1,59 +1,61 @@
-<app-modal>
-  <!-- <div slot="title">
+<!-- <div slot="title">
     <h1>
       Editar Usuario
     </h1>
   </div> -->
-  <div class="content">
+<mat-dialog-content mat-dialog-content class="content">
 
-    <section class="section-credentials">
-      <div class="message-credentials full-width full-column ">
-        <strong>Importante!</strong> <br>
-        Esta es la <strong>unica</strong> vez que puedes ver o copiar la contraseña del usuario creado.
-        No puede recuperarla mas adelante. Sin enbargo, puede crear o auto generar otra contraseña
-        en cualquier momento al editar un usuario.
-      </div>
+  <section class="section-credentials">
+    <div class="message-credentials full-width full-column ">
+      <strong>Importante!</strong> <br>
+      Esta es la <strong>unica</strong> vez que puedes ver o copiar la contraseña del usuario creado.
+      No puede recuperarla mas adelante. Sin enbargo, puede crear o auto generar otra contraseña
+      en cualquier momento al editar un usuario.
+    </div>
 
 
-      <table class="full-width full-column table-credentials">
-        <tr>
-          <th>Username</th>
-          <th>Contraseña</th>
-        </tr>
+    <table class="full-width full-column table-credentials">
+      <tr>
+        <th>Username</th>
+        <th>Contraseña</th>
+      </tr>
 
-        <tr>
-          <td>
-            <a (click)="openSnackBarCopy()" class="copy-text" matTooltip="Copiar" matTooltipPosition="below"
-              [cdkCopyToClipboard]="data.username">
-              {{data.username}}
-            </a>
-          </td>
-          <td>
-            <span>
-              <span [hidden]="hidden">
-                <a (click)="openSnackBarCopy()" class="copy-text" matTooltip="Copiar" matTooltipPosition="below"
-                  [cdkCopyToClipboard]="data.contrasenha">
-                  {{data.contrasenha}}
-                </a>
-              </span>
-              <button mat-icon-button color="secondary" class="btn-credentials" (click)="onChangeViewContrasenha()">
-                <mat-icon>
-                  {{hidden ? 'visibility' : 'visibility_off'}}
-                </mat-icon>
-              </button>
+      <tr>
+        <td>
+          <a (click)="openSnackBarCopy()" class="copy-text" matTooltip="Copiar" matTooltipPosition="below"
+            [cdkCopyToClipboard]="data.username">
+            {{data.username}}
+          </a>
+        </td>
+        <td>
+          <span>
+            <span [hidden]="hidden">
+              <a (click)="openSnackBarCopy()" class="copy-text" matTooltip="Copiar" matTooltipPosition="below"
+                [cdkCopyToClipboard]="data.contrasenha">
+                {{data.contrasenha}}
+              </a>
             </span>
+            <button mat-icon-button color="secondary" class="btn-credentials" (click)="onChangeViewContrasenha()">
+              <mat-icon>
+                {{hidden ? 'visibility' : 'visibility_off'}}
+              </mat-icon>
+            </button>
+          </span>
 
-          </td>
-        </tr>
-      </table>
+        </td>
+      </tr>
+    </table>
 
-      <app-button [mat-dialog-close]="true" color="primary" width="100%" style="width: 100%;"
-        class="full-column btn-continue">
-        Continuar
-      </app-button>
 
-      <!--  -->
-    </section>
 
-  </div>
-</app-modal>
+    <!--  -->
+  </section>
+
+</mat-dialog-content>
+
+
+<mat-dialog-actions mat-dialog-close>
+  <button mat-button class="mat-btn-success">
+    Continuar
+  </button>
+</mat-dialog-actions>

@@ -1,4 +1,3 @@
-import { WebsocketService } from './../../core/services/sockets/websocket.service';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { NewUserComponent } from './components/new-user/new-user.component';
 import { map, takeUntil } from 'rxjs/operators';
@@ -9,15 +8,14 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 
 import { Usuario } from '@app/shared/models/usuario.interface';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
+import { DeleteModalComponent } from './../../shared/components/delete-modal/delete-modal.component';
 
-import { AuthService } from '@services/auth.service';
 import { UsuarioService } from '@services/usuario.service';
 import { ToastrService } from 'ngx-toastr';
-import Swal from 'sweetalert2';
 import { LocationBarService } from '@app/core/services/location-bar.service';
 @Component({
   selector: 'app-users',
@@ -110,20 +108,22 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   // =====================> ondeleteUser
   async ondeleteUser(): Promise<void> {
-    Swal.fire({
-      title: 'Estas Seguro?',
-      text: 'No podras revertir el cambio!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#FF0000',
-      confirmButtonText: 'Eliminar',
-      cancelButtonColor: '#425066',
-      cancelButtonText: 'Cancelar'
-    }).then(async (result) => {
-      if (result.value) {
-        this.selected.length === 1 ? this.deleteOneUsuario() : this.deleteMoreThanOneUsuario();
-      }
-    });
+
+    const matDialogConfig: MatDialogConfig = {
+      // width: '500px'
+    };
+
+    const dialogRef = this.dialog.open(DeleteModalComponent, matDialogConfig);
+
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(res => {
+        if (res) {
+          this.selected.length === 1
+            ? this.deleteOneUsuario()
+            : this.deleteMoreThanOneUsuario();
+        }
+      });
 
   }
 
@@ -141,8 +141,6 @@ export class UsersComponent implements OnInit, OnDestroy {
           });
           this.getAllUsuarios();
           this.clearCheckbox();
-        } else {
-          Swal.fire('Error!', 'Ocurrio un error al eliminar este usuario', 'error');
         }
       });
   }

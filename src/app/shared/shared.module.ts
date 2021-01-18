@@ -8,6 +8,7 @@ import { CardComponent } from './components/card/card.component';
 import { StatusCardComponent } from './components/status-card/status-card.component';
 import { TableComponent } from './components/table/table.component';
 import { CdkMaterialModule } from '@app/cdk-material.module';
+import { DeleteModalComponent } from './components/delete-modal/delete-modal.component';
 
 const SharedComponents: any[] = [
   ModalComponent,
@@ -19,7 +20,8 @@ const SharedComponents: any[] = [
 
 @NgModule({
   declarations: [
-    SharedComponents
+    SharedComponents,
+    DeleteModalComponent
   ],
   imports: [
     CommonModule,

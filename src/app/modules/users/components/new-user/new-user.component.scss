@@ -10,6 +10,37 @@
 }
 
 
+mat-dialog-actions {
+  display: grid;
+  grid-template-areas: "secondary success";
+  grid-template-columns: repeat(2, auto);
+  place-items: 🇨enter;
+
+  .mat-btn-success {
+    grid-area: success;
+  }
+
+  .mat-btn-secondary {
+    grid-area: secondary;
+  }
+}
+
+@media screen and (max-width:400px) {
+  mat-dialog-actions {
+    margin: 0;
+    padding: 0;
+    grid-template-columns: auto;
+    grid-gap: 10px;
+    grid-template-areas: "success"
+      "secondary";
+
+    .mat-btn-success {
+      margin: 0;
+    }
+
+  }
+}
+
 @media screen and (max-width:625px) {
   .new-user-form {
     display: grid;
@@ -22,19 +53,3 @@
     grid-column: 1;
   }
 }
-
-mat-dialog-actions {
-  display: grid;
-  grid-template-columns: repeat(2, auto);
-
-  .mat-btn-primary,
-  .mat-btn-secondary {
-    border-radius: 25px;
-  }
-}
-
-
-
-// .close {
-//   float: right;
-// }

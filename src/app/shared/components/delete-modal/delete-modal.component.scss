@@ -1,0 +1,43 @@
+mat-dialog-content {
+  display: grid;
+  place-items: center;
+}
+
+mat-icon {
+  font-size: 150px;
+  color: var(--warn);
+  width: auto;
+  height: auto;
+}
+
+mat-dialog-actions {
+  display: grid;
+  grid-template-areas: "secondary warn";
+  grid-template-columns: repeat(2, auto);
+  place-items: 🇨enter;
+  grid-gap: 10px;
+
+  .mat-btn-success {
+    grid-area: success;
+  }
+
+  .mat-btn-warn {
+    grid-area: warn;
+  }
+}
+
+@media screen and (max-width:345px) {
+  mat-dialog-actions {
+    margin: 0;
+    padding: 0;
+    grid-template-columns: auto;
+    grid-gap: 10px;
+    grid-template-areas: "warn"
+      "secondary";
+
+    .mat-btn-warn {
+      margin: 0;
+    }
+
+  }
+}

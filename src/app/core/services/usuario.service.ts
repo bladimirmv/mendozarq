@@ -48,18 +48,14 @@ export class UsuarioService {
     let errorMessage = '';
     if (error) {
       error.error.message ? errorMessage = `Error: ${error.error.message}</br>`
-        : errorMessage = `
-        Error: ${error.statusText} </br>
-        Status: ${error.status}`;
+        : errorMessage = `El servidor no responde 🙁.`;
     }
-    console.log('this error', error);
-
     this.toastrSvc.error(errorMessage, 'Ocurrio un Error!', {
       timeOut: 7000,
       enableHtml: true
     });
 
-    return throwError(errorMessage);
+    return throwError(error);
   }
   // ====================================================================
 }

@@ -39,9 +39,12 @@
     <!-- *Apellido Materno -->
     <mat-form-field class="full-width" [color]="isValidField('apellidoMaterno').color">
       <mat-label>Apellido Materno</mat-label>
+      <mat-icon matSuffix [color]="isValidField('apellidoMaterno').color" *ngIf="usuarioForm.value.apellidoMaterno">
+        {{isValidField('apellidoMaterno').icon}}
+      </mat-icon>
       <input matInput formControlName="apellidoMaterno" autocomplete="no">
-      <mat-error *ngIf="usuarioForm.get('apellidoPaterno').errors?.maxlength">
-        Debe contener {{usuarioForm.get('apellidoPaterno').errors?.maxlength?.requiredLength}} letras como maximo.
+      <mat-error *ngIf="usuarioForm.get('apellidoMaterno').errors?.maxlength">
+        Debe contener {{usuarioForm.get('apellidoMaterno').errors?.maxlength?.requiredLength}} letras como maximo.
       </mat-error>
       <mat-error *ngIf="usuarioForm.get('apellidoMaterno').errors?.pattern">
         Debe incluir solo letras en minuscula.
@@ -180,11 +183,11 @@
     <mat-form-field class="full-width full-column" [color]="isValidField('direccion').color">
       <mat-label>Direccion</mat-label>
       <textarea matInput placeholder="Ex. 100 Main St" formControlName="direccion"></textarea>
-      <mat-icon matSuffix [color]="isValidField('direccion').color">
-        {{isValidField('celular').icon}}
+      <mat-icon matSuffix [color]="isValidField('direccion').color" *ngIf="usuarioForm.value.direccion">
+        {{isValidField('direccion').icon}}
       </mat-icon>
-      <mat-error *ngIf="usuarioForm.get('contrasenha').errors?.maxlength">
-        Debe contener {{usuarioForm.get('contrasenha').errors?.maxlength?.requiredLength}} digitos como maximo.
+      <mat-error *ngIf="usuarioForm.get('direccion').errors?.maxlength">
+        Debe contener {{usuarioForm.get('direccion').errors?.maxlength?.requiredLength}} digitos como maximo.
       </mat-error>
     </mat-form-field>
 
@@ -192,10 +195,9 @@
 
 </mat-dialog-content>
 
-<mat-dialog-actions mat-dialog-actions>
+<mat-dialog-actions>
   <button mat-button mat-dialog-close class="mat-btn-secondary">Cancelar</button>
-  <button mat-button type="submit" class="mat-btn-primary" (click)="onAddUser(usuarioForm.value)"
-    [disabled]="!usuarioForm.valid">
+  <button mat-button class="mat-btn-success" (click)="onAddUser(usuarioForm.value)" [disabled]="!usuarioForm.valid">
     Guardar
   </button>
 </mat-dialog-actions>
