@@ -55,7 +55,12 @@
     <mat-form-field class="full-width" [color]="isValidField('celular').color">
       <mat-label>Celular</mat-label>
       <span matPrefix>+591 &nbsp;</span>
-      <input type="tel" matInput placeholder="69409749" formControlName="celular">
+
+      <input type="tel" matInput placeholder="69409749" formControlName="celular" autocomplete="off">
+
+      <mat-hint align="end">
+        {{usuarioForm.value.celular ? getString(usuarioForm.value.celular).length : 0}}/8
+      </mat-hint>
       <mat-icon matSuffix [color]="isValidField('celular').color">
         {{isValidField('celular').icon}}
       </mat-icon>
@@ -113,7 +118,11 @@
         formControlName="autoUsuario" (change)="onCheckBox(usuarioForm.value)" style="margin-right: 10px;">
       </mat-checkbox>
       <mat-label>Username</mat-label>
-      <input matInput formControlName="username">
+      <input matInput formControlName="username" autocomplete="off">
+
+      <mat-hint align="end">
+        {{usuarioForm.value.username ? usuarioForm.value.username.length : 0}}/10
+      </mat-hint>
       <mat-icon matSuffix [color]="isValidField('username').color"
         *ngIf="!usuarioForm.value.autoUsuario else isValidUsername">
         {{isValidField('username').icon}}
@@ -135,14 +144,15 @@
     </mat-form-field>
 
     <!-- *Contrasenha -->
-
-
     <mat-form-field [color]="isValidField('contrasenha').color">
       <mat-checkbox matPrefix formControlName="autoContrasenha" style="margin-right: 10px;"
         matTooltip="Generar Contraseña" matTooltipPosition="below" (change)="onCheckBox(usuarioForm.value)">
       </mat-checkbox>
       <mat-label>Contraseña</mat-label>
       <input matInput formControlName="contrasenha">
+      <mat-hint align="end">
+        {{usuarioForm.value.contrasenha ? usuarioForm.value.contrasenha.length : 0}}/20
+      </mat-hint>
       <mat-icon matSuffix [color]="isValidField('contrasenha').color"
         *ngIf="!usuarioForm.value.autoContrasenha else isValidContrasenha">
         {{isValidField('contrasenha').icon}}
@@ -183,6 +193,9 @@
     <mat-form-field class="full-width full-column" [color]="isValidField('direccion').color">
       <mat-label>Direccion</mat-label>
       <textarea matInput placeholder="Ex. 100 Main St" formControlName="direccion"></textarea>
+      <mat-hint align="end">
+        {{usuarioForm.value.direccion ? usuarioForm.value.direccion.length : 0}}/200
+      </mat-hint>
       <mat-icon matSuffix [color]="isValidField('direccion').color" *ngIf="usuarioForm.value.direccion">
         {{isValidField('direccion').icon}}
       </mat-icon>

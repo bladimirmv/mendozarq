@@ -16,6 +16,7 @@ import { AuthService } from '@services/auth.service';
 })
 export class NewUserComponent implements OnInit {
   public usuarioForm: FormGroup;
+  public celularString: string;
   constructor(
     private fb: FormBuilder,
     private toastrSvc: ToastrService,
@@ -35,7 +36,7 @@ export class NewUserComponent implements OnInit {
       nombre: ['bladimir', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[a-z\s]+$/)]],
       apellidoPaterno: ['medrano', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[a-z\s]+$/)]],
       apellidoMaterno: ['', [Validators.maxLength(50), Validators.pattern(/^[a-z\s]+$/)]],
-      celular: ['69509449', [Validators.required, Validators.minLength(7), Validators.maxLength(8), Validators.pattern(/^[0-9]*$/)]],
+      celular: [69509449, [Validators.required, Validators.minLength(7), Validators.maxLength(8), Validators.pattern(/^[0-9]*$/)]],
       direccion: ['', [Validators.maxLength(200)]],
       correo: ['example@gmail.com', [Validators.required, Validators.pattern(/\S+@\S+\.\S+/)]],
       rol: ['cliente', [Validators.required]],
@@ -87,6 +88,10 @@ export class NewUserComponent implements OnInit {
   // ===========> onCloseDIalog
   onCloseDialog(): void {
     this.matDialog.closeAll();
+  }
+  // ===========> getString
+  getString(num: number): string {
+    return String(num);
   }
 
 }

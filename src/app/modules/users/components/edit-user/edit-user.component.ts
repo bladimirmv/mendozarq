@@ -116,4 +116,9 @@ export class EditUserComponent implements OnInit {
 
   }
 
+  // ===========> getString
+  getString(num: number): string {
+    return String(num);
+  }
+
 }
