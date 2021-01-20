@@ -1,3 +1,17 @@
 .content {
   background-image: url('./../../../assets/logo-wave.svg');
 }
+
+.personal-activo {
+  width: 15px;
+  height: 15px;
+  background-color: var(--success);
+  border-radius: 25px;
+}
+
+.personal-no-activo {
+  width: 15px;
+  height: 15px;
+  background-color: var(--warn);
+  border-radius: 25px;
+}

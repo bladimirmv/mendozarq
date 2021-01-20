@@ -30,8 +30,8 @@ export class UsersComponent implements OnInit, OnDestroy {
   filterValue: string;
   displayedColumns: string[] = [
     'seleccion', 'activo', 'nombre',
-    'apellidos', 'rol', 'celular', 'direccion',
-    'correo', 'username', 'edit'
+    'apellidos', 'rol', 'celular',
+    'correo', 'username', 'direccion', 'edit'
   ];
 
   dataSource: MatTableDataSource<Usuario> = new MatTableDataSource<Usuario>();

@@ -84,8 +84,8 @@ export class AuthService extends RoleValidator {
   public handdleError(httpError: HttpErrorResponse): Observable<never> {
     let errorMessage = '';
     if (httpError) {
-      typeof httpError.error.message === 'string' ?
-        errorMessage = `${JSON.stringify(httpError.error.message)}`
+      typeof httpError.error.message === 'string'
+        ? errorMessage = `${httpError.error.message}`
         : errorMessage = `
         Error: ${httpError.statusText} </br>
         Status: ${httpError.status}`;
@@ -95,7 +95,7 @@ export class AuthService extends RoleValidator {
       timeOut: 7000,
       enableHtml: true
     });
-    return throwError(errorMessage);
+    return throwError(httpError);
   }
   // ====================================================================
 

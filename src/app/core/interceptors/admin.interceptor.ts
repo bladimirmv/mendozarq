@@ -12,8 +12,10 @@ export class AdminInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<any> {
 
     const url: Array<string> = [
-      '/api/usuario/',
       '/api/usuario',
+      '/api/usuario/',
+      '/api/personal',
+      '/api/personal/',
       '/api/categoriarecurso',
       '/api/categoriarecurso/',
       '/api/recurso',

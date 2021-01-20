@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
@@ -44,18 +44,21 @@ export class UsuarioService {
       .pipe(catchError(error => this.handdleError(error)));
   }
   // ====================================================================
-  public handdleError(error: any): Observable<never> {
+  public handdleError(httpError: HttpErrorResponse): Observable<never> {
     let errorMessage = '';
-    if (error) {
-      error.error.message ? errorMessage = `Error: ${error.error.message}</br>`
-        : errorMessage = `El servidor no responde 🙁.`;
+    if (httpError) {
+      typeof httpError.error.message === 'string'
+        ? errorMessage = `${httpError.error.message}`
+        : errorMessage = `
+        Error: ${httpError.statusText} </br>
+        Status: ${httpError.status}`;
     }
+    console.log('this error', httpError);
     this.toastrSvc.error(errorMessage, 'Ocurrio un Error!', {
       timeOut: 7000,
       enableHtml: true
     });
-
-    return throwError(error);
+    return throwError(httpError);
   }
   // ====================================================================
 }
