@@ -64,7 +64,10 @@
     color: var(--secondary);
   }
 
-
+  .long-txt {
+    white-space: normal;
+    min-width: 300px;
+  }
 }
 
 
@@ -128,10 +131,8 @@
   padding: 0 10px;
 }
 
-.long-txt {
-  white-space: normal;
-  min-width: 100px;
-}
+
+
 
 @keyframes opacity-table {
   from {

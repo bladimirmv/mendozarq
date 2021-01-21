@@ -1,35 +1,94 @@
-<app-modal>
-  <div slot="title">
-    <h1>
-      Editar Personal
-    </h1>
-  </div>
-  <form class="new-personal-form" [formGroup]="updatePersonal" (ngSubmit)="onUpdatePersonal(updatePersonal.value)">
+<h1 mat-dialog-title align="center">
+  Nuevo Personal
+</h1>
 
-    <mat-form-field class="full-width">
+<mat-dialog-content>
+
+  <form class="new-personal-form" [formGroup]="personalForm">
+
+    <!-- *Nombre -->
+    <mat-form-field class="full-width" [color]="isValidField('nombre').color">
       <mat-label>Nombre</mat-label>
-      <input matInput formControlName="nombre">
+      <input matInput formControlName="nombre" autocomplete="off">
+      <mat-icon matSuffix [color]="isValidField('nombre').color">
+        {{isValidField('nombre').icon}}
+      </mat-icon>
+      <mat-error *ngIf="personalForm.get('nombre').errors?.required">
+        Ingrese un nombre.
+      </mat-error>
+      <mat-error *ngIf="personalForm.get('nombre').errors?.pattern">
+        Debe incluir solo letras en minuscula.
+      </mat-error>
     </mat-form-field>
 
-    <mat-form-field class="full-width">
-      <mat-label>Apellidos</mat-label>
-      <input matInput formControlName="apellidos">
+    <!-- *Apellido Paterno -->
+    <mat-form-field class="full-width" [color]="isValidField('apellidoPaterno').color">
+      <mat-label>Apellido Paterno</mat-label>
+      <input matInput formControlName="apellidoPaterno" autocomplete="off">
+      <mat-icon matSuffix [color]="isValidField('apellidoPaterno').color">
+        {{isValidField('apellidoPaterno').icon}}
+      </mat-icon>
+      <mat-error *ngIf="personalForm.get('apellidoPaterno').errors?.required">
+        Por favor ingrese el apellido paterno.
+      </mat-error>
+      <mat-error *ngIf="personalForm.get('apellidoPaterno').errors?.maxlength">
+        Debe contener {{personalForm.get('apellidoPaterno').errors?.maxlength?.requiredLength}} letras como maximo.
+      </mat-error>
+      <mat-error *ngIf="personalForm.get('apellidoPaterno').errors?.pattern">
+        Debe incluir solo letras en minuscula.
+      </mat-error>
     </mat-form-field>
 
-    <mat-form-field class="full-width">
+    <!-- *Apellido Materno -->
+    <mat-form-field class="full-width" [color]="isValidField('apellidoMaterno').color">
+      <mat-label>Apellido Materno</mat-label>
+      <mat-icon matSuffix [color]="isValidField('apellidoMaterno').color" *ngIf="personalForm.value.apellidoMaterno">
+        {{isValidField('apellidoMaterno').icon}}
+      </mat-icon>
+      <input matInput formControlName="apellidoMaterno" autocomplete="off">
+      <mat-error *ngIf="personalForm.get('apellidoMaterno').errors?.maxlength">
+        Debe contener {{personalForm.get('apellidoMaterno').errors?.maxlength?.requiredLength}} letras como maximo.
+      </mat-error>
+      <mat-error *ngIf="personalForm.get('apellidoMaterno').errors?.pattern">
+        Debe incluir solo letras en minuscula.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- *Celular -->
+    <mat-form-field class="full-width" [color]="isValidField('celular').color">
       <mat-label>Celular</mat-label>
       <span matPrefix>+591 &nbsp;</span>
-      <input type="tel" matInput placeholder="69409749" formControlName="celular">
-      <mat-icon matSuffix>mode_edit</mat-icon>
+
+      <input type="tel" matInput placeholder="69409749" formControlName="celular" autocomplete="off">
+
+      <mat-hint align="end">
+        {{personalForm.value.celular ? getString(personalForm.value.celular).length : 0}}/8
+      </mat-hint>
+      <mat-icon matSuffix [color]="isValidField('celular').color">
+        {{isValidField('celular').icon}}
+      </mat-icon>
+      <mat-error *ngIf="personalForm.get('celular').errors?.required">
+        Ingrese el numero de celular o telefono.
+      </mat-error>
+      <mat-error *ngIf="personalForm.get('celular').errors?.pattern else min_maxLength">
+        Debe incluir solo numeros.
+      </mat-error>
+      <ng-template #min_maxLength>
+        <mat-error *ngIf="personalForm.get('celular').errors?.minlength">
+          Debe contener {{personalForm.get('celular').errors?.minlength?.requiredLength}} numeros como minimo.
+        </mat-error>
+        <mat-error *ngIf="personalForm.get('celular').errors?.maxlength">
+          Debe contener {{personalForm.get('celular').errors?.maxlength?.requiredLength}} numeros como maximo.
+        </mat-error>
+      </ng-template>
     </mat-form-field>
 
-
-    <div class=" subGrid">
+    <!-- *Sueldo -->
+    <div class="subGrid">
 
       <mat-form-field class="full-width">
         <mat-label>Sueldo</mat-label>
-        <input matInput formControlName="sueldo" type="number">
-
+        <input matInput formControlName="sueldo" type="number" autocomplete="off">
       </mat-form-field>
 
       <mat-form-field class="">
@@ -45,24 +104,76 @@
       </mat-form-field>
     </div>
 
-    <mat-form-field class="full-width full-column">
-      <mat-label>Cargo</mat-label>
-      <input matInput formControlName="cargo">
+
+    <!-- *Estado -->
+    <mat-form-field class="full-width" [color]="isValidField('activo').color">
+      <mat-label>Estado</mat-label>
+      <mat-select formControlName="activo">
+        <mat-option [value]="true">
+          Activo
+        </mat-option>
+        <mat-option [value]="false">
+          Inactivo
+        </mat-option>
+      </mat-select>
     </mat-form-field>
 
-    <mat-form-field class="full-width  full-column">
+    <!-- *Correo -->
+    <mat-form-field class="full-width  full-column" [color]="isValidField('correo').color">
       <mat-label>Correo</mat-label>
-      <input matInput formControlName="correo">
+      <input matInput formControlName="correo" autocomplete="off">
+      <mat-icon matSuffix [color]="isValidField('correo').color">
+        {{isValidField('correo').icon}}
+      </mat-icon>
+      <mat-error *ngIf="personalForm.get('correo').errors?.required">
+        Por favor ingrese el correo.
+      </mat-error>
+      <mat-error *ngIf="personalForm.get('correo').errors?.pattern">
+        Por favor ingrese un correo valido.
+      </mat-error>
     </mat-form-field>
 
-    <mat-form-field class="full-width full-column">
+    <!-- *Descripcion -->
+    <mat-form-field class="full-width full-column" [color]="isValidField('descripcion').color">
+      <mat-label>Descripcion</mat-label>
+      <textarea matInput placeholder="Ex. encargado de construcciones" formControlName="descripcion"
+        autocomplete="off"></textarea>
+      <mat-hint align="end">
+        {{personalForm.value.descripcion ? personalForm.value.descripcion.length : 0}}/200
+      </mat-hint>
+      <mat-icon matSuffix [color]="isValidField('descripcion').color" *ngIf="personalForm.value.descripcion">
+        {{isValidField('descripcion').icon}}
+      </mat-icon>
+      <mat-error *ngIf="personalForm.get('descripcion').errors?.required">
+        Ingrese una breve descripcion.
+      </mat-error>
+      <mat-error *ngIf="personalForm.get('descripcion').errors?.maxlength">
+        Debe contener {{personalForm.get('descripcion').errors?.maxlength?.requiredLength}} digitos como maximo.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- *Direccion -->
+    <mat-form-field class="full-width full-column" [color]="isValidField('direccion').color">
       <mat-label>Direccion</mat-label>
-      <textarea matInput placeholder="Ex. 100 Main St" formControlName="direccion"></textarea>
+      <textarea matInput placeholder="Ex. Avenida Segunda" formControlName="direccion" autocomplete="off"></textarea>
+      <mat-hint align="end">
+        {{personalForm.value.direccion ? personalForm.value.direccion.length : 0}}/200
+      </mat-hint>
+      <mat-icon matSuffix [color]="isValidField('direccion').color" *ngIf="personalForm.value.direccion">
+        {{isValidField('direccion').icon}}
+      </mat-icon>
+      <mat-error *ngIf="personalForm.get('direccion').errors?.maxlength">
+        Debe contener {{personalForm.get('direccion').errors?.maxlength?.requiredLength}} digitos como maximo.
+      </mat-error>
     </mat-form-field>
 
-    <button mat-raised-button mat-dialog-close type="submit" class="full-column button-primary"
-      [disabled]="!updatePersonal.valid">
-      Guardar
-    </button>
   </form>
-</app-modal>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button mat-button mat-dialog-close class="mat-btn-secondary">Cancelar</button>
+  <button mat-button class="mat-btn-success" (click)="onUpdatePersonal(personalForm.value)"
+    [disabled]="!personalForm.valid">
+    Editar
+  </button>
+</mat-dialog-actions>

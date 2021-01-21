@@ -82,12 +82,16 @@ export class UsersComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         this.dataSource.data = res;
         this.usuario = res;
+        console.log(res);
+
       });
     this.usuarios$ = this.usuarioSvc.getAllUsuarios();
   }
 
   // =====================> onAddUser
   onAddUser(): void {
+
+
     const dialogRef = this.dialog.open(NewUserComponent);
     dialogRef.afterClosed()
       .pipe(takeUntil(this.destroy$))
@@ -109,11 +113,8 @@ export class UsersComponent implements OnInit, OnDestroy {
   // =====================> ondeleteUser
   async ondeleteUser(): Promise<void> {
 
-    const matDialogConfig: MatDialogConfig = {
-      // width: '500px'
-    };
 
-    const dialogRef = this.dialog.open(DeleteModalComponent, matDialogConfig);
+    const dialogRef = this.dialog.open(DeleteModalComponent);
 
     dialogRef.afterClosed()
       .pipe(takeUntil(this.destroy$))

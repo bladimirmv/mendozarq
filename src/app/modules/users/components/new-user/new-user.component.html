@@ -2,7 +2,7 @@
 
 <mat-dialog-content class="mat-typography">
   <form class="new-user-form" [formGroup]="usuarioForm">
-    <!-- (ngSubmit)="onAddUser(usuarioForm.value)" -->
+
     <!-- *Nombre -->
     <mat-form-field class="full-width" [color]="isValidField('nombre').color">
       <mat-label>Nombre</mat-label>
@@ -192,7 +192,7 @@
     <!-- *Direccion -->
     <mat-form-field class="full-width full-column" [color]="isValidField('direccion').color">
       <mat-label>Direccion</mat-label>
-      <textarea matInput placeholder="Ex. 100 Main St" formControlName="direccion"></textarea>
+      <textarea matInput placeholder="Ex. Avenida Segunda" formControlName="direccion"></textarea>
       <mat-hint align="end">
         {{usuarioForm.value.direccion ? usuarioForm.value.direccion.length : 0}}/200
       </mat-hint>

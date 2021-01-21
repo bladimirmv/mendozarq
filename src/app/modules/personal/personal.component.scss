@@ -1,6 +1,17 @@
-.content {
-  background-image: url('./../../../assets/logo-wave.svg');
+.stats-container {
+  margin: 20px 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+  justify-content: center;
+  align-items: center;
 }
+
+// .mat-column-descripcion {
+//   flex: none;
+//   width: 100px;
+// }
+
 
 .personal-activo {
   width: 15px;
@@ -14,4 +25,26 @@
   height: 15px;
   background-color: var(--warn);
   border-radius: 25px;
+}
+
+
+@media screen and(max-width: 800px) {
+  .stats-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  app-status-card:first-child {
+    grid-column: 1 / span 2;
+  }
+
+}
+
+@media screen and(max-width: 330px) {
+  .stats-container {
+    grid-template-columns: 1fr;
+  }
+
+  app-status-card:first-child {
+    grid-column: span 1;
+  }
 }

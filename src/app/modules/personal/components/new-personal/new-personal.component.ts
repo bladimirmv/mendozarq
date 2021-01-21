@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 import { Personal } from '@models/mendozarq/personal.interface';
 import { PersonalService } from '@services/personal.service';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-new-personal',
   templateUrl: './new-personal.component.html',
@@ -12,32 +12,62 @@ import { PersonalService } from '@services/personal.service';
 })
 export class NewPersonalComponent implements OnInit {
 
-  public newPersonal: FormGroup = new FormGroup({
+  public personalForm: FormGroup;
 
-    nombre: new FormControl('', Validators.required),
-    apellidos: new FormControl('', Validators.required),
-    celular: new FormControl('', Validators.required),
-    direccion: new FormControl('', Validators.required),
-    correo: new FormControl('', Validators.email),
-    cargo: new FormControl('', Validators.required),
-    sueldo: new FormControl('', Validators.required),
-    moneda: new FormControl('bs', Validators.required)
-
-  });
-
-  constructor(private personalSvc: PersonalService, private toastrSvc: ToastrService) { }
+  constructor(
+    private personalSvc: PersonalService,
+    private toastrSvc: ToastrService,
+    private fb: FormBuilder,
+    private dialogRef: MatDialogRef<NewPersonalComponent>) { }
 
   ngOnInit(): void {
+    this.initForm();
   }
 
+  // ============> onInitForm
+  private initForm(): void {
+    this.personalForm = this.fb.group({
+
+      nombre: ['franco', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[a-z\s]+$/)]],
+      apellidoPaterno: ['medrano', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[a-z\s]+$/)]],
+      apellidoMaterno: ['', [Validators.maxLength(50), Validators.pattern(/^[a-z\s]+$/)]],
+      celular: [69509449, [Validators.required, Validators.minLength(7), Validators.maxLength(8), Validators.pattern(/^[0-9]*$/)]],
+      direccion: ['', [Validators.maxLength(200)]],
+      correo: ['example@gmail.com', [Validators.required, Validators.pattern(/\S+@\S+\.\S+/)]],
+      descripcion: ['Jefe responsable de las operaciones de las contrucciones', [Validators.required, Validators.maxLength(200)]],
+      sueldo: [0, [Validators.required]],
+      moneda: ['bs', Validators.required],
+      activo: [true, [Validators.required]],
+    });
+  }
+
+  // ===================> onAddPersonal
   public onAddPersonal(personal: Personal): void {
     this.personalSvc.addPersonal(personal)
-      .then(() => {
-        this.toastrSvc.success('Se ha creado correctamente', 'Personal creado');
-      })
-      .catch((error) => {
-        this.toastrSvc.error(`Error: ${error}`, 'Se ha producido un Error!');
+      .subscribe(usr => {
+        if (usr) {
+          this.toastrSvc.success('El personal se ha creado correctamente. 😀', 'Personal Creado');
+          this.dialogRef.close(this.personalForm);
+        }
+
       });
+
   }
+
+  // ===========> isValidField
+  public isValidField(field: string): { color?: string; status?: boolean; icon?: string; } {
+    const validateFIeld = this.personalForm.get(field);
+    return (!validateFIeld.valid && validateFIeld.touched)
+      ? { color: 'warn', status: false, icon: 'close' }
+      : validateFIeld.valid
+        ? { color: 'accent', status: true, icon: 'done' }
+        : {};
+  }
+
+  // ===========> getString
+  getString(num: number): string {
+    return String(num);
+  }
+
 
 }

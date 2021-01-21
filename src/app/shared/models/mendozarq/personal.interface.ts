@@ -7,7 +7,7 @@ export interface Personal {
   celular?: number;
   direccion?: string;
   correo?: string;
-  cargo?: string;
+  descripcion?: string;
   sueldo?: number;
   moneda?: 'bs' | 'usd';
   activo?: boolean;

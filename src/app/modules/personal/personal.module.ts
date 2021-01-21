@@ -8,10 +8,11 @@ import { PersonalComponent } from './personal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewPersonalComponent } from './components/new-personal/new-personal.component';
 import { EditPersonalComponent } from './components/edit-personal/edit-personal.component';
+import { StatePersonalPipe } from './pipes/state-personal.pipe';
 
 
 @NgModule({
-  declarations: [PersonalComponent, NewPersonalComponent, EditPersonalComponent],
+  declarations: [PersonalComponent, NewPersonalComponent, EditPersonalComponent, StatePersonalPipe],
   imports: [
     CommonModule,
     PersonalRoutingModule,

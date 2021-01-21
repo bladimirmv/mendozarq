@@ -1,5 +1,3 @@
-import { DeleteModalComponent } from './../../shared/components/delete-modal/delete-modal.component';
-import { EditProyectoComponent } from './../proyectos/components/edit-proyecto/edit-proyecto.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { SelectionModel } from '@angular/cdk/collections';
@@ -14,6 +12,7 @@ import { map, takeUntil } from 'rxjs/operators';
 
 import { NewPersonalComponent } from './components/new-personal/new-personal.component';
 import { EditPersonalComponent } from './components/edit-personal/edit-personal.component';
+import { DeleteModalComponent } from './../../shared/components/delete-modal/delete-modal.component';
 import { Personal } from '@models/mendozarq/personal.interface';
 import { PersonalService } from '@services/personal.service';
 @Component({
@@ -29,9 +28,9 @@ export class PersonalComponent implements OnInit {
   selection = new SelectionModel<Personal>(true, []);
   filterValue: string;
   displayedColumns: string[] = [
-    'seleccion', 'activo', 'nombre', 'apellidoPaterno',
-    'apellidoMaterno', 'celular', 'direccion',
-    'correo', 'cargo', 'sueldo', 'edit'];
+    'seleccion', 'activo', 'nombre', 'apellidos',
+    'celular', 'correo', 'sueldo',
+    'descripcion', 'direccion', 'edit'];
 
   dataSource: MatTableDataSource<Personal> = new MatTableDataSource();
 
@@ -70,7 +69,6 @@ export class PersonalComponent implements OnInit {
 
   // =====================> getAllPersonal
   getAllPersonal(): void {
-
     this.personalSvc.getAllPersonal()
       .pipe(takeUntil(this.destroy$))
       .subscribe(res => {
@@ -91,7 +89,7 @@ export class PersonalComponent implements OnInit {
 
   // =====================> oneditPersonal
   onUpdatePersonal(personal: Personal): void {
-    const dialogRef = this.dialog.open(EditProyectoComponent, { data: personal });
+    const dialogRef = this.dialog.open(EditPersonalComponent, { data: personal });
     dialogRef.afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {

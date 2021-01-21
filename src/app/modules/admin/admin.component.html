@@ -178,19 +178,21 @@
 
 
     </mat-toolbar>
+    <div class="content">
 
-    <div class="mat-elevation-z2 " *ngIf="locationBarSvc.locationList$|async as ltnbar"
-      style=" z-index: 1000; background-color: white; color: black; padding: 8px ; display: flex; margin:10px 15px; border-radius: 2.5px; overflow: auto;">
-      <a *ngFor="let location of ltnbar" [routerLink]="location.link"
-        style=" padding-left: 2.5px; text-decoration: none;">
-        <span style="color: black; font-size: 16px; display: flex; align-items: center; font-style:italic;">
-          <mat-icon class=" mat-18" style="font-size: 20px; display: grid;place-items: center;">
-            {{location.icon}}</mat-icon>
-          {{location.name}}/
-        </span>
+      <div class="mat-elevation-z2 " *ngIf="locationBarSvc.locationList$|async as ltnbar"
+        style=" z-index: 1000; background-color: white; color: black; padding: 8px ; display: flex; margin:10px 0px; border-radius: 2.5px; overflow: auto;">
+        <a *ngFor="let location of ltnbar" [routerLink]="location.link"
+          style=" padding-left: 2.5px; text-decoration: none;">
+          <span style="color: black; font-size: 16px; display: flex; align-items: center; font-style:italic;">
+            <mat-icon class=" mat-18" style="font-size: 20px; display: grid;place-items: center;">
+              {{location.icon}}</mat-icon>
+            {{location.name}}/
+          </span>
 
-      </a>
+        </a>
 
+      </div>
     </div>
 
     <router-outlet></router-outlet>

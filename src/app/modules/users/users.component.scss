@@ -25,10 +25,6 @@
   .stats-container {
     grid-template-columns: repeat(2, 1fr);
   }
-
-  app-status-card:last-child {
-    // grid-column: 1 / span 2;
-  }
 }
 
 @media screen and(max-width: 490px) {
