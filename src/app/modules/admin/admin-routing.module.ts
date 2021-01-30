@@ -79,6 +79,10 @@ const routes: Routes = [
         path: 'categoria-recurso', loadChildren: () =>
           import('@modules/categoria-recurso/categoria-recurso.module').then(m => m.CategoriaRecursoModule)
       },
+      {
+        path: 'herramienta', loadChildren: () =>
+          import('@modules/herramienta/herramienta.module').then(m => m.HerramientaModule)
+      },
     ]
 
   },

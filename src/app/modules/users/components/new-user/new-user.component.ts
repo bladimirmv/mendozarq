@@ -33,15 +33,15 @@ export class NewUserComponent implements OnInit {
   // ============> onInitForm
   private initForm(): void {
     this.usuarioForm = this.fb.group({
-      nombre: ['bladimir', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[a-z\s]+$/)]],
-      apellidoPaterno: ['medrano', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[a-z\s]+$/)]],
+      nombre: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[a-z\s]+$/)]],
+      apellidoPaterno: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[a-z\s]+$/)]],
       apellidoMaterno: ['', [Validators.maxLength(50), Validators.pattern(/^[a-z\s]+$/)]],
-      celular: [69509449, [Validators.required, Validators.minLength(7), Validators.maxLength(8), Validators.pattern(/^[0-9]*$/)]],
+      celular: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(8), Validators.pattern(/^[0-9]*$/)]],
       direccion: ['', [Validators.maxLength(200)]],
-      correo: ['example@gmail.com', [Validators.required, Validators.pattern(/\S+@\S+\.\S+/)]],
+      correo: ['', [Validators.required, Validators.pattern(/\S+@\S+\.\S+/)]],
       rol: ['cliente', [Validators.required]],
       username: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(10)]],
-      contrasenha: ['example123', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
+      contrasenha: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
       autoUsuario: [false],
       autoContrasenha: [false],
       activo: [true, [Validators.required]],

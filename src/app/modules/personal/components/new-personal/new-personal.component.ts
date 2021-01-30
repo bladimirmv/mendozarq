@@ -28,13 +28,13 @@ export class NewPersonalComponent implements OnInit {
   private initForm(): void {
     this.personalForm = this.fb.group({
 
-      nombre: ['franco', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[a-z\s]+$/)]],
-      apellidoPaterno: ['medrano', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[a-z\s]+$/)]],
+      nombre: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[a-z\s]+$/)]],
+      apellidoPaterno: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[a-z\s]+$/)]],
       apellidoMaterno: ['', [Validators.maxLength(50), Validators.pattern(/^[a-z\s]+$/)]],
-      celular: [69509449, [Validators.required, Validators.minLength(7), Validators.maxLength(8), Validators.pattern(/^[0-9]*$/)]],
+      celular: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(8), Validators.pattern(/^[0-9]*$/)]],
       direccion: ['', [Validators.maxLength(200)]],
-      correo: ['example@gmail.com', [Validators.required, Validators.pattern(/\S+@\S+\.\S+/)]],
-      descripcion: ['Jefe responsable de las operaciones de las contrucciones', [Validators.required, Validators.maxLength(200)]],
+      correo: ['', [Validators.required, Validators.pattern(/\S+@\S+\.\S+/)]],
+      descripcion: ['', [Validators.required, Validators.maxLength(200)]],
       sueldo: [0, [Validators.required]],
       moneda: ['bs', Validators.required],
       activo: [true, [Validators.required]],
