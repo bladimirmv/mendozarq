@@ -1,11 +1,11 @@
-import { UsuarioService } from '@services/usuario.service';
+import { UsuarioService } from '@app/core/services/auth/usuario.service';
 import { Usuario } from '@app/shared/models/usuario.interface';
 import { Component, Inject, OnInit } from '@angular/core';
 
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from '@services/auth.service';
+import { AuthService } from '@app/core/services/auth/auth.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ShowContrasenhaComponent } from '../show-contrasenha/show-contrasenha.component';
 import { Interface } from 'readline';

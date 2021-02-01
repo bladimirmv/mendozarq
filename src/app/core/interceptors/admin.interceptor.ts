@@ -1,4 +1,4 @@
-import { AuthService } from '@services/auth.service';
+import { AuthService } from '@app/core/services/auth/auth.service';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpInterceptor } from '@angular/common/http';
@@ -16,6 +16,10 @@ export class AdminInterceptor implements HttpInterceptor {
       '/api/usuario/',
       '/api/personal',
       '/api/personal/',
+      '/api/proyecto',
+      '/api/proyecto/',
+      '/api/categoriaProyecto',
+      '/api/categoriaProyecto/',
       '/api/herramienta',
       '/api/herramienta/',
 

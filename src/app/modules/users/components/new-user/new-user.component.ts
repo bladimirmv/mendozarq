@@ -1,13 +1,13 @@
 import { ShowContrasenhaComponent } from './../show-contrasenha/show-contrasenha.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { UsuarioService } from '@services/usuario.service';
+import { UsuarioService } from '@app/core/services/auth/usuario.service';
 import { Usuario } from '@app/shared/models/usuario.interface';
 import { Component, OnInit } from '@angular/core';
 
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from '@services/auth.service';
+import { AuthService } from '@app/core/services/auth/auth.service';
 
 @Component({
   selector: 'app-new-user',

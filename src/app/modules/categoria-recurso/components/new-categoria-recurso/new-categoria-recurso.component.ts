@@ -1,10 +1,10 @@
 import { MatDialog } from '@angular/material/dialog';
-import { CategoriaRecursoService } from '@services/categoria-recurso.service';
+import { CategoriaRecursoService } from '@app/core/services/mendozarq/categoria-recurso.service';
 import { CategoriaRecurso } from '@app/shared/models/mendozarq/categoria.recurso.interface'
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from '@app/core/services/auth.service';
+import { AuthService } from '@app/core/services/auth/auth.service';
 
 @Component({
   selector: 'app-new-categoria-recurso',

@@ -1,5 +1,5 @@
-import { LocationBarService } from './../../core/services/location-bar.service';
-import { AuthService } from '@services/auth.service';
+import { LocationBarService } from '../../core/services/mendozarq/location-bar.service';
+import { AuthService } from '@app/core/services/auth/auth.service';
 import { BrightnessService } from './../../core/services/brightness.service';
 import { Location } from '@angular/common';
 import { map, shareReplay } from 'rxjs/operators';

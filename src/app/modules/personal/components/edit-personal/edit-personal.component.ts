@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 
 import { Personal } from '@models/mendozarq/personal.interface';
-import { PersonalService } from '@services/personal.service';
+import { PersonalService } from '@app/core/services/mendozarq/personal.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-edit-personal',

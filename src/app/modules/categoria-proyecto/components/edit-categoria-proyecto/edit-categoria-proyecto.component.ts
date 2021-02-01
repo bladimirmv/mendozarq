@@ -5,7 +5,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 
 import { CategoriaProyecto } from '@models/mendozarq/categoria.proyecto.interface';
-import { CategoriaProyectoService } from '@services/categoria-proyecto.service';
+import { CategoriaProyectoService } from '@services/mendozarq/categoria-proyecto.service';
 @Component({
   selector: 'app-edit-categoria-proyecto',
   templateUrl: './edit-categoria-proyecto.component.html',
@@ -16,7 +16,7 @@ export class EditCategoriaProyectoComponent implements OnInit {
   public updateCategoriaProyecto: FormGroup = new FormGroup({
     nombre: new FormControl(this.data.nombre, Validators.required),
     color: new FormControl(this.data.color, Validators.required),
-    idCatProyecto: new FormControl(this.data.idCatProyecto)
+    idCatProyecto: new FormControl(this.data.uuid)
   });
 
 
@@ -30,13 +30,13 @@ export class EditCategoriaProyectoComponent implements OnInit {
   }
 
   onUpdateCategoriaProyecto(catProyecto: CategoriaProyecto): void {
-    this.catProyetoSvc.updateCategoriaProyecto(catProyecto)
-      .then(() => {
-        this.toastrSvc.success('Se ha editado correctamente', 'Editado Coreectamente');
-      })
-      .catch((error) => {
-        this.toastrSvc.error(`Error: ${error}`, 'Se ha producido un Error');
-      });
+    // this.catProyetoSvc.updateCategoriaProyecto(catProyecto)
+    //   .then(() => {
+    //     this.toastrSvc.success('Se ha editado correctamente', 'Editado Coreectamente');
+    //   })
+    //   .catch((error) => {
+    //     this.toastrSvc.error(`Error: ${error}`, 'Se ha producido un Error');
+    //   });
   }
 
 }

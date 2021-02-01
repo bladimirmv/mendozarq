@@ -14,9 +14,9 @@ import { Usuario } from '@app/shared/models/usuario.interface';
 import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { DeleteModalComponent } from './../../shared/components/delete-modal/delete-modal.component';
 
-import { UsuarioService } from '@services/usuario.service';
+import { UsuarioService } from '@app/core/services/auth/usuario.service';
 import { ToastrService } from 'ngx-toastr';
-import { LocationBarService } from '@app/core/services/location-bar.service';
+import { LocationBarService } from '@app/core/services/mendozarq/location-bar.service';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',

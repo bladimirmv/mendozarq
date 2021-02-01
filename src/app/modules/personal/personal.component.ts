@@ -7,14 +7,14 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 
 import { ToastrService } from 'ngx-toastr';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 
 import { NewPersonalComponent } from './components/new-personal/new-personal.component';
 import { EditPersonalComponent } from './components/edit-personal/edit-personal.component';
 import { DeleteModalComponent } from './../../shared/components/delete-modal/delete-modal.component';
 import { Personal } from '@models/mendozarq/personal.interface';
-import { PersonalService } from '@services/personal.service';
+import { PersonalService } from '@app/core/services/mendozarq/personal.service';
 @Component({
   selector: 'app-personal',
   templateUrl: './personal.component.html',

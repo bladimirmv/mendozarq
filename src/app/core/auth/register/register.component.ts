@@ -1,6 +1,6 @@
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '@services/auth.service';
+import { AuthService } from '@app/core/services/auth/auth.service';
 import { Usuario, Roles } from '@app/shared/models/usuario.interface';
 import { empty, Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';

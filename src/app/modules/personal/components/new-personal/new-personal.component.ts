@@ -3,7 +3,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 import { Personal } from '@models/mendozarq/personal.interface';
-import { PersonalService } from '@services/personal.service';
+import { PersonalService } from '@app/core/services/mendozarq/personal.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-new-personal',

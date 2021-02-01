@@ -4,12 +4,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from '@app/core/services/auth.service';
+import { AuthService } from '@app/core/services/auth/auth.service';
 
 
-import { RecursoService } from '@services/recurso.service';
+import { RecursoService } from '@app/core/services/mendozarq/recurso.service';
 import { Recurso } from '@app/shared/models/mendozarq/recurso.interface'
-import { CategoriaRecursoService } from '@services/categoria-recurso.service'
+import { CategoriaRecursoService } from '@app/core/services/mendozarq/categoria-recurso.service'
 import { CategoriaRecurso } from '@models/mendozarq/categoria.recurso.interface'
 
 
@@ -29,7 +29,7 @@ export class NewRecursoComponent implements OnInit {
     nombre: new FormControl('Viga de concreto', Validators.required),
     // color: new FormControl('#000000',Validators.required),
     descripcion: new FormControl('Vigas de soporte hechas de concreto', Validators.required),
-    estado: new FormControl('Disponible',Validators.required),
+    estado: new FormControl('Disponible', Validators.required),
     idCategoriaRecurso: new FormControl('Categoria 1', Validators.required)
   });
 

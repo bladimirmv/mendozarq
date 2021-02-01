@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NewRecursoComponent } from './components/new-recurso/new-recurso.component';
-import { RecursoService } from '@services/recurso.service'
+import { RecursoService } from '@app/core/services/mendozarq/recurso.service'
 import { Recurso } from '@models/mendozarq/recurso.interface'
 
 import { MatSnackBar } from '@angular/material/snack-bar';

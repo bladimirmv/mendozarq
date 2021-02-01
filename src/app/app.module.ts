@@ -23,6 +23,8 @@ import { RegisterComponent } from './core/auth/register/register.component';
 import { FooterComponent } from './core/footer/footer.component';
 import { AdminInterceptor } from './core/interceptors/admin.interceptor';
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,7 +48,8 @@ import { AdminInterceptor } from './core/interceptors/admin.interceptor';
     // SocketIoModule.forRoot(environment.socketConfig)
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AdminInterceptor, multi: true }
+
+    { provide: HTTP_INTERCEPTORS, useClass: AdminInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

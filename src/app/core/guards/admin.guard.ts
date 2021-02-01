@@ -1,5 +1,5 @@
 import { Usuario } from './../../shared/models/usuario.interface';
-import { AuthService } from '@services/auth.service';
+import { AuthService } from '@app/core/services/auth/auth.service';
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';

@@ -1,7 +1,7 @@
-import { UsuarioService } from './../../core/services/usuario.service';
+import { UsuarioService } from '../../core/services/auth/usuario.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ChartType, getPackageForChart, ScriptLoaderService } from 'angular-google-charts';
-import { AuthService } from '@services/auth.service';
+import { AuthService } from '@app/core/services/auth/auth.service';
 
 @Component({
   selector: 'app-cronograma',

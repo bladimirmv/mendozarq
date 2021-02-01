@@ -1,6 +1,6 @@
 import { WebsocketService } from './../../services/sockets/websocket.service';
 import { BrightnessService } from './../../services/brightness.service';
-import { AuthService } from '@services/auth.service';
+import { AuthService } from '@app/core/services/auth/auth.service';
 import { Usuario, UsuarioResponse } from '@app/shared/models/usuario.interface';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';

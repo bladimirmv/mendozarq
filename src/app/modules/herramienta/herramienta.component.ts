@@ -1,4 +1,4 @@
-import { HerramientaService } from './../../core/services/herramienta.service';
+import { HerramientaService } from '../../core/services/mendozarq/herramienta.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({

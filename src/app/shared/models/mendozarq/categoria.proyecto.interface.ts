@@ -1,5 +1,5 @@
 export interface CategoriaProyecto {
-  idCatProyecto?: string;
+  uuid?: string;
   creadoEn?: Date;
   nombre?: string;
   color?: string;

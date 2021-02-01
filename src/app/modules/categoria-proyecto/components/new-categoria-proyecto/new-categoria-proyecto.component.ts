@@ -1,6 +1,6 @@
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { CategoriaProyectoService } from '@services/categoria-proyecto.service';
+import { CategoriaProyectoService } from '@services/mendozarq/categoria-proyecto.service';
 import { Component, OnInit } from '@angular/core';
 import { CategoriaProyecto } from '@models/mendozarq/categoria.proyecto.interface';
 
@@ -21,12 +21,12 @@ export class NewCategoriaProyectoComponent implements OnInit {
   ngOnInit(): void {
   }
   onAddCategotiProyecto(catProyecto): void {
-    this.catProyectoSvc.addCategoriaProyecto(catProyecto)
-      .then(() => {
-        this.toastr.success('Se ha creado corectamente', 'Categoria Creado');
-      })
-      .catch((error) => {
-        this.toastr.error(`Error: ${error}`, 'Se ha producido un error');
-      });
+    // this.catProyectoSvc.addCategoriaProyecto(catProyecto)
+    //   .then(() => {
+    //     this.toastr.success('Se ha creado corectamente', 'Categoria Creado');
+    //   })
+    //   .catch((error) => {
+    //     this.toastr.error(`Error: ${error}`, 'Se ha producido un error');
+    //   });
   }
 }

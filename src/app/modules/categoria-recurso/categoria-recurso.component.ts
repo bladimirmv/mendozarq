@@ -14,7 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 
 import { CategoriaRecurso } from '@models/mendozarq/categoria.recurso.interface'
 
-import { CategoriaRecursoService } from '@services/categoria-recurso.service';
+import { CategoriaRecursoService } from '@app/core/services/mendozarq/categoria-recurso.service';
 
 import { Observable, Subject } from 'rxjs';
 
