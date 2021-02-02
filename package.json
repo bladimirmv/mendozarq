@@ -27,12 +27,9 @@
     "@auth0/angular-jwt": "^5.0.2",
     "angular-google-charts": "^1.1.6",
     "ngx-electron": "^2.2.0",
-    "ngx-socket-io": "^3.2.0",
-    "ngx-swiper-wrapper": "^9.0.1",
     "ngx-toastr": "^13.0.0",
-    "rxjs": "~6.5.5",
     "socket.io-client": "^3.0.5",
-    "sweetalert2": "^10.3.5",
+    "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"
   },

@@ -3,11 +3,11 @@ export interface Proyecto {
   creadoEn?: Date;
   nombre: string;
   descripcion?: string;
+  categoria?: string;
   estado: boolean;
   fechaInicio?: Date;
   fechaFinal?: Date;
   lugarProyecto?: string;
   porcentaje?: number;
-  uuidCategoriaProyecto?: string;
   uuidCliente: string;
 }

@@ -10,10 +10,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditProyectoComponent } from './components/edit-proyecto/edit-proyecto.component';
 import { NewProyectoComponent } from './components/new-proyecto/new-proyecto.component';
 import { GetCategoriesPipe } from './pipes/get-categories.pipe';
+import { ClienteModalComponent } from './components/cliente-modal/cliente-modal.component';
 
 
 @NgModule({
-  declarations: [ProyectosComponent, EditProyectoComponent, NewProyectoComponent, GetCategoriesPipe],
+  declarations: [ProyectosComponent, EditProyectoComponent, NewProyectoComponent, GetCategoriesPipe, ClienteModalComponent],
   imports: [
     CommonModule,
     ProyectosRoutingModule,

@@ -12,10 +12,8 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './material.module';
 import { PersonalModule } from './modules/personal/personal.module';
-import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { environment } from '@env/environment';
 
 import { LoginComponent } from './core/auth/login/login.component';
 import { TitlebarComponent } from './core/titlebar/titlebar.component';
