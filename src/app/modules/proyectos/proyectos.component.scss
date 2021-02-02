@@ -8,6 +8,19 @@
 
 }
 
+.proyecto-activo {
+  width: 15px;
+  height: 15px;
+  background-color: var(--success);
+  border-radius: 25px;
+}
+
+.proyecto-no-activo {
+  width: 15px;
+  height: 15px;
+  background-color: var(--warn);
+  border-radius: 25px;
+}
 
 
 @media screen and(max-width: 960px) {

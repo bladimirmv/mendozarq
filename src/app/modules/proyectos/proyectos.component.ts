@@ -78,6 +78,8 @@ export class ProyectosComponent implements OnInit {
       .subscribe(res => {
         this.dataSource.data = res;
         this.proyecto = res;
+        console.log(res);
+
       });
   }
 

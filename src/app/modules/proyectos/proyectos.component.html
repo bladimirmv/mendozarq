@@ -82,7 +82,7 @@
         <ng-container matColumnDef="nombre">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
           <td mat-cell *matCellDef="let row" class="text-center">
-            <a [routerLink]="['/admin/proyecto/', row.idProyecto]" class="link-proyecto">
+            <a [routerLink]="['/admin/proyecto/', row.uuid]" class="link-proyecto">
               {{row.nombre}}
             </a>
           </td>
@@ -114,8 +114,8 @@
         <ng-container matColumnDef="cliente">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
           <td mat-cell *matCellDef="let row" class="text-center">
-            <a [routerLink]="['/admin/usuario/', row.cliente.docid]" class="link-proyecto">
-              {{'bladimir medrano vargas'}}
+            <a [routerLink]="['/admin/usuario/', row.nombreCliente]" class="link-proyecto">
+              {{row.nombreCliente  + ' '+ row.apellidoPaterno + ' '+ row.apellidoMaterno}}
             </a>
           </td>
         </ng-container>
@@ -123,19 +123,23 @@
         <!-- *estado -->
         <ng-container matColumnDef="estado">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> {{row.estado}} </td>
+          <td mat-cell *matCellDef="let row">
+            <div [class]="row.estado ? 'proyecto-activo' : 'proyecto-no-activo'">
+
+            </div>
+          </td>
         </ng-container>
 
         <!-- *fechaInicio -->
         <ng-container matColumnDef="fechaInicio">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Inicio </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> {{row.fechaInicio }} </td>
+          <td mat-cell *matCellDef="let row" class="text-center"> {{row.fechaInicio | date }} </td>
         </ng-container>
 
         <!-- *fechaFinal -->
         <ng-container matColumnDef="fechaFinal">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Final </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> {{row.fechaFinal}} </td>
+          <td mat-cell *matCellDef="let row" class="text-center"> {{row.fechaFinal | date}} </td>
         </ng-container>
 
         <!-- *lugarProyecto -->

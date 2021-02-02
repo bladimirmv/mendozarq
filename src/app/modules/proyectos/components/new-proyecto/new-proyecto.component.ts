@@ -103,7 +103,7 @@ export class NewProyectoComponent implements OnInit {
       fechaFinal: [Validators.required],
       lugarProyecto: ['', Validators.maxLength(200)],
       uuidCliente: ['', Validators.required],
-      categoria: ['', Validators.required]
+      categoria: ['construccion', Validators.required]
     });
 
   }
@@ -121,16 +121,15 @@ export class NewProyectoComponent implements OnInit {
 
   // ===================> onAddProyecto
   public onAddProyecto(proyecto: Proyecto): void {
-    console.log('proy', proyecto);
 
-    // this.proyectoSvc.addProyecto(proyecto)
-    //   .subscribe(usr => {
-    //     if (usr) {
-    //       this.toastrSvc.success('El proyecto se ha creado correctamente. 😀', 'Proyecto Creado');
-    //       this.dialogRef.close(this.proyectoForm);
-    //     }
 
-    //   });
+    this.proyectoSvc.addProyecto(proyecto)
+      .subscribe(proy => {
+        if (proy) {
+          this.toastrSvc.success('El proyecto se ha creado correctamente. 😀', 'Proyecto Creado');
+          this.dialogRef.close(this.proyectoForm);
+        }
+      });
 
   }
 

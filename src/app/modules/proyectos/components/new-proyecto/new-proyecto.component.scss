@@ -9,11 +9,6 @@
   grid-column: span 2;
 }
 
-.subGrid {
-  display: grid;
-  grid-template-columns: 1fr 60px;
-  grid-gap: 5px;
-}
 
 mat-dialog-actions {
   display: grid;
@@ -48,7 +43,7 @@ mat-dialog-actions {
 
 
 @media screen and (max-width:625px) {
-  .new-personal-form {
+  .new-proyecto-form {
     display: grid;
     grid-template-columns: minmax(100%, 1fr);
     grid-gap: 0;
