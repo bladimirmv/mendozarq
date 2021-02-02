@@ -106,10 +106,15 @@
         </ng-container>
 
         <!-- *direccion -->
+        <!-- [class]="(row.direccion ? 'long-txt': 'text-center')" -->
         <ng-container matColumnDef="direccion">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Direccion </th>
-          <td mat-cell *matCellDef="let row" [class]="(row.direccion ? 'long-txt': 'text-center')">
-            {{row.direccion ? row.direccion : 'Sin direccion'}} </td>
+          <td mat-cell *matCellDef="let row" class="td-longtext" [matTooltip]="row.direccion"
+            matTooltipPosition="below">
+            <span>
+              {{row.direccion ? row.direccion : 'Sin direccion'}}
+            </span>
+          </td>
         </ng-container>
 
         <!-- *correo -->
@@ -121,8 +126,12 @@
         <!-- *cargo -->
         <ng-container matColumnDef="descripcion">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripcion </th>
-          <td mat-cell *matCellDef="let row" class="long-txt">
-            {{row.descripcion ? row.descripcion : 'Sin descripcion'}} </td>
+          <td mat-cell *matCellDef="let row" class="td-longtext" [matTooltip]="row.descripcion"
+            matTooltipPosition="below">
+            <span>
+              {{row.descripcion ? row.descripcion : 'Sin descripcion'}}
+            </span>
+          </td>
         </ng-container>
 
         <!-- *sueldo -->

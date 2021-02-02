@@ -68,6 +68,26 @@
     white-space: normal;
     min-width: 300px;
   }
+
+  .td-longtext {
+    position: relative;
+    width: auto;
+    cursor: pointer;
+  }
+
+  .td-longtext:before {
+    content: '&nbsp;';
+    visibility: hidden;
+  }
+
+  .td-longtext span {
+    position: absolute;
+    left: 0;
+    right: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 

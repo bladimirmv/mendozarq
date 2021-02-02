@@ -56,11 +56,23 @@ export class ProyectoService {
   public handdleError(httpError: HttpErrorResponse): Observable<never> {
     let errorMessage = '';
     if (httpError) {
-      typeof httpError.error.message === 'string'
-        ? errorMessage = `${httpError.error.message}`
-        : errorMessage = `
-        Error: ${httpError.statusText} </br>
-        Status: ${httpError.status}`;
+      if (typeof httpError.error.message === 'string') {
+        errorMessage = `${httpError.error.message}`;
+      } else {
+        switch (httpError.error.message.errno) {
+          case -111:
+            errorMessage = 'No se ha podido establecer una conexion con el servidor. 🙁';
+            break;
+          case 1451:
+            errorMessage = 'No se puede eliminar por que este proyecto esta relacionado con una o varias tablas. 🙁';
+            break;
+          default:
+            errorMessage = `
+            Error: ${httpError.statusText} </br>
+            Status: ${httpError.status}`;
+            break;
+        }
+      }
     }
     console.log('this error', httpError);
     this.toastrSvc.error(errorMessage, 'Ocurrio un Error!', {

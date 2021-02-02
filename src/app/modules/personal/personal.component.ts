@@ -141,7 +141,7 @@ export class PersonalComponent implements OnInit {
         .pipe(takeUntil(this.destroy$))
         .subscribe(res => {
           if (res && isLast) {
-            this.toastSvc.success('Se han eliminado correctamente', 'Perosnal Eliminado', {
+            this.toastSvc.success('Se han eliminado correctamente', 'Personal Eliminado', {
               timeOut: 2000,
               progressBar: true,
               progressAnimation: 'increasing'

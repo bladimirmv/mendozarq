@@ -54,13 +54,13 @@ export class EditPersonalComponent implements OnInit, OnDestroy {
     });
   }
 
+  // ============> onUpdatePersonal
   public onUpdatePersonal(personal: Personal): void {
-
     this.personalSvc.updatePersonal(this.data.uuid, personal)
       .pipe(takeUntil(this.destroy$))
       .subscribe(res => {
         if (res) {
-          this.toastrSvc.success('Se ha actualizado el personal correctamente. 😀', 'Perosnal Actualizado', {
+          this.toastrSvc.success('Se ha actualizado el personal correctamente. 😀', 'Personal Actualizado', {
             timeOut: 2000,
             progressBar: true,
             progressAnimation: 'increasing'
@@ -70,6 +70,7 @@ export class EditPersonalComponent implements OnInit, OnDestroy {
       });
 
   }
+
   // ===========> isValidField
   public isValidField(field: string): { color?: string; status?: boolean; icon?: string; } {
     const validateFIeld = this.personalForm.get(field);

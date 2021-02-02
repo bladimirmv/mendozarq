@@ -9,7 +9,6 @@ import { MatSort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
 
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from '@app/core/services/auth/auth.service';
 import { ProyectoService } from '@services/mendozarq/proyecto.service';
 
 import { NewProyectoComponent } from './components/new-proyecto/new-proyecto.component';
@@ -42,8 +41,7 @@ export class ProyectosComponent implements OnInit {
   constructor(
     private toastSvc: ToastrService,
     public dialog: MatDialog,
-    private proyectoSvc: ProyectoService,
-    private authSvc: AuthService) {
+    private proyectoSvc: ProyectoService) {
   }
 
 
@@ -55,7 +53,8 @@ export class ProyectosComponent implements OnInit {
     this.dataSource.sort = this.sort;
 
     this.selection.changed
-      .pipe(map(a => a.source))
+      .pipe(map(a => a.source),
+        takeUntil(this.destroy$))
       .subscribe(data => this.selected = data.selected);
 
     // this.locationBarSvc.pushLocation({
@@ -78,8 +77,6 @@ export class ProyectosComponent implements OnInit {
       .subscribe(res => {
         this.dataSource.data = res;
         this.proyecto = res;
-        console.log(res);
-
       });
   }
 
@@ -88,7 +85,7 @@ export class ProyectosComponent implements OnInit {
     const dialogRef = this.dialog.open(NewProyectoComponent);
     dialogRef.afterClosed()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
+      .subscribe(() => {
         this.getAllProyecto();
       });
   }
@@ -147,7 +144,7 @@ export class ProyectosComponent implements OnInit {
         .pipe(takeUntil(this.destroy$))
         .subscribe(res => {
           if (res && isLast) {
-            this.toastSvc.success('Se han eliminado correctamente', 'Perosnal Eliminado', {
+            this.toastSvc.success('Se han eliminado correctamente', 'Proyecto Eliminado', {
               timeOut: 2000,
               progressBar: true,
               progressAnimation: 'increasing'
@@ -160,14 +157,6 @@ export class ProyectosComponent implements OnInit {
     });
   }
 
-  // =====================> openSnackBarCopy
-  openSnackBarCopy(): void {
-    // this.snackBar.open('Copiado', 'Cerrar', {
-    //   duration: 500,
-    //   horizontalPosition: 'center',
-    //   verticalPosition: 'bottom',
-    // });
-  }
 
   // !important, this part is for table.
   // =====================> applyFilter

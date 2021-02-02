@@ -1,16 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 import { Personal } from '@models/mendozarq/personal.interface';
 import { PersonalService } from '@app/core/services/mendozarq/personal.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-new-personal',
   templateUrl: './new-personal.component.html',
   styleUrls: ['./new-personal.component.scss']
 })
-export class NewPersonalComponent implements OnInit {
+export class NewPersonalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<any>();
 
   public personalForm: FormGroup;
 
@@ -24,10 +27,14 @@ export class NewPersonalComponent implements OnInit {
     this.initForm();
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next({});
+    this.destroy$.complete();
+  }
+
   // ============> onInitForm
   private initForm(): void {
     this.personalForm = this.fb.group({
-
       nombre: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[a-z\s]+$/)]],
       apellidoPaterno: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[a-z\s]+$/)]],
       apellidoMaterno: ['', [Validators.maxLength(50), Validators.pattern(/^[a-z\s]+$/)]],
@@ -44,6 +51,7 @@ export class NewPersonalComponent implements OnInit {
   // ===================> onAddPersonal
   public onAddPersonal(personal: Personal): void {
     this.personalSvc.addPersonal(personal)
+      .pipe(takeUntil(this.destroy$))
       .subscribe(usr => {
         if (usr) {
           this.toastrSvc.success('El personal se ha creado correctamente. 😀', 'Personal Creado');
@@ -68,6 +76,5 @@ export class NewPersonalComponent implements OnInit {
   getString(num: number): string {
     return String(num);
   }
-
 
 }

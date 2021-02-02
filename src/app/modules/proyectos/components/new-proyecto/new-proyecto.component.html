@@ -136,7 +136,8 @@
 
 <mat-dialog-actions>
   <button mat-button mat-dialog-close class="mat-btn-secondary">Cancelar</button>
-  <button mat-button class="mat-btn-success" (click)="onAddProyecto(proyectoForm.value)">
+  <button mat-button class="mat-btn-success" (click)="onAddProyecto(proyectoForm.value)"
+    [disabled]="!proyectoForm.valid">
     Guardar
   </button>
 </mat-dialog-actions>
