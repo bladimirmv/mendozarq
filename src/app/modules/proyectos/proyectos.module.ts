@@ -11,10 +11,11 @@ import { EditProyectoComponent } from './components/edit-proyecto/edit-proyecto.
 import { NewProyectoComponent } from './components/new-proyecto/new-proyecto.component';
 import { GetCategoriesPipe } from './pipes/get-categories.pipe';
 import { ClienteModalComponent } from './components/cliente-modal/cliente-modal.component';
+import { DescripcionProyectoComponent } from './components/descripcion-proyecto/descripcion-proyecto.component';
 
 
 @NgModule({
-  declarations: [ProyectosComponent, EditProyectoComponent, NewProyectoComponent, GetCategoriesPipe, ClienteModalComponent],
+  declarations: [ProyectosComponent, EditProyectoComponent, NewProyectoComponent, GetCategoriesPipe, ClienteModalComponent, DescripcionProyectoComponent],
   imports: [
     CommonModule,
     ProyectosRoutingModule,

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { observable, Observable, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 
@@ -12,12 +12,21 @@ import { UsuarioService } from '@services/auth/usuario.service';
 
 import { Proyecto } from '@app/shared/models/mendozarq/proyecto.interface';
 import { Usuario } from '@app/shared/models/usuario.interface';
+import { EditProyectoComponent } from '../edit-proyecto/edit-proyecto.component';
 @Component({
-  selector: 'app-edit-proyecto',
-  templateUrl: './edit-proyecto.component.html',
-  styleUrls: ['./edit-proyecto.component.scss']
+  selector: 'app-descripcion-proyecto',
+  templateUrl: './descripcion-proyecto.component.html',
+  styleUrls: ['./descripcion-proyecto.component.scss']
 })
-export class EditProyectoComponent implements OnInit, OnDestroy {
+export class DescripcionProyectoComponent implements OnInit {
+  hide = true;
+
+  private uuidProyecto: string = '';
+  public proyecto: Proyecto & {
+    nombreCliente?: string;
+    apellidoPaterno?: string;
+    apellidoMaterno?: string;
+  };
 
   private destroy$ = new Subject<any>();
 
@@ -27,22 +36,24 @@ export class EditProyectoComponent implements OnInit, OnDestroy {
 
 
   constructor(
+    private activatedRoute: ActivatedRoute,
+
     private proyectoSvc: ProyectoService,
     private toastrSvc: ToastrService,
     private usuarioSvc: UsuarioService,
     private fb: FormBuilder,
-    public dialog: MatDialog,
-    private router: Router,
-    private dialogRef: MatDialogRef<EditProyectoComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Proyecto & {
-      nombreCliente?: string;
-      apellidoPaterno?: string;
-      apellidoMaterno?: string;
-    }) { }
+    private router: Router) { }
 
   ngOnInit(): void {
-    this.initForm();
     this.initDataClientes();
+    this.uuidProyecto = this.activatedRoute.snapshot.parent.params.uuid;
+
+    this.proyectoSvc.getOneProyecto(this.uuidProyecto)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((cliente) => {
+        this.proyecto = cliente;
+        this.initForm();
+      });
   }
 
   ngOnDestroy(): void {
@@ -53,15 +64,20 @@ export class EditProyectoComponent implements OnInit, OnDestroy {
   // =====================> onInitForm
   private initForm(): void {
     this.proyectoForm = this.fb.group({
-      nombre: [this.data.nombre, [Validators.required, Validators.maxLength(50), Validators.pattern(/^[0-9a-z\s]+$/)]],
-      descripcion: [this.data.descripcion, Validators.maxLength(200)],
-      estado: [this.data.estado ? true : false, Validators.required],
-      fechaInicio: [this.data.fechaInicio, Validators.required],
-      fechaFinal: [this.data.fechaFinal, Validators.required],
-      lugarProyecto: [this.data.lugarProyecto, Validators.maxLength(200)],
-      uuidCliente: [this.data.uuidCliente, Validators.required],
-      categoria: [this.data.categoria, Validators.required]
+      nombre: [this.proyecto.nombre, [Validators.required, Validators.maxLength(50), Validators.pattern(/^[0-9a-z\s]+$/)]],
+      descripcion: [this.proyecto.descripcion, Validators.maxLength(200)],
+      estado: [this.proyecto.estado ? true : false, Validators.required],
+      fechaInicio: [this.proyecto.fechaInicio, Validators.required],
+      fechaFinal: [this.proyecto.fechaFinal, Validators.required],
+      lugarProyecto: [this.proyecto.lugarProyecto, Validators.maxLength(200)],
+      uuidCliente: [this.proyecto.uuidCliente, Validators.required],
+      categoria: [this.proyecto.categoria, Validators.required]
     });
+  }
+
+  // ===================> getProyecto
+  private getProyecto(): void {
+
   }
 
   // ===================> initDataClientes
@@ -80,12 +96,11 @@ export class EditProyectoComponent implements OnInit, OnDestroy {
   // ===================> onUpdateProyecto
   public onUpdateProyecto(proyecto: Proyecto): void {
 
-    this.proyectoSvc.updateProyecto(this.data.uuid, proyecto)
+    this.proyectoSvc.updateProyecto(this.proyecto.uuid, proyecto)
       .pipe(takeUntil(this.destroy$))
       .subscribe(proy => {
         if (proy) {
           this.toastrSvc.success('El proyecto se ha actualizado correctamente. 😀', 'Proyecto Actualizado');
-          this.dialogRef.close(this.proyectoForm);
         }
       });
   }

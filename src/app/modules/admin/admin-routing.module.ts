@@ -1,14 +1,14 @@
-import { ShowContrasenhaComponent } from './../users/components/show-contrasenha/show-contrasenha.component';
-import { PresupuestoObraComponent } from '@modules/presupuestos/components/presupuesto-obra/presupuesto-obra.component';
-import { VisitaComponent } from './components/visita/visita.component';
-import { EditVisitaComponent } from '@modules/visitas/components/edit-visita/edit-visita.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AdminComponent } from './admin.component';
 import { ProyectoComponent } from './components/proyecto/proyecto.component';
+import { VisitaComponent } from './components/visita/visita.component';
+import { PresupuestoObraComponent } from '@modules/presupuestos/components/presupuesto-obra/presupuesto-obra.component';
+import { EditVisitaComponent } from '@modules/visitas/components/edit-visita/edit-visita.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { EditProyectoComponent } from '@modules/proyectos/components/edit-proyecto/edit-proyecto.component';
+import { ShowContrasenhaComponent } from './../users/components/show-contrasenha/show-contrasenha.component';
+import { DescripcionProyectoComponent } from './../proyectos/components/descripcion-proyecto/descripcion-proyecto.component';
 
 const routes: Routes = [
   {
@@ -87,13 +87,13 @@ const routes: Routes = [
 
   },
   {
-    path: 'proyecto/:id', component: ProyectoComponent,
+    path: 'proyecto/:uuid', component: ProyectoComponent,
     children: [
       {
         path: '', redirectTo: 'descripcion', pathMatch: 'full'
       },
       {
-        path: 'descripcion', component: EditProyectoComponent
+        path: 'descripcion', component: DescripcionProyectoComponent
       },
       {
         path: 'cronograma', loadChildren: () =>

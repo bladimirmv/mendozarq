@@ -1,8 +1,24 @@
+.main {
+  width: 100%;
+  height: calc(100% - 60px);
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  grid-template-columns: minmax(150px, 600px);
+  grid-template-rows: auto;
+
+}
+
+
+//  *form
 .edit-proyecto-form {
+  width: auto;
+  height: auto;
+
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 10px;
-  padding: 10px;
+  margin: 20px;
 }
 
 .full-column {
@@ -24,28 +40,13 @@ mat-dialog-actions {
   }
 }
 
-@media screen and (max-width:400px) {
-  mat-dialog-actions {
-    margin: 0;
-    padding: 0;
-    grid-template-columns: auto;
-    grid-gap: 10px;
-    grid-template-areas: "success"
-      "secondary";
 
-    .mat-btn-success {
-      margin: 0;
-    }
-
-  }
-}
-
-@media screen and (max-width:625px) {
+@media screen and (max-width:460px) {
   .edit-proyecto-form {
     display: grid;
-    grid-template-columns: minmax(100%, 1fr);
-    grid-gap: 0;
-    padding: 0;
+    grid-template-columns: minmax(150px, 100%);
+    padding: 5px;
+
   }
 
   .full-column {

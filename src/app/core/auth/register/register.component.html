@@ -4,6 +4,7 @@
 
     <form [formGroup]="formRegistro" class="form-register" (ngSubmit)="onRegister(formRegistro.value)"
       *ngIf="(usuarioData.activo === false || !usuarioData.activo) else used">
+
       <h1 class="full-width full-column title">Registro Usuario</h1>
       <mat-form-field class="full-width">
         <mat-label>Nombre</mat-label>

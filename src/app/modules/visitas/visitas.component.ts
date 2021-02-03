@@ -11,7 +11,7 @@ export class VisitasComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.idPost = this.activatedRoute.snapshot.parent.parent.params.id;
+    this.idPost = this.activatedRoute.snapshot.parent.parent.params.uuid;
     console.log(this.idPost);
   }
 
