@@ -1,1 +1,67 @@
-<p>documentos works!</p>
+<div class="content" id="content" onContextMenu>
+
+  <div id="main_contextmenu" class="contextmenu">
+    <div align="center" class="title-menu">
+      Agregar
+    </div>
+    <hr>
+
+    <div class="link" oncontextmenu="return false;">
+      <mat-icon class="mat-18">
+        note_add
+      </mat-icon>
+      Documento
+    </div>
+    <div class="link" oncontextmenu="return false;">
+      <mat-icon class="mat-18">
+        create_new_folder
+      </mat-icon>
+      Carpeta
+    </div>
+  </div>
+
+  <div id="folder_contextmenu" class="contextmenu">
+    <div class="link" oncontextmenu="return false;">
+      <mat-icon class="mat-18">
+        delete
+      </mat-icon>
+      Eliminar
+    </div>
+    <div class="link" oncontextmenu="return false;">
+      <mat-icon class="mat-18">
+        edit
+      </mat-icon>
+      Renombrar
+    </div>
+  </div>
+
+  <div id="document_contextmenu" class="contextmenu">
+    <div class="link" oncontextmenu="return false;">
+      <mat-icon class="mat-18">
+        delete
+      </mat-icon>
+      Eliminar
+    </div>
+  </div>
+
+  <div class="list" id="list">
+
+    <div class="item " *ngFor="let folder of notes" routerLink="/doc">
+      <mat-icon class="mat-18" mat-list-icon>folder</mat-icon>
+      <div class="detail">
+        <div mat-line class="td-longtext">{{folder.name}}</div>
+        <!-- <div mat-line>{{folder.updated | date}}</div> -->
+      </div>
+    </div>
+
+    <div class="item " *ngFor="let folder of notes" routerLink="/doc">
+      <mat-icon class="mat-18" mat-list-icon>note</mat-icon>
+      <div class="detail">
+        <div mat-line>{{folder.name}}</div>
+        <!-- <div mat-line>{{folder.updated | date}}</div> -->
+      </div>
+    </div>
+  </div>
+
+
+</div>

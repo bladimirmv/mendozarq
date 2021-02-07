@@ -1,3 +1,4 @@
+import { MaterialModule } from './../../material.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -9,7 +10,8 @@ import { DocumentosComponent } from './documentos.component';
   declarations: [DocumentosComponent],
   imports: [
     CommonModule,
-    DocumentosRoutingModule
+    DocumentosRoutingModule,
+    MaterialModule
   ]
 })
 export class DocumentosModule { }

@@ -15,7 +15,13 @@ import { DescripcionProyectoComponent } from './components/descripcion-proyecto/
 
 
 @NgModule({
-  declarations: [ProyectosComponent, EditProyectoComponent, NewProyectoComponent, GetCategoriesPipe, ClienteModalComponent, DescripcionProyectoComponent],
+  declarations: [
+    ProyectosComponent,
+    EditProyectoComponent,
+    NewProyectoComponent,
+    GetCategoriesPipe,
+    ClienteModalComponent,
+    DescripcionProyectoComponent],
   imports: [
     CommonModule,
     ProyectosRoutingModule,
