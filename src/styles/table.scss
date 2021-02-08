@@ -71,11 +71,11 @@
 
   .td-longtext {
     position: relative;
-    width: auto;
+    width: 300px;
     cursor: pointer;
   }
 
-  .td-longtext:before {
+  .td-longtext::before {
     content: '&nbsp;';
     visibility: hidden;
   }

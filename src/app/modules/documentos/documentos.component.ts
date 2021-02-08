@@ -12,6 +12,9 @@ export interface Section {
 })
 export class DocumentosComponent implements OnInit {
 
+  nombre: string = 'bladimir';
+
+
   @HostListener('window:click', ['$event'])
   onClick(event) {
     document.querySelector('#main_contextmenu').classList.remove('active');
@@ -45,11 +48,11 @@ export class DocumentosComponent implements OnInit {
 
   notes: Section[] = [
     {
-      name: 'Vacation Itinerary',
+      name: 'Planos',
       updated: new Date('2/20/16'),
     },
     {
-      name: 'Kitchen Remodel',
+      name: 'Kitchen Remodel Remodel ',
       updated: new Date('1/18/16'),
     },
     {

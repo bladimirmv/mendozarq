@@ -1,4 +1,3 @@
-import { WebsocketService } from './../../services/sockets/websocket.service';
 import { BrightnessService } from './../../services/brightness.service';
 import { AuthService } from '@app/core/services/auth/auth.service';
 import { Usuario, UsuarioResponse } from '@app/shared/models/usuario.interface';
@@ -85,8 +84,8 @@ export class LoginComponent implements OnInit, OnDestroy {
           if (res) {
             switch (res.body.rol) {
               case 'administrador':
-                this.router.navigate(['/admin']);
                 this.toastrSvc.info(res.body.nombre, 'Bienvenido! 👋');
+                this.router.navigate(['/admin']);
                 break;
               default:
                 break;
