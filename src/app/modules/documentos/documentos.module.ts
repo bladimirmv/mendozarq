@@ -4,14 +4,19 @@ import { CommonModule } from '@angular/common';
 
 import { DocumentosRoutingModule } from './documentos-routing.module';
 import { DocumentosComponent } from './documentos.component';
+import { NewCarpetaComponent } from './components/new-carpeta/new-carpeta.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { EditCarpetaComponent } from './components/edit-carpeta/edit-carpeta.component';
+import { NewDocumentoComponent } from './components/new-documento/new-documento.component';
 
 
 @NgModule({
-  declarations: [DocumentosComponent],
+  declarations: [DocumentosComponent, NewCarpetaComponent, EditCarpetaComponent, NewDocumentoComponent],
   imports: [
     CommonModule,
     DocumentosRoutingModule,
-    MaterialModule
+    MaterialModule,
+    ReactiveFormsModule
   ]
 })
 export class DocumentosModule { }

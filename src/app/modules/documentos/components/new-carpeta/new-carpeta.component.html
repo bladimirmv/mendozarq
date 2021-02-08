@@ -1,0 +1,35 @@
+<h2 align="center" mat-dialog-title>
+  Nueva Carpeta
+</h2>
+<mat-dialog-content>
+  <form class="new-proyecto-form" [formGroup]="carpetaForm">
+
+    <!-- *Nombre -->
+    <mat-form-field class="full-width full-column" [color]="isValidField('nombre').color">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre" autocomplete="off">
+
+      <mat-error *ngIf="carpetaForm.get('nombre').errors?.required">
+        Ingrese un nombre.
+      </mat-error>
+      <mat-error *ngIf="carpetaForm.get('nombre').errors?.pattern">
+        Solo letras en minuscula o numeros.
+      </mat-error>
+      <mat-error *ngIf="carpetaForm.get('nombre').errors?.maxlength">
+        {{carpetaForm.get('nombre').errors?.maxlength?.requiredLength}} digitos como maximo.
+      </mat-error>
+      <mat-error *ngIf="carpetaForm.get('nombre').errors?.minlength">
+        {{carpetaForm.get('nombre').errors?.minlength?.requiredLength}} digitos como minimo.
+      </mat-error>
+    </mat-form-field>
+
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button class="mat-btn-secondary" [matDialogClose]="false">Cancelar</button>
+  <button mat-button class="mat-btn-success" (click)="onAddProyecto(carpetaForm.value)" [disabled]="!carpetaForm.valid">
+    Guardar
+  </button>
+</mat-dialog-actions>

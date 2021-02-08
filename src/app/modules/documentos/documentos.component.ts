@@ -1,6 +1,17 @@
-import { Component, HostListener, OnInit } from '@angular/core';
-import { Event } from 'electron';
-import { EventEmitter } from 'events';
+import { Component, HostListener, Inject, OnDestroy, OnInit } from '@angular/core';
+
+
+import { CarpetaProyecto } from '@models/mendozarq/documentos.proyecto.interface';
+import { DocumentosService } from '@services/mendozarq/documentos.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { NewCarpetaComponent } from './components/new-carpeta/new-carpeta.component';
+import { ActivatedRoute } from '@angular/router';
+import { DeleteModalComponent } from '@app/shared/components/delete-modal/delete-modal.component';
+import { ToastrService } from 'ngx-toastr';
+import { EditCarpetaComponent } from './components/edit-carpeta/edit-carpeta.component';
+import { NewDocumentoComponent } from './components/new-documento/new-documento.component';
 export interface Section {
   name: string;
   updated: Date;
@@ -10,9 +21,11 @@ export interface Section {
   templateUrl: './documentos.component.html',
   styleUrls: ['./documentos.component.scss']
 })
-export class DocumentosComponent implements OnInit {
+export class DocumentosComponent implements OnInit, OnDestroy {
 
-  nombre: string = 'bladimir';
+  public carpetas: CarpetaProyecto[] = [];
+  private destroy$ = new Subject<any>();
+  private uuidProyecto: string = '';
 
 
   @HostListener('window:click', ['$event'])
@@ -21,18 +34,12 @@ export class DocumentosComponent implements OnInit {
     document.querySelector('#folder_contextmenu').classList.remove('active');
     document.querySelector('#document_contextmenu').classList.remove('active');
   }
-
   @HostListener('contextmenu', ['$event'])
   onContextMenu(event: any) {
     event.preventDefault();
     const main_menu = document.querySelector("#main_contextmenu") as HTMLDivElement;
-
     main_menu.style.top = event.offsetY + "px";
     main_menu.style.left = event.offsetX + "px";
-
-    console.log(event);
-
-
     if (event.target.id !== 'content' && event.target.id !== 'list') {
       main_menu.classList.remove('active');
     } else {
@@ -40,93 +47,105 @@ export class DocumentosComponent implements OnInit {
       const doc_menu = document.querySelector("#document_contextmenu") as HTMLDivElement;
       folder_menu.classList.remove('active');
       doc_menu.classList.remove('active');
-
       main_menu.classList.add('active');
     }
   }
 
 
-  notes: Section[] = [
-    {
-      name: 'Planos',
-      updated: new Date('2/20/16'),
-    },
-    {
-      name: 'Kitchen Remodel Remodel ',
-      updated: new Date('1/18/16'),
-    },
-    {
-      name: 'Vacation Itinerary',
-      updated: new Date('2/20/16'),
-    },
-    {
-      name: 'Kitchen Remodel',
-      updated: new Date('1/18/16'),
-    },
-    {
-      name: 'Vacation Itinerary',
-      updated: new Date('2/20/16'),
-    },
-    {
-      name: 'Kitchen Remodel',
-      updated: new Date('1/18/16'),
-    },
-    {
-      name: 'Vacation Itinerary',
-      updated: new Date('2/20/16'),
-    },
-    {
-      name: 'Kitchen Remodel',
-      updated: new Date('1/18/16'),
-    },
-    {
-      name: 'Photos',
-      updated: new Date('1/1/16'),
-    },
-    {
-      name: 'Recipes',
-      updated: new Date('1/17/16'),
-    },
-    {
-      name: 'Work',
-      updated: new Date('1/28/16'),
-    }
-  ];
-  constructor() {
+  constructor(
+    private documentosSvc: DocumentosService,
+    private dialog: MatDialog,
+    private activatedRoute: ActivatedRoute,
+    private toastrSvc: ToastrService,
+
+  ) {
 
   }
 
   ngOnInit(): void {
+    this.uuidProyecto = this.activatedRoute.snapshot.parent.parent.params.uuid;
+    this.getAllCarpetas();
 
-
-    this.onFolderContextMenu();
-    this.onDocumentContextMenu();
+  }
+  // =====================> onDestroy
+  ngOnDestroy(): void {
+    this.destroy$.next({});
+    this.destroy$.complete();
   }
 
-  onFolderContextMenu(): void {
-    const folders = document.querySelectorAll('#folder');
+  // =====================> getAllCarpetas
+  private getAllCarpetas(): void {
+    this.documentosSvc
+      .getAllCarpetaProyectoByUuid(this.uuidProyecto)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((carpetas: CarpetaProyecto[]) => {
+        this.carpetas = carpetas;
+      })
+  }
 
-    folders.forEach((folder) => {
-      folder.addEventListener('contextmenu', function (event: any) {
-        event.preventDefault();
 
-        const folder_menu = document.querySelector("#folder_contextmenu") as HTMLDivElement;
-        folder_menu.style.top = event.pageY + "px";
-        folder_menu.style.left = event.pageX + "px";
-        folder_menu.classList.add('active');
+
+  // =====================> newCarpeta
+  public newCarpeta(): void {
+
+    const dialogRef = this.dialog.open(NewCarpetaComponent, { data: this.uuidProyecto });
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        if (res) {
+          this.getAllCarpetas();
+        }
+      });
+  }
+
+
+  // =====================> deleteCarpeta
+  public deleteCarpeta(uuid: string): void {
+    const dialogRef = this.dialog.open(DeleteModalComponent);
+
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(res => {
+        if (res) {
+          this.documentosSvc.deleteCarpetaProyecto(uuid)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+              this.toastrSvc.success('Carpeta eliminado. 😀', 'Carpeta Eliminado');
+              this.getAllCarpetas();
+            });
+        }
       });
 
-    });
-  }
-
-  onDocumentContextMenu(): void {
-
   }
 
 
+  // =====================> updateCarpeta
+  public updateCarpeta(carpetaProyecto: CarpetaProyecto): void {
+
+    const dialogRef = this.dialog.open(EditCarpetaComponent, { data: carpetaProyecto });
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        if (res) {
+          this.getAllCarpetas();
+        }
+      });
+  }
 
 
 
 
+  // =====================> newDocumento
+  public newDocumento(): void {
+
+    const dialogRef = this.dialog.open(NewDocumentoComponent, { data: this.uuidProyecto });
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        if (res) {
+          // this.getAllCarpetas();
+        }
+      });
+  }
 
 }

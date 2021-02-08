@@ -18,8 +18,9 @@ export class AdminInterceptor implements HttpInterceptor {
       '/api/personal/',
       '/api/proyecto',
       '/api/proyecto/',
-      '/api/categoriaProyecto',
-      '/api/categoriaProyecto/',
+      '/api/documentos',
+      '/api/documentos/',
+
       '/api/herramienta',
       '/api/herramienta/',
 
