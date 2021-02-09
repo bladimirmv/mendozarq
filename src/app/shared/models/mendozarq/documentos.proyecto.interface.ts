@@ -7,15 +7,14 @@ export interface CarpetaProyecto {
 }
 
 export interface DocumentoProyecto {
-  uuid: string;
-  creadoEn: Date;
-  originalName: string;
-  key: string;
-  urlFile: string;
-  fechaCreacion: Date;
-  uuidProyecto: string;
+  uuid?: string;
+  creadoEn?: Date;
+  nombre?: string;
+  keyName?: string;
+  location?: string;
+  fechaCreacion?: Date;
+  uuidProyecto?: string;
 }
-
 export interface DocumentoCarpeta {
   uuidDocumento: string;
   uuidCarpeta: string;

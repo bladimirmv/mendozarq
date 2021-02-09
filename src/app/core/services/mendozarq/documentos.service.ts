@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpEvent, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpEvent, HttpRequest, HttpProgressEvent, HttpEventType } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -71,11 +71,29 @@ export class DocumentosService {
 
     const req = new HttpRequest('POST', `${this.API_URL}/api/documentos`, formdata, {
       reportProgress: true,
-      responseType: 'text'
+      // responseType: 'text'
     });
-
     return this.http.request(req)
       .pipe(catchError(error => this.handdleError(error)));
+  }
+
+  put(): Observable<any> {
+    return new Observable((success => {
+      const progressEvent = {} as HttpProgressEvent;
+      progressEvent.type = HttpEventType.UploadProgress;
+      progressEvent.total = 100;
+      progressEvent.loaded = 0;
+
+      setInterval(() => {
+        if (progressEvent.loaded < progressEvent.total) {
+          progressEvent.loaded += 1;
+          success.next(progressEvent);
+        } else {
+          success.complete();
+        }
+      })
+
+    }));
   }
 
 
@@ -85,10 +103,12 @@ export class DocumentosService {
 
   // ====================> handdleError
   public handdleError(httpError: HttpErrorResponse): Observable<never> {
+
     let errorMessage = '';
     if (httpError) {
+      // JSON.parse(httpError);
       if (typeof httpError.error.message === 'string') {
-        errorMessage = `${httpError.error.message}`;
+        errorMessage = httpError.error.message;
       } else {
         switch (httpError.error.message.errno) {
           case -111:
