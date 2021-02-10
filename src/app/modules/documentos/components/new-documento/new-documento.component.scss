@@ -1,0 +1,120 @@
+.dropzone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: auto;
+  min-height: 200px;
+  height: auto;
+  font-weight: 200;
+  border: 2px dashed var(--secondary);
+  border-radius: 5px;
+  background: white;
+  margin: 10px 0;
+  color: var(--secondary);
+
+  .text-hovering {
+    display: none;
+  }
+
+  &.hovering {
+    border: 2px solid var(--primary);
+    color: rgb(189, 182, 182) !important;
+  }
+
+  &.hovering .file-label {
+    background-color: rgb(189, 182, 182) !important;
+    color: white !important;
+  }
+
+  .file-label {
+    font-size: 1.2em;
+    background-color: var(--primary);
+    padding: 5px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+  }
+
+  .file-input {
+    display: none;
+  }
+}
+
+progress::-webkit-progress-value {
+  transition: width 0.1s ease;
+}
+
+img {
+  width: 250px
+}
+
+
+.documento {
+  padding: 5px;
+  margin: 5px 0;
+  border: 2px dashed var(--secondary);
+  width: auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: repeat(3, auto);
+
+  grid-template-areas: "icon_doc title icon_delete"
+    "icon_doc tam icon_delete"
+    "icon_doc prog icon_delete";
+
+  .icon-documento {
+    grid-area: icon_doc;
+    color: rgb(170, 170, 170);
+    font-size: 50px;
+    width: auto;
+    display: grid;
+    place-items: center;
+  }
+
+  .title {
+    grid-area: title;
+    font-size: 14px;
+    white-space: nowrap;
+    width: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    outline: none;
+  }
+
+  .size {
+    grid-area: tam;
+    font-size: 10px;
+  }
+
+  .delete-documento {
+    grid-area: icon_delete;
+    color: red;
+    display: grid;
+    place-items: center;
+  }
+
+  .progress {
+    grid-area: prog;
+    height: 6px;
+
+    color: white;
+  }
+
+  &.error {
+    border: 2px solid var(--warn);
+  }
+
+  &.success {
+    border: 2px solid var(--success);
+  }
+
+  .c-error {
+    color: var(--warn);
+  }
+
+  .c-success {
+    color: var(--success);
+  }
+
+}

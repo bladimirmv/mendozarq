@@ -5,7 +5,7 @@ import { CarpetaProyecto } from '@models/mendozarq/documentos.proyecto.interface
 import { DocumentosService } from '@services/mendozarq/documentos.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NewCarpetaComponent } from './components/new-carpeta/new-carpeta.component';
 import { ActivatedRoute } from '@angular/router';
 import { DeleteModalComponent } from '@app/shared/components/delete-modal/delete-modal.component';
@@ -137,12 +137,21 @@ export class DocumentosComponent implements OnInit, OnDestroy {
 
   // =====================> newDocumento
   public newDocumento(): void {
+    const matOptions: MatDialogConfig = {
+      data: this.uuidProyecto,
+      width: '600px',
+      height: 'auto',
+      maxWidth: '600px',
+      minWidth: '200px'
+    }
 
-    const dialogRef = this.dialog.open(NewDocumentoComponent, { data: this.uuidProyecto });
+
+    const dialogRef = this.dialog.open(NewDocumentoComponent, matOptions);
     dialogRef.afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         if (res) {
+          console.error('Todo se subio close mat');
           // this.getAllCarpetas();
         }
       });

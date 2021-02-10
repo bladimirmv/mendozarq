@@ -73,8 +73,7 @@ export class DocumentosService {
       reportProgress: true,
       // responseType: 'text'
     });
-    return this.http.request(req)
-      .pipe(catchError(error => this.handdleError(error)));
+    return this.http.request(req);
   }
 
   put(): Observable<any> {

@@ -1,56 +1,72 @@
-<!-- <h2 align="center" mat-dialog-title>
-  Nueva Carpeta
-</h2>
 <mat-dialog-content>
-  <form class="new-proyecto-form" [formGroup]="documentoForm">
 
-    <mat-form-field class="full-width full-column" [color]="isValidField('nombre').color">
-      <mat-label>Nombre</mat-label>
-      <input matInput formControlName="nombre" autocomplete="off">
+  <div class="dropzone no-select" appDropzone (hovered)="toggleHover($event)" (dropped)="onDrop($event)"
+    [class.hovering]="isHovering">
 
-      <mat-error *ngIf="documentoForm.get('nombre').errors?.required">
-        Ingrese un nombre.
-      </mat-error>
-      <mat-error *ngIf="documentoForm.get('nombre').errors?.pattern">
-        Solo letras en minuscula o numeros.
-      </mat-error>
-      <mat-error *ngIf="documentoForm.get('nombre').errors?.maxlength">
-        {{documentoForm.get('nombre').errors?.maxlength?.requiredLength}} digitos como maximo.
-      </mat-error>
-      <mat-error *ngIf="documentoForm.get('nombre').errors?.minlength">
-        {{documentoForm.get('nombre').errors?.minlength?.requiredLength}} digitos como minimo.
-      </mat-error>
-    </mat-form-field>
+    <mat-icon>
+
+    </mat-icon>
+
+    <p class="text-info" align="center">Arrastra y suelta uno o varios arcchivos aqui.</p>
+    <p class="text-hovering" align="center">Suelta aqui.</p>
+    <p>o</p>
+
+    <div class="file">
+      <label class="file-label">
+        <input class="file-input" type="file" (change)="onDrop($event.target.files)">
+        <span>
+          Buscar archivo
+        </span>
+      </label>
+    </div>
+  </div>
+
+  <!-- *ngFor="let documento of documentos" -->
+  <div class="documento" [class.error]="documento.error === undefined ? false: true"
+    [class.success]="documento.uploaded" *ngFor="let documento of documentos">
+
+    <mat-icon class="icon-documento" [class.c-error]="documento.error === undefined ? false: true"
+      [class.c-success]="documento.uploaded">
+      insert_drive_file
+    </mat-icon>
+
+    <div class="title">
+      {{documento.file.name}}
+    </div>
+    <div class="size">
+      {{ formatBytes(documento.file.size)}}
+    </div>
+
+    <mat-progress-bar class="progress" mode="determinate" [value]="documento.progress">
+
+    </mat-progress-bar>
+
+    <button mat-icon-button class="delete-documento" (click)="onDelete(documento)" *ngIf="!isClicked">
+      <mat-icon>
+        close
+      </mat-icon>
+    </button>
 
 
-  </form>
+  </div>
+
+
+
+
 </mat-dialog-content>
 
 <mat-dialog-actions>
   <button mat-button class="mat-btn-secondary" [matDialogClose]="false">Cancelar</button>
-  <button mat-button class="mat-btn-success" (click)="onAddProyecto(documentoForm.value)"
-    [disabled]="!documentoForm.valid">
+  <button mat-button class="mat-btn-success" (click)="uploadFiles()" [disabled]="!documentos.length"
+    *ngIf="!isClicked else btn_continue">
     Guardar
   </button>
-</mat-dialog-actions> -->
+
+  <ng-template #btn_continue>
+    <button mat-button class="mat-btn-success" [matDialogClose]="false" [disabled]="!continue">
+      Continuar
+    </button>
+  </ng-template>
 
 
-<!-- *ngIf="currentFileUpload" -->
-<div class="progress">
-  <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
-    attr.aria-valuenow="{{progress.percentage}}" aria-valuemin="0" aria-valuemax="100"
-    [ngStyle]="{width:progress.percentage+'%'}">
-    {{progress.percentage}}%</div>
-</div>
-
-<mat-progress-bar mode="determinate" [value]="progress.percentage"></mat-progress-bar>
-
-<br>
-<br>
-
-<label class="btn btn-default">
-  <input type="file" (change)="selectFile($event)">
-</label>
-
-<button class="btn btn-success" [disabled]="!selectedFiles" (click)="upload()">Upload</button>
-{{progress.percentage}}
+</mat-dialog-actions>

@@ -44,7 +44,7 @@ $mendozarq-theme: mat-light-theme((color: (primary: $mendozarq-primary,
   }
 }
 
-.mat-d[disabled] {
+.mat-ddisabled {
   background-color: rgba(0, 0, 0, 0.12) !important;
 }
 
@@ -116,6 +116,15 @@ mat-toolbar {
   }
 }
 
+
+.no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 
 
 mat-hint {
