@@ -71,7 +71,7 @@ export class DocumentosService {
 
     const req = new HttpRequest('POST', `${this.API_URL}/api/documentos`, formdata, {
       reportProgress: true,
-      // responseType: 'text'
+      responseType: 'text'
     });
     return this.http.request(req);
   }
@@ -95,6 +95,14 @@ export class DocumentosService {
     }));
   }
 
+
+
+  // ====================> getAllDocumentoProyectoByUuid
+  public getAllDocumentoProyectoByUuid(uuid: string): Observable<DocumentoProyecto[]> {
+    return this.http
+      .get<DocumentoProyecto[]>(`${this.API_URL}/api/documentos/uuidProy/${uuid}`)
+      .pipe(catchError(error => this.handdleError(error)));
+  }
 
 
 

@@ -22,7 +22,7 @@
   </div>
 
   <!-- *ngFor="let documento of documentos" -->
-  <div class="documento" [class.error]="documento.error === undefined ? false: true"
+  <div class="documento" [class.error]="documento.error === undefined ? false: true" [attr.disabled]="!continue"
     [class.success]="documento.uploaded" *ngFor="let documento of documentos">
 
     <mat-icon class="icon-documento" [class.c-error]="documento.error === undefined ? false: true"
@@ -63,7 +63,7 @@
   </button>
 
   <ng-template #btn_continue>
-    <button mat-button class="mat-btn-success" [matDialogClose]="false" [disabled]="!continue">
+    <button mat-button class="mat-btn-success" [matDialogClose]="true" [disabled]="!continue">
       Continuar
     </button>
   </ng-template>

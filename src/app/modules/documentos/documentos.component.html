@@ -83,14 +83,15 @@
     </div>
 
 
-    <!-- <div class="item mat-elevation-z2" *ngFor="let folder of carpetas">
+    <div class="item mat-elevation-z2" *ngFor="let documento of documentos">
       <mat-icon class="mat-18" mat-list-icon class="document no-select">
         insert_drive_file
       </mat-icon>
       <div class="detail">
         <div class="title-document">
-          <a routerLink="/doc">
-            {{folder.name}}
+          <!-- routerLink="/doc" -->
+          <a href="http://localhost:3000/api/file/{{documento.keyName}}">
+            {{documento.nombre}}
           </a>
         </div>
         <mat-icon class="more-icon" [matMenuTriggerFor]="menu">
@@ -111,9 +112,9 @@
           </button>
         </mat-menu>
         <div mat-line class="date-document no-select">
-          {{folder.updated | date}}
+          {{documento.fechaCreacion| date}}
         </div>
       </div>
-    </div> -->
+    </div>
 
   </div>

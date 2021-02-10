@@ -1,7 +1,7 @@
 import { Component, HostListener, Inject, OnDestroy, OnInit } from '@angular/core';
 
 
-import { CarpetaProyecto } from '@models/mendozarq/documentos.proyecto.interface';
+import { CarpetaProyecto, DocumentoProyecto } from '@models/mendozarq/documentos.proyecto.interface';
 import { DocumentosService } from '@services/mendozarq/documentos.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -24,6 +24,8 @@ export interface Section {
 export class DocumentosComponent implements OnInit, OnDestroy {
 
   public carpetas: CarpetaProyecto[] = [];
+  public documentos: DocumentoProyecto[] = [];
+
   private destroy$ = new Subject<any>();
   private uuidProyecto: string = '';
 
@@ -65,6 +67,7 @@ export class DocumentosComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.uuidProyecto = this.activatedRoute.snapshot.parent.parent.params.uuid;
     this.getAllCarpetas();
+    this.getAllDocumentos();
 
   }
   // =====================> onDestroy
@@ -80,6 +83,16 @@ export class DocumentosComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((carpetas: CarpetaProyecto[]) => {
         this.carpetas = carpetas;
+      })
+  }
+
+  // =====================> getAllDocumentos
+  private getAllDocumentos(): void {
+    this.documentosSvc
+      .getAllDocumentoProyectoByUuid(this.uuidProyecto)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((documentos: DocumentoProyecto[]) => {
+        this.documentos = documentos;
       })
   }
 
@@ -151,9 +164,11 @@ export class DocumentosComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         if (res) {
-          console.error('Todo se subio close mat');
-          // this.getAllCarpetas();
+
+          this.getAllDocumentos();
         }
+
+
       });
   }
 

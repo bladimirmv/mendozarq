@@ -68,7 +68,7 @@ export class NewDocumentoComponent implements OnInit {
   public uploadFiles(): void {
     this.isClicked = true;
     this.documentos.forEach((documento: uploadFile, index) => {
-      this.documentosSvc.addDocument({ uuidProyecto: this.uuidProyecto } as DocumentoProyecto, documento.file)
+      this.documentosSvc.addDocument({ uuidProyecto: this.uuidProyecto, fechaCreacion: new Date } as DocumentoProyecto, documento.file)
         .pipe(catchError(error => {
           this.documentos[index].error = true;
           this.toastrSvc.error(`El archivo ${documento.file.name} no se pudo subir.`, 'Ocurrio un Error!', {
@@ -87,6 +87,7 @@ export class NewDocumentoComponent implements OnInit {
               console.log('puede continuar');
 
               this.continue = true;
+              this.dialogRef.close(true);
             }
           }
         });
