@@ -39,6 +39,17 @@
   .file-input {
     display: none;
   }
+
+  .upload-icon {
+    width: auto;
+    height: auto;
+    font-size: 80px;
+    color: var(--secondary);
+  }
+
+  &.hovering .upload-icon {
+    color: rgb(189, 182, 182) !important;
+  }
 }
 
 progress::-webkit-progress-value {

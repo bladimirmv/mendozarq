@@ -1,3 +1,4 @@
+export type Path = 'root' | 'folder';
 export interface CarpetaProyecto {
   uuid: string;
   creadoEn: Date;
@@ -5,7 +6,6 @@ export interface CarpetaProyecto {
   fechaCreacion: Date;
   uuidProyecto: string;
 }
-
 export interface DocumentoProyecto {
   uuid?: string;
   creadoEn?: Date;
@@ -14,7 +14,10 @@ export interface DocumentoProyecto {
   location?: string;
   fechaCreacion?: Date;
   uuidProyecto?: string;
+  size?: number;
+  path?: Path;
 }
+
 export interface DocumentoCarpeta {
   uuidDocumento: string;
   uuidCarpeta: string;

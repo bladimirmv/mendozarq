@@ -3,7 +3,7 @@ import { Component, HostListener, Inject, OnDestroy, OnInit } from '@angular/cor
 
 import { CarpetaProyecto, DocumentoProyecto } from '@models/mendozarq/documentos.proyecto.interface';
 import { DocumentosService } from '@services/mendozarq/documentos.service';
-import { Subject } from 'rxjs';
+import { pipe, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MatDialog, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NewCarpetaComponent } from './components/new-carpeta/new-carpeta.component';
@@ -86,18 +86,6 @@ export class DocumentosComponent implements OnInit, OnDestroy {
       })
   }
 
-  // =====================> getAllDocumentos
-  private getAllDocumentos(): void {
-    this.documentosSvc
-      .getAllDocumentoProyectoByUuid(this.uuidProyecto)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((documentos: DocumentoProyecto[]) => {
-        this.documentos = documentos;
-      })
-  }
-
-
-
   // =====================> newCarpeta
   public newCarpeta(): void {
 
@@ -110,7 +98,6 @@ export class DocumentosComponent implements OnInit, OnDestroy {
         }
       });
   }
-
 
   // =====================> deleteCarpeta
   public deleteCarpeta(uuid: string): void {
@@ -128,9 +115,7 @@ export class DocumentosComponent implements OnInit, OnDestroy {
             });
         }
       });
-
   }
-
 
   // =====================> updateCarpeta
   public updateCarpeta(carpetaProyecto: CarpetaProyecto): void {
@@ -146,30 +131,54 @@ export class DocumentosComponent implements OnInit, OnDestroy {
   }
 
 
-
+  // =====================> getAllDocumentos
+  private getAllDocumentos(): void {
+    this.documentosSvc
+      .getAllDocumentoProyectoByUuid(this.uuidProyecto)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((documentos: DocumentoProyecto[]) => {
+        this.documentos = documentos;
+      })
+  }
 
   // =====================> newDocumento
   public newDocumento(): void {
+
+    const documento: DocumentoProyecto = {
+      uuidProyecto: this.uuidProyecto,
+      path: 'root'
+    }
     const matOptions: MatDialogConfig = {
-      data: this.uuidProyecto,
+      data: documento,
       width: '600px',
       height: 'auto',
       maxWidth: '600px',
       minWidth: '200px'
     }
-
-
     const dialogRef = this.dialog.open(NewDocumentoComponent, matOptions);
     dialogRef.afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         if (res) {
-
           this.getAllDocumentos();
         }
-
-
       });
   }
 
+  public deleteDocumento(uuid: string): void {
+    const dialogRef = this.dialog.open(DeleteModalComponent);
+
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(res => {
+        if (res) {
+          this.documentosSvc.deleteDocumentoProyecto(uuid)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+              this.toastrSvc.success('Carpeta eliminado. 😀', 'Carpeta Eliminado');
+              this.getAllDocumentos();
+            });
+        }
+      });
+  }
 }

@@ -38,7 +38,6 @@ export class DocumentosService {
       .pipe(catchError(error => this.handdleError(error)));
   }
 
-
   // ====================> getAllCarpetaProyectoByUuid
   public getAllCarpetaProyectoByUuid(uuid: string): Observable<CarpetaProyecto[]> {
     return this.http
@@ -63,38 +62,19 @@ export class DocumentosService {
 
 
 
-  addDocument(documentoProyecto: DocumentoProyecto, file: File): Observable<HttpEvent<{}>> {
+  // ====================> addDocumentoProyecto
+  public addDocumentoProyecto(documentoProyecto: DocumentoProyecto, file: File): Observable<any> {
     const formdata: FormData = new FormData();
 
     formdata.append('file', file);
     formdata.append('documento', JSON.stringify(documentoProyecto));
 
-    const req = new HttpRequest('POST', `${this.API_URL}/api/documentos`, formdata, {
-      reportProgress: true,
-      responseType: 'text'
-    });
-    return this.http.request(req);
+    return this.http
+      .post(`${this.API_URL}/api/documentos`, formdata, {
+        reportProgress: true,
+        observe: 'events'
+      });
   }
-
-  put(): Observable<any> {
-    return new Observable((success => {
-      const progressEvent = {} as HttpProgressEvent;
-      progressEvent.type = HttpEventType.UploadProgress;
-      progressEvent.total = 100;
-      progressEvent.loaded = 0;
-
-      setInterval(() => {
-        if (progressEvent.loaded < progressEvent.total) {
-          progressEvent.loaded += 1;
-          success.next(progressEvent);
-        } else {
-          success.complete();
-        }
-      })
-
-    }));
-  }
-
 
 
   // ====================> getAllDocumentoProyectoByUuid
@@ -104,7 +84,12 @@ export class DocumentosService {
       .pipe(catchError(error => this.handdleError(error)));
   }
 
-
+  // ====================> deleteDocumentoProyecto
+  public deleteDocumentoProyecto(uuid: string): Observable<any> {
+    return this.http
+      .delete(`${this.API_URL}/api/documentos/${uuid}`)
+      .pipe(catchError(error => this.handdleError(error)));
+  }
 
 
 

@@ -116,9 +116,16 @@
     border-bottom: 1px solid var(--primary);
   }
 
+  .date-size {
+    grid-column: span 2;
+    text-align: center;
+    font-size: 10px;
+  }
+
   .date-document {
     grid-column: span 2;
     text-align: center;
+    font-size: 12px;
   }
 
   .more-icon {

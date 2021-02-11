@@ -1,4 +1,4 @@
-import { HttpEventType, HttpResponse } from '@angular/common/http';
+import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -39,7 +39,7 @@ export class NewDocumentoComponent implements OnInit {
 
   constructor(
     private documentosSvc: DocumentosService,
-    @Inject(MAT_DIALOG_DATA) public uuidProyecto: string,
+    @Inject(MAT_DIALOG_DATA) public documentoData: DocumentoProyecto,
     private fb: FormBuilder,
     private toastrSvc: ToastrService,
     private dialogRef: MatDialogRef<NewDocumentoComponent>
@@ -65,10 +65,40 @@ export class NewDocumentoComponent implements OnInit {
   }
 
   // ====================> uploadFiles
+  // public uploadFiles(): void {
+  //   this.isClicked = true;
+  //   this.documentos.forEach((documento: uploadFile, index) => {
+  //     this.documentosSvc.addDocument({ uuidProyecto: this.uuidProyecto, fechaCreacion: new Date } as DocumentoProyecto, documento.file)
+  //       .pipe(catchError(error => {
+  //         this.documentos[index].error = true;
+  //         this.toastrSvc.error(`El archivo ${documento.file.name} no se pudo subir.`, 'Ocurrio un Error!', {
+  //           timeOut: 7000,
+  //           enableHtml: true
+  //         });
+  //         return throwError(error);
+  //       }))
+  //       .subscribe(event => {
+  //         if (event.type === HttpEventType.UploadProgress) {
+  //           this.documentos[index].progress = Math.round(100 * event.loaded / event.total);
+
+  //         } else if (event instanceof HttpResponse) {
+  //           this.documentos[index].uploaded = true;
+  //           if (this.checkStatusFile()) {
+  //             console.log('puede continuar');
+
+  //             this.continue = true;
+  //             this.dialogRef.close(true);
+  //           }
+  //         }
+  //       });
+  //   });
+  // }
+
   public uploadFiles(): void {
     this.isClicked = true;
     this.documentos.forEach((documento: uploadFile, index) => {
-      this.documentosSvc.addDocument({ uuidProyecto: this.uuidProyecto, fechaCreacion: new Date } as DocumentoProyecto, documento.file)
+      this.documentoData.fechaCreacion = new Date;
+      this.documentosSvc.addDocumentoProyecto(this.documentoData, documento.file)
         .pipe(catchError(error => {
           this.documentos[index].error = true;
           this.toastrSvc.error(`El archivo ${documento.file.name} no se pudo subir.`, 'Ocurrio un Error!', {
@@ -77,18 +107,25 @@ export class NewDocumentoComponent implements OnInit {
           });
           return throwError(error);
         }))
-        .subscribe(event => {
-          if (event.type === HttpEventType.UploadProgress) {
-            this.documentos[index].progress = Math.round(100 * event.loaded / event.total);
+        .subscribe((event: HttpEvent<any>) => {
 
-          } else if (event instanceof HttpResponse) {
-            this.documentos[index].uploaded = true;
-            if (this.checkStatusFile()) {
-              console.log('puede continuar');
+          switch (event.type) {
+            case HttpEventType.UploadProgress:
+              this.documentos[index].progress = Math.round(event.loaded / event.total * 100);
+              break;
+            case HttpEventType.Response:
+              this.documentos[index].uploaded = true;
 
-              this.continue = true;
-              this.dialogRef.close(true);
-            }
+              setTimeout(() => {
+                this.documentos[index].progress = 0;
+              }, 1500);
+
+              if (this.checkStatusFile()) {
+                this.continue = true;
+                this.dialogRef.close(true);
+              }
+
+
           }
         });
     });

@@ -3,11 +3,11 @@
   <div class="dropzone no-select" appDropzone (hovered)="toggleHover($event)" (dropped)="onDrop($event)"
     [class.hovering]="isHovering">
 
-    <mat-icon>
-
+    <mat-icon class="upload-icon">
+      cloud_upload
     </mat-icon>
 
-    <p class="text-info" align="center">Arrastra y suelta uno o varios arcchivos aqui.</p>
+    <p class="text-info" align="center">Arrastra y suelta uno o varios archivos aqui.</p>
     <p class="text-hovering" align="center">Suelta aqui.</p>
     <p>o</p>
 
