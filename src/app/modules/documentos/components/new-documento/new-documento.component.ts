@@ -7,7 +7,7 @@ import { DocumentosService } from '@app/core/services/mendozarq/documentos.servi
 import { DocumentoProyecto } from '@models/mendozarq/documentos.proyecto.interface';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, Subject, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, takeUntil } from 'rxjs/operators';
 import { runInThisContext } from 'vm';
 
 export class uploadFile {
@@ -40,7 +40,6 @@ export class NewDocumentoComponent implements OnInit {
   constructor(
     private documentosSvc: DocumentosService,
     @Inject(MAT_DIALOG_DATA) public documentoData: DocumentoProyecto,
-    private fb: FormBuilder,
     private toastrSvc: ToastrService,
     private dialogRef: MatDialogRef<NewDocumentoComponent>
 
@@ -48,7 +47,6 @@ export class NewDocumentoComponent implements OnInit {
 
 
   ngOnInit(): void {
-    // this.initForm();
   }
 
   ngOnDestroy(): void {
@@ -56,57 +54,23 @@ export class NewDocumentoComponent implements OnInit {
     this.destroy$.complete();
   }
 
-
-  // =====================> onInitForm
-  private initForm(): void {
-    this.documentoForm = this.fb.group({
-      nombre: ['', [Validators.required, Validators.maxLength(30), Validators.minLength(4), Validators.pattern(/^[0-9a-z\s]+$/)]]
-    });
-  }
-
   // ====================> uploadFiles
-  // public uploadFiles(): void {
-  //   this.isClicked = true;
-  //   this.documentos.forEach((documento: uploadFile, index) => {
-  //     this.documentosSvc.addDocument({ uuidProyecto: this.uuidProyecto, fechaCreacion: new Date } as DocumentoProyecto, documento.file)
-  //       .pipe(catchError(error => {
-  //         this.documentos[index].error = true;
-  //         this.toastrSvc.error(`El archivo ${documento.file.name} no se pudo subir.`, 'Ocurrio un Error!', {
-  //           timeOut: 7000,
-  //           enableHtml: true
-  //         });
-  //         return throwError(error);
-  //       }))
-  //       .subscribe(event => {
-  //         if (event.type === HttpEventType.UploadProgress) {
-  //           this.documentos[index].progress = Math.round(100 * event.loaded / event.total);
-
-  //         } else if (event instanceof HttpResponse) {
-  //           this.documentos[index].uploaded = true;
-  //           if (this.checkStatusFile()) {
-  //             console.log('puede continuar');
-
-  //             this.continue = true;
-  //             this.dialogRef.close(true);
-  //           }
-  //         }
-  //       });
-  //   });
-  // }
-
   public uploadFiles(): void {
     this.isClicked = true;
     this.documentos.forEach((documento: uploadFile, index) => {
       this.documentoData.fechaCreacion = new Date;
+      this.documentoData.size = documento.file.size;
       this.documentosSvc.addDocumentoProyecto(this.documentoData, documento.file)
-        .pipe(catchError(error => {
-          this.documentos[index].error = true;
-          this.toastrSvc.error(`El archivo ${documento.file.name} no se pudo subir.`, 'Ocurrio un Error!', {
-            timeOut: 7000,
-            enableHtml: true
-          });
-          return throwError(error);
-        }))
+        .pipe(
+          takeUntil(this.destroy$),
+          catchError(error => {
+            this.documentos[index].error = true;
+            this.toastrSvc.error(`El archivo ${documento.file.name} no se pudo subir.`, 'Ocurrio un Error!', {
+              timeOut: 7000,
+              enableHtml: true
+            });
+            return throwError(error);
+          }))
         .subscribe((event: HttpEvent<any>) => {
 
           switch (event.type) {
@@ -118,14 +82,10 @@ export class NewDocumentoComponent implements OnInit {
 
               setTimeout(() => {
                 this.documentos[index].progress = 0;
+                if (this.checkStatusFile()) {
+                  this.continue = true;
+                }
               }, 1500);
-
-              if (this.checkStatusFile()) {
-                this.continue = true;
-                this.dialogRef.close(true);
-              }
-
-
           }
         });
     });
@@ -161,15 +121,18 @@ export class NewDocumentoComponent implements OnInit {
     this.documentos = this.documentos.filter((doc: uploadFile) => doc != documento);
   }
 
+  // ======================== formatBytes
   public formatBytes(bytes, decimals = 2) {
     if (bytes === 0) return '0 Bytes';
-
     const k = 1024;
     const dm = decimals < 0 ? 0 : decimals;
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  }
+  // =====================> getType
+  public getType(nombre: string): string {
+    const arrayName = nombre.split('.');
+    return arrayName[arrayName.length - 1];
   }
 }

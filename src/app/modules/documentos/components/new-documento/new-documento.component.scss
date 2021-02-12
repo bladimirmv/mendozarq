@@ -44,7 +44,7 @@
     width: auto;
     height: auto;
     font-size: 80px;
-    color: var(--secondary);
+    color: var(--info);
   }
 
   &.hovering .upload-icon {
@@ -74,13 +74,28 @@ img {
     "icon_doc tam icon_delete"
     "icon_doc prog icon_delete";
 
-  .icon-documento {
+
+  .icon-type {
     grid-area: icon_doc;
-    color: rgb(170, 170, 170);
-    font-size: 50px;
-    width: auto;
+    position: relative;
     display: grid;
     place-items: center;
+  }
+
+  .icon-type .type {
+    position: absolute;
+    font-size: 10px;
+    font-weight: bold;
+    color: white;
+    z-index: 100;
+  }
+
+
+  .icon-type .icon-documento {
+    color: var(--secondary);
+    font-size: 50px;
+    width: auto;
+    height: auto;
   }
 
   .title {
@@ -120,15 +135,18 @@ img {
     border: 2px solid var(--success);
   }
 
-  .c-error {
+
+  .icon-type .c-error {
     color: var(--warn);
   }
 
-  .c-success {
+  .icon-type .c-success {
     color: var(--success);
   }
 
+
 }
+
 
 
 mat-dialog-actions {

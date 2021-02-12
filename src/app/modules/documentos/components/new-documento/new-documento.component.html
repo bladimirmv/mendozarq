@@ -25,10 +25,18 @@
   <div class="documento" [class.error]="documento.error === undefined ? false: true" [attr.disabled]="!continue"
     [class.success]="documento.uploaded" *ngFor="let documento of documentos">
 
-    <mat-icon class="icon-documento" [class.c-error]="documento.error === undefined ? false: true"
-      [class.c-success]="documento.uploaded">
-      insert_drive_file
-    </mat-icon>
+
+
+    <div class="icon-type">
+      <div class="type">
+        {{getType(documento.file.name)}}
+      </div>
+      <mat-icon class="icon-documento" [class.c-error]="documento.error === undefined ? false: true"
+        [class.c-success]="documento.uploaded">
+        insert_drive_file
+      </mat-icon>
+    </div>
+
 
     <div class="title">
       {{documento.file.name}}
@@ -47,13 +55,10 @@
       </mat-icon>
     </button>
 
-
   </div>
-
-
-
-
 </mat-dialog-content>
+
+
 
 <mat-dialog-actions>
   <button mat-button class="mat-btn-secondary" [matDialogClose]="false">Cancelar</button>
@@ -67,6 +72,4 @@
       Continuar
     </button>
   </ng-template>
-
-
 </mat-dialog-actions>

@@ -8,7 +8,7 @@
 
     <button mat-button class="link" oncontextmenu="return false;" (click)="newDocumento()">
       <mat-icon class="mat-18">
-        note_add
+        cloud_upload
       </mat-icon>
       Documento
     </button>
@@ -17,6 +17,16 @@
         create_new_folder
       </mat-icon>
       Carpeta
+    </button>
+    <div align="center" class="title-menu">
+      Acciones
+    </div>
+    <hr>
+    <button mat-button class="link" oncontextmenu="return false;" (click)="syncData()">
+      <mat-icon class="mat-18">
+        sync
+      </mat-icon>
+      Actualizar
     </button>
   </div>
 
@@ -76,7 +86,7 @@
             Renombrar
           </button>
         </mat-menu>
-        <div mat-line class="date-document no-select">
+        <div mat-line class="date-carpeta no-select">
           {{carpeta.fechaCreacion | date}}
         </div>
       </div>
@@ -84,36 +94,48 @@
 
     <!-- *Documento -->
     <div class="item mat-elevation-z2" *ngFor="let documento of documentos">
-      <mat-icon class="mat-18" mat-list-icon class="document no-select">
-        insert_drive_file
-      </mat-icon>
+
+      <div class="document">
+        <div class="type">
+          {{getType(documento.nombre)}}
+        </div>
+        <mat-icon class="mat-18" mat-list-icon class="document no-select">
+          insert_drive_file
+        </mat-icon>
+      </div>
+
+
       <div class="detail">
         <div class="title-document">
-          <!-- routerLink="/doc" -->
-          <a href="http://localhost:3000/api/file/{{documento.keyName}}">
-            {{documento.nombre}}
-          </a>
+          {{documento.nombre}}
         </div>
         <mat-icon class="more-icon" [matMenuTriggerFor]="menuDocumento">
           more_vert
         </mat-icon>
 
         <mat-menu #menuDocumento="matMenu">
+          <button mat-menu-item (click)="downloadFile(documento)">
+            <mat-icon class="mat-18">
+              cloud_download
+            </mat-icon>
+            Descargar
+          </button>
+
+          <button mat-menu-item (click)="updateDocumento(documento)">
+            <mat-icon class="mat-18">
+              edit
+            </mat-icon>
+            Renombrar
+          </button>
           <button mat-menu-item (click)="deleteDocumento(documento.uuid)">
             <mat-icon class="mat-18">
               delete
             </mat-icon>
             Eliminar
           </button>
-          <button mat-menu-item>
+          <button mat-menu-item (click)="infoDocumento(documento)">
             <mat-icon class="mat-18">
-              edit
-            </mat-icon>
-            Renombrar
-          </button>
-          <button mat-menu-item>
-            <mat-icon class="mat-18">
-              edit
+              info
             </mat-icon>
             Informacion
           </button>
@@ -122,13 +144,7 @@
         <div class="date-size">
 
 
-          <!-- <div mat-line class="size-document no-select"> -->
-          <!-- </div> -->
-
-          <!-- <div mat-line class="date-document no-select"> -->
-          <!-- {{documento.fechaCreacion| date:'dd/MM/yyyy' }} - -->
-          <!-- </div> -->
-          500 MB
+          {{formatBytes(documento.size)}}
         </div>
 
       </div>

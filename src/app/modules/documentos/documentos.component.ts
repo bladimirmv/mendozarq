@@ -12,6 +12,9 @@ import { DeleteModalComponent } from '@app/shared/components/delete-modal/delete
 import { ToastrService } from 'ngx-toastr';
 import { EditCarpetaComponent } from './components/edit-carpeta/edit-carpeta.component';
 import { NewDocumentoComponent } from './components/new-documento/new-documento.component';
+import { environment } from '@env/environment';
+import { EditDocumentoComponent } from './components/edit-documento/edit-documento.component';
+import { InfoDocumentoComponent } from './components/info-documento/info-documento.component';
 export interface Section {
   name: string;
   updated: Date;
@@ -22,6 +25,9 @@ export interface Section {
   styleUrls: ['./documentos.component.scss']
 })
 export class DocumentosComponent implements OnInit, OnDestroy {
+
+  private API_URL = environment.API_URL;
+
 
   public carpetas: CarpetaProyecto[] = [];
   public documentos: DocumentoProyecto[] = [];
@@ -76,6 +82,11 @@ export class DocumentosComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  public syncData(): void {
+    this.getAllCarpetas();
+    this.getAllDocumentos();
+  }
+
   // =====================> getAllCarpetas
   private getAllCarpetas(): void {
     this.documentosSvc
@@ -110,7 +121,7 @@ export class DocumentosComponent implements OnInit, OnDestroy {
           this.documentosSvc.deleteCarpetaProyecto(uuid)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-              this.toastrSvc.success('Carpeta eliminado. 😀', 'Carpeta Eliminado');
+              this.toastrSvc.success('Carpeta eliminado correctamente. 😀', 'Carpeta Eliminado');
               this.getAllCarpetas();
             });
         }
@@ -158,13 +169,12 @@ export class DocumentosComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(NewDocumentoComponent, matOptions);
     dialogRef.afterClosed()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        if (res) {
-          this.getAllDocumentos();
-        }
+      .subscribe(() => {
+        this.getAllDocumentos();
       });
   }
 
+  // =====================> deleteDocumento
   public deleteDocumento(uuid: string): void {
     const dialogRef = this.dialog.open(DeleteModalComponent);
 
@@ -175,10 +185,59 @@ export class DocumentosComponent implements OnInit, OnDestroy {
           this.documentosSvc.deleteDocumentoProyecto(uuid)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-              this.toastrSvc.success('Carpeta eliminado. 😀', 'Carpeta Eliminado');
+              this.toastrSvc.success('Documento eliminado correctamente. 😀', 'Documento Eliminado');
               this.getAllDocumentos();
             });
         }
       });
   }
+  // =====================> updateDocumento
+  public updateDocumento(documentoProyecto: DocumentoProyecto): void {
+
+    const dialogRef = this.dialog.open(EditDocumentoComponent, { data: documentoProyecto });
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        if (res) {
+          this.getAllDocumentos();
+        }
+      });
+  }
+
+  // =====================> downloadFile
+  public downloadFile(documento: DocumentoProyecto): void {
+    const link = document.createElement('a');
+    link.setAttribute('href', `${this.API_URL}/api/file/${documento.keyName}`);
+    link.setAttribute('download', documento.nombre);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  }
+
+
+  public infoDocumento(documentoProyecto: DocumentoProyecto): void {
+    this.dialog.open(InfoDocumentoComponent, { data: documentoProyecto })
+  }
+
+
+  // =====================> getType
+  public getType(nombre: string): string {
+    const arrayName = nombre.split('.');
+    return arrayName[arrayName.length - 1];
+  }
+
+
+  // ======================== formatBytes
+  public formatBytes(bytes, decimals = 2) {
+    if (bytes === 0) return '0 Bytes';
+
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  }
+
 }

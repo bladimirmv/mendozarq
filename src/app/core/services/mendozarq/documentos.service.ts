@@ -91,7 +91,12 @@ export class DocumentosService {
       .pipe(catchError(error => this.handdleError(error)));
   }
 
-
+  // ====================> updateDocumentoProyecto
+  public updateDocumentoProyecto(uuid: string, documentoProyecto: DocumentoProyecto): Observable<any> {
+    return this.http
+      .put(`${this.API_URL}/api/documentos/${uuid}`, documentoProyecto)
+      .pipe(catchError(error => this.handdleError(error)));
+  }
 
   // ====================> handdleError
   public handdleError(httpError: HttpErrorResponse): Observable<never> {

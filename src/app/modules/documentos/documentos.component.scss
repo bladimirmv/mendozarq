@@ -82,7 +82,21 @@
   }
 
   .document {
-    color: rgb(170, 170, 170);
+    position: relative;
+    display: grid;
+    place-items: center;
+  }
+
+  .document .type {
+    position: absolute;
+    font-size: 10px;
+    font-weight: bold;
+    color: white;
+    z-index: 100;
+  }
+
+  .document mat-icon {
+    color: var(--secondary);
     font-size: 50px;
     width: auto;
     height: auto;
@@ -119,10 +133,10 @@
   .date-size {
     grid-column: span 2;
     text-align: center;
-    font-size: 10px;
+    font-size: 12px;
   }
 
-  .date-document {
+  .date-carpeta {
     grid-column: span 2;
     text-align: center;
     font-size: 12px;

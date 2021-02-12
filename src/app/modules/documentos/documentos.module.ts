@@ -9,10 +9,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { EditCarpetaComponent } from './components/edit-carpeta/edit-carpeta.component';
 import { NewDocumentoComponent } from './components/new-documento/new-documento.component';
 import { DropzoneDirective } from './components/dropzone.directive';
+import { EditDocumentoComponent } from './components/edit-documento/edit-documento.component';
+import { InfoDocumentoComponent } from './components/info-documento/info-documento.component';
 
 
 @NgModule({
-  declarations: [DocumentosComponent, NewCarpetaComponent, EditCarpetaComponent, NewDocumentoComponent, DropzoneDirective],
+  declarations: [DocumentosComponent, NewCarpetaComponent, EditCarpetaComponent, NewDocumentoComponent, DropzoneDirective, EditDocumentoComponent, InfoDocumentoComponent],
   imports: [
     CommonModule,
     DocumentosRoutingModule,
