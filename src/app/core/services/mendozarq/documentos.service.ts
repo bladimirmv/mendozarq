@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { CarpetaProyecto, DocumentoProyecto } from '@app/shared/models/mendozarq/documentos.proyecto.interface';
+import { CarpetaProyecto, DocumentoProyCarpeta, DocumentoProyecto, Path } from '@app/shared/models/mendozarq/documentos.proyecto.interface';
 import { environment } from '@env/environment.prod';
 @Injectable({
   providedIn: 'root'
@@ -76,11 +76,10 @@ export class DocumentosService {
       });
   }
 
-
   // ====================> getAllDocumentoProyectoByUuid
-  public getAllDocumentoProyectoByUuid(uuid: string): Observable<DocumentoProyecto[]> {
+  public getAllDocumentoProyectoByUuid(uuid: string, path: Path): Observable<DocumentoProyecto[]> {
     return this.http
-      .get<DocumentoProyecto[]>(`${this.API_URL}/api/documentos/uuidProy/${uuid}`)
+      .get<DocumentoProyecto[]>(`${this.API_URL}/api/documentos/uuidProy/${uuid}/path/${path}`)
       .pipe(catchError(error => this.handdleError(error)));
   }
 
@@ -98,6 +97,31 @@ export class DocumentosService {
       .pipe(catchError(error => this.handdleError(error)));
   }
 
+
+
+  // ====================> addDocumentoCarpeta
+  public addDocumentoCarpeta(documentoCarpeta: DocumentoProyCarpeta, file: File): Observable<any> {
+    const formdata: FormData = new FormData();
+
+    formdata.append('file', file);
+    formdata.append('documento', JSON.stringify(documentoCarpeta));
+
+    return this.http
+      .post(`${this.API_URL}/api/documentos/docCarpeta`, formdata, {
+        reportProgress: true,
+        observe: 'events'
+      });
+  }
+
+  // ====================> getAllDocumentoCarpetaByUuid
+  public getAllDocumentoCarpetaByUuid(uuid: string, path: Path): Observable<DocumentoProyecto[]> {
+    return this.http
+      .get<DocumentoProyecto[]>(`${this.API_URL}/api/documentos/uuidCarpeta/${uuid}/path/${path}`)
+      .pipe(catchError(error => this.handdleError(error)));
+  }
+
+
+
   // ====================> handdleError
   public handdleError(httpError: HttpErrorResponse): Observable<never> {
 
@@ -112,7 +136,7 @@ export class DocumentosService {
             errorMessage = 'No se ha podido establecer una conexion con el servidor. 🙁';
             break;
           case 1451:
-            errorMessage = 'No se puede eliminar por que esta carpeta esta relacionado con un proyecto u otra tabla. 🙁';
+            errorMessage = 'No se puede eliminar por que esta carpeta no esta vacia. 🙁';
             break;
           default:
             errorMessage = `

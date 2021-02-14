@@ -1,1 +1,31 @@
-{{documentoProyecto | json}}
+<div class="main no-select">
+
+  <h2 align="center">{{trimExtension(documentoProyecto.nombre) }}</h2>
+
+  <div class="row-info">
+    <h3>
+      Creacion:
+    </h3>
+    <span>
+      {{documentoProyecto.fechaCreacion | date}}
+    </span>
+  </div>
+
+  <div class="row-info">
+    <h3>
+      Tamaño:
+    </h3>
+    <span>
+      {{formatBytes(documentoProyecto.size)}}
+    </span>
+  </div>
+
+  <div class="row-info">
+    <h3>
+      Tipo:
+    </h3>
+    <span>
+      {{getType(documentoProyecto.keyName)}}
+    </span>
+  </div>
+</div>

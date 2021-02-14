@@ -1,39 +1,34 @@
 import { Component, HostListener, Inject, OnDestroy, OnInit } from '@angular/core';
 
 
-import { CarpetaProyecto, DocumentoProyecto } from '@models/mendozarq/documentos.proyecto.interface';
+import { DocumentoProyCarpeta, DocumentoProyecto } from '@models/mendozarq/documentos.proyecto.interface';
 import { DocumentosService } from '@services/mendozarq/documentos.service';
-import { pipe, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { NewCarpetaComponent } from './components/new-carpeta/new-carpeta.component';
-import { ActivatedRoute } from '@angular/router';
-import { DeleteModalComponent } from '@app/shared/components/delete-modal/delete-modal.component';
-import { ToastrService } from 'ngx-toastr';
-import { EditCarpetaComponent } from './components/edit-carpeta/edit-carpeta.component';
-import { NewDocumentoComponent } from './components/new-documento/new-documento.component';
-import { environment } from '@env/environment';
-import { EditDocumentoComponent } from './components/edit-documento/edit-documento.component';
-import { InfoDocumentoComponent } from './components/info-documento/info-documento.component';
-export interface Section {
-  name: string;
-  updated: Date;
-}
-@Component({
-  selector: 'app-documentos',
-  templateUrl: './documentos.component.html',
-  styleUrls: ['./documentos.component.scss']
-})
-export class DocumentosComponent implements OnInit, OnDestroy {
+import { Subject } from 'rxjs';
 
+import { environment } from '@env/environment';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { takeUntil } from 'rxjs/operators';
+import { NewDocumentoComponent } from '../new-documento/new-documento.component';
+import { DeleteModalComponent } from '@app/shared/components/delete-modal/delete-modal.component';
+import { EditDocumentoComponent } from '../edit-documento/edit-documento.component';
+import { InfoDocumentoComponent } from '../info-documento/info-documento.component';
+
+@Component({
+  selector: 'app-carpeta-proyecto',
+  templateUrl: './carpeta-proyecto.component.html',
+  styleUrls: ['./carpeta-proyecto.component.scss']
+})
+export class CarpetaProyectoComponent implements OnInit, OnDestroy {
   private API_URL = environment.API_URL;
 
-
-  public carpetas: CarpetaProyecto[] = [];
   public documentos: DocumentoProyecto[] = [];
 
   private destroy$ = new Subject<any>();
   private uuidProyecto: string = '';
+  private uuidCarpeta: string = '';
+
 
 
   @HostListener('window:click', ['$event'])
@@ -59,20 +54,16 @@ export class DocumentosComponent implements OnInit, OnDestroy {
     }
   }
 
-
   constructor(
     private documentosSvc: DocumentosService,
     private dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
     private toastrSvc: ToastrService,
-
-  ) {
-
-  }
+  ) { }
 
   ngOnInit(): void {
     this.uuidProyecto = this.activatedRoute.snapshot.parent.parent.params.uuid;
-    this.getAllCarpetas();
+    this.uuidCarpeta = this.activatedRoute.snapshot.params.uuid;
     this.getAllDocumentos();
 
   }
@@ -81,83 +72,27 @@ export class DocumentosComponent implements OnInit, OnDestroy {
     this.destroy$.next({});
     this.destroy$.complete();
   }
-
   public syncData(): void {
-    this.getAllCarpetas();
     this.getAllDocumentos();
   }
-
-  // =====================> getAllCarpetas
-  private getAllCarpetas(): void {
-    this.documentosSvc
-      .getAllCarpetaProyectoByUuid(this.uuidProyecto)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((carpetas: CarpetaProyecto[]) => {
-        this.carpetas = carpetas;
-      })
-  }
-
-  // =====================> newCarpeta
-  public newCarpeta(): void {
-
-    const dialogRef = this.dialog.open(NewCarpetaComponent, { data: this.uuidProyecto });
-    dialogRef.afterClosed()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        if (res) {
-          this.getAllCarpetas();
-        }
-      });
-  }
-
-  // =====================> deleteCarpeta
-  public deleteCarpeta(uuid: string): void {
-    const dialogRef = this.dialog.open(DeleteModalComponent);
-
-    dialogRef.afterClosed()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(res => {
-        if (res) {
-          this.documentosSvc.deleteCarpetaProyecto(uuid)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {
-              this.toastrSvc.success('Carpeta eliminado correctamente. 😀', 'Carpeta Eliminado');
-              this.getAllCarpetas();
-            });
-        }
-      });
-  }
-
-  // =====================> updateCarpeta
-  public updateCarpeta(carpetaProyecto: CarpetaProyecto): void {
-
-    const dialogRef = this.dialog.open(EditCarpetaComponent, { data: carpetaProyecto });
-    dialogRef.afterClosed()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        if (res) {
-          this.getAllCarpetas();
-        }
-      });
-  }
-
 
   // =====================> getAllDocumentos
   private getAllDocumentos(): void {
     this.documentosSvc
-      .getAllDocumentoProyectoByUuid(this.uuidProyecto, 'root')
+      .getAllDocumentoCarpetaByUuid(this.uuidCarpeta, 'folder')
       .pipe(takeUntil(this.destroy$))
       .subscribe((documentos: DocumentoProyecto[]) => {
         this.documentos = documentos;
       })
   }
 
-  // =====================> newDocumento
+  // =====================> newDocumentoCarpeta
   public newDocumento(): void {
 
-    const documento: DocumentoProyecto = {
+    const documento: DocumentoProyCarpeta = {
       uuidProyecto: this.uuidProyecto,
-      path: 'root'
+      uuidCarpeta: this.uuidCarpeta,
+      path: 'folder'
     }
     const matOptions: MatDialogConfig = {
       data: documento,
@@ -166,6 +101,8 @@ export class DocumentosComponent implements OnInit, OnDestroy {
       maxWidth: '600px',
       minWidth: '200px'
     }
+
+
     const dialogRef = this.dialog.open(NewDocumentoComponent, matOptions);
     dialogRef.afterClosed()
       .pipe(takeUntil(this.destroy$))

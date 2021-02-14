@@ -12,12 +12,7 @@
       </mat-icon>
       Documento
     </button>
-    <button mat-button class="link" oncontextmenu="return false;" (click)="newCarpeta()">
-      <mat-icon class="mat-18">
-        create_new_folder
-      </mat-icon>
-      Carpeta
-    </button>
+
     <div align="center" class="title-menu">
       Acciones
     </div>
@@ -58,39 +53,6 @@
 
 
   <div class="list" id="list">
-
-    <!-- *Carpeta -->
-    <div class="item mat-elevation-z2" *ngFor="let carpeta of carpetas">
-      <mat-icon class="mat-18" mat-list-icon class="folder no-select">folder</mat-icon>
-      <div class="detail">
-        <div class="title-document">
-          <a [routerLink]="['carpeta/', carpeta.uuid]">
-            {{carpeta.nombre | titlecase}}
-          </a>
-        </div>
-        <mat-icon class="more-icon" [matMenuTriggerFor]="menu">
-          more_vert
-        </mat-icon>
-
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="deleteCarpeta(carpeta.uuid)">
-            <mat-icon class="mat-18">
-              delete
-            </mat-icon>
-            Eliminar
-          </button>
-          <button mat-menu-item (click)="updateCarpeta(carpeta)">
-            <mat-icon class="mat-18">
-              edit
-            </mat-icon>
-            Renombrar
-          </button>
-        </mat-menu>
-        <div mat-line class="date-carpeta no-select">
-          {{carpeta.fechaCreacion | date}}
-        </div>
-      </div>
-    </div>
 
     <!-- *Documento -->
     <div class="item mat-elevation-z2" *ngFor="let documento of documentos">

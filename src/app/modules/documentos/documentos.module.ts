@@ -11,10 +11,11 @@ import { NewDocumentoComponent } from './components/new-documento/new-documento.
 import { DropzoneDirective } from './components/dropzone.directive';
 import { EditDocumentoComponent } from './components/edit-documento/edit-documento.component';
 import { InfoDocumentoComponent } from './components/info-documento/info-documento.component';
+import { CarpetaProyectoComponent } from './components/carpeta-proyecto/carpeta-proyecto.component';
 
 
 @NgModule({
-  declarations: [DocumentosComponent, NewCarpetaComponent, EditCarpetaComponent, NewDocumentoComponent, DropzoneDirective, EditDocumentoComponent, InfoDocumentoComponent],
+  declarations: [DocumentosComponent, NewCarpetaComponent, EditCarpetaComponent, NewDocumentoComponent, DropzoneDirective, EditDocumentoComponent, InfoDocumentoComponent, CarpetaProyectoComponent],
   imports: [
     CommonModule,
     DocumentosRoutingModule,

@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { NewDocumentoComponent } from './components/new-documento/new-documento.component';
+import { CarpetaProyectoComponent } from './components/carpeta-proyecto/carpeta-proyecto.component';
 
 import { DocumentosComponent } from './documentos.component';
 
 const routes: Routes = [
   { path: '', component: DocumentosComponent },
-  // { path: 'upload', component: NewDocumentoComponent }
+  { path: 'carpeta/:uuid', component: CarpetaProyectoComponent }
 ];
 
 @NgModule({
