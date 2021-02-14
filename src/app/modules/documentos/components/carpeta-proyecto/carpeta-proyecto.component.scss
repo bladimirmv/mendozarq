@@ -1,9 +1,25 @@
-.content {
+.main {
   width: 100%;
-  height: calc(100% - 60px);
+  height: calc(100% - 70px);
   position: relative;
 }
 
+.bar-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 10px;
+  background-color: white;
+  border-radius: 5px;
+
+  mat-icon {
+    color: var(--secondary);
+  }
+}
+
+.content {
+  position: relative;
+}
 
 .contextmenu {
   background-color: white;
@@ -15,6 +31,7 @@
   z-index: 100000000;
 
   .link {
+
     padding: 8px 10px;
     font-size: 15px;
     color: var(--secondary);
@@ -62,7 +79,7 @@
   position: relative;
   grid-template-columns: repeat(7, auto);
   grid-gap: 20px;
-  padding: 10px 30px;
+  padding: 10px 0;
 
   .item {
     display: grid;

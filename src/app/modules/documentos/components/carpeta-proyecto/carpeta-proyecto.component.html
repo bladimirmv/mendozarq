@@ -1,4 +1,4 @@
-<div class="content" id="content" onContextMenu>
+<div class="main" id="main" onContextMenu>
 
   <div id="main_contextmenu" class="contextmenu mat-elevation-z2">
     <div align="center" class="title-menu">
@@ -8,7 +8,7 @@
 
     <button mat-button class="link" oncontextmenu="return false;" (click)="newDocumento()">
       <mat-icon class="mat-18">
-        cloud_upload
+        upload_file
       </mat-icon>
       Documento
     </button>
@@ -17,6 +17,14 @@
       Acciones
     </div>
     <hr>
+
+    <button mat-button class="link" oncontextmenu="return false;" (click)="onBack()">
+      <mat-icon class="mat-18">
+        keyboard_backspace
+      </mat-icon>
+      Volver Atras
+    </button>
+
     <button mat-button class="link" oncontextmenu="return false;" (click)="syncData()">
       <mat-icon class="mat-18">
         sync
@@ -51,65 +59,87 @@
   </div>
 
 
+  <div class="content" id="content">
 
-  <div class="list" id="list">
-
-    <!-- *Documento -->
-    <div class="item mat-elevation-z2" *ngFor="let documento of documentos">
-
-      <div class="document">
-        <div class="type">
-          {{getType(documento.nombre)}}
-        </div>
-        <mat-icon class="mat-18" mat-list-icon class="document no-select">
-          insert_drive_file
+    <div class="bar-actions mat-elevation-z2">
+      <button mat-icon-button (click)="onBack()">
+        <mat-icon>
+          keyboard_backspace
         </mat-icon>
-      </div>
+      </button>
 
-
-      <div class="detail">
-        <div class="title-document">
-          {{documento.nombre}}
-        </div>
-        <mat-icon class="more-icon" [matMenuTriggerFor]="menuDocumento">
-          more_vert
+      <button mat-icon-button (click)="syncData()">
+        <mat-icon>
+          sync
         </mat-icon>
+      </button>
 
-        <mat-menu #menuDocumento="matMenu">
-          <button mat-menu-item (click)="downloadFile(documento)">
-            <mat-icon class="mat-18">
-              cloud_download
-            </mat-icon>
-            Descargar
-          </button>
+      <button mat-icon-button (click)="newDocumento()">
+        <mat-icon>
+          upload_file
+        </mat-icon>
+      </button>
+    </div>
 
-          <button mat-menu-item (click)="updateDocumento(documento)">
-            <mat-icon class="mat-18">
-              edit
-            </mat-icon>
-            Renombrar
-          </button>
-          <button mat-menu-item (click)="deleteDocumento(documento.uuid)">
-            <mat-icon class="mat-18">
-              delete
-            </mat-icon>
-            Eliminar
-          </button>
-          <button mat-menu-item (click)="infoDocumento(documento)">
-            <mat-icon class="mat-18">
-              info
-            </mat-icon>
-            Informacion
-          </button>
-        </mat-menu>
+    <div class="list" id="list">
+      <!-- *Documento -->
+      <div class="item mat-elevation-z2" *ngFor="let documento of documentos">
 
-        <div class="date-size">
-
-
-          {{formatBytes(documento.size)}}
+        <div class="document">
+          <div class="type">
+            {{getType(documento.nombre)}}
+          </div>
+          <mat-icon class="mat-18" mat-list-icon class="document no-select">
+            insert_drive_file
+          </mat-icon>
         </div>
 
+
+        <div class="detail">
+          <div class="title-document">
+            {{documento.nombre}}
+          </div>
+          <mat-icon class="more-icon" [matMenuTriggerFor]="menuDocumento">
+            more_vert
+          </mat-icon>
+
+          <mat-menu #menuDocumento="matMenu">
+            <button mat-menu-item (click)="downloadFile(documento)">
+              <mat-icon class="mat-18">
+                cloud_download
+              </mat-icon>
+              Descargar
+            </button>
+
+            <button mat-menu-item (click)="updateDocumento(documento)">
+              <mat-icon class="mat-18">
+                edit
+              </mat-icon>
+              Renombrar
+            </button>
+            <button mat-menu-item (click)="deleteDocumento(documento.uuid)">
+              <mat-icon class="mat-18">
+                delete
+              </mat-icon>
+              Eliminar
+            </button>
+            <button mat-menu-item (click)="infoDocumento(documento)">
+              <mat-icon class="mat-18">
+                info
+              </mat-icon>
+              Informacion
+            </button>
+          </mat-menu>
+
+          <div class="date-size">
+
+
+            {{formatBytes(documento.size)}}
+          </div>
+
+        </div>
       </div>
     </div>
 
   </div>
+</div>

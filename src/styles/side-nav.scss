@@ -1,5 +1,4 @@
 .wave {
-
   position: absolute;
   top: 0;
   right: 0;
@@ -22,6 +21,7 @@ mat-sidenav-container {
 .sidenav-container {
   display: grid;
   height: 100vh;
+
   grid-template-columns: 1fr;
   grid-template-rows: auto minmax(50px, 1fr) auto;
   overflow: hidden;
@@ -46,6 +46,7 @@ mat-sidenav {
 }
 
 mat-sidenav-content {
+  width: auto;
   color: var(--secondary);
   overflow: auto;
 }

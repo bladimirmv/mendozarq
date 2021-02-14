@@ -1,4 +1,5 @@
-import { Component, HostListener, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 
 
 import { DocumentoProyCarpeta, DocumentoProyecto } from '@models/mendozarq/documentos.proyecto.interface';
@@ -40,10 +41,14 @@ export class CarpetaProyectoComponent implements OnInit, OnDestroy {
   @HostListener('contextmenu', ['$event'])
   onContextMenu(event: any) {
     event.preventDefault();
+    console.log(event);
+
     const main_menu = document.querySelector("#main_contextmenu") as HTMLDivElement;
     main_menu.style.top = event.offsetY + "px";
     main_menu.style.left = event.offsetX + "px";
-    if (event.target.id !== 'content' && event.target.id !== 'list') {
+    console.log(event.target.id);
+
+    if (event.target.id !== 'content' && event.target.id !== 'list' && event.target.id !== 'main') {
       main_menu.classList.remove('active');
     } else {
       const folder_menu = document.querySelector("#folder_contextmenu") as HTMLDivElement;
@@ -59,6 +64,7 @@ export class CarpetaProyectoComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
     private toastrSvc: ToastrService,
+    private location: Location
   ) { }
 
   ngOnInit(): void {
@@ -174,6 +180,11 @@ export class CarpetaProyectoComponent implements OnInit, OnDestroy {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
 
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  }
+
+
+  public onBack(): void {
+    this.location.back();
   }
 
 }

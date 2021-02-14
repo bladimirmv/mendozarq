@@ -48,7 +48,8 @@ export class DocumentosComponent implements OnInit, OnDestroy {
     const main_menu = document.querySelector("#main_contextmenu") as HTMLDivElement;
     main_menu.style.top = event.offsetY + "px";
     main_menu.style.left = event.offsetX + "px";
-    if (event.target.id !== 'content' && event.target.id !== 'list') {
+
+    if (event.target.id !== 'content' && event.target.id !== 'list' && event.target.id !== 'main') {
       main_menu.classList.remove('active');
     } else {
       const folder_menu = document.querySelector("#folder_contextmenu") as HTMLDivElement;
