@@ -62,19 +62,19 @@
   <div class="content" id="content">
 
     <div class="bar-actions mat-elevation-z2">
-      <button mat-icon-button (click)="onBack()">
+      <button mat-icon-button (click)="onBack()" matTooltip="Volver Atras" matTooltipPosition="below">
         <mat-icon>
           keyboard_backspace
         </mat-icon>
       </button>
 
-      <button mat-icon-button (click)="syncData()">
+      <button mat-icon-button (click)="syncData()" matTooltip="Actualizar" matTooltipPosition="below">
         <mat-icon>
           sync
         </mat-icon>
       </button>
 
-      <button mat-icon-button (click)="newDocumento()">
+      <button mat-icon-button (click)="newDocumento()" matTooltip="Nuevo Documento" matTooltipPosition="below">
         <mat-icon>
           upload_file
         </mat-icon>
@@ -96,7 +96,7 @@
 
 
         <div class="detail">
-          <div class="title-document">
+          <div class="title-document" [matTooltip]="documento.nombre" matTooltipPosition="below">
             {{documento.nombre}}
           </div>
           <mat-icon class="more-icon" [matMenuTriggerFor]="menuDocumento">

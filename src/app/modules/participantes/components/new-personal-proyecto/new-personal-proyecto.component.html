@@ -1,0 +1,90 @@
+<h2 align="center" mat-dialog-title>
+  Personal Proyecto
+</h2>
+<mat-dialog-content>
+  <form class="new-proyecto-form" [formGroup]="personalProyectoForm">
+
+    <!-- *cliente -->
+    <mat-form-field class="full-width full-column">
+      <mat-label>Cliente</mat-label>
+
+      <mat-select style="position: relative;" formControlName="personal" multiple>
+        <div style="padding: 5px 5px 0 5px;
+          position: -webkit-sticky; position: sticky; top: 0;  background-color: white;  z-index: 1; ">
+          <mat-form-field style=" width: 100%; ">
+            <mat-label>Buscar</mat-label>
+            <input matInput (keyup)="onKey($event.target.value)" autocomplete="off" #search>
+
+            <button mat-icon-button matSuffix *ngIf="search.value" (click)="onKey('')" (click)="search.value=''">
+              <mat-icon style="font-size: 20px;">
+                clear
+              </mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+
+        <mat-option *ngFor=" let personal of selectedPersonal" [value]="personal">
+          {{personal.nombre }}
+        </mat-option>
+      </mat-select>
+
+      <mat-icon matSuffix [color]="isValidField('personal').color">
+        {{isValidField('personal').icon}}
+      </mat-icon>
+      <mat-error *ngIf="personalProyectoForm.get('personal').errors?.required">
+        Seleccione un personal.
+      </mat-error>
+    </mat-form-field>
+  </form>
+
+  <mat-divider></mat-divider>
+  <h2 align="center">Seleccionados</h2>
+  <div *ngIf="personalProyectoForm.value.personal.length else notSelected">
+    <mat-selection-list #personal [multiple]="false">
+      <mat-list-option *ngFor="let personal of personalProyectoForm.value.personal" [value]="personal" align="center">
+        {{personal.nombre + ' ' + personal.apellidoPaterno + ' ' + personal.apellidoMaterno | titlecase}}
+      </mat-list-option>
+    </mat-selection-list>
+
+    <div *ngIf="personal.selectedOptions.selected[0]?.value">
+      <mat-divider></mat-divider>
+      <h2 align="center">Detalles</h2>
+
+      <h3>
+        Celular:
+        <span>{{personal.selectedOptions.selected[0]?.value.celular}}.</span>
+      </h3>
+      <h3>
+        Correo:
+        <span>{{personal.selectedOptions.selected[0]?.value.correo}}.</span>
+      </h3>
+      <h3>
+        Sueldo:
+        <span>{{personal.selectedOptions.selected[0]?.value.sueldo + ' ' + personal.selectedOptions.selected[0]?.value.moneda}}.</span>
+      </h3>
+      <h3>
+        Direccion:
+        <span>{{personal.selectedOptions.selected[0]?.value.direccion ? personal.selectedOptions.selected[0]?.value.direccion : 'Sin direccion'}}.</span>
+      </h3>
+      <h3>
+        Descripcion:
+        <span>{{personal.selectedOptions.selected[0]?.value.descripcion}}.</span>
+      </h3>
+    </div>
+
+  </div>
+  <ng-template #notSelected>
+    <p align="center">
+      No se ha seleccionado ningun personal.
+    </p>
+  </ng-template>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close class="mat-btn-secondary">Cancelar</button>
+  <button mat-button class="mat-btn-success" [disabled]=" !personalProyectoForm.valid"
+    (click)="newPersonal(personalProyectoForm.value.personal)">
+    Guardar
+  </button>
+</mat-dialog-actions>

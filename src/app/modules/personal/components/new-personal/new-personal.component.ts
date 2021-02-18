@@ -55,7 +55,7 @@ export class NewPersonalComponent implements OnInit, OnDestroy {
       .subscribe(usr => {
         if (usr) {
           this.toastrSvc.success('El personal se ha creado correctamente. 😀', 'Personal Creado');
-          this.dialogRef.close(this.personalForm);
+          this.dialogRef.close(true);
         }
 
       });

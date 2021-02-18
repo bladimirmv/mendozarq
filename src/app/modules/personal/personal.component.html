@@ -32,23 +32,26 @@
 <div class="content">
   <!-- table -->
   <div class="table-container mat-elevation-z8">
+
     <div class="header-table" [style.display]="selected.length ? 'none' : 'grid'">
       <mat-form-field>
         <mat-label>Buscar</mat-label>
         <input matInput autocomplete="off" (keyup)="applyFilter($event)" placeholder="Ex. bladimir"
           [(ngModel)]="filterValue" #input>
-        <button mat-button *ngIf="filterValue" matSuffix mat-icon-button aria-label="Clear" (click)="input.value = ''">
+        <button mat-button *ngIf="filterValue" matSuffix mat-icon-button aria-label="Clear" (click)="applyFilter('')"
+          (click)="input.value = ''">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
 
-      <button mat-icon-button (click)="onAddPersonal()" matTooltip="Nuevo Proyecto" matTooltipPosition="below"
+      <button mat-icon-button (click)="onAddPersonal()" matTooltip="Nuevo Personal" matTooltipPosition="below"
         class="btn-add">
         <mat-icon class="mat-18">
           add
         </mat-icon>
       </button>
     </div>
+
     <div *ngIf="selected.length">
       <div class="delete-table">
         <button mat-icon-button (click)="clearCheckbox()" class="btn-clear">
@@ -66,13 +69,15 @@
 
         <ng-container matColumnDef="seleccion" sticky>
           <th *matHeaderCellDef class="actions-table">
-            <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+            <mat-checkbox color="warn" (change)="$event ? masterToggle() : null"
+              [checked]="selection.hasValue() && isAllSelected()"
               [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
             </mat-checkbox>
           </th>
           <td *matCellDef="let row" class="actions-table">
-            <mat-checkbox (click)="$event.stopPropagation() " (change)="$event ? selection.toggle(row) : null"
-              [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+            <mat-checkbox color="warn" (click)="$event.stopPropagation() "
+              (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
+              [aria-label]="checkboxLabel(row)">
             </mat-checkbox>
           </td>
         </ng-container>
@@ -106,10 +111,9 @@
         </ng-container>
 
         <!-- *direccion -->
-        <!-- [class]="(row.direccion ? 'long-txt': 'text-center')" -->
         <ng-container matColumnDef="direccion">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Direccion </th>
-          <td mat-cell *matCellDef="let row" class="td-longtext" [matTooltip]="row.direccion"
+          <td mat-cell *matCellDef="let row" class="td-longtext text-center" [matTooltip]="row.direccion"
             matTooltipPosition="below">
             <span>
               {{row.direccion ? row.direccion : 'Sin direccion'}}
@@ -126,7 +130,7 @@
         <!-- *cargo -->
         <ng-container matColumnDef="descripcion">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripcion </th>
-          <td mat-cell *matCellDef="let row" class="td-longtext" [matTooltip]="row.descripcion"
+          <td mat-cell *matCellDef="let row" class="td-longtext text-center" [matTooltip]="row.descripcion"
             matTooltipPosition="below">
             <span>
               {{row.descripcion ? row.descripcion : 'Sin descripcion'}}

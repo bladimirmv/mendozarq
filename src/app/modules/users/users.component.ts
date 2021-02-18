@@ -82,8 +82,6 @@ export class UsersComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         this.dataSource.data = res;
         this.usuario = res;
-        console.log(res);
-
       });
     this.usuarios$ = this.usuarioSvc.getAllUsuarios();
   }
@@ -177,9 +175,13 @@ export class UsersComponent implements OnInit, OnDestroy {
     });
   }
 
+  // !important, this part is for table
   // =====================> applyFilter
-  applyFilter(event: Event): void {
-    this.filterValue = (event.target as HTMLInputElement).value;
+  applyFilter(event: Event | string): void {
+
+    typeof event === 'string'
+      ? this.filterValue = event
+      : this.filterValue = (event.target as HTMLInputElement).value;
 
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
     if (this.dataSource.paginator) {

@@ -4,51 +4,56 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { Proyecto } from '@models/mendozarq/proyecto.interface';
+import { Personal } from '@models/mendozarq/personal.interface';
 import { environment } from '@env/environment.prod';
+import { PersonalProyecto } from '@app/shared/models/mendozarq/participante.proyecto.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProyectoService {
+export class ParticipantesProyectoService {
+  pipe() {
+    throw new Error('Method not implemented.');
+  }
   private API_URL = environment.API_URL;
 
 
   constructor(private http: HttpClient, private toastrSvc: ToastrService) {
+
   }
 
-  // ====================> addProyecto
-  public addProyecto(proyecto: Proyecto): Observable<Proyecto> {
+  // ====================> addPersonalProyecto
+  public addPersonalProyecto(personal: PersonalProyecto[]): Observable<any> {
     return this.http
-      .post<Proyecto>(`${this.API_URL}/api/proyecto`, proyecto)
+      .post<Personal>(`${this.API_URL}/api/participantes/personal`, personal)
       .pipe(catchError(error => this.handdleError(error)));
   }
 
-  // ====================> getOneProyecto
-  public getOneProyecto(uuid: string): Observable<Proyecto> {
+  // ====================> getOnePersonalProyecto
+  public getOnePersonalProyecto(uuid: string): Observable<Personal> {
     return this.http
-      .get<Proyecto>(`${this.API_URL}/api/proyecto/${uuid}`)
+      .get<Personal>(`${this.API_URL}/api/personal/${uuid}`)
       .pipe(catchError(error => this.handdleError(error)));
   }
 
-  // ====================> getAllProyecto
-  public getAllProyecto(): Observable<Proyecto[]> {
+  // ====================> getAllPersonalProyecto
+  public getAllPersonalProyecto(uuid: string): Observable<Personal[]> {
     return this.http
-      .get<Proyecto[]>(`${this.API_URL}/api/proyecto`)
+      .get<Personal[]>(`${this.API_URL}/api/participantes/personal/${uuid}`)
       .pipe(catchError(error => this.handdleError(error)));
   }
 
-  // ====================> updateProyecto
-  public updateProyecto(uuid: string, proyecto: Proyecto): Observable<any> {
+  // ====================> getAllPersonalByUuid
+  public getAllPersonalByUuid(uuid: string): Observable<Personal[]> {
     return this.http
-      .put(`${this.API_URL}/api/proyecto/${uuid}`, proyecto)
+      .get<Personal[]>(`${this.API_URL}/api/participantes/personal/proyecto/${uuid}`)
       .pipe(catchError(error => this.handdleError(error)));
   }
 
-  // ====================> deleteProyecto
-  public deleteProyecto(uuid: string): Observable<any> {
+  // ====================> deletePersonalProyecto
+  public deletePersonalProyecto(uuid: string): Observable<any> {
     return this.http
-      .delete(`${this.API_URL}/api/proyecto/${uuid}`)
+      .delete(`${this.API_URL}/api/participantes/personal/${uuid}`)
       .pipe(catchError(error => this.handdleError(error)));
   }
 
@@ -64,7 +69,7 @@ export class ProyectoService {
             errorMessage = 'No se ha podido establecer una conexion con el servidor. 🙁';
             break;
           case 1451:
-            errorMessage = 'No se puede eliminar por que este proyecto esta relacionado con una o varias tablas. 🙁';
+            errorMessage = 'No se puede eliminar por que este personal esta relacionado con un proyecto u otra tabla. 🙁';
             break;
           default:
             errorMessage = `
@@ -75,12 +80,11 @@ export class ProyectoService {
       }
     }
     console.log('this error', httpError);
+
     this.toastrSvc.error(errorMessage, 'Ocurrio un Error!', {
       timeOut: 7000,
       enableHtml: true
     });
     return throwError(httpError);
   }
-
-
 }

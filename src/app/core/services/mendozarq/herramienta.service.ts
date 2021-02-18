@@ -65,14 +65,26 @@ export class HerramientaService {
   // }
 
   // ====================> handdleError
-  public handdleError(httpError: HttpErrorResponse): Observable<never> {
+  public handdleError(httpError: HttpErrorResponse | any): Observable<never> {
     let errorMessage = '';
-    if (httpError) {
-      typeof httpError.error.message === 'string'
-        ? errorMessage = `${httpError.error.message}`
-        : errorMessage = `
-        Error: ${httpError.statusText} </br>
-        Status: ${httpError.status}`;
+    if (httpError.error) {
+      if (typeof httpError.error.message === 'string') {
+        errorMessage = `${httpError.error.message}`;
+      } else if (httpError.error.message.errno) {
+        switch (httpError.error.message.errno) {
+          case -111:
+            errorMessage = 'No se ha podido establecer una conexion con el servidor. 🙁';
+            break;
+          case 1451:
+            errorMessage = 'No se puede eliminar por que esta herramienta esta relacionada con una tabla. 🙁';
+            break;
+          default:
+            errorMessage = `
+            Error: ${httpError.statusText} </br>
+            Status: ${httpError.status}`;
+            break;
+        }
+      }
     }
     console.log('this error', httpError);
     this.toastrSvc.error(errorMessage, 'Ocurrio un Error!', {

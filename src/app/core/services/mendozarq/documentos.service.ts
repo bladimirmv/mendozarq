@@ -123,14 +123,16 @@ export class DocumentosService {
 
 
   // ====================> handdleError
-  public handdleError(httpError: HttpErrorResponse): Observable<never> {
+  public handdleError(httpError: HttpErrorResponse | any): Observable<never> {
 
     let errorMessage = '';
-    if (httpError) {
-      // JSON.parse(httpError);
+    if (httpError.error) {
+
       if (typeof httpError.error.message === 'string') {
-        errorMessage = httpError.error.message;
-      } else {
+        console.log('es string');
+        errorMessage = `${httpError.error.message}`;
+
+      } else if (httpError.error.message.errno) {
         switch (httpError.error.message.errno) {
           case -111:
             errorMessage = 'No se ha podido establecer una conexion con el servidor. 🙁';

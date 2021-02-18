@@ -165,8 +165,10 @@ export class PersonalComponent implements OnInit {
 
   // !important, this part is for table.
   // =====================> applyFilter
-  applyFilter(event: Event): void {
-    this.filterValue = (event.target as HTMLInputElement).value;
+  applyFilter(event: Event | string): void {
+    typeof event === 'string'
+      ? this.filterValue = event
+      : this.filterValue = (event.target as HTMLInputElement).value;
 
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
     if (this.dataSource.paginator) {

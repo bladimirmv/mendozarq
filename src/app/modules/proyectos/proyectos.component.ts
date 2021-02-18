@@ -16,6 +16,7 @@ import { DeleteModalComponent } from '@app/shared/components/delete-modal/delete
 import { EditProyectoComponent } from '@modules/proyectos/components/edit-proyecto/edit-proyecto.component';
 import { Proyecto } from '@models/mendozarq/proyecto.interface';
 import { Usuario } from '@models/usuario.interface';
+import { type } from 'os';
 @Component({
   selector: 'app-proyectos',
   templateUrl: './proyectos.component.html',
@@ -160,8 +161,11 @@ export class ProyectosComponent implements OnInit {
 
   // !important, this part is for table.
   // =====================> applyFilter
-  applyFilter(event: Event): void {
-    this.filterValue = (event.target as HTMLInputElement).value;
+  applyFilter(event: Event | string): void {
+
+    typeof event === 'string'
+      ? this.filterValue = event
+      : this.filterValue = (event.target as HTMLInputElement).value;
 
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
     if (this.dataSource.paginator) {

@@ -170,7 +170,7 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="center">
-  <button mat-button mat-dialog-close class="mat-btn-secondary">Cancelar</button>
+  <button mat-button [mat-dialog-close]="false" class="mat-btn-secondary">Cancelar</button>
   <button mat-button class="mat-btn-success" (click)="onAddPersonal(personalForm.value)"
     [disabled]="!personalForm.valid">
     Guardar

@@ -58,19 +58,19 @@
 
   <div class="content" id="content">
     <div class="bar-actions mat-elevation-z2">
-      <button mat-icon-button (click)="syncData()">
+      <button mat-icon-button (click)="syncData()" matTooltip="Actualizar" matTooltipPosition="below">
         <mat-icon>
           sync
         </mat-icon>
       </button>
 
-      <button mat-icon-button (click)="newCarpeta()">
+      <button mat-icon-button (click)="newCarpeta()" matTooltip="Nueva Carpeta" matTooltipPosition="below">
         <mat-icon>
           create_new_folder
         </mat-icon>
       </button>
 
-      <button mat-icon-button (click)="newDocumento()">
+      <button mat-icon-button (click)="newDocumento()" matTooltip="Nuevo Documento" matTooltipPosition="below">
         <mat-icon>
           upload_file
         </mat-icon>
@@ -83,7 +83,7 @@
         <mat-icon class="mat-18" mat-list-icon class="folder no-select">folder</mat-icon>
         <div class="detail">
           <div class="title-document">
-            <a [routerLink]="['carpeta/', carpeta.uuid]">
+            <a [routerLink]="['carpeta/', carpeta.uuid]" [matTooltip]="carpeta.nombre" matTooltipPosition="below">
               {{carpeta.nombre | titlecase}}
             </a>
           </div>
@@ -125,7 +125,7 @@
 
 
         <div class="detail">
-          <div class="title-document">
+          <div class="title-document" [matTooltip]="documento.nombre" matTooltipPosition="below">
             {{documento.nombre}}
           </div>
           <mat-icon class="more-icon" [matMenuTriggerFor]="menuDocumento">
