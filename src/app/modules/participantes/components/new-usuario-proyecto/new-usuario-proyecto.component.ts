@@ -1,49 +1,49 @@
-import { Component, Inject, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ParticipantesProyectoService } from '@app/core/services/mendozarq/participantes-proyecto.service';
 import { WarningModalComponent } from '@app/shared/components/warning-modal/warning-modal.component';
-import { PersonalProyecto } from '@app/shared/models/mendozarq/participante.proyecto.interface';
+import { PersonalProyecto, UsuarioProyecto } from '@app/shared/models/mendozarq/participante.proyecto.interface';
 import { Personal } from '@app/shared/models/mendozarq/personal.interface';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
-
+import { Usuario } from '@app/shared/models/usuario.interface';
 export interface warningDialog {
   title: string;
   paragraph: string;
   btnPrimary: string;
 };
 
-@Component({
-  selector: 'app-new-personal-proyecto',
-  templateUrl: './new-personal-proyecto.component.html',
-  styleUrls: ['./new-personal-proyecto.component.scss']
-})
-export class NewPersonalProyectoComponent implements OnInit, OnDestroy {
 
+@Component({
+  selector: 'app-new-usuario-proyecto',
+  templateUrl: './new-usuario-proyecto.component.html',
+  styleUrls: ['./new-usuario-proyecto.component.scss']
+})
+export class NewUsuarioProyectoComponent implements OnInit, OnDestroy {
   private destroy$: Subject<any> = new Subject<any>();
 
-  public personalProyectoForm: FormGroup;
-  private personal: Personal[] = [];
-  public selectedPersonal: Personal[] = [];
-  public personalGroup: Personal[] = [];
+  public usuarioProyectoForm: FormGroup;
+  private usuario: Usuario[] = [];
+  public selectedUsuario: Usuario[] = [];
+  public usuarioGroup: Usuario[] = [];
 
 
   constructor(
     private participantesSvc: ParticipantesProyectoService,
     private toastrSvc: ToastrService,
     private fb: FormBuilder,
-    private dialogRef: MatDialogRef<NewPersonalProyectoComponent>,
+    private dialogRef: MatDialogRef<NewUsuarioProyectoComponent>,
     private matdialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) private personalProyecto: PersonalProyecto,
+    @Inject(MAT_DIALOG_DATA) private usuarioProyecto: UsuarioProyecto,
     private router: Router
   ) { }
 
   ngOnInit(): void {
     this.initForm();
-    this.getAllPersonal();
+    this.getAllUsuarios();
   }
 
   ngOnDestroy(): void {
@@ -52,23 +52,23 @@ export class NewPersonalProyectoComponent implements OnInit, OnDestroy {
   }
 
   private initForm(): void {
-    this.personalProyectoForm = this.fb.group({
-      personal: [[], Validators.required],
+    this.usuarioProyectoForm = this.fb.group({
+      usuario: [[], Validators.required],
     });
   }
 
-  private getAllPersonal(): void {
-    this.participantesSvc.getAllPersonalByUuid(this.personalProyecto.uuidProyecto)
+  private getAllUsuarios(): void {
+    this.participantesSvc.getAllUsuarioByUuid(this.usuarioProyecto.uuidProyecto)
       .pipe(takeUntil(this.destroy$))
-      .subscribe((personal: Personal[]) => {
-        this.personal = personal;
-        this.selectedPersonal = personal;
+      .subscribe((usuario: Usuario[]) => {
+        this.usuario = usuario;
+        this.selectedUsuario = usuario;
         const warningDialog: warningDialog = {
-          title: 'Sin Personal',
-          paragraph: 'No hay personal disponible para asignar a este proyecto.',
+          title: 'Sin Usuarios',
+          paragraph: 'No hay usuarios disponible con el rol de arquitecto o administrador para asignar a este proyecto.',
           btnPrimary: 'Registrar'
         };
-        if (!personal.length) {
+        if (!usuario.length) {
           const dialogRef = this.matdialog.open(WarningModalComponent, {
             data: warningDialog
           });
@@ -77,7 +77,7 @@ export class NewPersonalProyectoComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: boolean) => {
               if (res) {
-                this.router.navigate(['admin/personal']);
+                this.router.navigate(['admin/usuarios']);
                 this.dialogRef.close(false);
               } else {
                 this.dialogRef.close(false);
@@ -87,22 +87,26 @@ export class NewPersonalProyectoComponent implements OnInit, OnDestroy {
       });
   }
 
-  public newPersonal(personal: Personal[]): void {
+  public newUsuario(usuario: Usuario[]): void {
 
-    const personalProyecto: PersonalProyecto[] = [];
+    const usuarioProyecto: UsuarioProyecto[] = [];
 
-    personal.forEach((p: Personal) => {
-      personalProyecto.push({
-        uuidPersonal: p.uuid,
-        uuidProyecto: this.personalProyecto.uuidProyecto
+    usuario.forEach((usr: Usuario) => {
+      usuarioProyecto.push({
+        uuidUsuario: usr.uuid,
+        uuidProyecto: this.usuarioProyecto.uuidProyecto
       })
     });
 
-    this.participantesSvc.addPersonalProyecto(personalProyecto)
+    this.participantesSvc.addUsuarioProyecto(usuarioProyecto)
       .pipe(takeUntil(this.destroy$))
       .subscribe(res => {
         if (res) {
-          this.toastrSvc.success('Se ha añadido correctamente. 😀', 'Personal Asignado');
+          this.toastrSvc.success('Se ha añadido correctamente. 😀',
+            usuarioProyecto.length > 1
+              ? 'Usuarios Asignado'
+              : 'Usuario Asignado');
+
           this.dialogRef.close(true);
         }
       });
@@ -110,7 +114,7 @@ export class NewPersonalProyectoComponent implements OnInit, OnDestroy {
 
   // ===========> isValidField
   public isValidField(field: string): { color?: string; status?: boolean; icon?: string; } {
-    const validateFIeld = this.personalProyectoForm.get(field);
+    const validateFIeld = this.usuarioProyectoForm.get(field);
     return (!validateFIeld.valid && validateFIeld.touched)
       ? { color: 'warn', status: false, icon: 'close' }
       : validateFIeld.valid
@@ -120,17 +124,17 @@ export class NewPersonalProyectoComponent implements OnInit, OnDestroy {
 
   // ============> onKeySearch
   public onKey(value) {
-    this.selectedPersonal = this._filter(value);
+    this.selectedUsuario = this._filter(value);
   }
 
   // ============> filterCliente
-  private _filter(value: string): Personal[] {
+  private _filter(value: string): Usuario[] {
     const filterValue = value.toLowerCase();
 
-    return this.personal.filter(cliente => {
-      return cliente.nombre.toLowerCase().indexOf(filterValue) === 0
-        || cliente.apellidoPaterno.toLowerCase().indexOf(filterValue) === 0
-        || cliente.apellidoMaterno.toLowerCase().indexOf(filterValue) === 0;
+    return this.usuario.filter(usuario => {
+      return usuario.nombre.toLowerCase().indexOf(filterValue) === 0
+        || usuario.apellidoPaterno.toLowerCase().indexOf(filterValue) === 0
+        || usuario.apellidoMaterno.toLowerCase().indexOf(filterValue) === 0;
     })
   }
 

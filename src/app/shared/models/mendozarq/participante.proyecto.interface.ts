@@ -1,8 +1,8 @@
 export interface UsuarioProyecto {
   uuid?: string;
   creadoEn?: Date;
-  uuidProyecto: string;
-  uuidUsuario: string;
+  uuidProyecto?: string;
+  uuidUsuario?: string;
 }
 
 export interface PersonalProyecto {

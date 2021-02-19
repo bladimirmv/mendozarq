@@ -6,21 +6,43 @@ import { catchError } from 'rxjs/operators';
 
 import { Personal } from '@models/mendozarq/personal.interface';
 import { environment } from '@env/environment.prod';
-import { PersonalProyecto } from '@app/shared/models/mendozarq/participante.proyecto.interface';
+import { PersonalProyecto, UsuarioProyecto } from '@app/shared/models/mendozarq/participante.proyecto.interface';
+import { Usuario } from '@app/shared/models/usuario.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ParticipantesProyectoService {
-  pipe() {
-    throw new Error('Method not implemented.');
-  }
   private API_URL = environment.API_URL;
 
-
   constructor(private http: HttpClient, private toastrSvc: ToastrService) {
-
   }
+  // ====================> addUsuarioProyecto
+  public addUsuarioProyecto(usuario: UsuarioProyecto[]): Observable<any> {
+    return this.http
+      .post<Usuario>(`${this.API_URL}/api/participantes/usuario`, usuario)
+      .pipe(catchError(error => this.handdleError(error)));
+  }
+  // ====================> getAllPersonalProyecto
+  public getAllUsuarioProyecto(uuid: string): Observable<Usuario[]> {
+    return this.http
+      .get<Usuario[]>(`${this.API_URL}/api/participantes/usuario/${uuid}`)
+      .pipe(catchError(error => this.handdleError(error)));
+  }
+  // ====================> getAllUsuarioByUuid
+  public getAllUsuarioByUuid(uuid: string): Observable<Usuario[]> {
+    return this.http
+      .get<Usuario[]>(`${this.API_URL}/api/participantes/usuario/proyecto/${uuid}`)
+      .pipe(catchError(error => this.handdleError(error)));
+  }
+  // ====================> deleteUsuarioProyecto
+  public deleteUsuarioProyecto(uuid: string): Observable<any> {
+    return this.http
+      .delete(`${this.API_URL}/api/participantes/usuario/${uuid}`)
+      .pipe(catchError(error => this.handdleError(error)));
+  }
+
+  // ***************************************** PersonalProyecto ***************************************
 
   // ====================> addPersonalProyecto
   public addPersonalProyecto(personal: PersonalProyecto[]): Observable<any> {
