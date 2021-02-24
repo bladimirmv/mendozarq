@@ -1,4 +1,4 @@
-export type Estado = 'En curso' | 'Pendiente' | 'Fecha limite' | 'Finalizado';
+export type Estado = 'En curso' | 'Pendiente' | 'Con retraso' | 'Fecha limite' | 'Finalizado';
 export interface ObservacionServicio {
   idObsrParticipante?: string;
   creadoEn?: Date;

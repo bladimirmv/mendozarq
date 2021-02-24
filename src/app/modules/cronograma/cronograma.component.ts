@@ -81,7 +81,7 @@ export class CronogramaComponent implements OnInit {
 
 
         this.data = [
-          ['2014Spring', res[0].nombre, 'spring',
+          ['2014Spring', res[0].nombre, 'dd',
             new Date(2014, 2, 22), new Date(2014, 8, 23), 0, 100, null]
           ,
           ['2014Summer', 'Summer 2014', 'summer',

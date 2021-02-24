@@ -1,1 +1,114 @@
-<p>servicio works!</p>
+<div class="content">
+
+  <div class="table-container mat-elevation-z2">
+
+    <div class="header-table" [style.display]="selectedServicio.length ? 'none' : 'grid'">
+      <mat-form-field>
+        <mat-label>Buscar</mat-label>
+        <input matInput autocomplete="off" (keyup)="applyFilter($event)" placeholder="Ex. bladimir"
+          [(ngModel)]="filterValuePersonal" #input>
+
+        <button mat-button *ngIf="filterValuePersonal" matSuffix mat-icon-button aria-label="Clear"
+          (click)="applyFilter('')" (click)="input.value = ''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <button mat-icon-button matTooltip="Asignar Personal" matTooltipPosition="below" class="btn-add"
+        (click)="newServicio()">
+        <mat-icon class="mat-18">
+          add
+        </mat-icon>
+      </button>
+    </div>
+
+    <div *ngIf="selectedServicio.length">
+      <div class="delete-table">
+        <button mat-icon-button (click)="clearCheckbox()" class="btn-clear">
+          <mat-icon>clear</mat-icon>
+        </button>
+        <span>
+          Seleccionados {{selectedServicio.length}}
+        </span>
+        <button mat-raised-button class="btn-delete" (click)="deleteServicio()">Elminar</button>
+      </div>
+    </div>
+
+    <div class="table-content">
+      <table mat-table [dataSource]="source" class="mat-elevation-z2" multiTemplateDataRows matSort>
+
+        <ng-container matColumnDef="seleccion" sticky>
+          <th *matHeaderCellDef class="actions-table">
+            <mat-checkbox color="warn" (change)="$event ? masterToggle() : null"
+              [checked]="selectionServicio.hasValue() && isAllSelectedServicio()"
+              [indeterminate]="selectionServicio.hasValue() && !isAllSelectedServicio()" [aria-label]="checkboxLabel()">
+            </mat-checkbox>
+          </th>
+          <td *matCellDef="let row" class="actions-table">
+            <mat-checkbox color="warn" (click)="$event.stopPropagation() "
+              (change)="$event ? selectionServicio.toggle(row) : null" [checked]="selectionServicio.isSelected(row)"
+              [aria-label]="checkboxLabel(row)">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+
+
+        <!-- *nombre -->
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+          <td mat-cell *matCellDef="let row" class="text-center"> {{row.nombre}} </td>
+        </ng-container>
+
+        <!-- *descripcion-->
+        <ng-container matColumnDef="descripcion">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripcion </th>
+          <td mat-cell *matCellDef="let row" class="td-longtext text-center" [matTooltip]="row.descripcion"
+            matTooltipPosition="below">
+            <span>
+              {{row.descripcion ? row.descripcion : 'Sin descripcion'}}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- *avance -->
+        <ng-container matColumnDef="avance">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Avance </th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            <div style="font-size: 10px;">
+              {{row.avance ? row.avance : 0}}%
+            </div>
+            <mat-progress-bar mode="buffer" [value]="row.avance ? row.avance : 0"
+              style="height: 10px; border-radius: 5px; min-width: 60px">
+            </mat-progress-bar>
+          </td>
+        </ng-container>
+
+        <!-- *fechaInicio -->
+        <ng-container matColumnDef="fechaInicio">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Inicio </th>
+          <td mat-cell *matCellDef="let row" class="text-center"> {{row.fechaInicio | date }} </td>
+        </ng-container>
+
+        <!-- *fechaFinal -->
+        <ng-container matColumnDef="fechaFinal">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Final </th>
+          <td mat-cell *matCellDef="let row" class="text-center"> {{row.fechaFinal | date}} </td>
+        </ng-container>
+
+        <!-- *edit -->
+        <ng-container matColumnDef="edit" stickyEnd>
+          <th *matHeaderCellDef mat-sort-header>
+          </th>
+          <td *matCellDef="let row" class="text-center">
+            <button mat-icon-button (click)="updateServicio(row)">
+              <mat-icon class="edit-icon">
+                edit
+              </mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+      </table>
+    </div>
+  </div>
+</div>

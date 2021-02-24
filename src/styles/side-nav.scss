@@ -244,8 +244,10 @@ mat-toolbar {
 }
 
 .active {
-  color: var(--secondary);
+  color: var(--primary);
   border-left: 7px solid var(--primary);
+  border-radius: 0 50px 50px 0;
+
 
   .active-wave {
     z-index: -1;

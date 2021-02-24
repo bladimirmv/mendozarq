@@ -65,7 +65,7 @@ export class EditPersonalComponent implements OnInit, OnDestroy {
             progressBar: true,
             progressAnimation: 'increasing'
           });
-          this.dialogRef.close(this.personalForm);
+          this.dialogRef.close(true);
         }
       });
 

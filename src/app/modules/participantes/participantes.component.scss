@@ -19,3 +19,23 @@
   padding: 0px 10px;
   border-radius: 5px 0 0 0;
 }
+
+.personal-color {
+  background-color: var(--info);
+}
+
+.admin-chip {
+  color: white;
+  font-weight: bold;
+  border-radius: 25px;
+  padding: 3px;
+  background-color: #FF6058;
+}
+
+.arqui-chip {
+  color: white;
+  font-weight: bold;
+  border-radius: 25px;
+  padding: 3px;
+  background-color: #FFBB33;
+}

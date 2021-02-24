@@ -26,7 +26,7 @@
 
     <div *ngIf="selectedUsuario.length">
       <div class="delete-table">
-        <button mat-icon-button (click)="clearCheckboxPersonal()" class="btn-clear">
+        <button mat-icon-button (click)="clearCheckboxUsuario()" class="btn-clear">
           <mat-icon>clear</mat-icon>
         </button>
         <span>
@@ -83,7 +83,7 @@
         <ng-container matColumnDef="rol">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Rol </th>
           <td mat-cell *matCellDef="let row" class="text-center">
-            <div [style]="row.rol">{{row.rol }}</div>
+            <div [class]="row.rol === 'administrador' ? 'admin-chip' : 'arqui-chip' ">{{row.rol }}</div>
           </td>
         </ng-container>
 
@@ -135,7 +135,7 @@
 
   <!-- *personalProyecto -->
   <div class="table-container mat-elevation-z2">
-    <div class="title-card">
+    <div class="title-card personal-color">
       Personal - Proyecto
     </div>
     <div class="header-table" [style.display]="selectedPersonal.length ? 'none' : 'grid'">

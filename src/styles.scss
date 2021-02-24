@@ -19,6 +19,8 @@ $mendozarq-theme: mat-light-theme((color: (primary: $mendozarq-primary,
       success: $mendozarq-success)));
 @include angular-material-theme($mendozarq-theme);
 
+
+
 * {
   font-family: Montserrat, sans-serif;
   // font-size: 1px;

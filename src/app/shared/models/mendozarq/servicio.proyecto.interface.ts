@@ -1,10 +1,10 @@
 export interface ServicioProyecto {
-  idServicio?: string;
+  uuid?: string;
   creadoEn?: Date;
-  idProyecto: string;
-  nombre: string;
-  descripcion: string;
-  avance: number;
-  fechaInicio: Date;
-  fechaFinal: string;
+  nombre?: string;
+  descripcion?: string;
+  avance?: number;
+  fechaInicio?: Date;
+  fechaFinal?: string;
+  uuidProyecto?: string;
 }

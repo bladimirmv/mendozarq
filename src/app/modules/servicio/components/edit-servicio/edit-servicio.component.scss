@@ -1,0 +1,108 @@
+.edit-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px;
+  padding: 10px;
+}
+
+.subGrid {
+  display: grid;
+  grid-template-columns: 1fr 60px;
+  grid-gap: 5px;
+}
+
+.full-column {
+  grid-column: span 2;
+}
+
+mat-dialog-actions {
+  display: grid;
+  grid-template-areas: "secondary success";
+  grid-template-columns: repeat(2, 1fr);
+  place-items: 🇨enter;
+
+  .mat-btn-success {
+    grid-area: success;
+  }
+
+  .mat-btn-secondary {
+    grid-area: secondary;
+  }
+}
+
+@media screen and (max-width:400px) {
+  mat-dialog-actions {
+    margin: 0;
+    padding: 0;
+    grid-template-columns: auto;
+    grid-gap: 10px;
+    grid-template-areas: "success"
+      "secondary";
+
+    .mat-btn-success {
+      margin: 0;
+    }
+
+  }
+}
+
+
+@media screen and (max-width:625px) {
+  .edit-form {
+    display: grid;
+    grid-template-columns: minmax(100%, 1fr);
+    grid-gap: 0;
+    padding: 0;
+  }
+
+  .full-column {
+    grid-column: 1;
+  }
+}
+
+:host ::ng-deep .average .mat-slider-thumb {
+  background-color: #ff3967;
+
+  * {
+    color: white;
+  }
+
+
+}
+
+:host ::ng-deep .min .mat-slider-thumb {
+  background-color: var(--warn);
+}
+
+:host ::ng-deep .max .mat-slider-thumb {
+  background-color: var(--success);
+}
+
+
+:host ::ng-deep .min .mat-slider-thumb-label {
+  background-color: var(--warn);
+
+  * {
+    color: white;
+  }
+}
+
+:host ::ng-deep .max .mat-slider-thumb-label {
+  background-color: var(--success);
+
+  * {
+    color: white;
+    font-weight: bold;
+  }
+
+}
+
+
+
+:host ::ng-deep .min .mat-slider-track-fill {
+  background-color: var(--warn);
+}
+
+:host ::ng-deep .max .mat-slider-track-fill {
+  background-color: var(--success);
+}

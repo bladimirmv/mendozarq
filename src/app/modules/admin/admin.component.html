@@ -65,12 +65,6 @@
           Proyectos
         </button>
 
-        <button mat-button class="btn-admin" routerLink="categoria-proyecto" routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
-          <mat-icon class="mat-18 mr-3">category</mat-icon>
-          Categoria Proyecto
-        </button>
-
         <button mat-button class="btn-admin" routerLink="presupuestos-obras" routerLinkActive="active mat-raised-button"
           (click)="breakpoint ? drawer.close() : false">
           <mat-icon class="mat-18 mr-3">
@@ -78,18 +72,13 @@
           Presupuesto de Obras
         </button>
 
-        <button mat-button class="btn-admin" routerLink="herramienta" routerLinkActive="active mat-raised-button"
+        <!-- <button mat-button class="btn-admin" routerLink="herramienta" routerLinkActive="active mat-raised-button"
           (click)="breakpoint ? drawer.close() : false">
           <mat-icon class="mat-18 mr-3">construction</mat-icon>
           Herramientas
-        </button>
+        </button> -->
 
-        <button mat-button class="btn-admin" routerLink="categoria-recurso" routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
-          <mat-icon class="mat-18 mr-3">
-            category</mat-icon>
-          Categoria Recurso
-        </button>
+        <mat-divider></mat-divider>
 
         <button mat-button class="btn-admin" routerLink="importaciones" routerLinkActive="active mat-raised-button"
           (click)="breakpoint ? drawer.close() : false">

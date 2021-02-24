@@ -35,23 +35,24 @@
           Descripcion
         </button>
 
+        <button mat-button class="btn-admin" routerLink="asistencia" routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false">
+          <mat-icon class="mat-18 mr-3">assignment
+          </mat-icon>
+          Observación/Obra
+        </button>
         <button mat-button class="btn-admin" routerLink="obervacion-participante"
           routerLinkActive="active mat-raised-button" (click)="breakpoint ? drawer.close() : false">
           <mat-icon class="mat-18 mr-3">people</mat-icon>
-          Observación/Participante
+          Observación/Personal
         </button>
 
         <button mat-button routerLink="obervacion-servicio" class="btn-admin"
           routerLinkActive="active  mat-raised-button" (click)="breakpoint ? drawer.close() : false">
-          <mat-icon class="mat-18 mr-3">tour</mat-icon>
+          <mat-icon class="mat-18 mr-3">view_list</mat-icon>
           Observación/Servicio
         </button>
 
-        <button mat-button class="btn-admin" routerLink="asistencia" routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
-          <mat-icon class="mat-18 mr-3">how_to_reg</mat-icon>
-          Asistencia
-        </button>
 
       </div>
 

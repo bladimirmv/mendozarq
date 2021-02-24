@@ -1,0 +1,75 @@
+<h1 mat-dialog-title align="center">
+  Actualizar Servicio
+</h1>
+
+<mat-dialog-content>
+
+  <form class="edit-form" [formGroup]="servicioForm">
+
+    <!-- *Nombre -->
+    <mat-form-field class="full-width full-column" [color]="isValidField('nombre').color">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre" autocomplete="off">
+      <mat-icon matSuffix [color]="isValidField('nombre').color">
+        {{isValidField('nombre').icon}}
+      </mat-icon>
+      <mat-error *ngIf="servicioForm.get('nombre').errors?.required">
+        Ingrese un nombre.
+      </mat-error>
+      <mat-error *ngIf="servicioForm.get('nombre').errors?.pattern">
+        Debe incluir solo letras en minuscula.
+      </mat-error>
+    </mat-form-field>
+
+
+    <!-- *avance -->
+    <mat-slider id="avance-slider" (change)="updateValue($event)" class="full-width full-column" color="primary"
+      formControlName="avance" thumbLabel [displayWith]="formatLabel" tickInterval="10" min="0" max="100">
+    </mat-slider>
+
+
+    <!-- *fechaInicio -->
+    <mat-form-field class="full-width">
+      <mat-label>Fecha Inicio</mat-label>
+      <input matInput [matDatepicker]="fechaInicio" autocomplete="off" formControlName="fechaInicio">
+      <mat-datepicker-toggle matSuffix [for]="fechaInicio"></mat-datepicker-toggle>
+      <mat-datepicker #fechaInicio></mat-datepicker>
+    </mat-form-field>
+
+    <!-- *fechaFinal -->
+    <mat-form-field class="full-width">
+      <mat-label>Fecha Final</mat-label>
+      <input matInput [matDatepicker]="fechaFinal" autocomplete="off" formControlName="fechaFinal">
+      <mat-datepicker-toggle matSuffix [for]="fechaFinal"></mat-datepicker-toggle>
+      <mat-datepicker #fechaFinal></mat-datepicker>
+    </mat-form-field>
+
+    <!-- *Descripcion -->
+    <mat-form-field class="full-width full-column" [color]="isValidField('descripcion').color">
+      <mat-label>Descripcion</mat-label>
+      <textarea matInput placeholder="Ex. servicio de carpinteria." formControlName="descripcion"
+        autocomplete="off"></textarea>
+      <mat-hint align="end">
+        {{servicioForm.value.descripcion ? servicioForm.value.descripcion.length : 0}}/200
+      </mat-hint>
+      <mat-icon matSuffix [color]="isValidField('descripcion').color" *ngIf="servicioForm.value.descripcion">
+        {{isValidField('descripcion').icon}}
+      </mat-icon>
+      <mat-error *ngIf="servicioForm.get('descripcion').errors?.required">
+        Ingrese una breve descripcion.
+      </mat-error>
+      <mat-error *ngIf="servicioForm.get('descripcion').errors?.maxlength">
+        Debe contener {{servicioForm.get('descripcion').errors?.maxlength?.requiredLength}} digitos como maximo.
+      </mat-error>
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button mat-button [mat-dialog-close]="false" class="mat-btn-secondary">Cancelar</button>
+  <button mat-button class="mat-btn-success" (click)="updateServicio(servicioForm.value)"
+    [disabled]="!servicioForm.valid">
+    Actualizar
+  </button>
+</mat-dialog-actions>
