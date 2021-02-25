@@ -24,6 +24,7 @@ export class ServicioComponent implements OnInit, OnDestroy {
 
   private destroy$: Subject<any> = new Subject<any>();
   private uuidProyecto: string = '';
+  public servicios: ServicioProyecto[];
 
 
   selectedServicio: ServicioProyecto[] = [];
@@ -67,6 +68,7 @@ export class ServicioComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((servicio: ServicioProyecto[]) => {
         this.source.data = servicio;
+        this.servicios = servicio;
       })
   }
   // =====================> newPersonal
@@ -151,6 +153,7 @@ export class ServicioComponent implements OnInit, OnDestroy {
         }
       });
   }
+
 
   // !important, this part is for servicioProyecto table.
   // =====================> applyFilterPersonal

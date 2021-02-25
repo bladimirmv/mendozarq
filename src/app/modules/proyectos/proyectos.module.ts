@@ -12,6 +12,7 @@ import { NewProyectoComponent } from './components/new-proyecto/new-proyecto.com
 import { GetCategoriesPipe } from './pipes/get-categories.pipe';
 import { ClienteModalComponent } from './components/cliente-modal/cliente-modal.component';
 import { DescripcionProyectoComponent } from './components/descripcion-proyecto/descripcion-proyecto.component';
+import { CountProyectoPipe } from './pipes/count-proyecto.pipe';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { DescripcionProyectoComponent } from './components/descripcion-proyecto/
     NewProyectoComponent,
     GetCategoriesPipe,
     ClienteModalComponent,
-    DescripcionProyectoComponent],
+    DescripcionProyectoComponent,
+    CountProyectoPipe],
   imports: [
     CommonModule,
     ProyectosRoutingModule,

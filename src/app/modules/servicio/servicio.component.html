@@ -1,5 +1,35 @@
 <div class="content">
 
+  <div class="stats-container">
+    <app-status-card [icon]="'view_list'" [color]="'var(--info)'">
+      <div slot="title">
+        Servicios Totales
+      </div>
+      <div slot="count">
+        {{servicios | countServicio: 'total'}}
+      </div>
+    </app-status-card>
+
+    <app-status-card [icon]="'engineering'" [color]="'var(--accent)'">
+      <div slot="title">
+        Servicios en Curso
+      </div>
+      <div slot="count">
+        {{servicios | countServicio: 'en_curso'}}
+      </div>
+    </app-status-card>
+
+    <app-status-card [icon]="'done_all'" [color]="'var(--success)'">
+      <div slot="title">
+        Servicios Finzalizados
+      </div>
+      <div slot="count">
+        {{servicios | countServicio: 'finalizado'}}
+      </div>
+    </app-status-card>
+
+  </div>
+
   <div class="table-container mat-elevation-z2">
 
     <div class="header-table" [style.display]="selectedServicio.length ? 'none' : 'grid'">

@@ -7,16 +7,19 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@app/material.module';
 import { NewServicioComponent } from './components/new-servicio/new-servicio.component';
 import { EditServicioComponent } from './components/edit-servicio/edit-servicio.component';
+import { SharedModule } from '@app/shared/shared.module';
+import { CountServicioPipe } from './pipes/count-servicio.pipe';
 
 
 @NgModule({
-  declarations: [ServicioComponent, NewServicioComponent, EditServicioComponent],
+  declarations: [ServicioComponent, NewServicioComponent, EditServicioComponent, CountServicioPipe],
   imports: [
     CommonModule,
     ServicioRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    MaterialModule
+    MaterialModule,
+    SharedModule
   ]
 })
 export class ServicioModule { }

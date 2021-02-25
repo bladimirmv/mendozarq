@@ -6,7 +6,7 @@
         Proyectos Totales
       </div>
       <div slot="count">
-        1
+        {{proyectos | countProyecto:'total'}}
       </div>
     </app-status-card>
 
@@ -15,7 +15,7 @@
         Proyectos en Curso
       </div>
       <div slot="count">
-        1
+        {{proyectos | countProyecto:'en_curso'}}
       </div>
     </app-status-card>
 
@@ -24,7 +24,7 @@
         Proyectos Finzalizados
       </div>
       <div slot="count">
-        0
+        {{proyectos | countProyecto:'finalizado'}}
       </div>
     </app-status-card>
 
@@ -85,7 +85,7 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
           <td mat-cell *matCellDef="let row" class="text-center">
             <a [routerLink]="['/admin/proyecto/', row.uuid]" class="link-proyecto">
-              {{row.nombre}}
+              {{row.nombre | titlecase}}
             </a>
           </td>
         </ng-container>
@@ -107,7 +107,7 @@
         <ng-container matColumnDef="categoria">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Categoria </th>
           <td mat-cell *matCellDef="let row" class="text-center">
-            {{'construccion'}}
+            {{row.categoria | uppercase}}
 
           </td>
         </ng-container>
@@ -117,7 +117,7 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
           <td mat-cell *matCellDef="let row" class="text-center">
             <a [routerLink]="['/admin/usuario/', row.nombreCliente]" class="link-proyecto">
-              {{row.nombreCliente  + ' '+ row.apellidoPaterno + ' '+ row.apellidoMaterno}}
+              {{row.nombreCliente  + ' '+ row.apellidoPaterno + ' '+ row.apellidoMaterno | titlecase}}
             </a>
           </td>
         </ng-container>
