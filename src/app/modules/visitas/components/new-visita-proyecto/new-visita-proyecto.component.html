@@ -1,0 +1,85 @@
+<h1 mat-dialog-title align="center">
+  Nueva Visita
+</h1>
+
+<mat-dialog-content>
+
+  <form class="new-form" [formGroup]="visitaForm">
+
+    <!-- *Nombre -->
+    <mat-form-field class="full-width " [color]="isValidField('nombre').color">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre" autocomplete="off">
+      <mat-icon matSuffix [color]="isValidField('nombre').color">
+        {{isValidField('nombre').icon}}
+      </mat-icon>
+      <mat-error *ngIf="visitaForm.get('nombre').errors?.required">
+        Ingrese un nombre.
+      </mat-error>
+      <mat-error *ngIf="visitaForm.get('nombre').errors?.pattern">
+        Debe incluir solo letras en minuscula.
+      </mat-error>
+    </mat-form-field>
+
+
+
+
+
+    <!-- *fecha -->
+    <mat-form-field class="full-width ">
+      <mat-label>Fecha Inicio</mat-label>
+      <input matInput [matDatepicker]="fecha" autocomplete="off" formControlName="fecha">
+      <mat-datepicker-toggle matSuffix [for]="fecha"></mat-datepicker-toggle>
+      <mat-datepicker #fecha></mat-datepicker>
+    </mat-form-field>
+
+
+    <!-- *faseDelProyecto -->
+    <mat-form-field class="full-width full-column" [color]="isValidField('faseDelProyecto').color">
+      <mat-label>faseDelProyecto</mat-label>
+      <textarea matInput placeholder="Ex. visita de carpinteria." formControlName="faseDelProyecto"
+        autocomplete="off"></textarea>
+      <mat-hint align="end">
+        {{visitaForm.value.faseDelProyecto ? visitaForm.value.faseDelProyecto.length : 0}}/100
+      </mat-hint>
+      <mat-icon matSuffix [color]="isValidField('faseDelProyecto').color" *ngIf="visitaForm.value.faseDelProyecto">
+        {{isValidField('faseDelProyecto').icon}}
+      </mat-icon>
+      <mat-error *ngIf="visitaForm.get('faseDelProyecto').errors?.required">
+        Ingrese una breve faseDelProyecto.
+      </mat-error>
+      <mat-error *ngIf="visitaForm.get('faseDelProyecto').errors?.maxlength">
+        Debe contener {{visitaForm.get('faseDelProyecto').errors?.maxlength?.requiredLength}} digitos como maximo.
+      </mat-error>
+    </mat-form-field>
+
+
+
+    <!-- *Descripcion -->
+    <mat-form-field class="full-width full-column" [color]="isValidField('descripcion').color">
+      <mat-label>Descripcion</mat-label>
+      <textarea matInput placeholder="Ex. visita de carpinteria." formControlName="descripcion"
+        autocomplete="off"></textarea>
+      <mat-hint align="end">
+        {{visitaForm.value.descripcion ? visitaForm.value.descripcion.length : 0}}/200
+      </mat-hint>
+      <mat-icon matSuffix [color]="isValidField('descripcion').color" *ngIf="visitaForm.value.descripcion">
+        {{isValidField('descripcion').icon}}
+      </mat-icon>
+      <mat-error *ngIf="visitaForm.get('descripcion').errors?.required">
+        Ingrese una breve descripcion.
+      </mat-error>
+      <mat-error *ngIf="visitaForm.get('descripcion').errors?.maxlength">
+        Debe contener {{visitaForm.get('descripcion').errors?.maxlength?.requiredLength}} digitos como maximo.
+      </mat-error>
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button mat-button [mat-dialog-close]="false" class="mat-btn-secondary">Cancelar</button>
+  <button mat-button class="mat-btn-success" (click)="addVisita(visitaForm.value)" [disabled]="!visitaForm.valid">
+    Guardar
+  </button>
+</mat-dialog-actions>

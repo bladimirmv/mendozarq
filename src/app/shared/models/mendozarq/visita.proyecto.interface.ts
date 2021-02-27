@@ -1,11 +1,9 @@
-
 export interface VisitaProyecto {
-  idVisita?: string;
+  uuid?: string;
   creadoEn?: Date;
-  nombre: string;
+  nombre?: string;
+  faseDelProyecto?: string;
   descripcion?: string;
-  numeroVisita: number;
   fecha?: Date;
-  participantes?: string[];
-  servicios?: string[];
+  uuidProyecto?: string;
 }

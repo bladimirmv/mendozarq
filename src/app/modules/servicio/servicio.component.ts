@@ -24,12 +24,11 @@ export class ServicioComponent implements OnInit, OnDestroy {
 
   private destroy$: Subject<any> = new Subject<any>();
   private uuidProyecto: string = '';
-  public servicios: ServicioProyecto[];
+  public servicios: ServicioProyecto[] = [];
 
 
   selectedServicio: ServicioProyecto[] = [];
   selectionServicio = new SelectionModel<ServicioProyecto>(true, []);
-  @ViewChild(MatSort, { static: true }) sortPersonal: MatSort;
   filterValuePersonal: string;
   public columns: Array<string> = ['seleccion', 'nombre', 'avance', 'fechaInicio', 'fechaFinal', 'descripcion', 'edit'];
   public source: MatTableDataSource<ServicioProyecto> = new MatTableDataSource();
@@ -142,7 +141,7 @@ export class ServicioComponent implements OnInit, OnDestroy {
     });
   }
 
-
+  // =====================> updateServicio
   public updateServicio(servicioProyecto: ServicioProyecto): void {
     const dialogRef = this.dialog.open(EditServicioComponent, { data: servicioProyecto });
     dialogRef.afterClosed()

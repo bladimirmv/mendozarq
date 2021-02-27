@@ -5,7 +5,6 @@ import { AdminComponent } from './admin.component';
 import { ProyectoComponent } from './components/proyecto/proyecto.component';
 import { VisitaComponent } from './components/visita/visita.component';
 import { PresupuestoObraComponent } from '@modules/presupuestos/components/presupuesto-obra/presupuesto-obra.component';
-import { EditVisitaComponent } from '@modules/visitas/components/edit-visita/edit-visita.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ShowContrasenhaComponent } from './../users/components/show-contrasenha/show-contrasenha.component';
 import { DescripcionProyectoComponent } from './../proyectos/components/descripcion-proyecto/descripcion-proyecto.component';
@@ -129,7 +128,7 @@ const routes: Routes = [
         path: '', redirectTo: 'descripcion', pathMatch: 'full'
       },
       {
-        path: 'descripcion', component: EditVisitaComponent
+        path: 'descripcion', component: ProyectoComponent
       },
       {
         path: 'obervacion-participante', loadChildren: () =>

@@ -1,11 +1,25 @@
+.content::after {
+  content: "";
+  background-image: url('./../../../assets/bg.svg');
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  opacity: 0.1;
+  top: 0;
+  left: 0;
+  bottom: 0px;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
+
 .stats-container {
-  margin: 30px 0;
+  margin: 20px 0;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
   justify-content: center;
   align-items: center;
-
 }
 
 .proyecto-activo {
@@ -44,22 +58,7 @@
   }
 }
 
-// .mat-form-field {
-//   font-size: 14px;
-//   width: 100%;
-// }
 
-
-.proyect-content {
-  padding: 20px;
-  display: grid;
-  grid-template-columns: repeat(5, minmax(100px, 293px));
-  grid-gap: 10px;
-
-  mat-card {
-    height: 130px;
-  }
-}
 
 .link-proyecto {
   color: var(--secondary);

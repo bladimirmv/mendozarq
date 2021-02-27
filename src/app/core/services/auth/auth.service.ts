@@ -84,14 +84,14 @@ export class AuthService extends RoleValidator {
   public handdleError(httpError: HttpErrorResponse | any): Observable<never> {
     let errorMessage = '';
 
-    if (httpError.error) {
+    if (httpError.error.message) {
       if (typeof httpError.error.message === 'string') {
         errorMessage = `${httpError.error.message}`;
       } else if (httpError.error.message.errno) {
 
         switch (httpError.error.message.errno) {
           case -111:
-            errorMessage = 'No se ha podido establecer una conexion con el servidor. 🙁';
+            errorMessage = 'No se ha podido establecer una conexion con la base de datos. 🙁';
             break;
 
           default:

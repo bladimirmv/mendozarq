@@ -1,3 +1,18 @@
+.content::after {
+  content: "";
+  background-image: url('./../../../assets/bg.svg');
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  opacity: 0.1;
+  top: 0;
+  left: 0;
+  bottom: 0px;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
+
 .stats-container {
   margin: 20px 0;
   display: grid;
@@ -6,11 +21,6 @@
   justify-content: center;
   align-items: center;
 }
-
-// .mat-column-descripcion {
-//   flex: none;
-//   width: 100px;
-// }
 
 
 .personal-activo {

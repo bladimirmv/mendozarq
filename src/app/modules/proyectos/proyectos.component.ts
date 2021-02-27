@@ -24,7 +24,7 @@ import { type } from 'os';
 })
 export class ProyectosComponent implements OnInit {
   private destroy$ = new Subject<any>();
-  public proyectos: Proyecto[];
+  public proyectos: Proyecto[] = [];
 
   selected: Proyecto[] = [];
   selection = new SelectionModel<Proyecto>(true, []);

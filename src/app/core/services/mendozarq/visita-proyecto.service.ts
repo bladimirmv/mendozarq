@@ -4,51 +4,52 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { ServicioProyecto } from '@models/mendozarq/servicio.proyecto.interface';
+import { VisitaProyecto } from '@models/mendozarq/visita.proyecto.interface';
 import { environment } from '@env/environment.prod';
+
 
 @Injectable({
   providedIn: 'root'
 })
-export class ServicioProyectoService {
+export class VisitaProyectoService {
   private API_URL = environment.API_URL;
 
   constructor(private http: HttpClient, private toastrSvc: ToastrService) {
 
   }
 
-  // ====================> addServicioProyecto
-  public addServicioProyecto(servicioProyecto: ServicioProyecto): Observable<any> {
+  // ====================> addVisitaProyecto
+  public addVisitaProyecto(visitaProyecto: VisitaProyecto): Observable<any> {
     return this.http
-      .post<ServicioProyecto>(`${this.API_URL}/api/servicioProyecto`, servicioProyecto)
+      .post<VisitaProyecto>(`${this.API_URL}/api/visitaProyecto`, visitaProyecto)
       .pipe(catchError(error => this.handdleError(error)));
   }
 
-  // ====================> getOneServicioProyecto
-  public getOneServicioProyecto(uuid: string): Observable<ServicioProyecto> {
+  // ====================> getOneVisitaProyecto
+  public getOneVisitaProyecto(uuid: string): Observable<VisitaProyecto> {
     return this.http
-      .get<ServicioProyecto>(`${this.API_URL}/api/servicioProyecto/${uuid}`)
+      .get<VisitaProyecto>(`${this.API_URL}/api/visitaProyecto/${uuid}`)
       .pipe(catchError(error => this.handdleError(error)));
   }
 
-  // ====================> getAllServicioProyecto
-  public getAllServicioProyecto(uuidProyecto: string): Observable<ServicioProyecto[]> {
+  // ====================> getAllVisitaProyecto
+  public getAllVisitaProyecto(uuidProyecto: string): Observable<VisitaProyecto[]> {
     return this.http
-      .get<ServicioProyecto[]>(`${this.API_URL}/api/servicioProyecto/proyecto/${uuidProyecto}`)
+      .get<VisitaProyecto[]>(`${this.API_URL}/api/visitaProyecto/proyecto/${uuidProyecto}`)
       .pipe(catchError(error => this.handdleError(error)));
   }
 
-  // ====================> updateServicioProyecto
-  public updateServicioProyecto(uuid: string, servicioProyecto: ServicioProyecto): Observable<any> {
+  // ====================> updateVisitaProyecto
+  public updateVisitaProyecto(uuid: string, visitaProyecto: VisitaProyecto): Observable<any> {
     return this.http
-      .put(`${this.API_URL}/api/servicioProyecto/${uuid}`, servicioProyecto)
+      .put(`${this.API_URL}/api/visitaProyecto/${uuid}`, visitaProyecto)
       .pipe(catchError(error => this.handdleError(error)));
   }
 
-  // ====================> deleteServicioProyecto
-  public deleteServicioProyecto(uuid: string): Observable<any> {
+  // ====================> deleteVisitaProyecto
+  public deleteVisitaProyecto(uuid: string): Observable<any> {
     return this.http
-      .delete(`${this.API_URL}/api/servicioProyecto/${uuid}`)
+      .delete(`${this.API_URL}/api/visitaProyecto/${uuid}`)
       .pipe(catchError(error => this.handdleError(error)));
   }
 
@@ -61,10 +62,10 @@ export class ServicioProyectoService {
       } else if (httpError.error.message.errno) {
         switch (httpError.error.message.errno) {
           case -111:
-            errorMessage = 'No se ha podido establecer una conexion con la base de datos. 🙁';
+            errorMessage = 'No se ha podido establecer una conexion con el servidor. 🙁';
             break;
           case 1451:
-            errorMessage = 'No se puede eliminar por que este servicioProyecto esta relacionado con un proyecto u otra tabla. 🙁';
+            errorMessage = 'No se puede eliminar por que este visita esta relacionado con una observacion u otra tabla. 🙁';
             break;
           default:
             errorMessage = `
@@ -81,4 +82,5 @@ export class ServicioProyectoService {
     });
     return throwError(httpError);
   }
+
 }
