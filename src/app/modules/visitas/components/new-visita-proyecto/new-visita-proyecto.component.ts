@@ -45,6 +45,8 @@ export class NewVisitaProyectoComponent implements OnInit {
   // ===================> onAddVisita
   public addVisita(visitaProyecto: VisitaProyecto): void {
     visitaProyecto.uuidProyecto = this.data.uuidProyecto;
+    console.log(visitaProyecto);
+
     this.visitaProyectoSvc.addVisitaProyecto(visitaProyecto)
       .pipe(takeUntil(this.destroy$))
       .subscribe(res => {

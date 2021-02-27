@@ -12,3 +12,15 @@
   position: absolute;
   z-index: -1;
 }
+
+
+.chip-date {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  color: white;
+  font-weight: bold;
+  border-radius: 100%;
+  // padding: 3px;
+  background-color: var(--info);
+}

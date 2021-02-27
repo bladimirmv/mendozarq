@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
+import { interval, Observable, observable, Subject } from 'rxjs';
 import { VisitaProyecto } from '@models/mendozarq/visita.proyecto.interface';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
@@ -9,9 +9,12 @@ import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { VisitaProyectoService } from '@services/mendozarq/visita-proyecto.service';
-import { takeUntil } from 'rxjs/operators';
+import { map, observeOn, takeUntil, timeout } from 'rxjs/operators';
 import { NewVisitaProyectoComponent } from './components/new-visita-proyecto/new-visita-proyecto.component';
 import { EditVisitaProyectoComponent } from './components/edit-visita-proyecto/edit-visita-proyecto.component';
+
+import * as moment from 'moment';
+import { DeleteModalComponent } from '@app/shared/components/delete-modal/delete-modal.component';
 @Component({
   selector: 'app-visitas',
   templateUrl: './visitas.component.html',
@@ -25,7 +28,7 @@ export class VisitasComponent implements OnInit, OnDestroy {
   selected: VisitaProyecto[] = [];
   selection = new SelectionModel<VisitaProyecto>(true, []);
   filterValue: string;
-  public columns: Array<string> = ['seleccion', 'nombre', 'faseDelProyecto', 'fecha', 'descripcion', 'edit'];
+  public columns: Array<string> = ['seleccion', 'estado', 'nombre', 'fecha', 'faseDelProyecto', 'descripcion', 'edit'];
   public source: MatTableDataSource<VisitaProyecto> = new MatTableDataSource();
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -40,7 +43,15 @@ export class VisitasComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.uuidProyecto = this.activatedRoute.snapshot.parent.parent.params.uuid;
     this.getAllVisitaProyecto();
+
+    this.source.paginator = this.paginator;
+    this.source.sort = this.sort;
+
+    this.selection.changed
+      .pipe(map(a => a.source), takeUntil(this.destroy$))
+      .subscribe(data => this.selected = data.selected);
   }
+
   ngOnDestroy(): void {
     this.destroy$.next({});
     this.destroy$.complete();
@@ -75,57 +86,57 @@ export class VisitasComponent implements OnInit, OnDestroy {
       });
   }
   // =====================> deletePersonal
-  public deleteServicio() {
-    // const dialogRef = this.dialog.open(DeleteModalComponent);
+  public deleteVisita() {
+    const dialogRef = this.dialog.open(DeleteModalComponent);
 
-    // dialogRef.afterClosed()
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((res: boolean) => {
-    //     if (res) {
-    //       this.selectedServicio.length === 1
-    //         ? this.deleteOneServicio()
-    //         : this.deleteMoreThanOneServicio();
-    //     }
-    //   });
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: boolean) => {
+        if (res) {
+          this.selected.length === 1
+            ? this.deleteOneVisita()
+            : this.deleteMoreThanOneVisita();
+        }
+      });
   }
   // =====================> deleteOnePersonal
-  private deleteOneServicio(): void {
-    // this.servicioProyectoSvc
-    //   .deleteServicioProyecto(this.selectedServicio[0].uuid)
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe(usr => {
-    //     if (usr) {
-    //       this.toastrSvc.success('Se ha eliminado correctamente', 'Servicio Eliminado', {
-    //         timeOut: 2000,
-    //         progressBar: true,
-    //         progressAnimation: 'increasing'
-    //       });
-    //       this.getAllServicioProyecto();
-    //       this.clearCheckbox();
-    //     }
-    //   });
+  private deleteOneVisita(): void {
+    this.visitaProyectoSvc
+      .deleteVisitaProyecto(this.selected[0].uuid)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(res => {
+        if (res) {
+          this.toastrSvc.success('Se ha eliminado correctamente', 'Visita Eliminado', {
+            timeOut: 2000,
+            progressBar: true,
+            progressAnimation: 'increasing'
+          });
+          this.getAllVisitaProyecto();
+          this.clearCheckbox();
+        }
+      });
   }
 
   // =====================> deleteMoreThanOnePersonal
-  private deleteMoreThanOneServicio(): void {
-    // this.selectedServicio.forEach((servicio, index) => {
-    //   const isLast: boolean = index + 1 === this.selectedServicio.length;
-    //   this.servicioProyectoSvc
-    //     .deleteServicioProyecto(servicio.uuid)
-    //     .pipe(takeUntil(this.destroy$))
-    //     .subscribe(res => {
-    //       if (res && isLast) {
-    //         this.toastrSvc.success('Se han eliminado correctamente', 'Servicios Eliminado', {
-    //           timeOut: 2000,
-    //           progressBar: true,
-    //           progressAnimation: 'increasing'
-    //         });
-    //         this.getAllServicioProyecto()
-    //         this.clearCheckbox();
-    //       }
-    //     });
+  private deleteMoreThanOneVisita(): void {
+    this.selected.forEach((visita, index) => {
+      const isLast: boolean = index + 1 === this.selected.length;
+      this.visitaProyectoSvc
+        .deleteVisitaProyecto(visita.uuid)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(res => {
+          if (res && isLast) {
+            this.toastrSvc.success('Se han eliminado correctamente', 'Visitas Eliminado', {
+              timeOut: 2000,
+              progressBar: true,
+              progressAnimation: 'increasing'
+            });
+            this.getAllVisitaProyecto()
+            this.clearCheckbox();
+          }
+        });
 
-    // });
+    });
   }
 
   // =====================> updateServicio
@@ -140,6 +151,28 @@ export class VisitasComponent implements OnInit, OnDestroy {
       });
   }
 
+
+  getDateString(date: Date): string {
+    moment.locale('es');
+    const result = moment(date).format('MMMM Do YYYY, h:mm:ss a');
+    return result;
+  }
+
+  compareDate(date: Date): boolean {
+    return moment(date) > moment() ? true : false;
+  }
+  realtime(date: Date): Observable<boolean> {
+    return new Observable<boolean>((observer) => {
+      setInterval(() => {
+        if (moment(date) > moment()) {
+          observer.next(true);
+        } else {
+          observer.next(false);
+          observer.complete();
+        }
+      }, 1000 * 60);
+    });
+  }
 
 
 

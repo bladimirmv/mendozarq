@@ -21,23 +21,17 @@
       </mat-error>
     </mat-form-field>
 
-
-
-
-
     <!-- *fecha -->
-    <mat-form-field class="full-width ">
-      <mat-label>Fecha Inicio</mat-label>
-      <input matInput [matDatepicker]="fecha" autocomplete="off" formControlName="fecha">
-      <mat-datepicker-toggle matSuffix [for]="fecha"></mat-datepicker-toggle>
-      <mat-datepicker #fecha></mat-datepicker>
+    <mat-form-field class="full-width" [color]="isValidField('fecha').color">
+      <mat-label>Fecha </mat-label>
+      <input matInput type="datetime-local" formControlName="fecha">
     </mat-form-field>
 
 
     <!-- *faseDelProyecto -->
     <mat-form-field class="full-width full-column" [color]="isValidField('faseDelProyecto').color">
-      <mat-label>faseDelProyecto</mat-label>
-      <textarea matInput placeholder="Ex. visita de carpinteria." formControlName="faseDelProyecto"
+      <mat-label>Fase del Proyecto</mat-label>
+      <textarea matInput placeholder="Ex. excavacion del terreno." formControlName="faseDelProyecto"
         autocomplete="off"></textarea>
       <mat-hint align="end">
         {{visitaForm.value.faseDelProyecto ? visitaForm.value.faseDelProyecto.length : 0}}/100
@@ -58,7 +52,7 @@
     <!-- *Descripcion -->
     <mat-form-field class="full-width full-column" [color]="isValidField('descripcion').color">
       <mat-label>Descripcion</mat-label>
-      <textarea matInput placeholder="Ex. visita de carpinteria." formControlName="descripcion"
+      <textarea matInput placeholder="Ex. visita para controlar el avance." formControlName="descripcion"
         autocomplete="off"></textarea>
       <mat-hint align="end">
         {{visitaForm.value.descripcion ? visitaForm.value.descripcion.length : 0}}/200

@@ -35,7 +35,7 @@
         <span>
           Seleccionados {{selected.length}}
         </span>
-        <button mat-raised-button class="btn-delete" (click)="deleteServicio()">Elminar</button>
+        <button mat-raised-button class="btn-delete" (click)="deleteVisita()">Elminar</button>
       </div>
     </div>
 
@@ -89,10 +89,28 @@
           </td>
         </ng-container>
 
+
+        <!-- *fecha -->
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+
+            <div class="chip-date"
+              [style.backgroundColor]="compareDate(row.fecha) ? 'var(--success)' : 'var(--accent)'">
+
+            </div>
+
+          </td>
+        </ng-container>
+
         <!-- *fecha -->
         <ng-container matColumnDef="fecha">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> {{row.fecha | date }} </td>
+          <td mat-cell *matCellDef="let row" class="text-center">
+
+            {{getDateString(row.fecha) }}
+
+          </td>
         </ng-container>
 
         <!-- *edit -->
