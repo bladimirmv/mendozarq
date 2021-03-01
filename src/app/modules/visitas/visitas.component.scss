@@ -21,6 +21,49 @@
   color: white;
   font-weight: bold;
   border-radius: 100%;
-  // padding: 3px;
   background-color: var(--info);
+}
+
+
+.link-visita {
+  color: var(--secondary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--secondary);
+
+  &:hover {
+    color: var(--primary);
+    border-bottom: 1px solid var(--primary);
+
+  }
+}
+
+.stats-container {
+  margin: 20px 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+  justify-content: center;
+  align-items: center;
+
+}
+
+
+@media screen and(max-width: 960px) {
+  .stats-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  app-status-card:last-child {
+    grid-column: 1 / span 2;
+  }
+}
+
+@media screen and(max-width: 490px) {
+  .stats-container {
+    grid-template-columns: 1fr;
+  }
+
+  app-status-card:last-child {
+    grid-column: span 1;
+  }
 }

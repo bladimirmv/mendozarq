@@ -8,6 +8,7 @@ import { PresupuestoObraComponent } from '@modules/presupuestos/components/presu
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ShowContrasenhaComponent } from './../users/components/show-contrasenha/show-contrasenha.component';
 import { DescripcionProyectoComponent } from './../proyectos/components/descripcion-proyecto/descripcion-proyecto.component';
+import { VisitasComponent } from '../visitas/visitas.component';
 
 const routes: Routes = [
   {
@@ -122,13 +123,13 @@ const routes: Routes = [
 
   },
   {
-    path: 'visita/:id', component: VisitaComponent,
+    path: 'visita/:uuid', component: VisitaComponent,
     children: [
       {
         path: '', redirectTo: 'descripcion', pathMatch: 'full'
       },
       {
-        path: 'descripcion', component: ProyectoComponent
+        path: 'descripcion', component: VisitasComponent
       },
       {
         path: 'obervacion-participante', loadChildren: () =>

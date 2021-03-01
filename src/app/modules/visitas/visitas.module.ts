@@ -8,10 +8,11 @@ import { MaterialModule } from '@app/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewVisitaProyectoComponent } from './components/new-visita-proyecto/new-visita-proyecto.component';
 import { EditVisitaProyectoComponent } from './components/edit-visita-proyecto/edit-visita-proyecto.component';
+import { CountVisitaPipe } from './pipes/count-visita.pipe';
 
 
 @NgModule({
-  declarations: [VisitasComponent, NewVisitaProyectoComponent, EditVisitaProyectoComponent],
+  declarations: [VisitasComponent, NewVisitaProyectoComponent, EditVisitaProyectoComponent, CountVisitaPipe],
   imports: [
     CommonModule,
     VisitasRoutingModule,
