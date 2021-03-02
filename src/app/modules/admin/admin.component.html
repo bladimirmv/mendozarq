@@ -131,8 +131,9 @@
 
   </mat-sidenav>
 
-  <mat-sidenav-content>
 
+
+  <mat-sidenav-content>
     <mat-toolbar class="mat-elevation-z2 toolbar-between">
 
       <div class="logo-row-container">
@@ -146,29 +147,27 @@
           <span>MendozArq</span>
         </a>
       </div>
-
       <div class="user-details">
         <!-- <button mat-icon-button>
           <mat-icon>
-            settings
+            account_circle
           </mat-icon>
         </button> -->
-        <a routerLink="/perfil" class="usuarioSide" *ngIf="authSvc.isLogged | async">
-          <h3>
-
-            <!-- {{usr[0].nombre+ ' ' +usr[0].apellidos }} -->
-          </h3>
+        <!-- <a routerLink="/perfil" class="usuarioSide" *ngIf="authSvc.isLogged | async">
           <span>
             <img src="./assets/avatar.svg" alt="">
           </span>
+        </a> -->
+
+        <a class="circle-profile" *ngIf="authSvc.isLogged | async">
+          M
         </a>
+
+
       </div>
-
-
-
     </mat-toolbar>
-    <div class="content">
 
+    <div class=" content">
       <div class="mat-elevation-z2 " *ngIf="locationBarSvc.locationList$|async as ltnbar"
         style=" z-index: 1000; background-color: white; color: black; padding: 8px ; display: flex; margin:10px 0px; border-radius: 2.5px; overflow: auto;">
         <a *ngFor="let location of ltnbar" [routerLink]="location.link"
@@ -178,13 +177,11 @@
               {{location.icon}}</mat-icon>
             {{location.name}}/
           </span>
-
         </a>
-
       </div>
     </div>
 
     <router-outlet></router-outlet>
-
   </mat-sidenav-content>
+
 </mat-sidenav-container>

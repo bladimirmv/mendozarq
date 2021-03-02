@@ -2,8 +2,8 @@ import { LocationBarService } from '../../core/services/mendozarq/location-bar.s
 import { AuthService } from '@app/core/services/auth/auth.service';
 import { BrightnessService } from './../../core/services/brightness.service';
 import { Location } from '@angular/common';
-import { map, shareReplay } from 'rxjs/operators';
-import { Subscription, Observable, of } from 'rxjs';
+import { map, shareReplay, takeUntil } from 'rxjs/operators';
+import { Subscription, Observable, of, Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { BreakpointObserver } from '@angular/cdk/layout';
@@ -16,9 +16,8 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 export class AdminComponent implements OnInit, OnDestroy {
   public modeSidenav = 'side';
   public breakpoint: boolean;
-  private unsubscribe$: Subscription;
+  private destroy$: Subject<any> = new Subject<any>();
 
-  $usr: Observable<any>;
 
 
 
@@ -36,12 +35,12 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.unsubscribe$ = this.breakpointObserver.observe('(max-width: 700px)')
+    this.breakpointObserver.observe('(max-width: 700px)')
       .pipe(
+        takeUntil(this.destroy$),
         map(res => res.matches),
         shareReplay()
       ).subscribe(res => this.breakpoint = res);
-    this.$usr = of(false);
 
     this.locationBarSvc.pushLocation({
       icon: 'dashboard',
@@ -51,7 +50,8 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   }
   ngOnDestroy(): void {
-    this.unsubscribe$.unsubscribe();
+    this.destroy$.next({});
+    this.destroy$.complete();
     this.locationBarSvc.deleteLocation();
   }
   onback(): void {
@@ -62,7 +62,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   onLogout(): void {
-
+    this.authSvc.logout();
   }
 
 

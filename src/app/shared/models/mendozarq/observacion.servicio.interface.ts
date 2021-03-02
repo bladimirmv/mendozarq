@@ -1,9 +1,10 @@
 export type Estado = 'En curso' | 'Pendiente' | 'Con retraso' | 'Fecha limite' | 'Finalizado';
 export interface ObservacionServicio {
-  idObsrParticipante?: string;
+  uuid?: string;
   creadoEn?: Date;
-  idVisita: string;
-  estado: Estado;
-  idServicio?: string;
+  estado?: Estado;
   descripcion?: string;
+  fecha?: string;
+  uuidServicio: string;
+  uuidVisita: string;
 }

@@ -7,6 +7,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { VisitaProyectoService } from '@app/core/services/mendozarq/visita-proyecto.service';
 import { VisitaProyecto } from '@app/shared/models/mendozarq/visita.proyecto.interface';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthService } from '@app/core/services/auth/auth.service';
 @Component({
   selector: 'app-visita',
   templateUrl: './visita.component.html',
@@ -25,7 +26,8 @@ export class VisitaComponent implements OnInit, OnDestroy {
     private breakpointObserver: BreakpointObserver,
     private activatedRoute: ActivatedRoute,
     private visitaProyectoSvc: VisitaProyectoService,
-    private router: Router
+    private router: Router,
+    private authSvc: AuthService
 
   ) {
     this.uuidVisita = this.activatedRoute.snapshot.params.uuid;
@@ -70,6 +72,7 @@ export class VisitaComponent implements OnInit, OnDestroy {
 
   // ====================> onLogout
   public onLogout(): void {
+    this.authSvc.logout();
 
   }
 

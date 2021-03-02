@@ -129,8 +129,10 @@ const routes: Routes = [
         path: '', redirectTo: 'descripcion', pathMatch: 'full'
       },
       {
-        path: 'descripcion', component: VisitasComponent
+        path: 'descripcion', loadChildren: () =>
+          import('@modules/descripcion-visita/descripcion-visita.module').then(m => m.DescripcionVisitaModule)
       },
+
       {
         path: 'obervacion-participante', loadChildren: () =>
           import('@modules/observacion-participante/observacion-participante.module').then(m => m.ObservacionParticipanteModule)

@@ -1,1 +1,56 @@
-<p>observacion-servicio works!</p>
+<div class="content">
+
+
+  <div class="servicio">
+    <div class=" mat-elevation-z3 header">
+      <h3 class="title">
+        Nombre
+      </h3>
+      <button mat-icon-button>
+        <mat-icon>
+          add
+        </mat-icon>
+      </button>
+    </div>
+    <div class="observacion mat-elevation-z2">
+      <div class="estado">
+        Pendiente
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>
+            more_horiz
+          </mat-icon>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+              <mat-icon>edit</mat-icon>
+              <span>Editar</span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>delete</mat-icon>
+              <span>Eliminar</span>
+            </button>
+          </mat-menu>
+        </button>
+
+      </div>
+      <div class="creadoEn">
+        <mat-icon class="timer">
+          schedule
+        </mat-icon>
+        <span>
+          Creado el 10/02/2021
+        </span>
+      </div>
+      <p class="descripcion">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque nisi consectetur labore tenetur accusamus sint
+        fuga doloribus dolorum fugiat, officiis, voluptates sit impedit sequi iure modi non veritatis magni commodi.
+      </p>
+    </div>
+  </div>
+
+
+
+
+
+
+
+</div>

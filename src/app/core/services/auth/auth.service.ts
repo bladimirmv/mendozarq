@@ -11,6 +11,7 @@ import { RoleValidator } from '@core/helpers/roleValidator';
 import { Usuario } from '@app/shared/models/usuario.interface';
 import { UsuarioResponse } from '@shared/models/usuario.interface';
 import { environment } from '@env/environment';
+import { Router } from '@angular/router';
 
 const helper = new JwtHelperService();
 @Injectable({
@@ -23,7 +24,7 @@ export class AuthService extends RoleValidator {
   public usuario$: Observable<Usuario> = this.usuario.asObservable();
   private usuarioToken = new BehaviorSubject<string>(null);
   // ====================================================================
-  constructor(private http: HttpClient, private toastrSvc: ToastrService) {
+  constructor(private http: HttpClient, private toastrSvc: ToastrService, private router: Router) {
     super();
     this.checkToken();
   }
@@ -56,6 +57,8 @@ export class AuthService extends RoleValidator {
     this.loggedIn.next(false);
     this.usuario.next(null);
     this.usuarioToken.next(null);
+    this.router.navigate(['/']);
+
   }
   // ====================================================================
   public checkToken(): any {
