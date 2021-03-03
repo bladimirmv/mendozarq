@@ -1,10 +1,12 @@
 <div class="content">
 
 
-  <div class="servicio">
+
+
+  <div class="servicio" *ngFor="let os of obsrServicio">
     <div class=" mat-elevation-z3 header">
       <h3 class="title">
-        Nombre
+        {{os.servicio.nombre | titlecase}}
       </h3>
       <button mat-icon-button>
         <mat-icon>
@@ -12,9 +14,11 @@
         </mat-icon>
       </button>
     </div>
-    <div class="observacion mat-elevation-z2">
+
+
+    <div class="observacion mat-elevation-z2" *ngFor="let observacion of os.observaciones">
       <div class="estado">
-        Pendiente
+        {{observacion.estado}}
         <button mat-icon-button [matMenuTriggerFor]="menu">
           <mat-icon>
             more_horiz
@@ -37,12 +41,11 @@
           schedule
         </mat-icon>
         <span>
-          Creado el 10/02/2021
+          Creado el {{observacion.fecha | date}}
         </span>
       </div>
       <p class="descripcion">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque nisi consectetur labore tenetur accusamus sint
-        fuga doloribus dolorum fugiat, officiis, voluptates sit impedit sequi iure modi non veritatis magni commodi.
+        {{observacion.descripcion}}
       </p>
     </div>
   </div>

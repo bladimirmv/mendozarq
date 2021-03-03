@@ -6,6 +6,12 @@ import { catchError } from 'rxjs/operators';
 
 import { ObservacionServicio } from '@models/mendozarq/observacion.servicio.interface';
 import { environment } from '@env/environment.prod';
+import { ServicioProyecto } from '@app/shared/models/mendozarq/servicio.proyecto.interface';
+
+export interface obsrServicio {
+  servicio?: ServicioProyecto,
+  observaciones?: ObservacionServicio[]
+};
 
 @Injectable({
   providedIn: 'root'
@@ -32,9 +38,9 @@ export class ObservacionServicioService {
   }
 
   // ====================> getAllObservacionServicio
-  public getAllObservacionServicio(uuidServicio: string): Observable<ObservacionServicio & { nombre?: string }[]> {
+  public getAllObservacionServicio(uuid: string): Observable<obsrServicio[]> {
     return this.http
-      .get<ObservacionServicio & { nombre?: string }[]>(`${this.API_URL}/api/observacionServicio/servicio/${uuidServicio}`)
+      .get<obsrServicio[]>(`${this.API_URL}/api/observacionServicio/visita/${uuid}`)
       .pipe(catchError(error => this.handdleError(error)));
   }
 

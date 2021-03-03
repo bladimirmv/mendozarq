@@ -1,3 +1,18 @@
+.content::after {
+  content: "";
+  background-image: url('./../../../assets/bg.svg');
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  opacity: 0.1;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
+
 .servicio {
   width: calc(100% - 14px);
   height: auto;
@@ -62,7 +77,20 @@
   }
 
   .descripcion {
+    width: auto;
     font-size: 15px;
     text-align: justify;
+
+
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
+    word-break: break-all;
+    word-break: break-word;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+
   }
 }
