@@ -25,6 +25,8 @@ export class ObservacionServicioService {
 
   // ====================> addObservacionServicio
   public addObservacionServicio(observacionServicio: ObservacionServicio): Observable<any> {
+    console.log('service: ', observacionServicio);
+
     return this.http
       .post<ObservacionServicio>(`${this.API_URL}/api/observacionServicio`, observacionServicio)
       .pipe(catchError(error => this.handdleError(error)));

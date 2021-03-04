@@ -8,7 +8,7 @@
       <h3 class="title">
         {{os.servicio.nombre | titlecase}}
       </h3>
-      <button mat-icon-button>
+      <button mat-icon-button (click)="newObservacionServicio(os.servicio)">
         <mat-icon>
           add
         </mat-icon>
@@ -24,11 +24,11 @@
             more_horiz
           </mat-icon>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item>
+            <button mat-menu-item (click)="updateObservacionServicio(observacion)">
               <mat-icon>edit</mat-icon>
               <span>Editar</span>
             </button>
-            <button mat-menu-item>
+            <button mat-menu-item (click)="deleteObservacionServicio(observacion)">
               <mat-icon>delete</mat-icon>
               <span>Eliminar</span>
             </button>
@@ -41,7 +41,7 @@
           schedule
         </mat-icon>
         <span>
-          Creado el {{observacion.fecha | date}}
+          Creado en {{getTime(observacion.fecha) | titlecase}}
         </span>
       </div>
       <p class="descripcion">

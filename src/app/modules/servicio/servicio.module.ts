@@ -14,11 +14,11 @@ import { CountServicioPipe } from './pipes/count-servicio.pipe';
 @NgModule({
   declarations: [ServicioComponent, NewServicioComponent, EditServicioComponent, CountServicioPipe],
   imports: [
+    MaterialModule,
     CommonModule,
     ServicioRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    MaterialModule,
     SharedModule
   ]
 })

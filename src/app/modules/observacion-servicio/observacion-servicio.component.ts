@@ -8,6 +8,11 @@ import { ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { VisitaProyectoService } from '@app/core/services/mendozarq/visita-proyecto.service';
 import { ObservacionServicio } from '@app/shared/models/mendozarq/observacion.servicio.interface';
+import { VisitaProyecto } from '@app/shared/models/mendozarq/visita.proyecto.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { NewObservacionServicioComponent } from './components/new-observacion-servicio/new-observacion-servicio.component';
+
+import * as moment from 'moment';
 export interface obsrServicio {
   servicio?: ServicioProyecto,
   observaciones?: ObservacionServicio[]
@@ -20,16 +25,13 @@ export interface obsrServicio {
 export class ObservacionServicioComponent implements OnInit, OnDestroy {
 
   private destroy$: Subject<any> = new Subject<any>();
-  public servicios: ServicioProyecto[];
   private uuidVisita: string = '';
   public obsrServicio: obsrServicio[];
-  // public observaciones$: Observable<ServicioProyecto>;
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private servicioProyectoSvc: ServicioProyectoService,
-    private visitaProyectpSvc: VisitaProyectoService,
-    private observacionServicioSvc: ObservacionServicioService
+    private observacionServicioSvc: ObservacionServicioService,
+    private matDialog: MatDialog
 
   ) {
     this.uuidVisita = this.activatedRoute.snapshot.parent.parent.params.uuid;
@@ -49,12 +51,37 @@ export class ObservacionServicioComponent implements OnInit, OnDestroy {
       });
   }
 
-  // ====================>
+  // ====================> newObservacionServicio
+  public newObservacionServicio(servicioProyecto: ServicioProyecto): void {
 
+    const dialogRef = this.matDialog.open(NewObservacionServicioComponent, {
+      data: { servicioProyecto: servicioProyecto, uuidVisita: this.uuidVisita }
+    });
 
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: boolean) => {
+        if (res) {
+          this.getAllObserbaciones();
+        }
+      });
+  }
+
+  // ====================> updateObservacionServicio
+  public updateObservacionServicio(observacionServicio: ObservacionServicio): void {
+  }
+  // ====================> deleteObservacionServicio
+  public deleteObservacionServicio(observacionServicio: ObservacionServicio): void {
+  }
   ngOnDestroy(): void {
     this.destroy$.next({});
     this.destroy$.complete();
+  }
+
+
+  getTime(date: Date): string {
+    moment.locale('es');
+    return moment(date).format('MMMM Do YYYY');
   }
 
 }

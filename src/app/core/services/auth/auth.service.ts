@@ -69,7 +69,7 @@ export class AuthService extends RoleValidator {
 
       if (isExpired) {
         this.logout();
-        this.toastrSvc.error('La sesion ha expirado, porfavor inicia sesion nuevamente', 'Sesion Expirada!', {
+        this.toastrSvc.warning('La sesion ha expirado, porfavor inicia sesion nuevamente', 'Sesion Expirada!', {
           timeOut: 5000
         });
       } else {

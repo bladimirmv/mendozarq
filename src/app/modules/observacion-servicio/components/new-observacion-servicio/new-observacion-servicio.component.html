@@ -1,0 +1,54 @@
+<h1 mat-dialog-title align="center">
+  Nueva Observacion
+</h1>
+
+<mat-dialog-content>
+
+  <form class="new-form" [formGroup]="servicioForm">
+
+
+    <mat-form-field [color]="isValidField('servicio').color">
+      <mat-label>Servicio</mat-label>
+      <input type="text" matInput formControlName="servicio">
+    </mat-form-field>
+
+
+    <!-- *estado -->
+    <mat-form-field class="full-width" [color]="isValidField('estado').color">
+      <mat-label>Favorite food</mat-label>
+      <mat-select formControlName="estado">
+        <mat-option *ngFor="let estado of estados" [value]="estado">
+          {{estado}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- *Descripcion -->
+    <mat-form-field class="full-width full-column" [color]="isValidField('descripcion').color">
+      <mat-label>Descripcion</mat-label>
+      <textarea matInput placeholder="Ex. servicio de carpinteria." formControlName="descripcion"
+        autocomplete="off"></textarea>
+      <mat-hint align="end">
+        {{servicioForm.value.descripcion ? servicioForm.value.descripcion.length : 0}}/200
+      </mat-hint>
+      <mat-icon matSuffix [color]="isValidField('descripcion').color" *ngIf="servicioForm.value.descripcion">
+        {{isValidField('descripcion').icon}}
+      </mat-icon>
+      <mat-error *ngIf="servicioForm.get('descripcion').errors?.required">
+        Ingrese una breve descripcion.
+      </mat-error>
+      <mat-error *ngIf="servicioForm.get('descripcion').errors?.maxlength">
+        Debe contener {{servicioForm.get('descripcion').errors?.maxlength?.requiredLength}} digitos como maximo.
+      </mat-error>
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button mat-button [mat-dialog-close]="false" class="mat-btn-secondary">Cancelar</button>
+  <button mat-button class="mat-btn-success" (click)="addObservacionServicio(servicioForm.value)"
+    [disabled]="!servicioForm.valid">
+    Guardar
+  </button>
+</mat-dialog-actions>

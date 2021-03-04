@@ -4,7 +4,7 @@ export interface ObservacionServicio {
   creadoEn?: Date;
   estado?: Estado;
   descripcion?: string;
-  fecha?: string;
+  fecha?: Date;
   uuidServicio: string;
   uuidVisita: string;
 }
