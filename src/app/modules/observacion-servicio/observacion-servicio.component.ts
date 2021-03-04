@@ -13,6 +13,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { NewObservacionServicioComponent } from './components/new-observacion-servicio/new-observacion-servicio.component';
 
 import * as moment from 'moment';
+import { DeleteModalComponent } from '@app/shared/components/delete-modal/delete-modal.component';
+import { ToastrService } from 'ngx-toastr';
+import { EditObservacionServicioComponent } from './components/edit-observacion-servicio/edit-observacion-servicio.component';
 export interface obsrServicio {
   servicio?: ServicioProyecto,
   observaciones?: ObservacionServicio[]
@@ -31,7 +34,8 @@ export class ObservacionServicioComponent implements OnInit, OnDestroy {
   constructor(
     private activatedRoute: ActivatedRoute,
     private observacionServicioSvc: ObservacionServicioService,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    private toastrSvc: ToastrService
 
   ) {
     this.uuidVisita = this.activatedRoute.snapshot.parent.parent.params.uuid;
@@ -39,6 +43,10 @@ export class ObservacionServicioComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getAllObserbaciones();
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next({});
+    this.destroy$.complete();
   }
 
   // ====================> getAllObserbaciones
@@ -69,19 +77,42 @@ export class ObservacionServicioComponent implements OnInit, OnDestroy {
 
   // ====================> updateObservacionServicio
   public updateObservacionServicio(observacionServicio: ObservacionServicio): void {
+
+    const dialogRef = this.matDialog
+      .open(EditObservacionServicioComponent, {
+        data: observacionServicio
+      });
+
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: boolean) => {
+        if (res) {
+          this.getAllObserbaciones();
+        }
+      });
   }
   // ====================> deleteObservacionServicio
   public deleteObservacionServicio(observacionServicio: ObservacionServicio): void {
-  }
-  ngOnDestroy(): void {
-    this.destroy$.next({});
-    this.destroy$.complete();
+    const dialogRef = this.matDialog.open(DeleteModalComponent);
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: boolean) => {
+        if (res) {
+          this.observacionServicioSvc
+            .deleteObservacionServicio(observacionServicio.uuid)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+              this.toastrSvc.success('Se ha eleiminado correctamente', 'Observacion Eliminado');
+              this.getAllObserbaciones();
+            });
+        }
+      });
   }
 
 
-  getTime(date: Date): string {
+  public getTime(date: Date): string {
     moment.locale('es');
-    return moment(date).format('MMMM Do YYYY');
+    return moment(date).format('DD [de] MMMM [de] YYYY');
   }
 
 }

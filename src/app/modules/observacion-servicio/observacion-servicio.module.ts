@@ -6,10 +6,11 @@ import { ObservacionServicioComponent } from './observacion-servicio.component';
 import { MaterialModule } from '@app/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewObservacionServicioComponent } from './components/new-observacion-servicio/new-observacion-servicio.component';
+import { EditObservacionServicioComponent } from './components/edit-observacion-servicio/edit-observacion-servicio.component';
 
 
 @NgModule({
-  declarations: [ObservacionServicioComponent, NewObservacionServicioComponent],
+  declarations: [ObservacionServicioComponent, NewObservacionServicioComponent, EditObservacionServicioComponent],
   imports: [
     CommonModule,
     ObservacionServicioRoutingModule,

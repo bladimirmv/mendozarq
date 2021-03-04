@@ -1,20 +1,19 @@
 <h1 mat-dialog-title align="center">
-  Nueva Observacion
+  Actualizar Observacion
 </h1>
 
 <mat-dialog-content>
 
-  <form class="new-form" [formGroup]="servicioForm">
+  <form class="update-form" [formGroup]="servicioForm">
 
-
-    <mat-form-field [color]="isValidField('servicio').color">
+    <!-- *servicio -->
+    <!-- <mat-form-field [color]="isValidField('servicio').color">
       <mat-label>Servicio</mat-label>
       <input type="text" matInput formControlName="servicio">
-    </mat-form-field>
-
+    </mat-form-field> -->
 
     <!-- *estado -->
-    <mat-form-field class="full-width" [color]="isValidField('estado').color">
+    <mat-form-field class="full-width full-column" [color]="isValidField('estado').color">
       <mat-label>Favorite food</mat-label>
       <mat-select formControlName="estado">
         <mat-option *ngFor="let estado of estados" [value]="estado">
@@ -49,6 +48,6 @@
   <button mat-button [mat-dialog-close]="false" class="mat-btn-secondary">Cancelar</button>
   <button mat-button class="mat-btn-success" (click)="addObservacionServicio(servicioForm.value)"
     [disabled]="!servicioForm.valid">
-    Guardar
+    Actualizar
   </button>
 </mat-dialog-actions>

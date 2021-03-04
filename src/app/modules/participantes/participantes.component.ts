@@ -16,6 +16,8 @@ import { ToastrService } from 'ngx-toastr';
 
 import { NewPersonalProyectoComponent } from './components/new-personal-proyecto/new-personal-proyecto.component';
 import { NewUsuarioProyectoComponent } from './components/new-usuario-proyecto/new-usuario-proyecto.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { threadId } from 'worker_threads';
 
 
 
@@ -40,6 +42,7 @@ export class ParticipantesComponent implements OnInit, OnDestroy {
   selectedUsuario: UsuarioParticipante[] = [];
   selectionUsuario = new SelectionModel<UsuarioParticipante>(true, []);
   @ViewChild(MatSort, { static: true }) sortUsuario: MatSort;
+  @ViewChild('usuarioPaginator', { read: MatPaginator, static: true }) usuarioPaginator: MatPaginator;
   filterValueUsuario: string;
   public usuariosColumns: Array<string> = ['seleccion', 'estado', 'nombre', 'apellidos', 'rol', 'celular',
     'username', 'correo', 'direccion'];
@@ -49,6 +52,7 @@ export class ParticipantesComponent implements OnInit, OnDestroy {
   selectedPersonal: PersonalParticipante[] = [];
   selectionPersonal = new SelectionModel<PersonalParticipante>(true, []);
   @ViewChild(MatSort, { static: true }) sortPersonal: MatSort;
+  @ViewChild('personalPaginator', { read: MatPaginator, static: true }) personalPaginator: MatPaginator;
   filterValuePersonal: string;
   public personalColumns: Array<string> = ['seleccion', 'estado', 'nombre', 'apellidos', 'celular', 'correo',
     'descripcion', 'direccion'];
@@ -67,12 +71,14 @@ export class ParticipantesComponent implements OnInit, OnDestroy {
     this.getAllUsuarioProyecto();
     this.getAllPersonalProyecto();
 
+    this.usuarioSource.paginator = this.usuarioPaginator;
     this.usuarioSource.sort = this.sortUsuario;
     this.selectionUsuario.changed
       .pipe(takeUntil(this.destroy$),
         map(a => a.source))
       .subscribe(data => this.selectedUsuario = data.selected);
 
+    this.personalSource.paginator = this.personalPaginator;
     this.personalSource.sort = this.sortPersonal;
     this.selectionPersonal.changed
       .pipe(takeUntil(this.destroy$),
