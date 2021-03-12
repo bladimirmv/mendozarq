@@ -3,7 +3,7 @@ import { map, takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 
 import { MatTableDataSource } from '@angular/material/table';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -110,7 +110,7 @@ export class ProyectosComponent implements OnInit {
 
     dialogRef.afterClosed()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(res => {
+      .subscribe((res: boolean) => {
         if (res) {
           this.selected.length === 1
             ? this.deleteOneProyecto()

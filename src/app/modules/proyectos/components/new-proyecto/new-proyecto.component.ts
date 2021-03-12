@@ -96,7 +96,7 @@ export class NewProyectoComponent implements OnInit, OnDestroy {
       .subscribe(proy => {
         if (proy) {
           this.toastrSvc.success('El proyecto se ha creado correctamente. 😀', 'Proyecto Creado');
-          this.dialogRef.close(this.proyectoForm);
+          this.dialogRef.close();
         }
       });
   }

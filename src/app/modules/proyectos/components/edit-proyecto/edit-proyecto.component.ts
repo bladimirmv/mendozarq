@@ -34,7 +34,8 @@ export class EditProyectoComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private router: Router,
     private dialogRef: MatDialogRef<EditProyectoComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Proyecto & {
+
+    @Inject(MAT_DIALOG_DATA) private data: Proyecto & {
       nombreCliente?: string;
       apellidoPaterno?: string;
       apellidoMaterno?: string;

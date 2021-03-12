@@ -63,6 +63,7 @@ export class NewUsuarioProyectoComponent implements OnInit, OnDestroy {
       .subscribe((usuario: Usuario[]) => {
         this.usuario = usuario;
         this.selectedUsuario = usuario;
+
         const warningDialog: warningDialog = {
           title: 'Sin Usuarios',
           paragraph: 'No hay usuarios disponible con el rol de arquitecto o administrador para asignar a este proyecto.',
@@ -72,7 +73,6 @@ export class NewUsuarioProyectoComponent implements OnInit, OnDestroy {
           const dialogRef = this.matdialog.open(WarningModalComponent, {
             data: warningDialog
           });
-
           dialogRef.afterClosed()
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: boolean) => {

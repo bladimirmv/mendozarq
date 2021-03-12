@@ -131,7 +131,7 @@
         <tr mat-row *matRowDef="let row; columns: usuariosColumns;"></tr>
       </table>
     </div>
-    <mat-paginator #usuarioPaginator [pageSizeOptions]="[2, 5, 10, 20]" showFirstLastButtons></mat-paginator>
+    <mat-paginator #usuarioPaginator [pageSizeOptions]="[ 5, 10, 20]" showFirstLastButtons></mat-paginator>
 
   </div>
 
@@ -251,7 +251,7 @@
         <tr mat-row *matRowDef="let row; columns: personalColumns;"></tr>
       </table>
     </div>
-    <mat-paginator #personalPaginator [pageSizeOptions]="[2, 5, 10, 20]" showFirstLastButtons></mat-paginator>
+    <mat-paginator #personalPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 
   </div>
 </div>

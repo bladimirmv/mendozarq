@@ -29,6 +29,7 @@
     "moment": "^2.29.1",
     "ngx-electron": "^2.2.0",
     "ngx-toastr": "^13.0.0",
+    "pdfmake": "^0.1.70",
     "rxjs": "~6.5.5",
     "socket.io-client": "^3.0.5",
     "tslib": "^2.0.0",

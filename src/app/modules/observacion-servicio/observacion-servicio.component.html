@@ -1,9 +1,28 @@
 <div class="content">
 
 
+  <div class="options mat-elevation-z2">
+
+    <mat-form-field class="full-width">
+      <mat-label>Buscar</mat-label>
+      <input matInput autocomplete="off">
+      <!-- <button mat-button matSuffix mat-icon-button>
+        <mat-icon>close</mat-icon>
+      </button> -->
+    </mat-form-field>
+
+    <button mat-icon-button matTooltip="Nueva Observacion" matTooltipPosition="below" class="btn-add">
+      <mat-icon class="mat-18">
+        add
+      </mat-icon>
+    </button>
+
+  </div>
+
 
 
   <div class="servicio" *ngFor="let os of obsrServicio">
+    <!-- *Header Servicio -->
     <div class=" mat-elevation-z3 header">
       <h3 class="title">
         {{os.servicio.nombre | titlecase}}
@@ -15,7 +34,7 @@
       </button>
     </div>
 
-
+    <!-- *Observacion -->
     <div class="observacion mat-elevation-z2" *ngFor="let observacion of os.observaciones">
       <div class="estado">
         {{observacion.estado}}
@@ -51,9 +70,6 @@
   </div>
 
 
-
-
-
-
+  <mat-paginator class="mat-elevation-z2" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 
 </div>
