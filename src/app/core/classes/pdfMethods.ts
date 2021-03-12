@@ -13,17 +13,12 @@ export interface BodyTable {
   italics?: boolean;
 }
 
-// export interface ItemTable extends Table {
-//   margin?: Array<number>;
-// }
-
 
 export class PdfMethods {
 
   constructor() {
     moment.locale('es');
   }
-
 
   // ====================> presupuesto
   public async presupuesto(pdf: Array<any>): Promise<Array<any>> {
@@ -261,7 +256,6 @@ export class PdfMethods {
     return pdf;
   }
 
-
   // ====================> detallePresupuesto
   public async detallePresupuesto(pdf: Array<any>): Promise<Array<any>> {
 
@@ -478,7 +472,6 @@ export class PdfMethods {
 
   }
 
-
   // ====================> getBase64Image
   public getBase64Image(img: HTMLImageElement) {
     const canvas = document.createElement('canvas');
@@ -508,6 +501,4 @@ export class PdfMethods {
       }
     });
   }
-
-
 }

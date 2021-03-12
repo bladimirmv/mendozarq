@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
 
 import { PdfService } from '@services/pdf/pdf.service';
-import * as moment from 'moment';
-
-
 @Component({
   selector: 'app-presupuestos',
   templateUrl: './presupuestos.component.html',
@@ -17,16 +13,10 @@ export class PresupuestosComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
 
-
-
     let pdf: Array<any> = [];
-
 
     pdf = await this.pdfSvc.presupuesto(pdf);
     pdf = await this.pdfSvc.detallePresupuesto(pdf);
-
-
-
 
     const docDefinition = {
       content: pdf,
@@ -51,10 +41,7 @@ export class PresupuestosComponent implements OnInit {
           };
         }
       }
-
     };
-
-
 
     const pdfResult = this.pdfSvc.createPdf(docDefinition);
     this.pdfDataUrl = await this.pdfSvc.getPdfDataUrl(pdfResult);
@@ -62,9 +49,5 @@ export class PresupuestosComponent implements OnInit {
     const pdfIframe = document.querySelector('#pdf-iframe') as HTMLIFrameElement;
     pdfIframe.src = this.pdfDataUrl;
   }
-
-
-
-
 
 }
