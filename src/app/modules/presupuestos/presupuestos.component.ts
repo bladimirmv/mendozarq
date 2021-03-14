@@ -8,11 +8,16 @@ import { PdfService } from '@services/pdf/pdf.service';
 })
 export class PresupuestosComponent implements OnInit {
 
-  public pdfDataUrl: string;
+  public pdfResult: any;
+
   constructor(private pdfSvc: PdfService) { }
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
+    this.generatePdf();
+  }
 
+  // ====================> generatePdf
+  private async generatePdf(): Promise<void> {
     let pdf: Array<any> = [];
 
     pdf = await this.pdfSvc.presupuesto(pdf);
@@ -43,11 +48,31 @@ export class PresupuestosComponent implements OnInit {
       }
     };
 
-    const pdfResult = this.pdfSvc.createPdf(docDefinition);
-    this.pdfDataUrl = await this.pdfSvc.getPdfDataUrl(pdfResult);
+    this.pdfResult = this.pdfSvc.createPdf(docDefinition);
 
     const pdfIframe = document.querySelector('#pdf-iframe') as HTMLIFrameElement;
-    pdfIframe.src = this.pdfDataUrl;
+    pdfIframe.src = await this.pdfSvc.getPdfDataUrl(this.pdfResult);
+  }
+
+  // ====================> downloadPdf
+  public downloadPdf(): void {
+    if (this.pdfResult) {
+      this.pdfSvc.dowload(this.pdfResult, 'presupuesto_123');
+    }
+  }
+
+  // ====================> openPdf
+  public openPdf(): void {
+    if (this.pdfResult) {
+      this.pdfSvc.open(this.pdfResult);
+    }
+  }
+
+  // ====================> printPdf
+  public printPdf(): void {
+    if (this.pdfResult) {
+      this.pdfSvc.print(this.pdfResult);
+    }
   }
 
 }
