@@ -91,7 +91,6 @@ export class AuthService extends RoleValidator {
       if (typeof httpError.error.message === 'string') {
         errorMessage = `${httpError.error.message}`;
       } else if (httpError.error.message.errno) {
-
         switch (httpError.error.message.errno) {
           case -111:
             errorMessage = 'No se ha podido establecer una conexion con la base de datos. 🙁';

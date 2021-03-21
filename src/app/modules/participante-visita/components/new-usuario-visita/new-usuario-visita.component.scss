@@ -1,14 +1,18 @@
+h3 {
+  width: 350px;
+  word-break: break-all;
+}
+
 .new-form {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 10px;
-  padding: 10px;
+  .search-container {}
+
 }
 
-.full-column {
-  grid-column: span 2;
-}
 
+mat-dialog-content {
+  width: auto;
+  min-width: 420px;
+}
 
 mat-dialog-actions {
   display: grid;
@@ -41,15 +45,12 @@ mat-dialog-actions {
   }
 }
 
-@media screen and (max-width:625px) {
-  .new-form {
-    display: grid;
-    grid-template-columns: minmax(100%, 1fr);
-    grid-gap: 0;
-    padding: 0;
-  }
 
-  .full-column {
-    grid-column: 1;
+
+
+@media screen and(max-width:610px) {
+  mat-dialog-content {
+    width: auto;
+    min-width: 0;
   }
 }

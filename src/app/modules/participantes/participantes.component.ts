@@ -17,7 +17,6 @@ import { ToastrService } from 'ngx-toastr';
 import { NewPersonalProyectoComponent } from './components/new-personal-proyecto/new-personal-proyecto.component';
 import { NewUsuarioProyectoComponent } from './components/new-usuario-proyecto/new-usuario-proyecto.component';
 import { MatPaginator } from '@angular/material/paginator';
-import { threadId } from 'worker_threads';
 
 
 

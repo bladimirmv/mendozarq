@@ -1,48 +1,44 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ParticipantesProyectoService } from '@app/core/services/mendozarq/participantes-proyecto.service';
-import { WarningModalComponent } from '@app/shared/components/warning-modal/warning-modal.component';
-import { UsuarioProyecto } from '@app/shared/models/mendozarq/participante.proyecto.interface';
+import { warningDialog, WarningModalComponent } from '@app/shared/components/warning-modal/warning-modal.component';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { Usuario } from '@app/shared/models/usuario.interface';
-export interface warningDialog {
-  title: string;
-  paragraph: string;
-  btnPrimary: string;
-};
-
-
+import { ParticipanteVisitaService } from '@app/core/services/mendozarq/participante-visita.service';
+import { ParticipanteVisita } from '@app/shared/models/mendozarq/participante.visita.interface';
 @Component({
-  selector: 'app-new-usuario-proyecto',
-  templateUrl: './new-usuario-proyecto.component.html',
-  styleUrls: ['./new-usuario-proyecto.component.scss']
+  selector: 'app-new-usuario-visita',
+  templateUrl: './new-usuario-visita.component.html',
+  styleUrls: ['./new-usuario-visita.component.scss']
 })
-export class NewUsuarioProyectoComponent implements OnInit, OnDestroy {
+export class NewUsuarioVisitaComponent implements OnInit, OnDestroy {
   private destroy$: Subject<any> = new Subject<any>();
 
-  public usuarioProyectoForm: FormGroup;
+  public usuarioVisitaForm: FormGroup;
   private usuario: Usuario[] = [];
   public selectedUsuario: Usuario[] = [];
   public usuarioGroup: Usuario[] = [];
 
 
   constructor(
-    private participantesSvc: ParticipantesProyectoService,
+    private participanteVisitaSvc: ParticipanteVisitaService,
     private toastrSvc: ToastrService,
     private fb: FormBuilder,
-    private dialogRef: MatDialogRef<NewUsuarioProyectoComponent>,
+    private dialogRef: MatDialogRef<NewUsuarioVisitaComponent>,
     private matdialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) private usuarioProyecto: UsuarioProyecto,
+    @Inject(MAT_DIALOG_DATA) private uuidVisita: string,
     private router: Router
   ) { }
 
   ngOnInit(): void {
     this.initForm();
     this.getAllUsuarios();
+
+    console.log(this.uuidVisita);
+
   }
 
   ngOnDestroy(): void {
@@ -51,13 +47,13 @@ export class NewUsuarioProyectoComponent implements OnInit, OnDestroy {
   }
 
   private initForm(): void {
-    this.usuarioProyectoForm = this.fb.group({
+    this.usuarioVisitaForm = this.fb.group({
       usuario: [[], Validators.required],
     });
   }
 
   private getAllUsuarios(): void {
-    this.participantesSvc.getAllUsuarioByUuid(this.usuarioProyecto.uuidProyecto)
+    this.participanteVisitaSvc.getAllUsuarioByUuidVisita(this.uuidVisita)
       .pipe(takeUntil(this.destroy$))
       .subscribe((usuario: Usuario[]) => {
         this.usuario = usuario;
@@ -65,9 +61,10 @@ export class NewUsuarioProyectoComponent implements OnInit, OnDestroy {
 
         const warningDialog: warningDialog = {
           title: 'Sin Usuarios',
-          paragraph: 'No hay usuarios disponible con el rol de arquitecto o administrador para asignar a este proyecto.',
-          btnPrimary: 'Registrar'
+          paragraph: 'No hay usuarios disponibles en el proyecto para asignar a esta visita.',
+          btnPrimary: 'Continuar'
         };
+
         if (!usuario.length) {
           const dialogRef = this.matdialog.open(WarningModalComponent, {
             data: warningDialog
@@ -75,12 +72,7 @@ export class NewUsuarioProyectoComponent implements OnInit, OnDestroy {
           dialogRef.afterClosed()
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: boolean) => {
-              if (res) {
-                this.router.navigate(['admin/usuarios']);
-                this.dialogRef.close(false);
-              } else {
-                this.dialogRef.close(false);
-              }
+              this.dialogRef.close(false);
             });
         }
       });
@@ -88,24 +80,23 @@ export class NewUsuarioProyectoComponent implements OnInit, OnDestroy {
 
   public newUsuario(usuario: Usuario[]): void {
 
-    const usuarioProyecto: UsuarioProyecto[] = [];
+    const usuarioVisita: ParticipanteVisita[] = [];
 
     usuario.forEach((usr: Usuario) => {
-      usuarioProyecto.push({
+      usuarioVisita.push({
         uuidUsuario: usr.uuid,
-        uuidProyecto: this.usuarioProyecto.uuidProyecto
+        uuidVisitaProyecto: this.uuidVisita
       })
     });
 
-    this.participantesSvc.addUsuarioProyecto(usuarioProyecto)
+    this.participanteVisitaSvc.addParticipanteVisita(usuarioVisita)
       .pipe(takeUntil(this.destroy$))
       .subscribe(res => {
         if (res) {
           this.toastrSvc.success('Se ha añadido correctamente. 😀',
-            usuarioProyecto.length > 1
+            usuarioVisita.length > 1
               ? 'Usuarios Asignado'
               : 'Usuario Asignado');
-
           this.dialogRef.close(true);
         }
       });
@@ -113,7 +104,7 @@ export class NewUsuarioProyectoComponent implements OnInit, OnDestroy {
 
   // ===========> isValidField
   public isValidField(field: string): { color?: string; status?: boolean; icon?: string; } {
-    const validateFIeld = this.usuarioProyectoForm.get(field);
+    const validateFIeld = this.usuarioVisitaForm.get(field);
     return (!validateFIeld.valid && validateFIeld.touched)
       ? { color: 'warn', status: false, icon: 'close' }
       : validateFIeld.valid
@@ -136,6 +127,4 @@ export class NewUsuarioProyectoComponent implements OnInit, OnDestroy {
         || usuario.apellidoMaterno.toLowerCase().indexOf(filterValue) === 0;
     })
   }
-
-
 }

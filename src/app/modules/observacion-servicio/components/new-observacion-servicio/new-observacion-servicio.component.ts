@@ -1,7 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ServicioProyectoService } from '@app/core/services/mendozarq/servicio-proyecto.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { ServicioProyecto } from '@models/mendozarq/servicio.proyecto.interface';
@@ -51,13 +50,9 @@ export class NewObservacionServicioComponent implements OnInit, OnDestroy {
 
   // ===================> addObservacionServicio
   public addObservacionServicio(observacionServicio: ObservacionServicio): void {
-
     observacionServicio.uuidServicio = this.data.servicioProyecto.uuid;
     observacionServicio.uuidVisita = this.data.uuidVisita;
     observacionServicio.fecha = new Date(moment().format('YYYY-MM-DD'));
-
-    console.log(observacionServicio.fecha);
-
 
     this.observacionServicioSvc.addObservacionServicio(observacionServicio)
       .pipe(takeUntil(this.destroy$))
@@ -66,9 +61,7 @@ export class NewObservacionServicioComponent implements OnInit, OnDestroy {
           this.toastrSvc.success('La observacion se ha creado correctamente. 😀', 'Observacion Creado');
           this.dialogRef.close(true);
         }
-
       });
-
   }
 
   // ===========> isValidField
@@ -80,7 +73,6 @@ export class NewObservacionServicioComponent implements OnInit, OnDestroy {
         ? { color: 'accent', status: true, icon: 'done' }
         : {};
   }
-
 
   getTime(date: Date): string {
     moment.locale('es');

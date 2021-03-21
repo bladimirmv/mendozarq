@@ -31,6 +31,9 @@ const routes: Routes = [
     path: 'perfil', loadChildren: () =>
       import('@modules/perfil/perfil.module').then(m => m.PerfilModule)
   },
+
+
+  { path: 'participante-visita', loadChildren: () => import('./modules/participante-visita/participante-visita.module').then(m => m.ParticipanteVisitaModule) },
   {
     path: '**', loadChildren: () =>
       import('./core/not-found/not-found.module').then(m => m.NotFoundModule)

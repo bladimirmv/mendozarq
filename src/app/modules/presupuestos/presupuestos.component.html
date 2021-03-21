@@ -1,21 +1,31 @@
 <div class="content">
-  <!-- <link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Akaya+Telivigala&display=swap" rel="stylesheet"> -->
-
   <div class="form-container">
-    form container
 
-    <button (click)="openPdf()">open</button>
-    <button (click)="printPdf()">print</button>
-    <button (click)="downloadPdf()">dowload</button>
-    <!-- {{pdfDataUrl}} -->
   </div>
 
   <div class="iframe-container">
-    <iframe frameborder="0" id="pdf-iframe"></iframe>
+    <div class="options">
+      <button mat-button class="mat-btn-secondary" (click)="openPdf()">
+        <mat-icon>
+          open_in_new
+        </mat-icon>
+        Abrir
+      </button>
+
+      <button mat-button class="mat-btn-secondary" (click)="printPdf()">
+        <mat-icon>
+          print
+        </mat-icon>
+        Imprimir
+      </button>
+
+      <button mat-button class="mat-btn-secondary" (click)="downloadPdf()">
+        <mat-icon>
+          download
+        </mat-icon>
+        Descargar
+      </button>
+    </div>
+    <iframe frameborder="0" id="pdf-iframe" onreset="true">Cargando</iframe>
   </div>
-
-
-
-
 </div>

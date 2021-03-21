@@ -3,7 +3,6 @@
 </h1>
 
 <mat-dialog-content>
-
   <form class="new-form" [formGroup]="visitaForm">
 
     <!-- *Nombre -->
@@ -27,7 +26,6 @@
       <input matInput type="datetime-local" formControlName="fecha">
     </mat-form-field>
 
-
     <!-- *faseDelProyecto -->
     <mat-form-field class="full-width full-column" [color]="isValidField('faseDelProyecto').color">
       <mat-label>Fase del Proyecto</mat-label>
@@ -46,8 +44,6 @@
         Debe contener {{visitaForm.get('faseDelProyecto').errors?.maxlength?.requiredLength}} digitos como maximo.
       </mat-error>
     </mat-form-field>
-
-
 
     <!-- *Descripcion -->
     <mat-form-field class="full-width full-column" [color]="isValidField('descripcion').color">

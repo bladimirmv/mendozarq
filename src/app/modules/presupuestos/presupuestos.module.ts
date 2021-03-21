@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { PresupuestosRoutingModule } from './presupuestos-routing.module';
 import { PresupuestosComponent } from './presupuestos.component';
 import { PresupuestoObraComponent } from './components/presupuesto-obra/presupuesto-obra.component';
+import { MaterialModule } from '@app/material.module';
 
 @NgModule({
   declarations: [PresupuestosComponent, PresupuestoObraComponent],
@@ -14,6 +15,7 @@ import { PresupuestoObraComponent } from './components/presupuesto-obra/presupue
     PresupuestosRoutingModule,
     SharedModule,
     CdkMaterialModule,
+    MaterialModule
   ]
 })
 export class PresupuestosModule { }

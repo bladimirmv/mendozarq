@@ -25,31 +25,31 @@ export class PdfMethods {
     moment.locale('es');
   }
 
+
+
   // ====================> presupuesto
   public async presupuesto(pdf: Array<any>): Promise<Array<any>> {
     const bodyInfo: Array<BodyTable[]> = [];
     const bodyTable: Array<BodyTable[]> = [];
 
-
     pdf = await this.header(pdf);
-
 
     bodyInfo.push([{
       text: 'Nombre:',
       style: 'tableHeader',
       colSpan: 1,
-      // alignment: 'center',
-      color: '#425066',
+      color: '#000000',
       bold: true,
       border: [false]
     },
     {
-      text: 'Edificio Morale',
+      text: 'Edificio Morales',
       style: 'tableHeader',
+      color: '#425066',
       colSpan: 1,
-      // alignment: 'center',
-      border: [false]
-
+      border: [false],
+      fontSize: 10,
+      margin: [0, 2, 0, 0]
     },
 
     {
@@ -62,13 +62,11 @@ export class PdfMethods {
 
     }]);
 
-
     bodyInfo.push([{
       text: 'Cliente:',
       style: 'tableHeader',
       colSpan: 1,
-      // alignment: 'center',
-      color: '#425066',
+      color: '#000000',
       bold: true,
       border: [false]
 
@@ -77,21 +75,21 @@ export class PdfMethods {
       text: 'Baldimir Medrano Vargas',
       style: 'tableHeader',
       colSpan: 1,
-      // alignment: 'center',
-      border: [false]
+      color: '#425066',
+      border: [false],
+      fontSize: 10,
+      margin: [0, 2, 0, 0]
 
     },
     {
 
     }]);
 
-
     bodyInfo.push([{
       text: 'Descripción:',
       style: 'tableHeader',
       colSpan: 1,
-      // alignment: 'center',
-      color: '#425066',
+      color: '#000000',
       bold: true,
       border: [false]
     },
@@ -99,9 +97,10 @@ export class PdfMethods {
       text: 'Presupuesto de obra para el edificio morales ',
       style: 'tableHeader',
       colSpan: 1,
-      // alignment: 'center',
-      border: [false]
-
+      color: '#425066',
+      border: [false],
+      fontSize: 10,
+      margin: [0, 2, 0, 0]
     },
     {
 
@@ -139,8 +138,7 @@ export class PdfMethods {
       alignment: 'center',
       bold: true,
       margin: [0, 20, 0, 10],
-      tocItem: true,
-      // tocMargin: [20, 0, 0, 0]
+      tocItem: true
     });
 
     // *header table
@@ -265,7 +263,7 @@ export class PdfMethods {
         colSpan: 1,
         border: [false],
         color: '#000000',
-        fillColor: '#ffffff',
+        fillColor: '#F5F5F5',
         bold: true,
         alignment: 'center',
 
@@ -275,7 +273,7 @@ export class PdfMethods {
         border: [false],
         alignment: 'center',
         color: '#000000',
-        fillColor: '#ffffff',
+        fillColor: '#F5F5F5',
       }, {
         text: '7,653',
         colSpan: 1,
@@ -438,7 +436,6 @@ export class PdfMethods {
       style: 'tableHeader',
       colSpan: 1,
       alignment: 'center',
-      // color: '#ffffff',
       fillColor: '#F5F5F5',
       bold: true,
       border: [false, false, false, false]
@@ -519,7 +516,6 @@ export class PdfMethods {
     }));
 
     return pdf;
-
 
   }
 

@@ -2,15 +2,18 @@
   Usuario Proyecto
 </h2>
 <mat-dialog-content>
-  <form class="new-proyecto-form" [formGroup]="usuarioProyectoForm">
-
+  <form class="new-form" [formGroup]="usuarioVisitaForm">
     <!-- *cliente -->
     <mat-form-field class="full-width full-column">
       <mat-label>Cliente</mat-label>
 
       <mat-select style="position: relative;" formControlName="usuario" multiple>
         <div style="padding: 5px 5px 0 5px;
-          position: -webkit-sticky; position: sticky; top: 0;  background-color: white;  z-index: 1; ">
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+            background-color: white;
+            z-index: 1;">
           <mat-form-field style=" width: 100%; ">
             <mat-label>Buscar</mat-label>
             <input matInput (keyup)="onKey($event.target.value)" autocomplete="off" #search>
@@ -25,57 +28,40 @@
 
         <mat-option *ngFor=" let usuario of selectedUsuario" [value]="usuario">
           {{ usuario.nombre + ' ' + usuario.apellidoPaterno + ' ' + usuario.apellidoMaterno | titlecase}}
-
         </mat-option>
       </mat-select>
 
       <mat-icon matSuffix [color]="isValidField('usuario').color">
         {{isValidField('usuario').icon}}
       </mat-icon>
-      <mat-error *ngIf="usuarioProyectoForm.get('usuario').errors?.required">
+      <mat-error *ngIf="usuarioVisitaForm.get('usuario').errors?.required">
         Seleccione un usuario.
       </mat-error>
     </mat-form-field>
   </form>
 
   <mat-divider></mat-divider>
+
   <h2 align="center">Seleccionados</h2>
-  <div *ngIf="usuarioProyectoForm.value.usuario.length else notSelected">
+  <div *ngIf="usuarioVisitaForm.value.usuario.length else notSelected">
     <mat-selection-list #usuario [multiple]="false">
-      <mat-list-option *ngFor="let usuario of usuarioProyectoForm.value.usuario" [value]="usuario" align="center">
+      <mat-list-option *ngFor="let usuario of usuarioVisitaForm.value.usuario" [value]="usuario" align="center">
         {{usuario.nombre + ' ' + usuario.apellidoPaterno + ' ' + usuario.apellidoMaterno | titlecase}}
       </mat-list-option>
     </mat-selection-list>
 
     <div *ngIf="usuario.selectedOptions.selected[0]?.value">
       <mat-divider></mat-divider>
-      <h2 align="center">Detalles</h2>
+      <h2 align="center">Proximas Visitas</h2>
 
-      <h3>
-        Celular:
-        <span>{{usuario.selectedOptions.selected[0]?.value.celular}}.</span>
-      </h3>
-      <h3>
-        Correo:
-        <span>{{usuario.selectedOptions.selected[0]?.value.correo}}.</span>
-      </h3>
       <h3>
         Rol:
         <span>{{usuario.selectedOptions.selected[0]?.value.rol}}.</span>
       </h3>
-      <h3>
-        Username:
-        <span>{{usuario.selectedOptions.selected[0]?.value.username}}.</span>
-      </h3>
-      <h3>
-        Direccion:
-        <span>
-          {{usuario.selectedOptions.selected[0]?.value.direccion ? usuario.selectedOptions.selected[0]?.value.direccion : 'Sin direccion'}}.
-        </span>
-      </h3>
-    </div>
 
+    </div>
   </div>
+
   <ng-template #notSelected>
     <p align="center">
       No se ha seleccionado ningun usuario.
@@ -86,8 +72,8 @@
 
 <mat-dialog-actions>
   <button mat-button mat-dialog-close class="mat-btn-secondary">Cancelar</button>
-  <button mat-button class="mat-btn-success" [disabled]=" !usuarioProyectoForm.valid"
-    (click)="newUsuario(usuarioProyectoForm.value.usuario)">
+  <button mat-button class="mat-btn-success" [disabled]="!usuarioVisitaForm.valid"
+    (click)="newUsuario(usuarioVisitaForm.value.usuario)">
     Guardar
   </button>
 </mat-dialog-actions>

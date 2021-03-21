@@ -1,14 +1,14 @@
 import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DocumentosService } from '@app/core/services/mendozarq/documentos.service';
 
-import { DocumentoProyCarpeta, DocumentoProyecto } from '@models/mendozarq/documentos.proyecto.interface';
+import { DocumentoProyCarpeta } from '@models/mendozarq/documentos.proyecto.interface';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, Subject, throwError } from 'rxjs';
+import { Subject, throwError } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
-import { runInThisContext } from 'vm';
+import * as moment from 'moment';
 
 export class uploadFile {
   file: File;
@@ -55,9 +55,10 @@ export class NewDocumentoComponent implements OnInit {
 
   // ====================> uploadFiles
   public uploadFiles(): void {
+    moment.locale('es');
     this.isClicked = true;
     this.documentos.forEach((documento: uploadFile, index) => {
-      this.documentoData.fechaCreacion = new Date;
+      this.documentoData.fechaCreacion = new Date(moment().format('YYYY-MM-DD'));
       this.documentoData.size = documento.file.size;
 
       this.documentoData.path === 'root'

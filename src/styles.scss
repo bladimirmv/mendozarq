@@ -31,7 +31,6 @@ $mendozarq-theme: mat-light-theme((color: (primary: $mendozarq-primary,
   --success: #2AC940;
   --error: #FF6058;
   --info: #33B5E5;
-  --gg: whitesmoke;
 }
 
 .mat-d {
@@ -66,7 +65,6 @@ body {
   margin: auto;
 }
 
-
 // full width
 .full-width {
   width: 100%;
@@ -80,8 +78,6 @@ mat-toolbar {
   z-index: 1000;
 
 }
-
-
 
 .title-1 {
   text-transform: uppercase;
@@ -103,7 +99,6 @@ mat-toolbar {
   }
 }
 
-
 .mat-btn-success {
   margin-top: 100px;
   // border-radius: 25px;
@@ -119,6 +114,33 @@ mat-toolbar {
   }
 }
 
+.mat-btn-info {
+  margin-top: 100px;
+  background-color: var(--info);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+
+
+  &:hover {
+    color: white;
+    box-shadow: 0 0 2px 2px var(--info);
+  }
+}
+
+.mat-btn-accent {
+  margin-top: 100px;
+  background-color: var(--accent);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+
+
+  &:hover {
+    color: white;
+    box-shadow: 0 0 2px 2px var(--accent);
+  }
+}
 
 .no-select {
   -webkit-touch-callout: none;
@@ -128,7 +150,6 @@ mat-toolbar {
   -ms-user-select: none;
   user-select: none;
 }
-
 
 mat-hint {
   font-weight: bold;
@@ -162,8 +183,6 @@ mat-hint {
     box-shadow: 0 0 2px 2px var(--secondary);
   }
 }
-
-
 
 
 // ===========> Forms

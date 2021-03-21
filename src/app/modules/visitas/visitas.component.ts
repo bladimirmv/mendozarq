@@ -154,25 +154,26 @@ export class VisitasComponent implements OnInit, OnDestroy {
 
   getDateString(date: Date): string {
     moment.locale('es');
-    const result = moment(date).format('MMMM Do YYYY, h:mm:ss a');
+    const result = moment(date).format('DD [de] MMMM [de] YYYY, h:mm:ss a');
     return result;
   }
 
   compareDate(date: Date): boolean {
     return moment(date) > moment() ? true : false;
   }
-  realtime(date: Date): Observable<boolean> {
-    return new Observable<boolean>((observer) => {
-      setInterval(() => {
-        if (moment(date) > moment()) {
-          observer.next(true);
-        } else {
-          observer.next(false);
-          observer.complete();
-        }
-      }, 1000 * 60);
-    });
-  }
+
+  // realtime(date: Date): Observable<boolean> {
+  //   return new Observable<boolean>((observer) => {
+  //     setInterval(() => {
+  //       if (moment(date) > moment()) {
+  //         observer.next(true);
+  //       } else {
+  //         observer.next(false);
+  //         observer.complete();
+  //       }
+  //     }, 1000 * 60);
+  //   });
+  // }
 
 
 
