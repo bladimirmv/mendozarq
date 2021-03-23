@@ -1,6 +1,6 @@
 <div class="content">
   <div class="stats-container">
-    <app-status-card [icon]="'admin_panel_settings'" [color]="'#FF6058'">
+    <app-status-card [icon]="'admin_panel_settings'" color="error">
       <div slot="title">
         Administradores
       </div>
@@ -9,7 +9,7 @@
       </div>
     </app-status-card>
 
-    <app-status-card [icon]="'engineering'" [color]="'#FFBB33'">
+    <app-status-card [icon]="'engineering'" color="accent">
       <div slot="title">
         Arquitectos
       </div>
@@ -18,7 +18,7 @@
       </div>
     </app-status-card>
 
-    <app-status-card [icon]="'assignment_ind'" [color]="'#33B5E5'">
+    <app-status-card [icon]="'assignment_ind'" color="info">
       <div slot="title">
         Vendedores
       </div>
@@ -27,7 +27,7 @@
       </div>
     </app-status-card>
 
-    <app-status-card [icon]="'groups'" [color]="'#00C851'">
+    <app-status-card [icon]="'groups'" color="success">
       <div slot="title">
         Clientes
       </div>
@@ -163,9 +163,19 @@
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
         <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" colspan="4">
-            No hay datos que coincidan con el filtro: "{{input.value}}"</td>
+          <td class="mat-cell" colspan="10" align="center">
+            <div *ngIf="input.value else noData">
+              No hay datos que coincidan con el filtro: "{{input.value}}"
+            </div>
+            <ng-template #noData align="center">
+              <img src="./assets/no_data.svg" alt="" width="100" style="margin: 5px;" class="no-select">
+              <p>
+                Tabla vacía, aún no creaste un usuario.
+              </p>
+            </ng-template>
+          </td>
         </tr>
       </table>
     </div>

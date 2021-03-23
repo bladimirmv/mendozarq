@@ -21,9 +21,6 @@ const routes: Routes = [
         path: 'dashboard', component: DashboardComponent
       },
       {
-        path: 'showusr', component: ShowContrasenhaComponent
-      },
-      {
         path: 'usuarios', loadChildren: () =>
           import('@modules/users/users.module').then(m => m.UsersModule)
       },

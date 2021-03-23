@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { Usuario } from '@app/shared/models/usuario.interface';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 
@@ -12,9 +11,10 @@ import { MatSort } from '@angular/material/sort';
 import { ToastrService } from 'ngx-toastr';
 
 import { MatPaginator } from '@angular/material/paginator';
-import { UsuarioParticipante } from './../participantes/participantes.component';
-import { ParticipanteVisita, UsuarioVisita } from '@app/shared/models/mendozarq/participante.visita.interface';
+import { UsuarioVisita } from '@app/shared/models/mendozarq/participante.visita.interface';
 import { NewUsuarioVisitaComponent } from './components/new-usuario-visita/new-usuario-visita.component';
+import { DeleteModalComponent } from '@app/shared/components/delete-modal/delete-modal.component';
+import { Roles, Usuario } from '@app/shared/models/usuario.interface';
 
 @Component({
   selector: 'app-participante-visita',
@@ -24,21 +24,21 @@ import { NewUsuarioVisitaComponent } from './components/new-usuario-visita/new-u
 export class ParticipanteVisitaComponent implements OnInit, OnDestroy {
   private destroy$: Subject<any> = new Subject<any>();
   private uuidVisita: string = '';
+  public usuarios: Usuario[] = [];
 
 
-  selectedUsuario: UsuarioParticipante[] = [];
-  selectionUsuario = new SelectionModel<UsuarioParticipante>(true, []);
+  selectedUsuario: UsuarioVisita[] = [];
+  selectionUsuario = new SelectionModel<UsuarioVisita>(true, []);
   @ViewChild(MatSort, { static: true }) sortUsuario: MatSort;
   @ViewChild('usuarioPaginator', { read: MatPaginator, static: true }) usuarioPaginator: MatPaginator;
   filterValueUsuario: string;
   public usuariosColumns: Array<string> = ['seleccion', 'estado', 'nombre', 'apellidos', 'rol', 'celular',
     'username', 'correo', 'direccion'];
-  public usuarioSource: MatTableDataSource<UsuarioParticipante> = new MatTableDataSource();
+  public usuarioSource: MatTableDataSource<UsuarioVisita> = new MatTableDataSource();
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private participanteVisitaSvc: ParticipanteVisitaService,
-
     private dialog: MatDialog,
     private toastrSvc: ToastrService) {
   }
@@ -46,7 +46,7 @@ export class ParticipanteVisitaComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.uuidVisita = this.activatedRoute.snapshot.parent.parent.params.uuid;
 
-    this.getAllUsuarioProyecto();
+    this.getAllUsuarioVisita();
     this.usuarioSource.paginator = this.usuarioPaginator;
     this.usuarioSource.sort = this.sortUsuario;
     this.selectionUsuario.changed
@@ -61,17 +61,18 @@ export class ParticipanteVisitaComponent implements OnInit, OnDestroy {
   }
 
 
-  // =====================> getAllUsuarioProyecto
-  private getAllUsuarioProyecto(): void {
+  // =====================> getAllUsuarioVisita
+  private getAllUsuarioVisita(): void {
     this.participanteVisitaSvc
       .getAllParticipanteVisita(this.uuidVisita)
       .pipe(takeUntil(this.destroy$))
       .subscribe((usuarioVisita: UsuarioVisita[]) => {
         this.usuarioSource.data = usuarioVisita;
+        this.usuarios = usuarioVisita;
       })
   }
 
-
+  // ====================> newUsuario
   public newUsuario(): void {
     const dialogRef = this.dialog.open(NewUsuarioVisitaComponent, {
       data: this.uuidVisita
@@ -81,66 +82,72 @@ export class ParticipanteVisitaComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: boolean) => {
         if (res) {
-          this.getAllUsuarioProyecto();
+          this.getAllUsuarioVisita();
         }
       });
   }
 
-
+  // =====================> deleteUsuario
   public deleteUsuario(): void {
-    // const dialogRef = this.dialog.open(DeleteModalComponent);
+    const dialogRef = this.dialog.open(DeleteModalComponent);
 
-    // dialogRef.afterClosed()
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((res: boolean) => {
-    //     if (res) {
-    //       this.selectedUsuario.length === 1
-    //         ? this.deleteOneUsuario()
-    //         : this.deleteMoreThanOneUsuario();
-    //     }
-    //   });
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: boolean) => {
+        if (res) {
+          this.selectedUsuario.length === 1
+            ? this.deleteOneUsuario()
+            : this.deleteMoreThanOneUsuario();
+        }
+      });
   }
 
   // =====================> deleteOneUsuario
   private deleteOneUsuario(): void {
-    // this.participantesSvc
-    //   .deleteUsuarioProyecto(this.selectedUsuario[0].uuidUsuarioProyecto)
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe(usr => {
-    //     if (usr) {
-    //       this.toastrSvc.success('Se ha eliminado correctamente', 'Usuario Eliminado', {
-    //         timeOut: 2000,
-    //         progressBar: true,
-    //         progressAnimation: 'increasing'
-    //       });
-    //       this.getAllUsuarioProyecto();
-    //       this.clearCheckboxUsuario();
-    //     }
-    //   });
+    this.participanteVisitaSvc
+      .deleteParticipanteVisita(this.selectedUsuario[0].uuidParticipanteVisita)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(usr => {
+        if (usr) {
+          this.toastrSvc.success('Se ha eliminado correctamente', 'Usuario Eliminado', {
+            timeOut: 2000,
+            progressBar: true,
+            progressAnimation: 'increasing'
+          });
+          this.getAllUsuarioVisita();
+          this.clearCheckboxUsuario();
+        }
+      });
   }
 
   // =====================> deleteMoreThanOneUsuario
   private deleteMoreThanOneUsuario(): void {
-    // this.selectedUsuario.forEach((usuario, index) => {
-    //   const isLast: boolean = index + 1 === this.selectedUsuario.length;
-    //   this.participantesSvc
-    //     .deleteUsuarioProyecto(usuario.uuidUsuarioProyecto)
-    //     .pipe(takeUntil(this.destroy$))
-    //     .subscribe(res => {
-    //       if (res && isLast) {
-    //         this.toastrSvc.success('Se han eliminado correctamente', 'Usuarios Eliminado', {
-    //           timeOut: 2000,
-    //           progressBar: true,
-    //           progressAnimation: 'increasing'
-    //         });
-    //         this.getAllUsuarioProyecto()
-    //         this.clearCheckboxUsuario();
-    //       }
-    //     });
+    this.selectedUsuario.forEach((usuario, index) => {
+      const isLast: boolean = index + 1 === this.selectedUsuario.length;
+      this.participanteVisitaSvc
+        .deleteParticipanteVisita(usuario.uuidParticipanteVisita)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(res => {
+          if (res && isLast) {
+            this.toastrSvc.success('Se han eliminado correctamente', 'Usuarios Eliminado', {
+              timeOut: 2000,
+              progressBar: true,
+              progressAnimation: 'increasing'
+            });
+            this.getAllUsuarioVisita()
+            this.clearCheckboxUsuario();
+          }
+        });
 
-    // });
+    });
   }
 
+
+  public typeUser(users: Usuario[], type: Roles): number {
+    let cant = 0;
+    users.forEach((user) => user.rol === type ? cant++ : false);
+    return cant;
+  }
 
   // !important, this part is for usuarioProyecto table.
   // =====================> applyFilterUsuario
@@ -171,7 +178,7 @@ export class ParticipanteVisitaComponent implements OnInit, OnDestroy {
     this.selectionUsuario.clear();
   }
   // =====================> checkboxLabelUsuario
-  checkboxLabelUsuario(row?: Usuario): string {
+  checkboxLabelUsuario(row?: UsuarioVisita): string {
     if (!row) {
       return `${this.isAllSelectedUsuario() ? 'select' : 'deselect'} all`;
     }

@@ -1,4 +1,36 @@
 <div class="content">
+  <div class="stats-container">
+    <app-status-card [icon]="'people'" color="info">
+      <div slot="title">
+        Participantes Totales
+      </div>
+      <div slot="count">
+        {{usuarios.length}}
+      </div>
+    </app-status-card>
+
+    <app-status-card [icon]="'admin_panel_settings'" color="error">
+      <div slot="title">
+        Administradores
+      </div>
+      <div slot="count">
+        {{typeUser(usuarios, 'administrador')}}
+      </div>
+    </app-status-card>
+
+    <app-status-card [icon]="'engineering'" color="accent">
+      <div slot="title">
+        Arquitectos
+      </div>
+      <div slot="count">
+        {{typeUser(usuarios, 'arquitecto')}}
+      </div>
+    </app-status-card>
+  </div>
+
+</div>
+
+<div class="content">
   <!-- *usuarioProyecto -->
   <div class="table-container mat-elevation-z2">
 
@@ -52,13 +84,11 @@
           </td>
         </ng-container>
 
-
         <!-- *Estado -->
         <ng-container matColumnDef="estado">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
           <td mat-cell *matCellDef="let row" class="text-center">
-            <div [class]="row.activo ? 'personal-activo' : 'personal-no-activo'">
-            </div>
+            <div [class]="row.activo ? 'usuario-activo' : 'usuario-no-activo'"></div>
           </td>
         </ng-container>
 
@@ -126,6 +156,20 @@
 
         <tr mat-header-row *matHeaderRowDef="usuariosColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: usuariosColumns;"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="10" align="center">
+            <div *ngIf="inputUsuario.value else noData">
+              No hay datos que coincidan con el filtro: "{{inputUsuario.value}}"
+            </div>
+            <ng-template #noData align="center">
+              <img src="./assets/no_data.svg" alt="" width="100" style="margin: 5px;" class="no-select">
+              <p>
+                Tabla vacía, aún no agregaste un participante a la visita.
+              </p>
+            </ng-template>
+          </td>
+        </tr>
       </table>
     </div>
     <mat-paginator #usuarioPaginator [pageSizeOptions]="[ 5, 10, 20]" showFirstLastButtons></mat-paginator>

@@ -129,6 +129,19 @@
 
         <tr mat-header-row *matHeaderRowDef="usuariosColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: usuariosColumns;"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="10" align="center">
+            <div *ngIf="inputUsuario.value else noData">
+              No hay datos que coincidan con el filtro: "{{inputUsuario.value}}"
+            </div>
+            <ng-template #noData align="center">
+              <img src="./assets/no_data.svg" alt="" width="50" style="margin: 0px;" class="no-select">
+              <p>
+                Tabla vacía, aún no agregaste un usuario al proyecto.
+              </p>
+            </ng-template>
+          </td>
+        </tr>
       </table>
     </div>
     <mat-paginator #usuarioPaginator [pageSizeOptions]="[ 5, 10, 20]" showFirstLastButtons></mat-paginator>
@@ -249,6 +262,19 @@
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="personalColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: personalColumns;"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="10" align="center">
+            <div *ngIf="input.value else noData">
+              No hay datos que coincidan con el filtro: "{{input.value}}"
+            </div>
+            <ng-template #noData align="center">
+              <img src="./assets/no_data.svg" alt="" width="60" style="margin: 0px;" class="no-select">
+              <p>
+                Tabla vacía, aún no agregaste un personal al proyecto.
+              </p>
+            </ng-template>
+          </td>
+        </tr>
       </table>
     </div>
     <mat-paginator #personalPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>

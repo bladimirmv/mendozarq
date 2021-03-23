@@ -1,4 +1,5 @@
 import { Usuario } from './../usuario.interface';
+import { VisitaProyecto } from './visita.proyecto.interface';
 
 export interface ParticipanteVisita {
   uuid?: string;
@@ -8,5 +9,9 @@ export interface ParticipanteVisita {
 }
 
 export interface UsuarioVisita extends Usuario {
-  uuidParticipanteVisita: string;
+  uuidParticipanteVisita?: string;
+}
+
+export interface VisitasPendientes extends VisitaProyecto {
+  proyecto?: string;
 }

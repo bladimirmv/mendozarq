@@ -18,8 +18,6 @@ export class ShowContrasenhaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // console.log('llego esto: ', this.data);
-
   }
   openSnackBarCopy(): void {
     this.snackBar.open('Copiado', 'Cerrar', {

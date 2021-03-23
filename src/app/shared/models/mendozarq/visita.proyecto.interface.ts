@@ -4,6 +4,6 @@ export interface VisitaProyecto {
   nombre?: string;
   faseDelProyecto?: string;
   descripcion?: string;
-  fecha?: Date;
+  fecha?: Date | string;
   uuidProyecto?: string;
 }

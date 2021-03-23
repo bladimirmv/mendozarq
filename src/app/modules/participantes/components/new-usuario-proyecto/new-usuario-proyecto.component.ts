@@ -111,6 +111,8 @@ export class NewUsuarioProyectoComponent implements OnInit, OnDestroy {
       });
   }
 
+
+
   // ===========> isValidField
   public isValidField(field: string): { color?: string; status?: boolean; icon?: string; } {
     const validateFIeld = this.usuarioProyectoForm.get(field);

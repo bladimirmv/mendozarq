@@ -1,7 +1,7 @@
 <div class="content">
 
   <div class="stats-container">
-    <app-status-card [icon]="'view_list'" [color]="'var(--info)'">
+    <app-status-card [icon]="'view_list'" color="info">
       <div slot="title">
         Servicios Totales
       </div>
@@ -10,7 +10,7 @@
       </div>
     </app-status-card>
 
-    <app-status-card [icon]="'engineering'" [color]="'var(--accent)'">
+    <app-status-card [icon]="'engineering'" color="accent">
       <div slot="title">
         Servicios en Curso
       </div>
@@ -19,7 +19,7 @@
       </div>
     </app-status-card>
 
-    <app-status-card [icon]="'done_all'" [color]="'var(--success)'">
+    <app-status-card [icon]="'done_all'" color="success">
       <div slot="title">
         Servicios Finzalizados
       </div>
@@ -138,6 +138,19 @@
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="columns"></tr>
         <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="10" align="center">
+            <div *ngIf="input.value else noData">
+              No hay datos que coincidan con el filtro: "{{input.value}}"
+            </div>
+            <ng-template #noData align="center">
+              <img src="./assets/no_data.svg" alt="" width="100" style="margin: 5px;" class="no-select">
+              <p>
+                Tabla vacía, aún no agregaste un servicio al proyecto.
+              </p>
+            </ng-template>
+          </td>
+        </tr>
       </table>
     </div>
     <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>

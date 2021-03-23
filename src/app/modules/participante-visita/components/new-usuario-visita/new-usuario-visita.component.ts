@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { Usuario } from '@app/shared/models/usuario.interface';
 import { ParticipanteVisitaService } from '@app/core/services/mendozarq/participante-visita.service';
 import { ParticipanteVisita } from '@app/shared/models/mendozarq/participante.visita.interface';
+import { VisitasPendientesComponent } from '../visitas-pendientes/visitas-pendientes.component';
 @Component({
   selector: 'app-new-usuario-visita',
   templateUrl: './new-usuario-visita.component.html',
@@ -52,6 +53,7 @@ export class NewUsuarioVisitaComponent implements OnInit, OnDestroy {
     });
   }
 
+  // ====================> getAllUsuarios
   private getAllUsuarios(): void {
     this.participanteVisitaSvc.getAllUsuarioByUuidVisita(this.uuidVisita)
       .pipe(takeUntil(this.destroy$))
@@ -78,8 +80,8 @@ export class NewUsuarioVisitaComponent implements OnInit, OnDestroy {
       });
   }
 
+  // ====================> newUsuario
   public newUsuario(usuario: Usuario[]): void {
-
     const usuarioVisita: ParticipanteVisita[] = [];
 
     usuario.forEach((usr: Usuario) => {
@@ -88,7 +90,6 @@ export class NewUsuarioVisitaComponent implements OnInit, OnDestroy {
         uuidVisitaProyecto: this.uuidVisita
       })
     });
-
     this.participanteVisitaSvc.addParticipanteVisita(usuarioVisita)
       .pipe(takeUntil(this.destroy$))
       .subscribe(res => {
@@ -101,6 +102,22 @@ export class NewUsuarioVisitaComponent implements OnInit, OnDestroy {
         }
       });
   }
+
+  // ====================> visitasPendientes
+  public visitasPendientes(usuario: Usuario) {
+    const dialogRef = this.matdialog.open(VisitasPendientesComponent, {
+      data: usuario
+    });
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: boolean) => {
+        if (res) {
+          this.dialogRef.close();
+        }
+      });
+  }
+
+
 
   // ===========> isValidField
   public isValidField(field: string): { color?: string; status?: boolean; icon?: string; } {

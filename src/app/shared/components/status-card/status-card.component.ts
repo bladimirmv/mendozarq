@@ -6,8 +6,8 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./status-card.component.scss']
 })
 export class StatusCardComponent implements OnInit {
-
-  @Input() color;
+  public fullColor: string = 'white';
+  @Input() color: string;
   @Input() icon: string;
 
 
@@ -15,6 +15,7 @@ export class StatusCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.fullColor = `var(--${this.color.trim()})`;
   }
 
 }

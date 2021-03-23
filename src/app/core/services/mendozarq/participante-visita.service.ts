@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { ParticipanteVisita, UsuarioVisita } from '@models/mendozarq/participante.visita.interface';
+import { ParticipanteVisita, UsuarioVisita, VisitasPendientes } from '@models/mendozarq/participante.visita.interface';
 import { environment } from '@env/environment.prod';
 import { ApiHandleErrorService } from '../errors/api-handle-error.service';
 import { Usuario } from '@app/shared/models/usuario.interface';
@@ -38,6 +38,13 @@ export class ParticipanteVisitaService {
   public getAllUsuarioByUuidVisita(uuidVisita: string): Observable<Usuario[]> {
     return this.http
       .get<Usuario[]>(`${this.API_URL}/api/participanteVisita/uuid/${uuidVisita}`)
+      .pipe(catchError(error => this.handdleError(error)));
+  }
+
+  // ====================> getAllParticipanteVisita
+  public getAllVisitasPendientesByUsuario(uuidUsuario: string): Observable<VisitasPendientes[]> {
+    return this.http
+      .get<VisitasPendientes[]>(`${this.API_URL}/api/participanteVisita/usuario/${uuidUsuario}`)
       .pipe(catchError(error => this.handdleError(error)));
   }
 

@@ -1,6 +1,6 @@
 <div class="content">
   <div class="stats-container">
-    <app-status-card [icon]="'people'" [color]="'#33B5E5'">
+    <app-status-card [icon]="'people'" color="info">
       <div slot="title">
         Totales
       </div>
@@ -9,7 +9,7 @@
       </div>
     </app-status-card>
 
-    <app-status-card [icon]="'how_to_reg'" [color]="'#2AC940'">
+    <app-status-card [icon]="'how_to_reg'" color="success">
       <div slot="title">
         Activos
       </div>
@@ -18,7 +18,7 @@
       </div>
     </app-status-card>
 
-    <app-status-card [icon]="'block'" [color]="'#FF0000'">
+    <app-status-card [icon]="'block'" color="warn">
       <div slot="title">
         Inactivos
       </div>
@@ -162,8 +162,17 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" colspan="4">
-            No hay datos que coincidan con el filtro: "{{input.value}}"</td>
+          <td class="mat-cell" colspan="10" align="center">
+            <div *ngIf="input.value else noData">
+              No hay datos que coincidan con el filtro: "{{input.value}}"
+            </div>
+            <ng-template #noData align="center">
+              <img src="./assets/no_data.svg" alt="" width="100" style="margin: 5px;" class="no-select">
+              <p>
+                Tabla vacía, aún no creaste un personal.
+              </p>
+            </ng-template>
+          </td>
         </tr>
       </table>
     </div>

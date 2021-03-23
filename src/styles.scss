@@ -23,7 +23,6 @@ $mendozarq-theme: mat-light-theme((color: (primary: $mendozarq-primary,
 
 * {
   font-family: Montserrat, sans-serif;
-  // font-size: 1px;
   --primary: #FF6E00;
   --secondary: #425066;
   --warn: red;
@@ -196,7 +195,29 @@ mat-hint {
   border-color: green;
 }
 
+.admin-chip {
+  color: white;
+  font-weight: bold;
+  border-radius: 25px;
+  padding: 3px;
+  background-color: var(--error);
+}
 
+.arqui-chip {
+  color: white;
+  font-weight: bold;
+  border-radius: 25px;
+  padding: 3px;
+  background-color: var(--accent);
+}
+
+.cliente-chip {
+  color: white;
+  font-weight: bold;
+  border-radius: 25px;
+  padding: 3px;
+  background-color: var(--success);
+}
 
 // ::-webkit-scrollbar {
 //   width: 5px;

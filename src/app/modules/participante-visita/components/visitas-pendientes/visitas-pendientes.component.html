@@ -1,0 +1,33 @@
+<h2 mat-dialog-title align="center">Visitas Pendientes</h2>
+<mat-dialog-content>
+  <mat-accordion *ngIf="visitas.length else noVisitas">
+    <mat-expansion-panel *ngFor="let visita of visitas">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{visita.fecha}}
+        </mat-panel-title>
+        <mat-panel-description>
+          <mat-icon>pending_actions</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <h3>Nombre: <span>{{visita.nombre}}</span></h3>
+      <h3>Proyecto:
+        <span>
+          <a [mat-dialog-close]="true" [routerLink]="['admin/proyecto/',visita.uuidProyecto, 'visitas']"
+            class="link-proyecto">
+            {{visita.proyecto}}
+          </a>
+        </span>
+      </h3>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <ng-template #noVisitas>
+    Sin visitas pendientes.
+  </ng-template>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button class="mat-btn-secondary full-width" mat-dialog-close>
+    Cerrar
+  </button>
+</mat-dialog-actions>
