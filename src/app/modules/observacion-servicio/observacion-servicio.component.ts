@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 import { ServicioProyectoService } from '@services/mendozarq/servicio-proyecto.service';
@@ -7,7 +7,7 @@ import { ServicioProyecto } from '@app/shared/models/mendozarq/servicio.proyecto
 import { ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { VisitaProyectoService } from '@app/core/services/mendozarq/visita-proyecto.service';
-import { ObservacionServicio } from '@app/shared/models/mendozarq/observacion.servicio.interface';
+import { ObservacionesByServicio, ObservacionServicio } from '@app/shared/models/mendozarq/observacion.servicio.interface';
 import { VisitaProyecto } from '@app/shared/models/mendozarq/visita.proyecto.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { NewObservacionServicioComponent } from './components/new-observacion-servicio/new-observacion-servicio.component';
@@ -16,21 +16,46 @@ import * as moment from 'moment';
 import { DeleteModalComponent } from '@app/shared/components/delete-modal/delete-modal.component';
 import { ToastrService } from 'ngx-toastr';
 import { EditObservacionServicioComponent } from './components/edit-observacion-servicio/edit-observacion-servicio.component';
-export interface obsrServicio {
-  servicio?: ServicioProyecto,
-  observaciones?: ObservacionServicio[]
-};
+
+
+
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { SelectionModel } from '@angular/cdk/collections';
+
 @Component({
   selector: 'app-observacion-servicio',
   templateUrl: './observacion-servicio.component.html',
-  styleUrls: ['./observacion-servicio.component.scss']
+  styleUrls: ['./observacion-servicio.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ]
 })
 export class ObservacionServicioComponent implements OnInit, OnDestroy {
 
+  filterValuePersonal: string;
+
+  dataSource: MatTableDataSource<ObservacionesByServicio> = new MatTableDataSource();
+  columnsToDisplay: Array<string> = ['observaciones', 'nombre', 'avance', 'fechaInicio', 'fechaFinal', 'descripcion', 'options'];
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+
+
+
+  expandedElement: ObservacionesByServicio | null;
+
+
   private destroy$: Subject<any> = new Subject<any>();
   private uuidVisita: string = '';
-  public obsrServicio: obsrServicio[];
-
+  public ObservacionesByServicio: ObservacionesByServicio[];
+  panelOpenState = false;
   constructor(
     private activatedRoute: ActivatedRoute,
     private observacionServicioSvc: ObservacionServicioService,
@@ -43,6 +68,9 @@ export class ObservacionServicioComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getAllObserbaciones();
+
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
   ngOnDestroy(): void {
     this.destroy$.next({});
@@ -54,8 +82,11 @@ export class ObservacionServicioComponent implements OnInit, OnDestroy {
     this.observacionServicioSvc
       .getAllObservacionServicio(this.uuidVisita)
       .pipe(takeUntil(this.destroy$))
-      .subscribe((obsrServicio: obsrServicio[]) => {
-        this.obsrServicio = obsrServicio;
+      .subscribe((ObservacionesByServicio: ObservacionesByServicio[]) => {
+        this.ObservacionesByServicio = ObservacionesByServicio;
+        this.dataSource.data = ObservacionesByServicio;
+        console.log(ObservacionesByServicio);
+
       });
   }
 
@@ -113,6 +144,23 @@ export class ObservacionServicioComponent implements OnInit, OnDestroy {
   public getTime(date: Date): string {
     moment.locale('es');
     return moment(date).format('DD [de] MMMM [de] YYYY');
+  }
+
+
+
+  // =====================> applyFilterPersonal
+  applyFilter(event: Event | string): void {
+    typeof event === 'string'
+      ? this.filterValuePersonal = event
+      : this.filterValuePersonal = (event.target as HTMLInputElement).value;
+
+    console.log(this.dataSource.data[1]);
+
+
+    this.dataSource.filter = this.filterValuePersonal.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
 }

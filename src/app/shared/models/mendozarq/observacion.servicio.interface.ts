@@ -1,3 +1,5 @@
+import { ServicioProyecto } from "./servicio.proyecto.interface";
+
 export type Estado = 'En curso' | 'Pendiente' | 'Con retraso' | 'Fecha limite' | 'Finalizado';
 export interface ObservacionServicio {
   uuid?: string;
@@ -7,4 +9,8 @@ export interface ObservacionServicio {
   fecha?: Date;
   uuidServicio: string;
   uuidVisita: string;
+}
+
+export interface ObservacionesByServicio extends ServicioProyecto {
+  observaciones?: Array<ObservacionServicio>
 }

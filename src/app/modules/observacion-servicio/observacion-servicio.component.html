@@ -1,75 +1,163 @@
 <div class="content">
 
+  <div class="table-container  mat-elevation-z2">
 
-  <div class="options mat-elevation-z2">
+    <div class="header-table" style.display="grid">
+      <mat-form-field>
+        <mat-label>Buscar</mat-label>
+        <input matInput autocomplete="off" (keyup)="applyFilter($event)" placeholder="Ex. bladimir"
+          [(ngModel)]="filterValuePersonal" #inputSearch>
 
-    <mat-form-field class="full-width">
-      <mat-label>Buscar</mat-label>
-      <input matInput autocomplete="off">
-      <!-- <button mat-button matSuffix mat-icon-button>
-        <mat-icon>close</mat-icon>
-      </button> -->
-    </mat-form-field>
+        <button mat-button *ngIf="filterValuePersonal" matSuffix mat-icon-button aria-label="Clear"
+          (click)="applyFilter('')" (click)="input.value = ''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
 
-    <button mat-icon-button matTooltip="Nueva Observacion" matTooltipPosition="below" class="btn-add">
-      <mat-icon class="mat-18">
-        add
-      </mat-icon>
-    </button>
-
-  </div>
-
-
-
-  <div class="servicio" *ngFor="let os of obsrServicio">
-    <!-- *Header Servicio -->
-    <div class=" mat-elevation-z3 header">
-      <h3 class="title">
-        {{os.servicio.nombre | titlecase}}
-      </h3>
-      <button mat-icon-button (click)="newObservacionServicio(os.servicio)">
-        <mat-icon>
+      <button mat-icon-button matTooltip="Nueva Observacion" matTooltipPosition="below" class="btn-add">
+        <mat-icon class="mat-18">
           add
         </mat-icon>
       </button>
     </div>
 
-    <!-- *Observacion -->
-    <div class="observacion mat-elevation-z2" *ngFor="let observacion of os.observaciones">
-      <div class="estado">
-        {{observacion.estado}}
-        <button mat-icon-button [matMenuTriggerFor]="menu">
-          <mat-icon>
-            more_horiz
-          </mat-icon>
-          <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="updateObservacionServicio(observacion)">
-              <mat-icon>edit</mat-icon>
-              <span>Editar</span>
-            </button>
-            <button mat-menu-item (click)="deleteObservacionServicio(observacion)">
-              <mat-icon>delete</mat-icon>
-              <span>Eliminar</span>
-            </button>
-          </mat-menu>
-        </button>
+    <div class="table-content">
 
-      </div>
-      <div class="creadoEn">
-        <mat-icon class="timer">
-          schedule
-        </mat-icon>
-        <span>
-          Creado el {{getTime(observacion.fecha) }}
-        </span>
-      </div>
-      <p class="descripcion">
-        {{observacion.descripcion}}
-      </p>
+      <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z2" matSort>
+
+        <!-- *observaciones -->
+        <ng-container matColumnDef="observaciones">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>N° Obsr. </th>
+          <td mat-cell *matCellDef="let row" class="text-center"> {{row.observaciones.length}}
+
+          </td>
+        </ng-container>
+
+        <!-- *nombre -->
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+          <td mat-cell *matCellDef="let row" class="text-center"> {{row.nombre}} </td>
+        </ng-container>
+
+        <!-- *descripcion-->
+        <ng-container matColumnDef="descripcion">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripcion </th>
+          <td mat-cell *matCellDef="let row" class="td-longtext text-center" [matTooltip]="row.descripcion"
+            matTooltipPosition="below">
+            <span>
+              {{row.descripcion ? row.descripcion : 'Sin descripcion'}}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- *avance -->
+        <ng-container matColumnDef="avance">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Avance </th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            <div style="font-size: 10px;">
+              {{row.avance ? row.avance : 0}}%
+            </div>
+            <mat-progress-bar mode="buffer" [value]="row.avance ? row.avance : 0"
+              style="height: 10px; border-radius: 5px; min-width: 60px">
+            </mat-progress-bar>
+          </td>
+        </ng-container>
+
+        <!-- *fechaInicio -->
+        <ng-container matColumnDef="fechaInicio">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Inicio </th>
+          <td mat-cell *matCellDef="let row" class="text-center"> {{row.fechaInicio | date }} </td>
+        </ng-container>
+
+        <!-- *fechaFinal -->
+        <ng-container matColumnDef="fechaFinal">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Final </th>
+          <td mat-cell *matCellDef="let row" class="text-center"> {{row.fechaFinal | date}} </td>
+        </ng-container>
+
+        <!-- *edit -->
+        <ng-container matColumnDef="options" stickyEnd>
+          <th *matHeaderCellDef mat-sort-header>
+          </th>
+          <td *matCellDef="let row" class="text-center">
+            <button mat-icon-button (click)="newObservacionServicio(row)" matTooltip="Nueva Observacion"
+              matTooltipPosition="below">
+              <mat-icon>
+                note_add
+              </mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="expandedDetail">
+          <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length" style="white-space: normal;">
+            <div class="observaciones-container"
+              [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+
+
+              <div class="observacion" *ngFor="let observacion of element.observaciones">
+                <div class="estado">
+                  <h3>
+                    {{observacion.estado}}
+                  </h3>
+                  <button mat-icon-button [matMenuTriggerFor]="menu">
+                    <mat-icon>
+                      more_horiz
+                    </mat-icon>
+                    <mat-menu #menu="matMenu">
+                      <button mat-menu-item (click)="updateObservacionServicio(observacion)">
+                        <mat-icon>edit</mat-icon>
+                        <span>Editar</span>
+                      </button>
+                      <button mat-menu-item (click)="deleteObservacionServicio(observacion)">
+                        <mat-icon>delete</mat-icon>
+                        <span>Eliminar</span>
+                      </button>
+                    </mat-menu>
+                  </button>
+                </div>
+
+                <div class="creadoEn">
+                  <mat-icon>
+                    schedule
+                  </mat-icon>
+                  <span>
+                    Creado el {{getTime(observacion.fecha) }}
+                  </span>
+                </div>
+
+                <p class="descripcion">
+                  {{observacion.descripcion}}
+                </p>
+                <mat-divider></mat-divider>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"
+          [class.example-expanded-row]="expandedElement === element"
+          (click)="expandedElement = expandedElement === element ? null : element">
+        </tr>
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="10" align="center">
+            <div *ngIf="inputSearch.value else noData">
+              No hay datos que coincidan con el filtro: "{{inputSearch.value}}"
+            </div>
+            <ng-template #noData align="center">
+              <img src="./assets/no_data.svg" alt="" width="100" style="margin: 5px;" class="no-select">
+              <p>
+                Tabla vacía, aún no agregaste un servicio al proyecto.
+              </p>
+            </ng-template>
+          </td>
+        </tr>
+      </table>
     </div>
+    <mat-paginator class="mat-elevation-z2" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
   </div>
-
-
-  <mat-paginator class="mat-elevation-z2" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 
 </div>

@@ -31,6 +31,9 @@ export class NewObservacionServicioComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initForm();
+
+    console.log(this.data);
+
   }
 
   ngOnDestroy(): void {
@@ -44,7 +47,6 @@ export class NewObservacionServicioComponent implements OnInit, OnDestroy {
       servicio: [{ value: this.data.servicioProyecto.nombre, disabled: true }],
       estado: ['En curso', Validators.required],
       descripcion: ['', [Validators.required, Validators.maxLength(200)]],
-
     });
   }
 

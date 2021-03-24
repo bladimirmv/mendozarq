@@ -1,7 +1,9 @@
 // table class
 .table-container {
   max-width: 100%;
+  width: 100%;
   margin: 30px 0;
+
 
   .header-table {
     max-width: 100%;
@@ -25,14 +27,11 @@
   table {
     width: 100%;
     max-width: 100%;
-    // overflow: auto;
-
   }
 
 
   tr:hover {
     background-color: whitesmoke;
-
   }
 
   .actions-table {

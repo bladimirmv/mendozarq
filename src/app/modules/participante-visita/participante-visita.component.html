@@ -156,7 +156,6 @@
 
         <tr mat-header-row *matHeaderRowDef="usuariosColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: usuariosColumns;"></tr>
-
         <tr class="mat-row" *matNoDataRow>
           <td class="mat-cell" colspan="10" align="center">
             <div *ngIf="inputUsuario.value else noData">

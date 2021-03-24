@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { ObservacionServicio } from '@models/mendozarq/observacion.servicio.interface';
+import { ObservacionesByServicio, ObservacionServicio } from '@models/mendozarq/observacion.servicio.interface';
 import { environment } from '@env/environment.prod';
 import { ServicioProyecto } from '@app/shared/models/mendozarq/servicio.proyecto.interface';
 
@@ -40,9 +40,9 @@ export class ObservacionServicioService {
   }
 
   // ====================> getAllObservacionServicio
-  public getAllObservacionServicio(uuid: string): Observable<obsrServicio[]> {
+  public getAllObservacionServicio(uuid: string): Observable<ObservacionesByServicio[]> {
     return this.http
-      .get<obsrServicio[]>(`${this.API_URL}/api/observacionServicio/visita/${uuid}`)
+      .get<ObservacionesByServicio[]>(`${this.API_URL}/api/observacionServicio/visita/${uuid}`)
       .pipe(catchError(error => this.handdleError(error)));
   }
 
