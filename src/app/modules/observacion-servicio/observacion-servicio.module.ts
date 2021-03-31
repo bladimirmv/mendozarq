@@ -7,6 +7,7 @@ import { MaterialModule } from '@app/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewObservacionServicioComponent } from './components/new-observacion-servicio/new-observacion-servicio.component';
 import { EditObservacionServicioComponent } from './components/edit-observacion-servicio/edit-observacion-servicio.component';
+import { SharedModule } from '@app/shared/shared.module';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { EditObservacionServicioComponent } from './components/edit-observacion-
     ObservacionServicioRoutingModule,
     MaterialModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    SharedModule
   ]
 })
 export class ObservacionServicioModule { }

@@ -64,7 +64,7 @@ export class ServicioProyectoService {
             errorMessage = 'No se ha podido establecer una conexion con la base de datos. 🙁';
             break;
           case 1451:
-            errorMessage = 'No se puede eliminar por que este servicioProyecto esta relacionado con un proyecto u otra tabla. 🙁';
+            errorMessage = 'No se puede eliminar por que este servicio esta relacionado con una observacion u otra tabla. 🙁';
             break;
           default:
             errorMessage = `

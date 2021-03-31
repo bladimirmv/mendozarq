@@ -17,9 +17,11 @@ import * as moment from 'moment';
 })
 export class NewObservacionServicioComponent implements OnInit, OnDestroy {
 
+  public selectedServicio: ServicioProyecto[] = [];
+  public servicio: ServicioProyecto[] = [];
+
   private destroy$ = new Subject<any>();
   public servicioForm: FormGroup;
-
   public estados: Array<string> = ['En curso', 'Pendiente', 'Con retraso', 'Fecha limite', 'Finalizado'];
 
   constructor(
@@ -27,13 +29,11 @@ export class NewObservacionServicioComponent implements OnInit, OnDestroy {
     private toastrSvc: ToastrService,
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<NewObservacionServicioComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { servicioProyecto: ServicioProyecto, uuidVisita: string }) { }
+    @Inject(MAT_DIALOG_DATA) public data: { sp?: ServicioProyecto; uuidVisita: string; disabled: boolean }) { }
 
   ngOnInit(): void {
     this.initForm();
-
-    console.log(this.data);
-
+    this.getAllServiciosProyecto();
   }
 
   ngOnDestroy(): void {
@@ -44,15 +44,28 @@ export class NewObservacionServicioComponent implements OnInit, OnDestroy {
   // ============> onInitForm
   private initForm(): void {
     this.servicioForm = this.fb.group({
-      servicio: [{ value: this.data.servicioProyecto.nombre, disabled: true }],
+      uuidServicio: [{ value: this.data.sp ? this.data.sp.uuid : '', disabled: this.data.disabled }, Validators.required],
       estado: ['En curso', Validators.required],
       descripcion: ['', [Validators.required, Validators.maxLength(200)]],
     });
   }
 
+  // ====================> getAllServiciosProyecto
+  public getAllServiciosProyecto(): void {
+    this.observacionServicioSvc
+      .getAllServiciosByUuidVisita(this.data.uuidVisita)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((servicio: ServicioProyecto[]) => {
+        this.selectedServicio = servicio;
+        this.servicio = servicio;
+      });
+  }
+
   // ===================> addObservacionServicio
   public addObservacionServicio(observacionServicio: ObservacionServicio): void {
-    observacionServicio.uuidServicio = this.data.servicioProyecto.uuid;
+    this.data.sp
+      ? observacionServicio.uuidServicio = this.data.sp.uuid
+      : null;
     observacionServicio.uuidVisita = this.data.uuidVisita;
     observacionServicio.fecha = new Date(moment().format('YYYY-MM-DD'));
 
@@ -75,9 +88,24 @@ export class NewObservacionServicioComponent implements OnInit, OnDestroy {
         ? { color: 'accent', status: true, icon: 'done' }
         : {};
   }
+  // ============> onKeySearch
+  public onKey(value) {
+    this.selectedServicio = this._filter(value);
+  }
 
+  // ============> filterCliente
+  private _filter(value: string): ServicioProyecto[] {
+    const filterValue = value.toLowerCase();
+    return this.servicio.filter(servicio => {
+      return servicio.nombre.toLowerCase().indexOf(filterValue) === 0;
+    })
+  }
+
+  // ============> getTime
   getTime(date: Date): string {
     moment.locale('es');
     return moment(date).format('MMMM Do YYYY');
   }
+
+
 }

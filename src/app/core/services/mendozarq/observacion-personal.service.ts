@@ -4,59 +4,59 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { ObservacionesByServicio, ObservacionServicio } from '@models/mendozarq/observacion.servicio.interface';
+import { ObservacionesByPersonal, ObservacionPersonal } from '@models/mendozarq/observacion.personal.interface';
 import { environment } from '@env/environment.prod';
 import { ServicioProyecto } from '@app/shared/models/mendozarq/servicio.proyecto.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ObservacionServicioService {
+export class ObservacionPersonalService {
   private API_URL = environment.API_URL;
 
   constructor(private http: HttpClient, private toastrSvc: ToastrService) {
 
   }
 
-  // ====================> addObservacionServicio
-  public addObservacionServicio(observacionServicio: ObservacionServicio): Observable<any> {
+  // ====================> addObservacionPersonal
+  public addObservacionPersonal(observacionPersonal: ObservacionPersonal): Observable<any> {
     return this.http
-      .post<ObservacionServicio>(`${this.API_URL}/api/observacionServicio`, observacionServicio)
+      .post<ObservacionPersonal>(`${this.API_URL}/api/observacionPersonal`, observacionPersonal)
       .pipe(catchError(error => this.handdleError(error)));
   }
 
-  // ====================> getOneObservacionServicio
-  public getOneObservacionServicio(uuid: string): Observable<ObservacionServicio> {
+  // ====================> getOneObservacionPersonal
+  public getOneObservacionPersonal(uuid: string): Observable<ObservacionPersonal> {
     return this.http
-      .get<ObservacionServicio>(`${this.API_URL}/api/observacionServicio/${uuid}`)
+      .get<ObservacionPersonal>(`${this.API_URL}/api/observacionPersonal/${uuid}`)
       .pipe(catchError(error => this.handdleError(error)));
   }
 
-  // ====================> getAllObservacionServicio
-  public getAllObservacionServicio(uuid: string): Observable<ObservacionesByServicio[]> {
+  // ====================> getAllObservacionPersonal
+  public getAllObservacionPersonal(uuid: string): Observable<ObservacionesByPersonal[]> {
     return this.http
-      .get<ObservacionesByServicio[]>(`${this.API_URL}/api/observacionServicio/visita/${uuid}`)
+      .get<ObservacionesByPersonal[]>(`${this.API_URL}/api/observacionPersonal/visita/${uuid}`)
       .pipe(catchError(error => this.handdleError(error)));
   }
 
-  // ====================> getAllServiciosByUuidVisita
-  public getAllServiciosByUuidVisita(uuid: string): Observable<ServicioProyecto[]> {
+  // ====================> getAllPersonalByUuidVisita
+  public getAllPersonalByUuidVisita(uuid: string): Observable<ServicioProyecto[]> {
     return this.http
-      .get<ServicioProyecto[]>(`${this.API_URL}/api/observacionServicio/servicio/${uuid}`)
+      .get<ServicioProyecto[]>(`${this.API_URL}/api/observacionPersonal/personal/${uuid}`)
       .pipe(catchError(error => this.handdleError(error)));
   }
 
-  // ====================> updateObservacionServicio
-  public updateObservacionServicio(uuid: string, observacionServicio: ObservacionServicio): Observable<any> {
+  // ====================> updateObservacionPersonal
+  public updateObservacionPersonal(uuid: string, observacionPersonal: ObservacionPersonal): Observable<any> {
     return this.http
-      .put(`${this.API_URL}/api/observacionServicio/${uuid}`, observacionServicio)
+      .put(`${this.API_URL}/api/observacionPersonal/${uuid}`, observacionPersonal)
       .pipe(catchError(error => this.handdleError(error)));
   }
 
-  // ====================> deleteObservacionServicio
-  public deleteObservacionServicio(uuid: string): Observable<any> {
+  // ====================> deleteObservacionPersonal
+  public deleteObservacionPersonal(uuid: string): Observable<any> {
     return this.http
-      .delete(`${this.API_URL}/api/observacionServicio/${uuid}`)
+      .delete(`${this.API_URL}/api/observacionPersonal/${uuid}`)
       .pipe(catchError(error => this.handdleError(error)));
   }
 

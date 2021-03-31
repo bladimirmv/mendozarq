@@ -32,6 +32,10 @@ $mendozarq-theme: mat-light-theme((color: (primary: $mendozarq-primary,
   --info: #33B5E5;
 }
 
+body {
+  font-size: 14px;
+}
+
 .mat-d {
   color: green !important;
   border-color: green !important;

@@ -13,6 +13,20 @@
   z-index: -1;
 }
 
+.personal-activo {
+  width: 15px;
+  height: 15px;
+  background-color: var(--success);
+  border-radius: 25px;
+}
+
+.personal-no-activo {
+  width: 15px;
+  height: 15px;
+  background-color: var(--warn);
+  border-radius: 25px;
+}
+
 .stats-container {
   margin: 20px 0;
   display: grid;
@@ -143,7 +157,6 @@ tr.example-element-row:not(.example-expanded-row):active {
     width: 100%;
     word-break: break-all;
     padding: 10px;
-
 
   }
 }

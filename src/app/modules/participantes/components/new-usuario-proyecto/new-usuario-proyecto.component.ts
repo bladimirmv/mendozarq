@@ -52,7 +52,7 @@ export class NewUsuarioProyectoComponent implements OnInit, OnDestroy {
 
   private initForm(): void {
     this.usuarioProyectoForm = this.fb.group({
-      usuario: [[], Validators.required],
+      usuario: [[], Validators.required]
     });
   }
 

@@ -28,6 +28,8 @@ export class AdminInterceptor implements HttpInterceptor {
       '/api/visitaProyecto/',
       '/api/observacionServicio',
       '/api/observacionServicio/',
+      '/api/observacionPersonal',
+      '/api/observacionPersonal/',
       '/api/participanteVisita',
       '/api/participanteVisita/',
 
@@ -39,6 +41,7 @@ export class AdminInterceptor implements HttpInterceptor {
       '/api/recurso',
       '/api/recurso/'
     ];
+
 
     if (url.some(path => req.url.includes(path))) {
       const authToken = this.authSvc.userTokenValue;

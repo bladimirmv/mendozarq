@@ -126,13 +126,12 @@ const routes: Routes = [
         path: 'participantes', loadChildren: () =>
           import('@modules/participante-visita/participante-visita.module').then(m => m.ParticipanteVisitaModule)
       },
-
       {
-        path: 'obervacion-participante', loadChildren: () =>
-          import('@modules/observacion-participante/observacion-participante.module').then(m => m.ObservacionParticipanteModule)
+        path: 'observacion-personal', loadChildren: () =>
+          import('@modules/observacion-personal/observacion-personal.module').then(m => m.ObservacionPersonalModule)
       },
       {
-        path: 'obervacion-servicio', loadChildren: () =>
+        path: 'observacion-servicio', loadChildren: () =>
           import('@modules/observacion-servicio/observacion-servicio.module').then(m => m.ObservacionServicioModule)
       },
       {

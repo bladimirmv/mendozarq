@@ -5,11 +5,9 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { ObservacionServicioService } from '@services/mendozarq/observacion-servicio.service';
-import { ServicioProyecto } from '@app/shared/models/mendozarq/servicio.proyecto.interface';
-import { ObservacionesByServicio, ObservacionServicio } from '@app/shared/models/mendozarq/observacion.servicio.interface';
-import { NewObservacionServicioComponent } from './components/new-observacion-servicio/new-observacion-servicio.component';
+import { ObservacionesByPersonal, ObservacionPersonal } from '@models/mendozarq/observacion.personal.interface';
 import { ToastrService } from 'ngx-toastr';
+import { ObservacionPersonalService } from '@services/mendozarq/observacion-personal.service';
 
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -17,14 +15,16 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { DeleteModalComponent } from '@app/shared/components/delete-modal/delete-modal.component';
-import { EditObservacionServicioComponent } from './components/edit-observacion-servicio/edit-observacion-servicio.component';
 import * as moment from 'moment';
+import { Personal } from '@app/shared/models/mendozarq/personal.interface';
+import { NewObservacionPersonalComponent } from './components/new-observacion-personal/new-observacion-personal.component';
+import { EditObservacionPersonalComponent } from './components/edit-observacion-personal/edit-observacion-personal.component';
 
 
 @Component({
-  selector: 'app-observacion-servicio',
-  templateUrl: './observacion-servicio.component.html',
-  styleUrls: ['./observacion-servicio.component.scss'],
+  selector: 'app-observacion-personal',
+  templateUrl: './observacion-personal.component.html',
+  styleUrls: ['./observacion-personal.component.scss'],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -33,22 +33,24 @@ import * as moment from 'moment';
     ]),
   ]
 })
-export class ObservacionServicioComponent implements OnInit, OnDestroy {
+export class ObservacionPersonalComponent implements OnInit, OnDestroy {
+
   filterValuePersonal: string;
-  dataSource: MatTableDataSource<ObservacionesByServicio> = new MatTableDataSource();
-  columnsToDisplay: Array<string> = ['observaciones', 'nombre', 'avance', 'fechaInicio', 'fechaFinal', 'descripcion', 'options'];
-  expandedElement: ObservacionesByServicio | null;
+  dataSource: MatTableDataSource<ObservacionesByPersonal> = new MatTableDataSource();
+  columnsToDisplay: Array<string> = ['observaciones', 'activo',
+    'nombre', 'apellidoPaterno', 'celular', 'correo', 'sueldo', 'descripcion', 'direccion', 'options'];
+  expandedElement: ObservacionesByPersonal | null;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   private destroy$: Subject<any> = new Subject<any>();
   private uuidVisita: string = '';
-  public ObservacionesByServicio: ObservacionesByServicio[] = [];
+  public ObservacionesByPersonal: ObservacionesByPersonal[] = [];
   panelOpenState = false;
   constructor(
     private activatedRoute: ActivatedRoute,
-    private observacionServicioSvc: ObservacionServicioService,
+    private observacionPersonalSvc: ObservacionPersonalService,
     private matDialog: MatDialog,
     private toastrSvc: ToastrService
 
@@ -57,7 +59,7 @@ export class ObservacionServicioComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getAllObserbaciones();
+    this.getAllObservaciones();
 
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -67,28 +69,28 @@ export class ObservacionServicioComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  // ====================> getAllObserbaciones
-  public getAllObserbaciones(): void {
-    this.observacionServicioSvc
-      .getAllObservacionServicio(this.uuidVisita)
+  // ====================> getAllObservaciones
+  public getAllObservaciones(): void {
+    this.observacionPersonalSvc
+      .getAllObservacionPersonal(this.uuidVisita)
       .pipe(takeUntil(this.destroy$))
-      .subscribe((ObservacionesByServicio: ObservacionesByServicio[]) => {
-        this.ObservacionesByServicio = ObservacionesByServicio;
-        this.dataSource.data = ObservacionesByServicio;
+      .subscribe((ObservacionesByPersonal: ObservacionesByPersonal[]) => {
+        this.ObservacionesByPersonal = ObservacionesByPersonal;
+        this.dataSource.data = ObservacionesByPersonal;
       });
   }
 
   toggleFloat(element) {
     element.exapand = element.exapand;
   }
-  // ====================> newObservacionServicio
-  public newObservacionServicio(disabled: boolean, servicioProyecto?: ServicioProyecto): void {
+  // ====================> newObservacionPersonal
+  public newObservacionPersonal(disabled: boolean, personal?: Personal): void {
 
-    const dialogRef = this.matDialog.open(NewObservacionServicioComponent, {
+    const dialogRef = this.matDialog.open(NewObservacionPersonalComponent, {
       data: {
         uuidVisita: this.uuidVisita,
         disabled,
-        sp: servicioProyecto
+        personal
       }
     });
 
@@ -96,48 +98,47 @@ export class ObservacionServicioComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: boolean) => {
         if (res) {
-          this.getAllObserbaciones();
+          this.getAllObservaciones();
         }
       });
   }
 
-  // ====================> updateObservacionServicio
-  public updateObservacionServicio(observacionServicio: ObservacionServicio): void {
-
+  // ====================> updateObservacionPersonal
+  public updateObservacionPersonal(observacionPersonal: ObservacionPersonal): void {
     const dialogRef = this.matDialog
-      .open(EditObservacionServicioComponent, {
-        data: observacionServicio
+      .open(EditObservacionPersonalComponent, {
+        data: observacionPersonal
       });
 
     dialogRef.afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: boolean) => {
         if (res) {
-          this.getAllObserbaciones();
+          this.getAllObservaciones();
         }
       });
   }
-  // ====================> deleteObservacionServicio
-  public deleteObservacionServicio(observacionServicio: ObservacionServicio): void {
+  // ====================> deleteObservacionPersonal
+  public deleteObservacionPersonal(observacionPersonal: ObservacionPersonal): void {
     const dialogRef = this.matDialog.open(DeleteModalComponent);
     dialogRef.afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: boolean) => {
         if (res) {
-          this.observacionServicioSvc
-            .deleteObservacionServicio(observacionServicio.uuid)
+          this.observacionPersonalSvc
+            .deleteObservacionPersonal(observacionPersonal.uuid)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-              this.toastrSvc.success('Se ha eleiminado correctamente', 'Observacion Eliminado');
-              this.getAllObserbaciones();
+              this.toastrSvc.success('Se ha eleiminado correctamente 😀', 'Observacion Eliminado');
+              this.getAllObservaciones();
             });
         }
       });
   }
 
-  public serviciosObservados(state?: boolean): number {
+  public personalObservados(state?: boolean): number {
     let res: number = 0;
-    this.ObservacionesByServicio.forEach(obsr => {
+    this.ObservacionesByPersonal.forEach(obsr => {
       state
         ? obsr.observaciones.length ? res++ : null
         : !obsr.observaciones.length ? res++ : null;
@@ -160,4 +161,5 @@ export class ObservacionServicioComponent implements OnInit, OnDestroy {
       this.dataSource.paginator.firstPage();
     }
   }
+
 }
