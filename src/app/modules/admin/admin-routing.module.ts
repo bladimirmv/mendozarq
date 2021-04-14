@@ -56,7 +56,11 @@ const routes: Routes = [
           import('@modules/categoria-proyecto/categoria-proyecto.module').then(m => m.CategoriaProyectoModule)
       },
       {
-        path: 'presupuestos-obras', loadChildren: () =>
+        path: 'presupuestos-obras',
+        component: PresupuestoObraComponent
+      },
+      {
+        path: 'presupuestos', loadChildren: () =>
           import('@modules/presupuestos/presupuestos.module').then(m => m.PresupuestosModule)
       },
       {
