@@ -3,6 +3,7 @@ export interface PresupuestoObra {
   creadoEn?: Date;
   nombre?: string;
   descripcion?: string;
+  fecha?: Date;
   iva?: number;
   uuidCliente: string;
   uuidUsuario: string;

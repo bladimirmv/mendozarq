@@ -12,3 +12,32 @@
   position: absolute;
   z-index: -1;
 }
+
+.stats-container {
+  margin: 20px 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and(max-width: 960px) {
+  .stats-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  app-status-card:last-child {
+    grid-column: 1 / span 2;
+  }
+}
+
+@media screen and(max-width: 490px) {
+  .stats-container {
+    grid-template-columns: 1fr;
+  }
+
+  app-status-card:last-child {
+    grid-column: span 1;
+  }
+}

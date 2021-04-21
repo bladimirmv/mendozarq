@@ -3,7 +3,7 @@ import { AuthService } from '@app/core/services/auth/auth.service';
 import { BrightnessService } from './../../core/services/brightness.service';
 import { Location } from '@angular/common';
 import { map, shareReplay, takeUntil } from 'rxjs/operators';
-import { Subscription, Observable, of, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { BreakpointObserver } from '@angular/cdk/layout';
@@ -17,10 +17,6 @@ export class AdminComponent implements OnInit, OnDestroy {
   public modeSidenav = 'side';
   public breakpoint: boolean;
   private destroy$: Subject<any> = new Subject<any>();
-
-
-
-
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -64,7 +60,4 @@ export class AdminComponent implements OnInit, OnDestroy {
   onLogout(): void {
     this.authSvc.logout();
   }
-
-
-
 }
