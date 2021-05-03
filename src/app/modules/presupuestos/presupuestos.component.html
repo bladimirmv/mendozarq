@@ -85,7 +85,7 @@
         <ng-container matColumnDef="nombre">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
           <td mat-cell *matCellDef="let row" class="text-center">
-            <a [routerLink]="['/admin/presupuestos/presupuesto', row.uuidCliente]" class="custom-a">
+            <a [routerLink]="['/admin/presupuestos/presupuesto', row.uuid]" class="custom-a">
               {{row.nombre | titlecase}}
             </a>
           </td>

@@ -1,10 +1,285 @@
 <div class="content">
   <div class="form-container">
+    <div class="bar-actions mat-elevation-z2">
 
+      <button mat-icon-button matTooltip="Volver Atras" matTooltipPosition="below" (click)="onBack()">
+        <mat-icon>
+          keyboard_backspace
+        </mat-icon>
+      </button>
+
+      <button mat-icon-button matTooltip="Descargar" matTooltipPosition="below" (click)="downloadPdf()">
+        <mat-icon>
+          download
+        </mat-icon>
+      </button>
+
+      <button mat-icon-button matTooltip="Imprimir" matTooltipPosition="below" (click)="printPdf()">
+        <mat-icon>
+          print
+        </mat-icon>
+      </button>
+
+      <button mat-icon-button matTooltip="Abrir" matTooltipPosition="below" (click)="openPdf()">
+        <mat-icon>
+          open_in_new
+        </mat-icon>
+      </button>
+    </div>
+
+    <mat-tab-group mat-align-tabs="center" class="tab-form">
+      <mat-tab label="Capitulos">
+
+
+        <div class="table-container  mat-elevation-z2" style="margin-top: 5px;">
+          <div class="header-table" style.display="grid">
+            <mat-form-field>
+              <mat-label>Buscar</mat-label>
+              <input matInput autocomplete="off" (keyup)="applyFilterCapitulo($event)" placeholder="Ex. bladimir"
+                [(ngModel)]="filterValueCapitulo" #inputSearch>
+
+              <button mat-button *ngIf="filterValueCapitulo" matSuffix mat-icon-button aria-label="Clear"
+                (click)="applyFilterCapitulo('')" (click)="input.value = ''">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+
+            <button mat-icon-button matTooltip="Nuevo Capitulo" matTooltipPosition="below" class="btn-add">
+              <mat-icon class="mat-18">
+                add
+              </mat-icon>
+            </button>
+          </div>
+
+          <div class="table-content">
+            <table mat-table [dataSource]="dataSourceCapitulo" multiTemplateDataRows class="mat-elevation-z2" matSort>
+
+
+              <!-- *Estado -->
+              <ng-container matColumnDef="numero">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Numero </th>
+                <td mat-cell *matCellDef="let row" class="text-center">
+                  {{row.numero}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+
+              </ng-container>
+
+              <!-- *nombre -->
+              <ng-container matColumnDef="nombre">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+                <td mat-cell *matCellDef="let row" class="text-center"> {{row.nombre}} </td>
+
+                <td mat-footer-cell *matFooterCellDef class="text-center">
+
+                  <div class="total-bruto" style="background-color: var(--primary); color: white;">
+                    TOTAL BRUTO
+                  </div>
+
+                  <div class="iva">
+                    I.V.A. 21%
+                  </div>
+
+                  <div class="total" style="background-color: var(--secondary); color: white;">
+                    TOTAL
+                  </div>
+
+                </td>
+
+              </ng-container>
+
+              <!-- *apellidos -->
+              <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
+                <td mat-cell *matCellDef="let row" class="text-center">
+                  {{row.total}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef class="text-center">
+                  <div class="total-bruto">
+                    {{numberWithCommas(getTotalBruto()) }}
+                  </div>
+
+                  <div class="iva">
+                    {{numberWithCommas(getTotalWithIVA()) }}
+                  </div>
+
+                  <div class="total">
+                    {{numberWithCommas(getTotalPresupuesto()) }}
+                  </div>
+                </td>
+              </ng-container>
+
+              <!-- *add -->
+              <ng-container matColumnDef="options" stickyEnd>
+                <th *matHeaderCellDef>
+                </th>
+                <td *matCellDef="let row" class="text-center">
+                  <button mat-icon-button matTooltip="Nuevo detalle"
+                    (click)="expandedElement = expandedElement === row ? null : row" matTooltipPosition="below">
+                    <mat-icon>
+                      add
+                    </mat-icon>
+                  </button>
+
+                  <button mat-icon-button matTooltip="Eliminar" style="color: red;"
+                    (click)="expandedElement = expandedElement === row ? null : row" matTooltipPosition="below">
+                    <mat-icon>
+                      remove
+                    </mat-icon>
+                  </button>
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+              </ng-container>
+
+              <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length"
+                  style="white-space: normal;">
+                  <div class="detail-container" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+
+                    lorem ipsun
+                  </div>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+              <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"
+                [class.example-expanded-row]="expandedElement === element"
+                (click)="expandedElement = expandedElement === element ? null : element">
+              </tr>
+              <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row">
+              </tr>
+
+
+              <tr mat-footer-row *matFooterRowDef="columnsToDisplay; sticky: true"></tr>
+
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="10" align="center">
+                  <div *ngIf="inputSearch.value else noData">
+                    No hay datos que coincidan con el filtro: "{{inputSearch.value}}"
+                  </div>
+                  <ng-template #noData align="center">
+                    <img src="./assets/no_data.svg" alt="" width="100" style="margin: 5px;" class="no-select">
+                    <p>
+                      Tabla vacía, aún no agregaste un capitulo al presupuesto.
+                    </p>
+                  </ng-template>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <mat-paginator [pageSizeOptions]="[5, 10, 20, 100]" showFirstLastButtons></mat-paginator>
+        </div>
+
+
+
+
+
+
+
+      </mat-tab>
+
+      <mat-tab label="Presupuesto">
+        <form class="edit-form mat-elevation-z2" [formGroup]="presupuestoForm">
+          <h2 class="full-column" align="center">Presupuesto de Obra</h2>
+
+          <!-- *Nombre -->
+          <mat-form-field class="full-width full-column" [color]="isValidField('nombre').color">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="nombre" autocomplete="off">
+            <mat-icon matSuffix [color]="isValidField('nombre').color">
+              {{isValidField('nombre').icon}}
+            </mat-icon>
+            <mat-error *ngIf="presupuestoForm.get('nombre').errors?.required">
+              Ingrese un nombre.
+            </mat-error>
+            <mat-error *ngIf="presupuestoForm.get('nombre').errors?.pattern">
+              Debe incluir solo letras en minuscula.
+            </mat-error>
+          </mat-form-field>
+
+          <!-- *cliente -->
+          <mat-form-field class="full-width" style="grid-column: span 2;">
+            <mat-label>Cliente</mat-label>
+            <mat-select style="position: relative;" formControlName="uuidCliente">
+              <div style="padding: 5px 5px 0 5px;
+          position: -webkit-sticky; position: sticky; top: 0;  background-color: white;  z-index: 1; ">
+                <mat-form-field style=" width: 100%; ">
+                  <mat-label>Buscar</mat-label>
+                  <input matInput (keyup)="onKey($event.target.value)" autocomplete="off" #search>
+                  <button mat-icon-button matSuffix *ngIf="search.value" (click)="onKey('')" (click)="search.value=''">
+                    <mat-icon style="font-size: 20px;">
+                      clear
+                    </mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+              <mat-option *ngFor=" let cliente of selectedClientes" [value]="cliente.uuid">
+                {{cliente.nombre + ' ' + cliente.apellidoPaterno + ' ' + cliente.apellidoMaterno}}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix [color]="isValidField('uuidCliente').color">
+              {{isValidField('uuidCliente').icon}}
+            </mat-icon>
+            <mat-error *ngIf="presupuestoForm.get('uuidCliente').errors?.required">
+              Seleccione un cliente.
+            </mat-error>
+          </mat-form-field>
+
+          <!-- *IVA -->
+          <mat-form-field class="full-width" style="grid-column: auto;" [color]="isValidField('iva').color">
+            <mat-label>IVA %</mat-label>
+            <input matInput type="number" min="0" max="20" formControlName="iva" autocomplete="off">
+            <mat-icon matSuffix [color]="isValidField('iva').color">
+              {{isValidField('iva').icon}}
+            </mat-icon>
+            <mat-error *ngIf="presupuestoForm.get('iva').errors?.required">
+              Ingrese el IVA.
+            </mat-error>
+            <mat-error *ngIf="presupuestoForm.get('iva').errors?.maxlength">
+              Debe contener {{presupuestoForm.get('descripcion').errors?.maxlength?.requiredLength}} como maximo.
+            </mat-error>
+            <mat-error *ngIf="presupuestoForm.get('iva').errors?.minlength">
+              Debe contener {{presupuestoForm.get('descripcion').errors?.minlength?.requiredLength}} como minimo.
+            </mat-error>
+          </mat-form-field>
+
+          <!-- *Descripcion -->
+          <mat-form-field class="full-width full-column" [color]="isValidField('descripcion').color">
+            <mat-label>Descripcion</mat-label>
+            <textarea matInput placeholder="Ex. servicio de carpinteria." formControlName="descripcion"
+              autocomplete="off"></textarea>
+            <mat-hint align="end">
+              {{presupuestoForm.value.descripcion ? presupuestoForm.value.descripcion.length : 0}}/200
+            </mat-hint>
+            <mat-icon matSuffix [color]="isValidField('descripcion').color" *ngIf="presupuestoForm.value.descripcion">
+              {{isValidField('descripcion').icon}}
+            </mat-icon>
+            <mat-error *ngIf="presupuestoForm.get('descripcion').errors?.required">
+              Ingrese una breve descripcion.
+            </mat-error>
+            <mat-error *ngIf="presupuestoForm.get('descripcion').errors?.maxlength">
+              Debe contener {{presupuestoForm.get('descripcion').errors?.maxlength?.requiredLength}} digitos como
+              maximo.
+            </mat-error>
+          </mat-form-field>
+
+          <div class="actions-presupuesto  full-column">
+            <button mat-button class="mat-btn-secondary full-width" (click)=" empty ? fillOutForm() : clearForm()">
+              {{empty ? 'Cancelar' : 'Limpiar' }}
+            </button>
+
+            <button mat-button class="mat-btn-success full-width" (click)="onUpdatePresupuesto(presupuestoForm.value)"
+              [disabled]="!presupuestoForm.valid">
+              Actualizar
+            </button>
+          </div>
+        </form>
+      </mat-tab>
+    </mat-tab-group>
   </div>
 
   <div class="iframe-container">
-    <div class="options">
+    <!-- <div class="options">
       <button mat-button class="mat-btn-secondary" (click)="openPdf()">
         <mat-icon>
           open_in_new
@@ -25,7 +300,7 @@
         </mat-icon>
         Descargar
       </button>
-    </div>
+    </div> -->
     <iframe frameborder="0" id="pdf-iframe" onreset="true">Cargando</iframe>
   </div>
 </div>

@@ -1,3 +1,4 @@
+import { PresupuestoObraView } from '@app/shared/models/mendozarq/presupuestos.interface';
 import * as moment from 'moment';
 export interface BodyTable {
   text?: string;
@@ -25,14 +26,27 @@ export class PdfMethods {
     moment.locale('es');
   }
 
+  toTitleCase(str) {
+    return str.replace(/\w\S*/g, (txt) => {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  }
 
+  numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  capitalize(str) {
+    if (typeof str !== 'string') return ''
+    return str.charAt(0).toUpperCase() + str.slice(1)
+  }
 
   // ====================> presupuesto
-  public async presupuesto(pdf: Array<any>): Promise<Array<any>> {
+  public async presupuesto(pdf: Array<any>, presupuesto: PresupuestoObraView): Promise<Array<any>> {
     const bodyInfo: Array<BodyTable[]> = [];
     const bodyTable: Array<BodyTable[]> = [];
 
-    pdf = await this.header(pdf);
+    pdf = await this.header(pdf, presupuesto);
 
     bodyInfo.push([{
       text: 'Nombre:',
@@ -43,7 +57,7 @@ export class PdfMethods {
       border: [false]
     },
     {
-      text: 'Edificio Morales',
+      text: presupuesto.nombre ? this.capitalize(presupuesto.nombre) : 'Sin nombre',
       style: 'tableHeader',
       color: '#425066',
       colSpan: 1,
@@ -53,7 +67,7 @@ export class PdfMethods {
     },
 
     {
-      qr: 'text in QR',
+      qr: presupuesto ? presupuesto.uuid : 'sin uuid',
       background: '#FFFFFF',
       foreground: '#425066',
       fit: '65',
@@ -72,7 +86,7 @@ export class PdfMethods {
 
     },
     {
-      text: 'Baldimir Medrano Vargas',
+      text: presupuesto.cliente ? this.toTitleCase(presupuesto.cliente) : 'Sin cliente',
       style: 'tableHeader',
       colSpan: 1,
       color: '#425066',
@@ -94,7 +108,7 @@ export class PdfMethods {
       border: [false]
     },
     {
-      text: 'Presupuesto de obra para el edificio morales ',
+      text: presupuesto.descripcion ? this.capitalize(presupuesto.descripcion) : 'Sin descripcion',
       style: 'tableHeader',
       colSpan: 1,
       color: '#425066',
@@ -239,7 +253,7 @@ export class PdfMethods {
 
 
       }, {}, {
-        text: '7,653',
+        text: `${presupuesto ? this.numberWithCommas((presupuesto.totalBruto).toLocaleString()) : 0}`,
         colSpan: 1,
         border: [false],
 
@@ -268,14 +282,14 @@ export class PdfMethods {
         alignment: 'center',
 
       }, {
-        text: '21%',
+        text: `${presupuesto ? presupuesto.iva : 0}%`,
         colSpan: 1,
         border: [false],
         alignment: 'center',
         color: '#000000',
         fillColor: '#F5F5F5',
       }, {
-        text: '7,653',
+        text: `${presupuesto ? this.numberWithCommas(presupuesto.totalWithIVA.toLocaleString()) : 0}`,
         colSpan: 1,
         border: [false],
 
@@ -307,7 +321,7 @@ export class PdfMethods {
         bold: true,
 
       }, {}, {
-        text: '7,653',
+        text: `${presupuesto ? this.numberWithCommas(presupuesto.totalPresupuesto.toLocaleString()) : 0}`,
         colSpan: 1,
         border: [false],
 
@@ -347,11 +361,11 @@ export class PdfMethods {
   }
 
   // ====================> detallePresupuesto
-  public async detallePresupuesto(pdf: Array<any>): Promise<Array<any>> {
+  public async detallePresupuesto(pdf: Array<any>, presupuesto: PresupuestoObraView): Promise<Array<any>> {
 
     const bodyTable: Array<BodyTable[]> = [];
 
-    pdf = await this.header(pdf);
+    pdf = await this.header(pdf, presupuesto);
 
     pdf.push({
       text: 'Detalle del Presupuesto'.toUpperCase(),
@@ -529,7 +543,7 @@ export class PdfMethods {
   }
 
   // ====================> header
-  public async header(pdf: any): Promise<Array<any>> {
+  public async header(pdf: any, presupuesto: PresupuestoObraView): Promise<Array<any>> {
     pdf.push({
       columns: [
         {
@@ -543,7 +557,7 @@ export class PdfMethods {
           color: '#425066'
         },
         {
-          text: moment().format('MMMM/DD/YYYY').toUpperCase(),
+          text: moment(presupuesto ? presupuesto.fecha : '').format('MMMM/DD/YYYY').toUpperCase(),
           alignment: 'right',
           margin: [0, 14, 0, 0],
           fontSize: 14,
