@@ -5,6 +5,7 @@
       <button mat-icon-button matTooltip="Volver Atras" matTooltipPosition="below" (click)="onBack()">
         <mat-icon>
           keyboard_backspace
+
         </mat-icon>
       </button>
 
@@ -44,7 +45,8 @@
               </button>
             </mat-form-field>
 
-            <button mat-icon-button matTooltip="Nuevo Capitulo" matTooltipPosition="below" class="btn-add">
+            <button mat-icon-button matTooltip="Nuevo Capitulo" matTooltipPosition="below" class="btn-add"
+              (click)="onAddCapitulo()">
               <mat-icon class="mat-18">
                 add
               </mat-icon>
@@ -53,8 +55,6 @@
 
           <div class="table-content">
             <table mat-table [dataSource]="dataSourceCapitulo" multiTemplateDataRows class="mat-elevation-z2" matSort>
-
-
               <!-- *Estado -->
               <ng-container matColumnDef="numero">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Numero </th>
@@ -77,7 +77,7 @@
                   </div>
 
                   <div class="iva">
-                    I.V.A. 21%
+                    I.V.A. {{presupuesto.iva}}%
                   </div>
 
                   <div class="total" style="background-color: var(--secondary); color: white;">
@@ -115,14 +115,16 @@
                 </th>
                 <td *matCellDef="let row" class="text-center">
                   <button mat-icon-button matTooltip="Nuevo detalle"
-                    (click)="expandedElement = expandedElement === row ? null : row" matTooltipPosition="below">
+                    (click)="expandedElement = expandedElement === row ? null : row" (click)="onAddDettalleCapitulo()"
+                    matTooltipPosition="below">
                     <mat-icon>
                       add
                     </mat-icon>
                   </button>
 
                   <button mat-icon-button matTooltip="Eliminar" style="color: red;"
-                    (click)="expandedElement = expandedElement === row ? null : row" matTooltipPosition="below">
+                    (click)="expandedElement = expandedElement === row ? null : row"
+                    (click)="onDeleteDettalleCapitulo()" matTooltipPosition="below">
                     <mat-icon>
                       remove
                     </mat-icon>
@@ -169,12 +171,6 @@
           </div>
           <mat-paginator [pageSizeOptions]="[5, 10, 20, 100]" showFirstLastButtons></mat-paginator>
         </div>
-
-
-
-
-
-
 
       </mat-tab>
 

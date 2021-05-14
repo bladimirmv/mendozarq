@@ -46,19 +46,19 @@ export class AdminInterceptor implements HttpInterceptor {
     ];
 
 
-    if (url.some(path => req.url.includes(path))) {
-      const authToken = this.authSvc.userTokenValue;
-      const authRequest = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${authToken}`
-        }
-      });
-      // debugger;
+    // if (url.some(path => req.url.includes(path))) {
+    const authToken = this.authSvc.userTokenValue;
+    const authRequest = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${authToken}`
+      }
+    });
+    // debugger;
 
-      return next.handle(authRequest);
-    }
+    return next.handle(authRequest);
+    // }
 
-    return next.handle(req);
+    // return next.handle(req);
 
   }
 }

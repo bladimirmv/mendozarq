@@ -10,9 +10,11 @@ import { MaterialModule } from '@app/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewPresupuestoComponent } from './components/new-presupuesto/new-presupuesto.component';
 import { EditPresupuestoComponent } from './components/edit-presupuesto/edit-presupuesto.component';
+import { NewCapituloComponent } from './components/new-capitulo/new-capitulo.component';
+import { NewDetalleCapituloComponent } from './components/new-detalle-capitulo/new-detalle-capitulo.component';
 
 @NgModule({
-  declarations: [PresupuestosComponent, PresupuestoObraComponent, NewPresupuestoComponent, EditPresupuestoComponent],
+  declarations: [PresupuestosComponent, PresupuestoObraComponent, NewPresupuestoComponent, EditPresupuestoComponent, NewCapituloComponent, NewDetalleCapituloComponent],
   imports: [
     CommonModule,
     PresupuestosRoutingModule,

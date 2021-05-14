@@ -16,6 +16,9 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { NewCapituloComponent } from '../new-capitulo/new-capitulo.component';
+import { NewDetalleCapituloComponent } from '../new-detalle-capitulo/new-detalle-capitulo.component';
+import { DeleteModalComponent } from '@app/shared/components/delete-modal/delete-modal.component';
 
 @Component({
   selector: 'app-presupuesto-obra',
@@ -31,39 +34,22 @@ import { MatSort } from '@angular/material/sort';
 })
 export class PresupuestoObraComponent implements OnInit, OnDestroy {
 
-
-
-
-
-
-  capitulos: CapituloPresupuesto[] = [];
-  filterValueCapitulo: string;
-  dataSourceCapitulo: MatTableDataSource<CapituloPresupuesto> = new MatTableDataSource();
-  columnsToDisplay: Array<string> = ['numero', 'nombre', 'total', 'options'];
-  expandedElement: CapituloPresupuesto | null;
+  public panelOpenState = false;
+  private capitulos: CapituloPresupuesto[] = [];
+  public filterValueCapitulo: string;
+  public dataSourceCapitulo: MatTableDataSource<CapituloPresupuesto> = new MatTableDataSource();
+  public columnsToDisplay: Array<string> = ['numero', 'nombre', 'total', 'options'];
+  public expandedElement: CapituloPresupuesto | null;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  panelOpenState = false;
-
-
-
-
-
-
-
-
-
-
-
   public empty: boolean = false;
-
   public pdfResult: any;
   private uuidPresupuesto: string = '';
   private destroy$: Subject<any> = new Subject<any>();
 
-  private presupuesto: PresupuestoObraView = {};
+  public presupuesto: PresupuestoObraView = {};
   public presupuestoForm: FormGroup;
   public selectedClientes: Usuario[] = [];
   private clientes: Usuario[] = [];
@@ -78,63 +64,8 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
     private toastrSvc: ToastrService,
     private router: Router,
     private presupuestosSvc: PresupuestosService) {
+
   }
-
-
-
-
-
-
-
-  public getTotalBruto(): number {
-    return this.capitulos.map(t => t.total).reduce((acc, value) => acc + value, 0);
-  }
-
-
-  public getTotalWithIVA(): number {
-    return (this.getTotalBruto() * (this.presupuesto.iva / 100));
-  }
-
-
-  public getTotalPresupuesto(): number {
-    return this.getTotalBruto() + this.getTotalWithIVA();
-  }
-
-  public numberWithCommas(x: number): string {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
-
-
-  // =====================> applyFilterPersonal
-  applyFilterCapitulo(event: Event | string): void {
-    typeof event === 'string'
-      ? this.filterValueCapitulo = event
-      : this.filterValueCapitulo = (event.target as HTMLInputElement).value;
-    this.dataSourceCapitulo.filter = this.filterValueCapitulo.trim().toLowerCase();
-    if (this.dataSourceCapitulo.paginator) {
-      this.dataSourceCapitulo.paginator.firstPage();
-    }
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   ngOnInit(): void {
     this.uuidPresupuesto = this.activateRoute.snapshot.params.uuid;
@@ -142,9 +73,6 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
     this.initForm();
     this.initDataClientes();
     this.getPresuspuesto();
-
-
-
     this.dataSourceCapitulo.data = [
       {
         creadoEn: new Date(),
@@ -162,7 +90,6 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
         uuidPresupuestoObra: '123'
       }
     ];
-
     this.capitulos = [
       {
         creadoEn: new Date(),
@@ -180,7 +107,6 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
         uuidPresupuestoObra: '123'
       }
     ]
-
     this.dataSourceCapitulo.paginator = this.paginator;
     this.dataSourceCapitulo.sort = this.sort;
   }
@@ -241,6 +167,7 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
       });
   }
 
+  // ? presupuesto
   // ===================> onUpdatePresupuesto
   public onUpdatePresupuesto(presupuestoObra: PresupuestoObra): void {
     presupuestoObra.uuid = this.presupuesto.uuid;
@@ -255,14 +182,75 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
       });
   }
 
+  // ? capitulo
+  // ===================> onAddCapitulo
+  public onAddCapitulo(): void {
+    const dialogRef = this.dialog.open(NewCapituloComponent);
+  }
 
+  // ? detalle capitulo
+  // ===================> onAddCapitulo
+  public onAddDettalleCapitulo(): void {
+    const dialogRef = this.dialog.open(NewDetalleCapituloComponent);
+  }
+
+  // ===================> onAddCapitulo
+  public onDeleteDettalleCapitulo(): void {
+    const dialogRef = this.dialog.open(DeleteModalComponent);
+
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: boolean) => {
+        res
+          ? this.deleteDetalleCapitulo()
+          : null;
+      });
+  }
+
+  private deleteDetalleCapitulo(): void { }
+
+  // !core funtions
+  // ===================> clearForm
   public clearForm(): void {
     this.presupuestoForm.reset();
     this.empty = true;
   }
+
+  // =====================>
   public fillOutForm(): void {
     this.initForm();
     this.empty = false;
+  }
+
+  // =====================>
+  public getTotalBruto(): number {
+    return this.capitulos.map(t => t.total).reduce((acc, value) => acc + value, 0);
+  }
+
+  // =====================>
+  public getTotalWithIVA(): number {
+    return (this.getTotalBruto() * (this.presupuesto.iva / 100));
+  }
+
+  // =====================>
+  public getTotalPresupuesto(): number {
+    return this.getTotalBruto() + this.getTotalWithIVA();
+  }
+
+  // =====================>
+  public numberWithCommas(x: number): string {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  // =====================> applyFilterPersonal
+  applyFilterCapitulo(event: Event | string): void {
+    typeof event === 'string'
+      ? this.filterValueCapitulo = event
+      : this.filterValueCapitulo = (event.target as HTMLInputElement).value;
+    this.dataSourceCapitulo.filter = this.filterValueCapitulo.trim().toLowerCase();
+    if (this.dataSourceCapitulo.paginator) {
+      this.dataSourceCapitulo.paginator.firstPage();
+    }
   }
 
   // ===========> isValidField
