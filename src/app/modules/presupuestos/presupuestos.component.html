@@ -72,6 +72,7 @@
               [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
             </mat-checkbox>
           </th>
+
           <td *matCellDef="let row" class="actions-table">
             <mat-checkbox color="warn" (click)="$event.stopPropagation() "
               (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"

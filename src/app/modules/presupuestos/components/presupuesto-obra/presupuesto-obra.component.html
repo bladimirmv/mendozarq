@@ -5,7 +5,6 @@
       <button mat-icon-button matTooltip="Volver Atras" matTooltipPosition="below" (click)="onBack()">
         <mat-icon>
           keyboard_backspace
-
         </mat-icon>
       </button>
 
@@ -88,23 +87,23 @@
 
               </ng-container>
 
-              <!-- *apellidos -->
+              <!-- *total -->
               <ng-container matColumnDef="total">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
                 <td mat-cell *matCellDef="let row" class="text-center">
-                  {{row.total}}
+                  {{(row.total !=   0) ? row.total : 0}}
                 </td>
                 <td mat-footer-cell *matFooterCellDef class="text-center">
                   <div class="total-bruto">
-                    {{numberWithCommas(getTotalBruto()) }}
+                    {{presupuesto.totalBruto ? numberWithCommas(presupuesto.totalBruto | number: '1.2-2') : 0}}
                   </div>
 
                   <div class="iva">
-                    {{numberWithCommas(getTotalWithIVA()) }}
+                    {{presupuesto.totalWithIVA ? (presupuesto.totalWithIVA | number: '1.2-2') : 0}}
                   </div>
 
                   <div class="total">
-                    {{numberWithCommas(getTotalPresupuesto()) }}
+                    {{presupuesto.totalPresupuesto ? (presupuesto.totalPresupuesto| number: '1.2-2') : 0}}
                   </div>
                 </td>
               </ng-container>
@@ -114,30 +113,42 @@
                 <th *matHeaderCellDef>
                 </th>
                 <td *matCellDef="let row" class="text-center">
-                  <button mat-icon-button matTooltip="Nuevo detalle"
-                    (click)="expandedElement = expandedElement === row ? null : row" (click)="onAddDettalleCapitulo()"
-                    matTooltipPosition="below">
-                    <mat-icon>
-                      add
-                    </mat-icon>
-                  </button>
 
-                  <button mat-icon-button matTooltip="Eliminar" style="color: red;"
-                    (click)="expandedElement = expandedElement === row ? null : row"
-                    (click)="onDeleteDettalleCapitulo()" matTooltipPosition="below">
-                    <mat-icon>
-                      remove
-                    </mat-icon>
-                  </button>
+                  <div style="white-space: nowrap;">
+                    <button mat-icon-button matTooltip="Nuevo detalle"
+                      (click)="expandedElement = expandedElement === row ? null : row" (click)="onAddDettalleCapitulo()"
+                      matTooltipPosition="below">
+                      <mat-icon>
+                        add
+                      </mat-icon>
+                    </button>
+
+                    <button mat-icon-button matTooltip="Eliminar" style="color: red;"
+                      (click)="expandedElement = expandedElement === row ? null : row" (click)="onDeleteCapitulo(row)"
+                      matTooltipPosition="below">
+                      <mat-icon>
+                        remove
+                      </mat-icon>
+                    </button>
+
+                    <button mat-icon-button matTooltip="Eliminar"
+                      (click)="expandedElement = expandedElement === row ? null : row" (click)="onDeleteCapitulo(row)"
+                      matTooltipPosition="below">
+                      <mat-icon>
+                        edit
+                      </mat-icon>
+                    </button>
+                  </div>
+
+
                 </td>
                 <td mat-footer-cell *matFooterCellDef> </td>
-              </ng-container>
+              </ng-container>+
 
               <ng-container matColumnDef="expandedDetail">
                 <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length"
                   style="white-space: normal;">
                   <div class="detail-container" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-
                     lorem ipsun
                   </div>
                 </td>
@@ -150,10 +161,7 @@
               </tr>
               <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row">
               </tr>
-
-
               <tr mat-footer-row *matFooterRowDef="columnsToDisplay; sticky: true"></tr>
-
               <tr class="mat-row" *matNoDataRow>
                 <td class="mat-cell" colspan="10" align="center">
                   <div *ngIf="inputSearch.value else noData">

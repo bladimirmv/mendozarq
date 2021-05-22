@@ -22,7 +22,6 @@ import { FooterComponent } from './core/footer/footer.component';
 import { AdminInterceptor } from './core/interceptors/admin.interceptor';
 
 
-
 @NgModule({
   declarations: [
     AppComponent,

@@ -9,7 +9,7 @@ import { environment } from '@env/environment.prod';
 @Injectable({
   providedIn: 'root'
 })
-export class CapituloCapituloPresupuestoervice {
+export class CapituloPresupuestoService {
   private API_URL = environment.API_URL;
 
   constructor(private http: HttpClient, private toastrSvc: ToastrService) {

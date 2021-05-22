@@ -7,7 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { DeleteModalComponent } from '@app/shared/components/delete-modal/delete-modal.component';
-import { PresupuestoObra } from '@models/mendozarq/presupuestos.interface';
+import { CapituloPresupuesto, PresupuestoObra } from '@models/mendozarq/presupuestos.interface';
 
 import { PresupuestosService } from '@services/mendozarq/presupuestos.service';
 import { ToastrService } from 'ngx-toastr';
@@ -16,6 +16,7 @@ import { map, takeUntil } from 'rxjs/operators';
 import { NewPresupuestoComponent } from './components/new-presupuesto/new-presupuesto.component';
 import { TimeFormatService } from '@services/time-format.service';
 import { EditPresupuestoComponent } from './components/edit-presupuesto/edit-presupuesto.component';
+import { CapituloPresupuestoService } from '@app/core/services/mendozarq/capitulo-presupuesto.service';
 
 @Component({
   selector: 'app-presupuestos',

@@ -1,4 +1,5 @@
-import { PresupuestoObraView } from '@app/shared/models/mendozarq/presupuestos.interface';
+import { DetalleCapitulo } from './../../shared/models/mendozarq/presupuestos.interface';
+import { CapituloPresupuestoView, PresupuestoObraView } from '@app/shared/models/mendozarq/presupuestos.interface';
 import * as moment from 'moment';
 export interface BodyTable {
   text?: string;
@@ -42,7 +43,7 @@ export class PdfMethods {
   }
 
   // ====================> presupuesto
-  public async presupuesto(pdf: Array<any>, presupuesto: PresupuestoObraView): Promise<Array<any>> {
+  public async presupuesto(pdf: Array<any>, presupuesto: PresupuestoObraView, capituloPresupuesto: CapituloPresupuestoView[]): Promise<Array<any>> {
     const bodyInfo: Array<BodyTable[]> = [];
     const bodyTable: Array<BodyTable[]> = [];
 
@@ -207,29 +208,37 @@ export class PdfMethods {
 
     }]);
 
-    bodyTable.push([
-      {
-        text: 'Estructura de Hormigón - Piso de Hormigón das das das dsdf das fg dsf adsfds fdsafa dsf affads',
-        alignment: 'justify',
-        border: [false, false, false, true]
-      }, {
-        text: '2,390.000',
-        alignment: 'center',
-        border: [false, false, false, true]
-      }, {
-        text: '0%',
-        alignment: 'center',
-        border: [false, false, false, true]
-      }, {
-        text: '2,390.000.00',
-        alignment: 'center',
-        border: [false, false, false, true]
-      }, {
-        text: '300000',
-        alignment: 'center',
-        border: [false, false, false, true]
-      }
-    ]);
+
+
+    capituloPresupuesto.forEach((capitulo: CapituloPresupuestoView) => {
+
+      bodyTable.push([
+        {
+          text: `${capitulo.nombre}`,
+          alignment: 'justify',
+          border: [false, false, false, true]
+        }, {
+          text: '2,390.000',
+          alignment: 'center',
+          border: [false, false, false, true]
+        }, {
+          text: '0%',
+          alignment: 'center',
+          border: [false, false, false, true]
+        }, {
+          text: '2,390.000.00',
+          alignment: 'center',
+          border: [false, false, false, true]
+        }, {
+          text: `${(capitulo.total != 0) ? capitulo.total : 0}`,
+          alignment: 'center',
+          border: [false, false, false, true]
+        }
+      ]);
+    });
+
+
+
 
     // *results
     bodyTable.push([
@@ -361,7 +370,7 @@ export class PdfMethods {
   }
 
   // ====================> detallePresupuesto
-  public async detallePresupuesto(pdf: Array<any>, presupuesto: PresupuestoObraView): Promise<Array<any>> {
+  public async detallePresupuesto(pdf: Array<any>, presupuesto: PresupuestoObraView, capituloPresupuesto: CapituloPresupuestoView[]): Promise<Array<any>> {
 
     const bodyTable: Array<BodyTable[]> = [];
 
@@ -444,67 +453,77 @@ export class PdfMethods {
 
     }]);
 
-    // *items
-    bodyTable.push([{
-      text: '1',
-      style: 'tableHeader',
-      colSpan: 1,
-      alignment: 'center',
-      fillColor: '#F5F5F5',
-      bold: true,
-      border: [false, false, false, false]
 
-    }, {
-      text: 'Demoliciones',
-      style: 'tableHeader',
-      colSpan: 4,
-      alignment: 'center',
-      // color: '#ffffff',
-      fillColor: '#F5F5F5',
-      bold: true,
-      border: [false, false, false, false]
-
-
-    }, {}, {}, {}, {
-      text: '2,390.00',
-      style: 'tableHeader',
-      colSpan: 1,
-      alignment: 'center',
-      // color: '#ffffff',
-      fillColor: '#F5F5F5',
-      bold: true,
-      border: [false, false, false, false]
-
-
-    }]);
-
-    bodyTable.push([
-      {
-        text: '1.1',
-        alignment: 'center',
-        border: [false, false, false, true]
-      }, {
-        text: 'Cerramiento de aislaci del sector (estructura tubular + film pe. 200mc.)30,00X4,50',
-        alignment: 'justify',
-        border: [false, false, false, true]
-      }, {
-        text: 'gl',
-        alignment: 'center',
-        border: [false, false, false, true]
-      }, {
+    capituloPresupuesto.forEach((capitulo: CapituloPresupuestoView) => {
+      bodyTable.push([{
         text: '1',
+        style: 'tableHeader',
+        colSpan: 1,
         alignment: 'center',
-        border: [false, false, false, true]
+        fillColor: '#F5F5F5',
+        bold: true,
+        border: [false, false, false, false]
+
       }, {
-        text: '300000',
+        text: `${capitulo.nombre}`,
+        style: 'tableHeader',
+        colSpan: 4,
         alignment: 'center',
-        border: [false, false, false, true]
-      }, {
-        text: '300000',
+        // color: '#ffffff',
+        fillColor: '#F5F5F5',
+        bold: true,
+        border: [false, false, false, false]
+
+
+      }, {}, {}, {}, {
+        text: '2,390.00',
+        style: 'tableHeader',
+        colSpan: 1,
         alignment: 'center',
-        border: [false, false, false, true]
-      }
-    ]);
+        // color: '#ffffff',
+        fillColor: '#F5F5F5',
+        bold: true,
+        border: [false, false, false, false]
+      }]);
+
+      capitulo.detalles.forEach((detalle: DetalleCapitulo) => {
+        bodyTable.push([
+          {
+            text: '1.1',
+            alignment: 'center',
+            border: [false, false, false, true]
+          }, {
+            text: `${detalle.descripcion}`,
+            alignment: 'justify',
+            border: [false, false, false, true]
+          }, {
+            text: 'gl',
+            alignment: 'center',
+            border: [false, false, false, true]
+          }, {
+            text: '1',
+            alignment: 'center',
+            border: [false, false, false, true]
+          }, {
+            text: '300000',
+            alignment: 'center',
+            border: [false, false, false, true]
+          }, {
+            text: '300000',
+            alignment: 'center',
+            border: [false, false, false, true]
+          }
+        ]);
+      });
+
+    });
+
+    // *items
+
+
+
+
+
 
     pdf.push(this.centerObject({
       style: 'tableExample',

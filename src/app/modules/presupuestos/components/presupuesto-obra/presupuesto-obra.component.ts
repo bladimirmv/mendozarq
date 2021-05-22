@@ -5,12 +5,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UsuarioService } from '@app/core/services/auth/usuario.service';
 import { PresupuestosService } from '@app/core/services/mendozarq/presupuestos.service';
 import { ClienteModalComponent } from '@app/modules/proyectos/components/cliente-modal/cliente-modal.component';
-import { CapituloPresupuesto, PresupuestoObra, PresupuestoObraView } from '@app/shared/models/mendozarq/presupuestos.interface';
+import { CapituloPresupuesto, CapituloPresupuestoView, PresupuestoObra, PresupuestoObraView } from '@app/shared/models/mendozarq/presupuestos.interface';
 import { Usuario } from '@app/shared/models/usuario.interface';
 import { PdfService } from '@services/pdf/pdf.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { map, take, takeUntil } from 'rxjs/operators';
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatTableDataSource } from '@angular/material/table';
@@ -19,6 +19,7 @@ import { MatSort } from '@angular/material/sort';
 import { NewCapituloComponent } from '../new-capitulo/new-capitulo.component';
 import { NewDetalleCapituloComponent } from '../new-detalle-capitulo/new-detalle-capitulo.component';
 import { DeleteModalComponent } from '@app/shared/components/delete-modal/delete-modal.component';
+import { CapituloPresupuestoService } from '@app/core/services/mendozarq/capitulo-presupuesto.service';
 
 @Component({
   selector: 'app-presupuesto-obra',
@@ -35,7 +36,7 @@ import { DeleteModalComponent } from '@app/shared/components/delete-modal/delete
 export class PresupuestoObraComponent implements OnInit, OnDestroy {
 
   public panelOpenState = false;
-  private capitulos: CapituloPresupuesto[] = [];
+  private capitulos: CapituloPresupuestoView[] = [];
   public filterValueCapitulo: string;
   public dataSourceCapitulo: MatTableDataSource<CapituloPresupuesto> = new MatTableDataSource();
   public columnsToDisplay: Array<string> = ['numero', 'nombre', 'total', 'options'];
@@ -61,6 +62,7 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private usuarioSvc: UsuarioService,
     private presupuestoObraSvc: PresupuestosService,
+    private capituloPresupuestoSvc: CapituloPresupuestoService,
     private toastrSvc: ToastrService,
     private router: Router,
     private presupuestosSvc: PresupuestosService) {
@@ -71,42 +73,8 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
     this.uuidPresupuesto = this.activateRoute.snapshot.params.uuid;
 
     this.initForm();
-    this.initDataClientes();
-    this.getPresuspuesto();
-    this.dataSourceCapitulo.data = [
-      {
-        creadoEn: new Date(),
-        uuid: '123',
-        numero: 1,
-        nombre: 'aa',
-        total: 900,
-        uuidPresupuestoObra: '123'
-      }, {
-        creadoEn: new Date(),
-        uuid: '123',
-        numero: 1,
-        nombre: 'capitulo 1',
-        total: 100,
-        uuidPresupuestoObra: '123'
-      }
-    ];
-    this.capitulos = [
-      {
-        creadoEn: new Date(),
-        uuid: '123',
-        numero: 1,
-        nombre: 'aa',
-        total: 900,
-        uuidPresupuestoObra: '123'
-      }, {
-        creadoEn: new Date(),
-        uuid: '123',
-        numero: 1,
-        nombre: 'capitulo 1',
-        total: 100,
-        uuidPresupuestoObra: '123'
-      }
-    ]
+    this.initData();
+
     this.dataSourceCapitulo.paginator = this.paginator;
     this.dataSourceCapitulo.sort = this.sort;
   }
@@ -116,19 +84,11 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  // ====================> getPresuspuesto
-  private getPresuspuesto() {
-    this.presupuestosSvc
-      .getOnePresupuestoObra(this.uuidPresupuesto)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((presupuesto: PresupuestoObraView) => {
-        this.presupuesto = presupuesto;
-        this.presupuesto.totalBruto = this.getTotalBruto();
-        this.presupuesto.totalWithIVA = this.getTotalWithIVA();
-        this.presupuesto.totalPresupuesto = this.getTotalPresupuesto();
-        this.initForm();
-        this.generatePdf();
-      });
+
+  private initData() {
+    this.initDataClientes();
+    this.getPresuspuesto();
+    this.getCapituloPresupuesto();
   }
 
   // ============> onInitForm
@@ -168,6 +128,22 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
   }
 
   // ? presupuesto
+
+  // ====================>
+  private getPresuspuesto(generatePDF?: boolean): void {
+    this.presupuestosSvc
+      .getOnePresupuestoObra(this.uuidPresupuesto)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((presupuesto: PresupuestoObraView) => {
+        this.presupuesto = presupuesto;
+        this.presupuesto.totalBruto = this.getTotalBruto();
+        this.presupuesto.totalWithIVA = this.getTotalWithIVA();
+        this.presupuesto.totalPresupuesto = this.getTotalPresupuesto();
+        this.initForm();
+        if (generatePDF) this.generatePdf();
+      });
+
+  }
   // ===================> onUpdatePresupuesto
   public onUpdatePresupuesto(presupuestoObra: PresupuestoObra): void {
     presupuestoObra.uuid = this.presupuesto.uuid;
@@ -177,25 +153,65 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         if (res) {
           this.toastrSvc.success('El presupuesto se ha actualizado correctamente. 😀', 'Presupuesto Actualizado');
-          this.getPresuspuesto();
+          this.getPresuspuesto(true);
         }
       });
   }
 
   // ? capitulo
+  // ====================>
+  private getCapituloPresupuesto(generatePDF?: boolean): void {
+    this.capituloPresupuestoSvc.getAllCapituloPresupuesto(this.uuidPresupuesto)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((capitulos: CapituloPresupuestoView[]) => {
+        this.dataSourceCapitulo.data = capitulos;
+        this.capitulos = capitulos;
+        if (this.generatePdf) this.generatePdf();
+      });
+  }
   // ===================> onAddCapitulo
   public onAddCapitulo(): void {
-    const dialogRef = this.dialog.open(NewCapituloComponent);
+    const dialogRef = this.dialog.open(NewCapituloComponent, {
+      data: this.uuidPresupuesto
+    });
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: boolean) => {
+        if (res) this.getCapituloPresupuesto(true);
+      });
   }
 
+  // ===================>
+  public onDeleteCapitulo(capitulo: CapituloPresupuesto): void {
+    const dialogRef = this.dialog.open(DeleteModalComponent);
+
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: boolean) => {
+        if (res) this.deleteCapitulo(capitulo);
+      });
+  }
+
+  private deleteCapitulo(capitulo: CapituloPresupuesto): void {
+    this.capituloPresupuestoSvc.deleteCapituloPresupuesto(capitulo.uuid)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.getCapituloPresupuesto();
+        this.toastrSvc.success('Se ha eliminado correctamente 😀', 'Capitulo Eliminado', {
+          timeOut: 2000,
+          progressBar: true,
+          progressAnimation: 'increasing'
+        })
+      });
+  }
   // ? detalle capitulo
-  // ===================> onAddCapitulo
+  // ===================>
   public onAddDettalleCapitulo(): void {
     const dialogRef = this.dialog.open(NewDetalleCapituloComponent);
   }
 
-  // ===================> onAddCapitulo
-  public onDeleteDettalleCapitulo(): void {
+  // ===================>
+  public onDeleteDetalleCapitulo(): void {
     const dialogRef = this.dialog.open(DeleteModalComponent);
 
     dialogRef.afterClosed()
@@ -207,7 +223,11 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
       });
   }
 
-  private deleteDetalleCapitulo(): void { }
+  private deleteDetalleCapitulo(): void {
+
+
+
+  }
 
   // !core funtions
   // ===================> clearForm
@@ -239,7 +259,10 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
 
   // =====================>
   public numberWithCommas(x: number): string {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    console.log(x)
+    return (x != 0)
+      ? x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+      : '0';
   }
 
   // =====================> applyFilterPersonal
@@ -301,8 +324,8 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
   private async generatePdf(): Promise<void> {
     let pdf: Array<any> = [];
 
-    pdf = await this.pdfSvc.presupuesto(pdf, this.presupuesto);
-    pdf = await this.pdfSvc.detallePresupuesto(pdf, this.presupuesto);
+    pdf = await this.pdfSvc.presupuesto(pdf, this.presupuesto, this.capitulos);
+    pdf = await this.pdfSvc.detallePresupuesto(pdf, this.presupuesto, this.capitulos);
 
 
     const docDefinition = {

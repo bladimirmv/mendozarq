@@ -55,7 +55,6 @@ export class NewPresupuestoComponent implements OnInit, OnDestroy {
     this.presupuestoForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[0-9a-z\s]+$/)]],
       descripcion: ['', [Validators.required, Validators.maxLength(200)]],
-      // fecha: ['', Validators.required],
       iva: [0, [Validators.required]],
       uuidCliente: ['', Validators.required],
       uuidUsuario: ['']

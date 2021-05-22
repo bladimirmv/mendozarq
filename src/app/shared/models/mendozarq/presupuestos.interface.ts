@@ -52,3 +52,6 @@ export interface DetalleCapitulo {
   total?: number;
   uuidCapituloPresupuesto: string;
 }
+export interface CapituloPresupuestoView extends CapituloPresupuesto {
+  detalles?: Array<DetalleCapitulo>;
+}
