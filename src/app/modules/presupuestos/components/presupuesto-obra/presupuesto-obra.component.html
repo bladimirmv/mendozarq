@@ -27,12 +27,12 @@
       </button>
     </div>
 
-    <mat-tab-group mat-align-tabs="center" class="tab-form">
+    <mat-tab-group mat-align-tabs="center" class="tab-form" style="max-width: 99vw; ">
       <mat-tab label="Capitulos">
 
 
-        <div class="table-container  mat-elevation-z2" style="margin-top: 5px;">
-          <div class="header-table" style.display="grid">
+        <div class="table-container  mat-elevation-z2" style="margin-top: 5px; ">
+          <div class="header-table" [style.display]="selectedCapitulo.length ? 'none' : 'grid'">
             <mat-form-field>
               <mat-label>Buscar</mat-label>
               <input matInput autocomplete="off" (keyup)="applyFilterCapitulo($event)" placeholder="Ex. bladimir"
@@ -52,8 +52,41 @@
             </button>
           </div>
 
+
+          <div *ngIf="selectedCapitulo.length">
+            <div class="delete-table">
+              <button mat-icon-button (click)="clearCheckbox()" class="btn-clear">
+                <mat-icon>clear</mat-icon>
+              </button>
+              <span>
+                Seleccionados {{selectedCapitulo.length}}
+              </span>
+              <button mat-raised-button class="btn-delete" (click)="onDeleteCapitulo()">Elminar</button>
+            </div>
+          </div>
+
           <div class="table-content">
             <table mat-table [dataSource]="dataSourceCapitulo" multiTemplateDataRows class="mat-elevation-z2" matSort>
+
+              <ng-container matColumnDef="seleccion" sticky>
+                <th *matHeaderCellDef class="actions-table">
+                  <mat-checkbox color="warn" (change)="$event ? masterToggle() : null"
+                    [checked]="selectionCapitulo.hasValue() && isAllSelectedCapitulos()"
+                    [indeterminate]="selectionCapitulo.hasValue() && !isAllSelectedCapitulos()"
+                    [aria-label]="checkboxLabel()">
+                  </mat-checkbox>
+                </th>
+                <td *matCellDef="let row" class="actions-table">
+                  <mat-checkbox color="warn" (click)="$event.stopPropagation() "
+                    (change)="$event ? selectionCapitulo.toggle(row) : null"
+                    [checked]="selectionCapitulo.isSelected(row)" [aria-label]="checkboxLabel(row)">
+                  </mat-checkbox>
+                </td>
+
+                <td mat-footer-cell *matFooterCellDef> </td>
+              </ng-container>
+
+
               <!-- *Estado -->
               <ng-container matColumnDef="numero">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Numero </th>
@@ -78,7 +111,6 @@
                   <div class="iva">
                     I.V.A. {{presupuesto.iva}}%
                   </div>
-
                   <div class="total" style="background-color: var(--secondary); color: white;">
                     TOTAL
                   </div>
@@ -113,21 +145,13 @@
                 <th *matHeaderCellDef>
                 </th>
                 <td *matCellDef="let row" class="text-center">
-
+                  <!-- style="white-space: nowrap;" -->
                   <div style="white-space: nowrap;">
                     <button mat-icon-button matTooltip="Nuevo detalle"
                       (click)="expandedElement = expandedElement === row ? null : row" (click)="onAddDettalleCapitulo()"
                       matTooltipPosition="below">
                       <mat-icon>
-                        add
-                      </mat-icon>
-                    </button>
-
-                    <button mat-icon-button matTooltip="Eliminar" style="color: red;"
-                      (click)="expandedElement = expandedElement === row ? null : row" (click)="onDeleteCapitulo(row)"
-                      matTooltipPosition="below">
-                      <mat-icon>
-                        remove
+                        post_add
                       </mat-icon>
                     </button>
 
@@ -139,11 +163,9 @@
                       </mat-icon>
                     </button>
                   </div>
-
-
                 </td>
                 <td mat-footer-cell *matFooterCellDef> </td>
-              </ng-container>+
+              </ng-container>
 
               <ng-container matColumnDef="expandedDetail">
                 <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length"
@@ -179,9 +201,9 @@
           </div>
           <mat-paginator [pageSizeOptions]="[5, 10, 20, 100]" showFirstLastButtons></mat-paginator>
         </div>
-
       </mat-tab>
 
+      <!-- presupuesto -->
       <mat-tab label="Presupuesto">
         <form class="edit-form mat-elevation-z2" [formGroup]="presupuestoForm">
           <h2 class="full-column" align="center">Presupuesto de Obra</h2>

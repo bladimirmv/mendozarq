@@ -50,7 +50,8 @@ export class ServicioComponent implements OnInit, OnDestroy {
     this.source.sort = this.sort;
 
     this.selectionServicio.changed
-      .pipe(map(a => a.source))
+      .pipe(takeUntil(this.destroy$),
+        map(a => a.source))
       .subscribe(data => this.selectedServicio = data.selected);
   }
 
@@ -137,7 +138,6 @@ export class ServicioComponent implements OnInit, OnDestroy {
             this.clearCheckbox();
           }
         });
-
     });
   }
 
@@ -152,6 +152,9 @@ export class ServicioComponent implements OnInit, OnDestroy {
         }
       });
   }
+
+
+
 
 
   // !important, this part is for servicioProyecto table.

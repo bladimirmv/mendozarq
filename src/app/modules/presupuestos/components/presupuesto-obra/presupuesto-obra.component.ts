@@ -1,3 +1,4 @@
+import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -39,7 +40,7 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
   private capitulos: CapituloPresupuestoView[] = [];
   public filterValueCapitulo: string;
   public dataSourceCapitulo: MatTableDataSource<CapituloPresupuesto> = new MatTableDataSource();
-  public columnsToDisplay: Array<string> = ['numero', 'nombre', 'total', 'options'];
+  public columnsToDisplay: Array<string> = ['seleccion', 'numero', 'nombre', 'total', 'options'];
   public expandedElement: CapituloPresupuesto | null;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -49,6 +50,9 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
   public pdfResult: any;
   private uuidPresupuesto: string = '';
   private destroy$: Subject<any> = new Subject<any>();
+
+  public selectedCapitulo: CapituloPresupuesto[] = [];
+  public selectionCapitulo = new SelectionModel<CapituloPresupuesto>(true, []);
 
   public presupuesto: PresupuestoObraView = {};
   public presupuestoForm: FormGroup;
@@ -77,6 +81,12 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
 
     this.dataSourceCapitulo.paginator = this.paginator;
     this.dataSourceCapitulo.sort = this.sort;
+
+
+    this.selectionCapitulo.changed
+      .pipe(takeUntil(this.destroy$),
+        map(a => a.source))
+      .subscribe(data => this.selectedCapitulo = data.selected);
   }
 
   ngOnDestroy(): void {
@@ -128,7 +138,6 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
   }
 
   // ? presupuesto
-
   // ====================>
   private getPresuspuesto(generatePDF?: boolean): void {
     this.presupuestosSvc
@@ -158,6 +167,7 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
       });
   }
 
+
   // ? capitulo
   // ====================>
   private getCapituloPresupuesto(generatePDF?: boolean): void {
@@ -169,6 +179,7 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
         if (this.generatePdf) this.generatePdf();
       });
   }
+
   // ===================> onAddCapitulo
   public onAddCapitulo(): void {
     const dialogRef = this.dialog.open(NewCapituloComponent, {
@@ -188,15 +199,20 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: boolean) => {
-        if (res) this.deleteCapitulo(capitulo);
+        if (res) {
+          this.selectedCapitulo.length === 1
+            ? this.deleteOneCapitulo()
+            : this.deleteMoreThanOneCapitulo();
+        }
       });
   }
 
-  private deleteCapitulo(capitulo: CapituloPresupuesto): void {
-    this.capituloPresupuestoSvc.deleteCapituloPresupuesto(capitulo.uuid)
+  private deleteOneCapitulo(): void {
+    this.capituloPresupuestoSvc.deleteCapituloPresupuesto(this.selectedCapitulo[0].uuid)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.getCapituloPresupuesto();
+        this.clearCheckbox();
         this.toastrSvc.success('Se ha eliminado correctamente 😀', 'Capitulo Eliminado', {
           timeOut: 2000,
           progressBar: true,
@@ -204,6 +220,29 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
         })
       });
   }
+
+  private deleteMoreThanOneCapitulo(): void {
+    this.selectedCapitulo.forEach((capitulo, index) => {
+      const isLast: boolean = index + 1 === this.selectedCapitulo.length;
+      this.capituloPresupuestoSvc
+        .deleteCapituloPresupuesto(capitulo.uuid)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(res => {
+          if (res && isLast) {
+            this.toastrSvc.success('Se han eliminado correctamente 😀', 'Capitulos Eliminados', {
+              timeOut: 2000,
+              progressBar: true,
+              progressAnimation: 'increasing'
+            });
+            this.getCapituloPresupuesto()
+            this.clearCheckbox();
+          }
+        });
+    });
+  }
+
+
+
   // ? detalle capitulo
   // ===================>
   public onAddDettalleCapitulo(): void {
@@ -225,9 +264,8 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
 
   private deleteDetalleCapitulo(): void {
 
-
-
   }
+
 
   // !core funtions
   // ===================> clearForm
@@ -265,27 +303,6 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
       : '0';
   }
 
-  // =====================> applyFilterPersonal
-  applyFilterCapitulo(event: Event | string): void {
-    typeof event === 'string'
-      ? this.filterValueCapitulo = event
-      : this.filterValueCapitulo = (event.target as HTMLInputElement).value;
-    this.dataSourceCapitulo.filter = this.filterValueCapitulo.trim().toLowerCase();
-    if (this.dataSourceCapitulo.paginator) {
-      this.dataSourceCapitulo.paginator.firstPage();
-    }
-  }
-
-  // ===========> isValidField
-  public isValidField(field: string): { color?: string; status?: boolean; icon?: string; } {
-    const validateFIeld = this.presupuestoForm.get(field);
-    return (!validateFIeld.valid && validateFIeld.touched)
-      ? { color: 'warn', status: false, icon: 'close' }
-      : validateFIeld.valid
-        ? { color: 'accent', status: true, icon: 'done' }
-        : {};
-  }
-
   // ===========> getString
   getString(num: number): string {
     return String(num);
@@ -296,6 +313,16 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
       return value + '';
     }
     return value;
+  }
+
+  // ===========> isValidField
+  public isValidField(field: string): { color?: string; status?: boolean; icon?: string; } {
+    const validateFIeld = this.presupuestoForm.get(field);
+    return (!validateFIeld.valid && validateFIeld.touched)
+      ? { color: 'warn', status: false, icon: 'close' }
+      : validateFIeld.valid
+        ? { color: 'accent', status: true, icon: 'done' }
+        : {};
   }
 
   // ============> filterCliente
@@ -318,6 +345,47 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
     this.router.navigate(['admin/presupuestos']);
   }
 
+
+
+
+  // !important, this part is for table.
+  // =====================> applyFilterPersonal
+  applyFilterCapitulo(event: Event | string): void {
+    typeof event === 'string'
+      ? this.filterValueCapitulo = event
+      : this.filterValueCapitulo = (event.target as HTMLInputElement).value;
+    this.dataSourceCapitulo.filter = this.filterValueCapitulo.trim().toLowerCase();
+    if (this.dataSourceCapitulo.paginator) {
+      this.dataSourceCapitulo.paginator.firstPage();
+    }
+  }
+  // =====================>
+  isAllSelectedCapitulos(): any {
+    const numSelected = this.selectionCapitulo.selected.length;
+    const numRows = this.dataSourceCapitulo.data.length;
+    return numSelected === numRows;
+  }
+  // =====================>
+  masterToggle(): void {
+    this.isAllSelectedCapitulos() ?
+      this.selectionCapitulo.clear() :
+      this.dataSourceCapitulo.data.forEach(row => this.selectionCapitulo.select(row));
+  }
+  // =====================>
+  clearCheckbox(): void {
+    this.selectionCapitulo.clear();
+  }
+  // =====================>
+  checkboxLabel(row?: CapituloPresupuesto): string {
+    if (!row) {
+      return `${this.isAllSelectedCapitulos() ? 'select' : 'deselect'} all`;
+    }
+    return `${this.selectionCapitulo.isSelected(row) ? 'deselect' : 'select'} row ${row.uuid}`;
+  }
+
+
+
+
   // ============================================= PDF ======================================================
 
   // ====================> generatePdf
@@ -326,7 +394,6 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
 
     pdf = await this.pdfSvc.presupuesto(pdf, this.presupuesto, this.capitulos);
     pdf = await this.pdfSvc.detallePresupuesto(pdf, this.presupuesto, this.capitulos);
-
 
     const docDefinition = {
       content: pdf,
