@@ -38,6 +38,7 @@ export interface CapituloPresupuesto {
   creadoEn?: Date;
   nombre?: string;
   numero?: number;
+  descuento?: number;
   total?: number;
   uuidPresupuestoObra: string;
 }

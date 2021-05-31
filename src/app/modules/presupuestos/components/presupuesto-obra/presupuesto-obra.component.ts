@@ -1,3 +1,4 @@
+import { EditCapituloComponent } from './../edit-capitulo/edit-capitulo.component';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -191,6 +192,19 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
         if (res) this.getCapituloPresupuesto(true);
       });
   }
+
+  public onUpdateCapitulo(capituloPresupuesto: CapituloPresupuesto): void {
+    const dialogRef = this.dialog.open(EditCapituloComponent, {
+      data: capituloPresupuesto
+    });
+
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: boolean) => {
+        if (res) this.getCapituloPresupuesto();
+      });
+  }
+
 
   // ===================>
   public onDeleteCapitulo(capitulo: CapituloPresupuesto): void {

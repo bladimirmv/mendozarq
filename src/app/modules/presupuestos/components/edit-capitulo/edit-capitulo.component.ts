@@ -6,22 +6,22 @@ import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { CapituloPresupuestoService } from '@services/mendozarq/capitulo-presupuesto.service';
 import { takeUntil } from 'rxjs/operators';
-@Component({
-  selector: 'app-new-capitulo',
-  templateUrl: './new-capitulo.component.html',
-  styleUrls: ['./new-capitulo.component.scss']
-})
-export class NewCapituloComponent implements OnInit, OnDestroy {
 
+@Component({
+  selector: 'app-edit-capitulo',
+  templateUrl: './edit-capitulo.component.html',
+  styleUrls: ['./edit-capitulo.component.scss']
+})
+export class EditCapituloComponent implements OnInit, OnDestroy {
   public capituloForm: FormGroup;
   private destroy$: Subject<any> = new Subject<any>();
 
   constructor(
     private fb: FormBuilder,
-    private dialogRef: MatDialogRef<NewCapituloComponent>,
+    private dialogRef: MatDialogRef<EditCapituloComponent>,
     private toastrSvc: ToastrService,
     private capituloSvc: CapituloPresupuestoService,
-    @Inject(MAT_DIALOG_DATA) private uuidPresupuesto: string
+    @Inject(MAT_DIALOG_DATA) private capituloPresupuesto: CapituloPresupuesto
 
   ) { }
 
@@ -38,24 +38,21 @@ export class NewCapituloComponent implements OnInit, OnDestroy {
   // ============> onInitForm
   private initForm(): void {
     this.capituloForm = this.fb.group({
-      nombre: ['', [Validators.required, Validators.maxLength(100), Validators.pattern(/^[0-9a-z\s]+$/)]],
-      descuento: [0, [Validators.required, Validators.min(0), Validators.max(50)]]
+      nombre: [this.capituloPresupuesto.nombre, [Validators.required, Validators.maxLength(100), Validators.pattern(/^[0-9a-z\s]+$/)]],
+      descuento: [this.capituloPresupuesto.descuento, [Validators.required, Validators.min(0), Validators.max(50)]]
     });
   }
 
   // ===================>
-  public addCapituloPresupuesto(capituloPresupuesto: CapituloPresupuesto): void {
-    capituloPresupuesto.uuidPresupuestoObra = this.uuidPresupuesto;
-
-    this.capituloSvc.addCapituloPresupuesto(capituloPresupuesto)
+  public updateCapituloPresupuesto(capituloPresupuesto: CapituloPresupuesto): void {
+    this.capituloSvc.updateCapituloPresupuesto(this.capituloPresupuesto.uuid, capituloPresupuesto)
       .pipe(takeUntil(this.destroy$))
       .subscribe(res => {
         if (res) {
-          this.toastrSvc.success('El capitulo se ha creado correctamente. 😀', 'Servicio Creado');
+          this.toastrSvc.success('El capitulo se ha actualizado correctamente. 😀', 'Servicio Actualizado');
           this.dialogRef.close(true);
         }
       });
-
   }
 
   // ===========> isValidField
@@ -68,5 +65,3 @@ export class NewCapituloComponent implements OnInit, OnDestroy {
         : {};
   }
 }
-
-

@@ -42,6 +42,7 @@ export class NewPresupuestoComponent implements OnInit, OnDestroy {
     moment.locale('es');
     this.initForm();
     this.initDataClientes();
+    this.initInformacionUsuario();
 
   }
 
@@ -89,21 +90,27 @@ export class NewPresupuestoComponent implements OnInit, OnDestroy {
       });
   }
 
-  // ===================> onAddPresupuesto
-  public onAddPresupuesto(presupuestoObra: PresupuestoObra): void {
-    presupuestoObra.fecha = new Date(moment().format('YYYY-MM-DD'));
+  private initInformacionUsuario(): void {
     this.authSvc.usuario$
       .pipe(takeUntil(this.destroy$))
       .subscribe((usuario: Usuario) => {
-        presupuestoObra.uuidUsuario = usuario.uuid;
-        this.presupuestoObraSvc.addPresupuestoObra(presupuestoObra)
-          .pipe(takeUntil(this.destroy$))
-          .subscribe(res => {
-            if (res) {
-              this.toastrSvc.success('El presupuesto se ha creado correctamente. 😀', 'Presupuesto Creado');
-              this.dialogRef.close(true);
-            }
-          });
+        this.presupuestoForm.patchValue({
+          uuidUsuario: usuario.uuid
+        })
+      });
+
+  }
+
+  // ===================> onAddPresupuesto
+  public onAddPresupuesto(presupuestoObra: PresupuestoObra): void {
+    presupuestoObra.fecha = new Date(moment().format('YYYY-MM-DD'));
+    this.presupuestoObraSvc.addPresupuestoObra(presupuestoObra)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(res => {
+        if (res) {
+          this.toastrSvc.success('El presupuesto se ha creado correctamente. 😀', 'Presupuesto Creado');
+          this.dialogRef.close(true);
+        }
       });
   }
 

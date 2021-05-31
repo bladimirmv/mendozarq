@@ -34,13 +34,14 @@ mat-dialog-actions {
   mat-dialog-actions {
     margin: 0;
     padding: 0;
-    grid-template-columns: auto;
-    grid-gap: 10px;
-    grid-template-areas: "success"
-      "secondary";
+    display: flex;
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
 
-    .mat-btn-success {
-      margin: 0;
+    .mat-btn-success,
+    .mat-btn-secondary {
+      margin: 5px 0;
+      width: 100%;
     }
 
   }

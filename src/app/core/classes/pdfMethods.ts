@@ -222,7 +222,7 @@ export class PdfMethods {
           alignment: 'center',
           border: [false, false, false, true]
         }, {
-          text: '0%',
+          text: `${capitulo.descuento}%`,
           alignment: 'center',
           border: [false, false, false, true]
         }, {
