@@ -41,7 +41,7 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
   private capitulos: CapituloPresupuestoView[] = [];
   public filterValueCapitulo: string;
   public dataSourceCapitulo: MatTableDataSource<CapituloPresupuesto> = new MatTableDataSource();
-  public columnsToDisplay: Array<string> = ['seleccion', 'numero', 'nombre', 'total', 'options'];
+  public columnsToDisplay: Array<string> = ['seleccion', 'nombre', 'precio', 'descuento', 'precioDescuento', 'total', 'options'];
   public expandedElement: CapituloPresupuesto | null;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
