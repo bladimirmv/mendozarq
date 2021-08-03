@@ -1,3 +1,4 @@
+import { CapituloPresupuestoView } from './../../../shared/models/mendozarq/presupuestos.interface';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
@@ -30,9 +31,9 @@ export class CapituloPresupuestoService {
   }
 
   // ====================>
-  public getAllCapituloPresupuesto(uuid: string): Observable<CapituloPresupuesto[]> {
+  public getAllCapituloPresupuesto(uuid: string): Observable<CapituloPresupuestoView[]> {
     return this.http
-      .get<CapituloPresupuesto[]>(`${this.API_URL}/api/capitulopresupuesto/${uuid}`)
+      .get<CapituloPresupuestoView[]>(`${this.API_URL}/api/capitulopresupuesto/${uuid}`)
       .pipe(catchError(error => this.handdleError(error)));
   }
 

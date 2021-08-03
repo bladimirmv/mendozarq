@@ -56,3 +56,9 @@ export interface DetalleCapitulo {
 export interface CapituloPresupuestoView extends CapituloPresupuesto {
   detalles?: Array<DetalleCapitulo>;
 }
+
+
+export interface Unidad {
+  value: string;
+  text: string;
+}

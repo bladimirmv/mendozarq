@@ -259,8 +259,8 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
 
   // ? detalle capitulo
   // ===================>
-  public onAddDettalleCapitulo(): void {
-    const dialogRef = this.dialog.open(NewDetalleCapituloComponent);
+  public onAddDettalleCapitulo(CapituloView: CapituloPresupuestoView): void {
+    const dialogRef = this.dialog.open(NewDetalleCapituloComponent, { data: CapituloView });
   }
 
   // ===================>

@@ -600,6 +600,8 @@ export class PdfMethods {
 
   }
 
+
+
   // ====================> getBase64Image
   public getBase64Image(img: HTMLImageElement) {
     const canvas = document.createElement('canvas');

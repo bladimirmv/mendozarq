@@ -27,6 +27,7 @@
       </button>
     </div>
 
+
     <mat-tab-group mat-align-tabs="center" class="tab-form" style="max-width: 99vw; ">
       <mat-tab label="Capitulos">
 
@@ -86,8 +87,7 @@
                 <td mat-footer-cell *matFooterCellDef> </td>
               </ng-container>
 
-
-              <!-- *Estado -->
+              <!-- *descuento -->
               <ng-container matColumnDef="descuento">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> DTO. </th>
                 <td mat-cell *matCellDef="let row" class="text-center">
@@ -108,8 +108,6 @@
                 </td>
               </ng-container>
 
-
-
               <!-- *precio -->
               <ng-container matColumnDef="precio">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio </th>
@@ -125,8 +123,6 @@
                 <td mat-cell *matCellDef="let row" class="text-center" style="width: 150px;">
                   0
                 </td>
-                <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-
 
                 <td mat-footer-cell *matFooterCellDef class="text-center">
                   <div class="total-bruto">
@@ -141,11 +137,7 @@
                     {{presupuesto.totalPresupuesto ? (presupuesto.totalPresupuesto| number: '1.2-2') : 0}}
                   </div>
                 </td>
-
-
               </ng-container>
-
-
 
               <!-- *nombre -->
               <ng-container matColumnDef="nombre">
@@ -178,8 +170,8 @@
                   <!-- style="white-space: nowrap;" -->
                   <div style="white-space: nowrap;">
                     <button mat-icon-button matTooltip="Nuevo detalle"
-                      (click)="expandedElement = expandedElement === row ? null : row" (click)="onAddDettalleCapitulo()"
-                      matTooltipPosition="below">
+                      (click)="expandedElement = expandedElement === row ? null : row"
+                      (click)="onAddDettalleCapitulo(row)" matTooltipPosition="below">
                       <mat-icon>
                         post_add
                       </mat-icon>
@@ -201,7 +193,7 @@
                 <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length"
                   style="white-space: normal;">
                   <div class="detail-container" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-                    lorem ipsun
+                    {{element | json}}
                   </div>
                 </td>
               </ng-container>
