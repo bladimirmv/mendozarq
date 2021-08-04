@@ -15,13 +15,10 @@
         {{isValidField('descripcion').icon}}
       </mat-icon>
       <mat-hint align="end">
-        {{detalleForm.value.descripcion ? detalleForm.value.descripcion.length : 0}}/200
+        {{detalleForm.value.descripcion ? detalleForm.value.descripcion.length : 0}}/300
       </mat-hint>
       <mat-error *ngIf="detalleForm.get('descripcion').errors?.required">
         Ingrese una descripcion.
-      </mat-error>
-      <mat-error *ngIf="detalleForm.get('descripcion').errors?.pattern">
-        Debe incluir solo letras en minuscula.
       </mat-error>
       <mat-error *ngIf="detalleForm.get('descripcion').errors?.maxlength">
         Debe contener {{detalleForm.get('descripcion').errors?.maxlength?.requiredLength}} digitos como maximo.
@@ -29,9 +26,9 @@
     </mat-form-field>
 
     <!-- *Unidad -->
-    <mat-form-field class="full-width " [color]="isValidField('unidad').color">
+    <mat-form-field class="full-width full-column" [color]="isValidField('unidad').color">
       <mat-label>Unidad</mat-label>
-      <mat-select style="position: relative;" formControlName="unidad">
+      <mat-select style="position: relative;" class="text-center" formControlName="unidad">
         <div style="padding: 5px 5px 0 5px;
           position: -webkit-sticky; position: sticky; top: 0;  background-color: white;  z-index: 1; ">
           <mat-form-field style=" width: 100%; ">
@@ -57,19 +54,26 @@
     </mat-form-field>
 
     <!-- *Cantidad -->
-    <mat-form-field class="full-width" [color]="isValidField('cantidad').color">
+    <mat-form-field class="full-width " [color]="isValidField('cantidad').color">
       <mat-label>Cantidad</mat-label>
-      <input matInput type="number" formControlName="cantidad">
+      <input matInput class="text-center" type="number" formControlName="cantidad">
     </mat-form-field>
 
-
+    <!-- *PrecioUnitario -->
+    <mat-form-field class="full-width" [color]="isValidField('precioUnitario').color">
+      <mat-label>
+        Precio Unitario
+      </mat-label>
+      <input class="text-center" matInput type="number" formControlName="precioUnitario">
+    </mat-form-field>
 
   </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="center">
   <button mat-button [mat-dialog-close]="false" class="mat-btn-secondary full-width">Cancelar</button>
-  <button mat-button class="mat-btn-success full-width" [disabled]="!detalleForm.valid">
+  <button mat-button class="mat-btn-success full-width" [disabled]="!detalleForm.valid"
+    (click)="addDetellaCapitulo(this.detalleForm.value)">
     Guardar
   </button>
 </mat-dialog-actions>

@@ -1,53 +1,47 @@
-import { CapituloPresupuestoView } from '@shared/models/mendozarq/presupuestos.interface';
+import { DetalleCapitulo } from '@shared/models/mendozarq/presupuestos.interface';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { CapituloPresupuesto } from '@models/mendozarq/presupuestos.interface';
 import { environment } from '@env/environment.prod';
+
+
 @Injectable({
   providedIn: 'root'
 })
-export class CapituloPresupuestoService {
+export class DetalleCapituloService {
   private API_URL = environment.API_URL;
 
   constructor(private http: HttpClient, private toastrSvc: ToastrService) {
   }
 
   // ====================>
-  public addCapituloPresupuesto(capituloPresupuesto: CapituloPresupuesto): Observable<any> {
+  public addDetalleCapitulo(detalleCapitulo: DetalleCapitulo): Observable<any> {
     return this.http
-      .post<CapituloPresupuesto>(`${this.API_URL}/api/capituloPresupuesto`, capituloPresupuesto)
+      .post<DetalleCapitulo>(`${this.API_URL}/api/detalleCapitulo`, detalleCapitulo)
       .pipe(catchError(error => this.handdleError(error)));
   }
 
   // ====================>
-  public getOneCapituloPresupuesto(uuid: string): Observable<CapituloPresupuesto> {
+  public getOneDetalleCapitulo(uuid: string): Observable<DetalleCapitulo> {
     return this.http
-      .get<CapituloPresupuesto>(`${this.API_URL}/api/capitulopresupuesto/${uuid}`)
+      .get<DetalleCapitulo>(`${this.API_URL}/api/detalleCapitulo/${uuid}`)
       .pipe(catchError(error => this.handdleError(error)));
   }
 
   // ====================>
-  public getAllCapituloPresupuesto(uuid: string): Observable<CapituloPresupuestoView[]> {
+  public updateDetalleCapitulo(uuid: string, detalleCapitulo: DetalleCapitulo): Observable<any> {
     return this.http
-      .get<CapituloPresupuestoView[]>(`${this.API_URL}/api/capitulopresupuesto/${uuid}`)
+      .put(`${this.API_URL}/api/detalleCapitulo/${uuid}`, detalleCapitulo)
       .pipe(catchError(error => this.handdleError(error)));
   }
 
   // ====================>
-  public updateCapituloPresupuesto(uuid: string, capituloPresupuesto: CapituloPresupuesto): Observable<any> {
+  public deleteDetalleCapitulo(uuid: string): Observable<any> {
     return this.http
-      .put(`${this.API_URL}/api/capitulopresupuesto/${uuid}`, capituloPresupuesto)
-      .pipe(catchError(error => this.handdleError(error)));
-  }
-
-  // ====================>
-  public deleteCapituloPresupuesto(uuid: string): Observable<any> {
-    return this.http
-      .delete(`${this.API_URL}/api/capitulopresupuesto/${uuid}`)
+      .delete(`${this.API_URL}/api/detalleCapitulo/${uuid}`)
       .pipe(catchError(error => this.handdleError(error)));
   }
 
@@ -63,7 +57,7 @@ export class CapituloPresupuestoService {
             errorMessage = 'No se ha podido establecer una conexion con la base de datos. 🙁';
             break;
           case 1451:
-            errorMessage = 'No se puede eliminar por que este capitulo esta relacionado con un detalle u otra tabla. 🙁';
+            errorMessage = 'No se puede eliminar por que este detalle esta relacionado con un capitulo u otra tabla. 🙁';
             break;
           default:
             errorMessage = `
@@ -80,4 +74,5 @@ export class CapituloPresupuestoService {
     });
     return throwError(httpError);
   }
+
 }

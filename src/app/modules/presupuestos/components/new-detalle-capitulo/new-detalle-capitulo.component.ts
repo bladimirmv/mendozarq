@@ -1,10 +1,14 @@
+import { takeUntil } from 'rxjs/operators';
+import { DetalleCapituloService } from '@services/mendozarq/detalle-capitulo.service';
+import { DetalleCapitulo } from '@models/mendozarq/presupuestos.interface';
 import { Unidad } from '@models/mendozarq/presupuestos.interface';
 import { Subject } from 'rxjs';
 import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 
 import { CapituloPresupuestoView } from '@app/shared/models/mendozarq/presupuestos.interface';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-new-detalle-capitulo',
@@ -18,7 +22,7 @@ export class NewDetalleCapituloComponent implements OnInit, OnDestroy {
   public detalleForm: FormGroup;
   public unidades: Array<Unidad> = [
     {
-      value: 'N/A', text: 'N/A'
+      value: 'N/A', text: 'no aplica'
     },
     {
       value: 'µm', text: 'micra'
@@ -120,7 +124,10 @@ export class NewDetalleCapituloComponent implements OnInit, OnDestroy {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public capituloView: CapituloPresupuestoView,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private detalleCapituloSvc: DetalleCapituloService,
+    private dialogRef: MatDialogRef<NewDetalleCapituloComponent>,
+    private toastrSvc: ToastrService
   ) { }
 
 
@@ -135,12 +142,24 @@ export class NewDetalleCapituloComponent implements OnInit, OnDestroy {
 
   private initForm(): void {
     this.detalleForm = this.fb.group({
-      descripcion: ['', [Validators.required, Validators.maxLength(200), Validators.pattern(/^[0-9a-z\s]+$/)]],
+      descripcion: ['', [Validators.required, Validators.maxLength(300)]],
       unidad: ['', [Validators.required]],
       cantidad: [0, [Validators.required]],
       precioUnitario: [0, [Validators.required]],
-      uuidCapituloPresupuesto: [this.capituloView.uuid]
+      uuidCapituloPresupuesto: this.capituloView.uuid
     });
+  }
+
+  public addDetellaCapitulo(detalleCapitulo: DetalleCapitulo) {
+
+    this.detalleCapituloSvc.addDetalleCapitulo(detalleCapitulo)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        if (res) {
+          this.toastrSvc.success('El detalle se ha creado correctamente. 😀', 'Detalle Creado');
+          this.dialogRef.close(true);
+        }
+      });
   }
 
   // ===========> isValidField

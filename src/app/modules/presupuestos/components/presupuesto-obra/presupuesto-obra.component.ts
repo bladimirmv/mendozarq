@@ -261,6 +261,11 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
   // ===================>
   public onAddDettalleCapitulo(CapituloView: CapituloPresupuestoView): void {
     const dialogRef = this.dialog.open(NewDetalleCapituloComponent, { data: CapituloView });
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: boolean) => {
+        res ? this.getCapituloPresupuesto() : false;
+      });
   }
 
   // ===================>

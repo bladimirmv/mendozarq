@@ -34,6 +34,8 @@ export class AdminInterceptor implements HttpInterceptor {
       '/api/participanteVisita/',
       '/api/presupuestos',
       '/api/presupuestos/',
+      '/api/capituloPresupuesto',
+      '/api/capituloPresupuesto/',
 
 
 
