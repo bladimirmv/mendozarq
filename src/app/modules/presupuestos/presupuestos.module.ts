@@ -15,9 +15,10 @@ import { NewDetalleCapituloComponent } from './components/new-detalle-capitulo/n
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { EditCapituloComponent } from './components/edit-capitulo/edit-capitulo.component';
+import { EditDetalleCapituloComponent } from './components/edit-detalle-capitulo/edit-detalle-capitulo.component';
 
 @NgModule({
-  declarations: [PresupuestosComponent, PresupuestoObraComponent, NewPresupuestoComponent, EditPresupuestoComponent, NewCapituloComponent, NewDetalleCapituloComponent, EditCapituloComponent],
+  declarations: [PresupuestosComponent, PresupuestoObraComponent, NewPresupuestoComponent, EditPresupuestoComponent, NewCapituloComponent, NewDetalleCapituloComponent, EditCapituloComponent, EditDetalleCapituloComponent],
   imports: [
     CommonModule,
     PresupuestosRoutingModule,

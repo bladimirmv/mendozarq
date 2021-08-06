@@ -88,32 +88,6 @@
     grid-column: span 3;
   }
 
-
-  .capitulos-form {
-    // padding: 10px;
-    // margin: 5px;
-    background-color: transparent;
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  .example-container {
-    height: 100%;
-    overflow: auto;
-  }
-
   table {
     width: 100%;
   }
@@ -122,8 +96,20 @@
     font-weight: bold;
   }
 
+  .detalle {
+    background-color: red;
+  }
 
 }
+
+
+
+
+
+
+
+
+
 
 td {
   cursor: pointer;
@@ -165,11 +151,6 @@ tr.example-element-row:not(.example-expanded-row):active {
 
 }
 
-@media screen and (max-width: "470px") {
-  .content {
-    .form-container .options {}
-  }
-}
 
 @media screen and (max-width:500px) {
 

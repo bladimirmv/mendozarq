@@ -454,9 +454,9 @@ export class PdfMethods {
     }]);
 
 
-    capituloPresupuesto.forEach((capitulo: CapituloPresupuestoView) => {
+    capituloPresupuesto.forEach((capitulo: CapituloPresupuestoView, capIndex: number) => {
       bodyTable.push([{
-        text: '1',
+        text: `${capIndex + 1}`,
         style: 'tableHeader',
         colSpan: 1,
         alignment: 'center',
@@ -469,10 +469,10 @@ export class PdfMethods {
         style: 'tableHeader',
         colSpan: 4,
         alignment: 'center',
-        // color: '#ffffff',
         fillColor: '#F5F5F5',
         bold: true,
-        border: [false, false, false, false]
+        border: [false, false, false, false],
+
 
 
       }, {}, {}, {}, {
@@ -486,32 +486,39 @@ export class PdfMethods {
         border: [false, false, false, false]
       }]);
 
-      capitulo.detalles.forEach((detalle: DetalleCapitulo) => {
+
+      capitulo.detalles.forEach((detalle: DetalleCapitulo, detalleIndex: number) => {
         bodyTable.push([
           {
-            text: '1.1',
+            text: `${capIndex + 1}.${detalleIndex + 1}`,
             alignment: 'center',
             border: [false, false, false, true]
+
           }, {
             text: `${detalle.descripcion}`,
             alignment: 'justify',
             border: [false, false, false, true]
+
           }, {
-            text: 'gl',
+            text: `${detalle.unidad}`,
             alignment: 'center',
             border: [false, false, false, true]
+
           }, {
-            text: '1',
+            text: `${detalle.cantidad}`,
             alignment: 'center',
             border: [false, false, false, true]
+
           }, {
-            text: '300000',
+            text: `${detalle.precioUnitario}`,
             alignment: 'center',
             border: [false, false, false, true]
+
           }, {
-            text: '300000',
+            text: `${detalle.precioUnitario * detalle.cantidad}`,
             alignment: 'center',
             border: [false, false, false, true]
+
           }
         ]);
       });
@@ -519,18 +526,12 @@ export class PdfMethods {
     });
 
     // *items
-
-
-
-
-
-
     pdf.push(this.centerObject({
       style: 'tableExample',
       table: {
         body: bodyTable,
         alignment: 'center',
-        widths: ['auto', '*', 'auto', 'auto', 'auto', 'auto']
+        widths: ['auto', '*', 30, 'auto', 'auto', 'auto']
       },
       layout: {
         hLineWidth: function (i, node) {

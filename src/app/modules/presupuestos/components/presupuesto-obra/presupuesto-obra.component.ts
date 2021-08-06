@@ -1,3 +1,6 @@
+import { EditDetalleCapituloComponent } from './../edit-detalle-capitulo/edit-detalle-capitulo.component';
+import { DetalleCapitulo } from './../../../../shared/models/mendozarq/presupuestos.interface';
+import { DetalleCapituloService } from './../../../../core/services/mendozarq/detalle-capitulo.service';
 import { EditCapituloComponent } from './../edit-capitulo/edit-capitulo.component';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
@@ -70,7 +73,8 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
     private capituloPresupuestoSvc: CapituloPresupuestoService,
     private toastrSvc: ToastrService,
     private router: Router,
-    private presupuestosSvc: PresupuestosService) {
+    private presupuestosSvc: PresupuestosService,
+    private detalleCapituloSvc: DetalleCapituloService) {
 
   }
 
@@ -181,7 +185,6 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
       });
   }
 
-  // ===================> onAddCapitulo
   public onAddCapitulo(): void {
     const dialogRef = this.dialog.open(NewCapituloComponent, {
       data: this.uuidPresupuesto
@@ -205,8 +208,6 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
       });
   }
 
-
-  // ===================>
   public onDeleteCapitulo(capitulo: CapituloPresupuesto): void {
     const dialogRef = this.dialog.open(DeleteModalComponent);
 
@@ -255,7 +256,18 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
     });
   }
 
+  public onUpdateDetalleCapitulo(detalleCapitulo: DetalleCapitulo) {
 
+    const dialogRef = this.dialog.open(EditDetalleCapituloComponent, {
+      data: detalleCapitulo
+    });
+
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: boolean) => {
+        if (res) this.getCapituloPresupuesto();
+      });
+  }
 
   // ? detalle capitulo
   // ===================>
@@ -269,20 +281,25 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
   }
 
   // ===================>
-  public onDeleteDetalleCapitulo(): void {
+  public onDeleteDetalleCapitulo(uuid: string): void {
     const dialogRef = this.dialog.open(DeleteModalComponent);
 
     dialogRef.afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: boolean) => {
         res
-          ? this.deleteDetalleCapitulo()
+          ? this.deleteDetalleCapitulo(uuid)
           : null;
       });
   }
 
-  private deleteDetalleCapitulo(): void {
-
+  private deleteDetalleCapitulo(uuid: string): void {
+    this.detalleCapituloSvc.deleteDetalleCapitulo(uuid)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.toastrSvc.success('Se ha eliminado correctamente. 😀', 'Detalle Eliminado')
+        this.getCapituloPresupuesto();
+      });
   }
 
 

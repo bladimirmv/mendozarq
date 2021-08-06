@@ -167,7 +167,6 @@
                 <th *matHeaderCellDef>
                 </th>
                 <td *matCellDef="let row" class="text-center">
-                  <!-- style="white-space: nowrap;" -->
                   <div style="white-space: nowrap;">
                     <button mat-icon-button matTooltip="Nuevo detalle"
                       (click)="expandedElement = expandedElement === row ? null : row"
@@ -193,7 +192,72 @@
                 <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length"
                   style="white-space: normal;">
                   <div class="detail-container" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-                    {{element | json}}
+
+
+                    <table *ngIf="element.detalles.length" mat-table [dataSource]="element.detalles"
+                      class="mat-elevation-z2">
+
+                      <!-- *descripcion -->
+                      <ng-container matColumnDef="descripcion">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">
+                          Descripcion </th>
+                        <td mat-cell class="td-longtext detalle-descripcion text-center" *matCellDef="let detalle">
+                          <span>
+                            {{detalle.descripcion}}
+                          </span>
+                        </td>
+                      </ng-container>
+
+                      <!-- *unidad -->
+                      <ng-container matColumnDef="unidad">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Unidad </th>
+                        <td mat-cell class="text-center" *matCellDef="let detalle"> {{detalle.unidad}} </td>
+                      </ng-container>
+
+                      <!-- *cantidad -->
+                      <ng-container matColumnDef="cantidad">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Cantidad </th>
+                        <td mat-cell class="text-center" *matCellDef="let detalle"> {{detalle.cantidad}} </td>
+                      </ng-container>
+
+                      <!-- *precioUnitario-->
+                      <ng-container matColumnDef="precioUnitario">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Precio </th>
+                        <td mat-cell class="text-center" *matCellDef="let detalle"> {{detalle.precioUnitario}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="options" stickyEnd>
+                        <th *matHeaderCellDef> </th>
+                        <td class="text-center" *matCellDef="let detalle">
+                          <button mat-icon-button [matMenuTriggerFor]="menu">
+                            <mat-icon>
+                              more_horiz
+                            </mat-icon>
+                            <mat-menu #menu="matMenu">
+                              <button mat-menu-item (click)="onUpdateDetalleCapitulo(detalle)">
+                                <mat-icon>edit</mat-icon>
+                                <span>Editar</span>
+                              </button>
+                              <button mat-menu-item (click)="onDeleteDetalleCapitulo(detalle.uuid)">
+                                <mat-icon>delete</mat-icon>
+                                <span>Eliminar</span>
+                              </button>
+                            </mat-menu>
+                          </button>
+                        </td>
+                      </ng-container>
+
+                      <tr mat-header-row
+                        *matHeaderRowDef="['descripcion','unidad','cantidad','precioUnitario', 'options']">
+                      </tr>
+                      <tr mat-row *matRowDef="let row; columns: ['descripcion','unidad','cantidad','precioUnitario',
+                            'options'];">
+                      </tr>
+                    </table>
+
+
+
+
                   </div>
                 </td>
               </ng-container>
@@ -229,7 +293,7 @@
 
 
 
-      <!-- presupuesto -->
+      <!-- *presupuesto ============================================ -->
       <mat-tab label="Presupuesto">
         <form class="edit-form mat-elevation-z2" [formGroup]="presupuestoForm">
           <h2 class="full-column" align="center">Presupuesto de Obra</h2>
