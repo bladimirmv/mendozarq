@@ -218,7 +218,7 @@ export class PdfMethods {
           alignment: 'justify',
           border: [false, false, false, true]
         }, {
-          text: '2,390.000',
+          text: `${capitulo.total}`,
           alignment: 'center',
           border: [false, false, false, true]
         }, {
@@ -226,7 +226,7 @@ export class PdfMethods {
           alignment: 'center',
           border: [false, false, false, true]
         }, {
-          text: '2,390.000.00',
+          text: `${capitulo.totalDescuento}`,
           alignment: 'center',
           border: [false, false, false, true]
         }, {
@@ -476,7 +476,7 @@ export class PdfMethods {
 
 
       }, {}, {}, {}, {
-        text: '2,390.00',
+        text: `${capitulo.total}`,
         style: 'tableHeader',
         colSpan: 1,
         alignment: 'center',

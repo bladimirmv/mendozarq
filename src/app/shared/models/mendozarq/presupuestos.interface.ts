@@ -55,6 +55,8 @@ export interface DetalleCapitulo {
 }
 export interface CapituloPresupuestoView extends CapituloPresupuesto {
   detalles?: Array<DetalleCapitulo>;
+  totalDescuento?: number;
+  precio?: number;
 }
 
 

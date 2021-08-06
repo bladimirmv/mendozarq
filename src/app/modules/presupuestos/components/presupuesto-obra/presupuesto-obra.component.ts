@@ -15,7 +15,7 @@ import { Usuario } from '@app/shared/models/usuario.interface';
 import { PdfService } from '@services/pdf/pdf.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
-import { map, take, takeUntil } from 'rxjs/operators';
+import { map, reduce, take, takeUntil } from 'rxjs/operators';
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatTableDataSource } from '@angular/material/table';
@@ -181,6 +181,11 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
       .subscribe((capitulos: CapituloPresupuestoView[]) => {
         this.dataSourceCapitulo.data = capitulos;
         this.capitulos = capitulos;
+
+        this.presupuesto.totalBruto = this.getTotalBruto();
+        this.presupuesto.totalWithIVA = this.getTotalWithIVA();
+        this.presupuesto.totalPresupuesto = this.getTotalPresupuesto();
+
         if (this.generatePdf) this.generatePdf();
       });
   }
@@ -318,17 +323,17 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
 
   // =====================>
   public getTotalBruto(): number {
-    return this.capitulos.map(t => t.total).reduce((acc, value) => acc + value, 0);
+    return Number(this.capitulos.map(t => t.total).reduce((acc, value) => acc + value, 0).toFixed(2));
   }
 
   // =====================>
   public getTotalWithIVA(): number {
-    return (this.getTotalBruto() * (this.presupuesto.iva / 100));
+    return Number((this.getTotalBruto() * (this.presupuesto.iva / 100)).toFixed(2));
   }
 
   // =====================>
   public getTotalPresupuesto(): number {
-    return this.getTotalBruto() + this.getTotalWithIVA();
+    return Number((this.getTotalBruto() + this.getTotalWithIVA()).toFixed(2));
   }
 
   // =====================>
