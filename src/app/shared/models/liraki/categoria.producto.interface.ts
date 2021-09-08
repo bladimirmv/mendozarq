@@ -1,9 +1,6 @@
 export interface CategoriaProducto {
   creadoEn?: Date;
-  idCategoria?: string;
-  idProducto?: string;
+  uuid?: string;
   nombre: string;
   description: string;
-  urlImg?: any;
-  filerefImg?: string;
 }

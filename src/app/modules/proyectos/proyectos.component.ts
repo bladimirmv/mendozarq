@@ -16,7 +16,6 @@ import { DeleteModalComponent } from '@app/shared/components/delete-modal/delete
 import { EditProyectoComponent } from '@modules/proyectos/components/edit-proyecto/edit-proyecto.component';
 import { Proyecto } from '@models/mendozarq/proyecto.interface';
 import { Usuario } from '@models/usuario.interface';
-import { type } from 'os';
 @Component({
   selector: 'app-proyectos',
   templateUrl: './proyectos.component.html',
