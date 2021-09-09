@@ -43,14 +43,10 @@ export class NewCategoriaProductoComponent implements OnInit, OnDestroy {
   }
 
   public addCategoriaProducto(categoriaProducto: CategoriaProducto): void {
-    console.log('add 1');
-
     this.categoriaProductoSvc
       .addCategoriaProducto(categoriaProducto)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        console.log('add 2');
-
         this.toastrSvc.success('La categoria se ha creado corectamente. 😀', 'Categoria Creado');
         this.dialogRef.close(true);
       });

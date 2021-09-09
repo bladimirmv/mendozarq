@@ -110,7 +110,7 @@
           <th *matHeaderCellDef mat-sort-header>
           </th>
           <td *matCellDef="let row" class="text-center">
-            <button mat-icon-button>
+            <button mat-icon-button (click)="editCategoriaProducto(row)">
               <mat-icon class="edit-icon">
                 edit
               </mat-icon>

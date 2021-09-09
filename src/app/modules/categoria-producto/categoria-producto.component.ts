@@ -1,3 +1,4 @@
+import { EditCategoriaProductoComponent } from './components/edit-categoria-producto/edit-categoria-producto.component';
 import { NewCategoriaProductoComponent } from './components/new-categoria-producto/new-categoria-producto.component';
 import { DeleteModalComponent } from '@app/shared/components/delete-modal/delete-modal.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -74,7 +75,18 @@ export class CategoriaProductoComponent implements OnInit, OnDestroy {
   }
 
   public editCategoriaProducto(categoriaProducto: CategoriaProducto): void {
+    const dialogRef = this.dialog.open(EditCategoriaProductoComponent, {
+      data: categoriaProducto
+    });
 
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: boolean) => {
+        if (res) {
+          this.getAllCategoriaProducto();
+        }
+      });
   }
 
   public deleteCategoriaProducto(): void {

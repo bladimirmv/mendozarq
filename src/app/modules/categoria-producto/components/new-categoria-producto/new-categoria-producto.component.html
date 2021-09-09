@@ -2,7 +2,7 @@
   Nueva Categoria
 </h2>
 <mat-dialog-content>
-  <form class="new-proyecto-form" [formGroup]="categoriaForm">
+  <form class="new-form" [formGroup]="categoriaForm">
 
     <!-- *Nombre -->
     <mat-form-field class="full-width full-column" [color]="isValidField('nombre').color">
@@ -26,7 +26,7 @@
     <!-- *Descripcion -->
     <mat-form-field class="full-width full-column" [color]="isValidField('descripcion').color">
       <mat-label>Descripcion</mat-label>
-      <textarea matInput placeholder="Ex. Avenida Segunda" formControlName="descripcion"></textarea>
+      <textarea matInput placeholder="Ex. Nueva Descripcion" formControlName="descripcion"></textarea>
       <mat-hint align="end">
         {{categoriaForm.value.descripcion ? categoriaForm.value.descripcion.length : 0}}/200
       </mat-hint>
