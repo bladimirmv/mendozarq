@@ -41,7 +41,7 @@ export class EditCategoriaProductoComponent implements OnInit, OnDestroy {
   private initForm(): void {
     this.categoriaForm = this.fb.group({
       nombre: [this.data.nombre, [Validators.required, Validators.maxLength(50)]],
-      descripcion: [this.data.description, Validators.maxLength(200)]
+      descripcion: [this.data.descripcion, Validators.maxLength(200)]
     });
   }
 

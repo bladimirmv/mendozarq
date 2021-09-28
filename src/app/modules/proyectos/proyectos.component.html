@@ -141,7 +141,9 @@
         <!-- *fechaFinal -->
         <ng-container matColumnDef="fechaFinal">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Final </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> {{row.fechaFinal | date}} </td>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            {{row.fechaFinal | date}}
+          </td>
         </ng-container>
 
         <!-- *lugarProyecto -->

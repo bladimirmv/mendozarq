@@ -22,7 +22,7 @@ export class CategoriaProductoComponent implements OnInit, OnDestroy {
 
   private destroy$: Subject<any> = new Subject<any>();
 
-
+  public categorias: Array<CategoriaProducto> = [];
   selected: CategoriaProducto[] = [];
   selection = new SelectionModel<CategoriaProducto>(true, []);
   filterValue: string;
@@ -59,6 +59,7 @@ export class CategoriaProductoComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((categorias: CategoriaProducto[]) => {
         this.source.data = categorias;
+        this.categorias = categorias;
       });
   }
 

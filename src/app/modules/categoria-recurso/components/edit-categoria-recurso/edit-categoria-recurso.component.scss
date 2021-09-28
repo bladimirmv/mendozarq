@@ -10,7 +10,6 @@
 }
 
 mat-dialog-actions {
-  background-color: red;
   display: grid;
   grid-template-areas: "secondary success";
   grid-template-columns: repeat(2, 1fr);

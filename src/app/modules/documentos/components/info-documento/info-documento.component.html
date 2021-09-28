@@ -1,13 +1,16 @@
 <div class="main no-select">
 
-  <h2 align="center">{{trimExtension(documentoProyecto.nombre) }}</h2>
+  <h2 align="center">
+    {{trimExtension(documentoProyecto.nombre) }}
+  </h2>
 
   <div class="row-info">
     <h3>
       Creacion:
     </h3>
     <span>
-      {{documentoProyecto.fechaCreacion | date}}
+      {{documentoProyecto.creadoEn | date: 'medium'}}
+
     </span>
   </div>
 

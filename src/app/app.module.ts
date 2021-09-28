@@ -21,6 +21,7 @@ import { RegisterComponent } from './core/auth/register/register.component';
 import { FooterComponent } from './core/footer/footer.component';
 import { AdminInterceptor } from './core/interceptors/admin.interceptor';
 
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { AdminInterceptor } from './core/interceptors/admin.interceptor';
   providers: [
 
     { provide: HTTP_INTERCEPTORS, useClass: AdminInterceptor, multi: true },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' }
   ],
   bootstrap: [AppComponent]
 })
