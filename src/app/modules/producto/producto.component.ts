@@ -1,15 +1,184 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Subject } from 'rxjs';
+
+import { ProductoService } from '@services/liraki/producto.service';
+import { Producto } from '@models/liraki/producto.interface';
+import { MatTableDataSource } from '@angular/material/table';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
+import { map, takeUntil } from 'rxjs/operators';
+import { NewProductoComponent } from './components/new-producto/new-producto.component';
+import { EditProductoComponent } from './components/edit-producto/edit-producto.component';
+import { DeleteModalComponent } from '@app/shared/components/delete-modal/delete-modal.component';
+
 
 @Component({
   selector: 'app-producto',
   templateUrl: './producto.component.html',
   styleUrls: ['./producto.component.scss']
 })
-export class ProductoComponent implements OnInit {
+export class ProductoComponent implements OnInit, OnDestroy {
 
-  constructor() { }
+  private destroy$: Subject<any> = new Subject<any>();
+
+  public productos: Array<Producto> = [];
+  selected: Producto[] = [];
+  selection = new SelectionModel<Producto>(true, []);
+  filterValue: string;
+  public columns: Array<string> = ['seleccion', 'estado', 'nombre', 'precio', 'stock', 'descripcion', 'edit'];
+  public source: MatTableDataSource<Producto> = new MatTableDataSource();
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  constructor(
+    private productoSvc: ProductoService,
+    private dialog: MatDialog,
+    private toastrSvc: ToastrService,
+  ) { }
 
   ngOnInit(): void {
+    this.getAllProducto();
+
+    this.source.paginator = this.paginator;
+    this.source.sort = this.sort;
+
+    this.selection.changed
+      .pipe(map(a => a.source))
+      .subscribe(data => this.selected = data.selected);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next({});
+    this.destroy$.complete();
+  }
+
+  private getAllProducto(): void {
+    this.productoSvc
+      .getAllProductos()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((productos: Producto[]) => {
+        this.source.data = productos;
+        this.productos = productos;
+      });
+  }
+
+  public addProducto(): void {
+    const dialogRef = this.dialog.open(NewProductoComponent);
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: boolean) => {
+        if (res === true) {
+          this.getAllProducto();
+        }
+      });
+  }
+
+  public editProducto(producto: Producto): void {
+    const dialogRef = this.dialog.open(EditProductoComponent, {
+      data: producto
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: boolean) => {
+        if (res) {
+          this.getAllProducto();
+        }
+      });
+  }
+
+  public deleteProducto(): void {
+    const dialogRef = this.dialog.open(DeleteModalComponent);
+
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: boolean) => {
+        if (res) {
+          this.selected.length === 1
+            ? this.deleteOneProducto()
+            : this.deleteMoreThanOneProducto();
+        }
+      });
+  }
+
+  private deleteOneProducto(): void {
+    this.productoSvc
+      .deleteProducto(this.selected[0].uuid)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(res => {
+        if (res) {
+          this.toastrSvc.success('Se ha eliminado correctamente', 'Producto Eliminado', {
+            timeOut: 2000,
+            progressBar: true,
+            progressAnimation: 'increasing'
+          });
+          this.getAllProducto();
+          this.clearCheckbox();
+        }
+      });
+  }
+
+  private deleteMoreThanOneProducto(): void {
+    this.selected.forEach((servicio, index) => {
+      const isLast: boolean = index + 1 === this.selected.length;
+      this.productoSvc
+        .deleteProducto(servicio.uuid)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(res => {
+          if (res && isLast) {
+            this.toastrSvc.success('Se han eliminado correctamente', 'Productos Eliminados', {
+              timeOut: 2000,
+              progressBar: true,
+              progressAnimation: 'increasing'
+            });
+            this.getAllProducto()
+            this.clearCheckbox();
+          }
+        });
+
+    });
+  }
+
+  // !important, this part is for producto table.
+  // =====================> applyFilter
+  applyFilter(event: Event | string): void {
+    typeof event === 'string'
+      ? this.filterValue = event
+      : this.filterValue = (event.target as HTMLInputElement).value;
+
+    this.source.filter = this.filterValue.trim().toLowerCase();
+    if (this.source.paginator) {
+      this.source.paginator.firstPage();
+    }
+  }
+  // =====================> isAllSelected
+  isAllSelected(): any {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.source.data.length;
+    return numSelected === numRows;
+  }
+  // =====================> masterToggle
+  masterToggle(): void {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.source.data.forEach(row => this.selection.select(row));
+  }
+  // =====================> clearCheckbox
+  clearCheckbox(): void {
+    this.selection.clear();
+  }
+  // =====================> checkboxLabel
+  checkboxLabel(row?: Producto): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.uuid}`;
   }
 
 }

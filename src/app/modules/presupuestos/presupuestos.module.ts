@@ -17,8 +17,23 @@ import { MatIconModule } from '@angular/material/icon';
 import { EditCapituloComponent } from './components/edit-capitulo/edit-capitulo.component';
 import { EditDetalleCapituloComponent } from './components/edit-detalle-capitulo/edit-detalle-capitulo.component';
 
+const components: any[] = [
+  PresupuestosComponent,
+  PresupuestoObraComponent,
+  NewPresupuestoComponent,
+  EditPresupuestoComponent,
+  NewCapituloComponent,
+  NewDetalleCapituloComponent,
+  EditCapituloComponent,
+  EditDetalleCapituloComponent
+];
+
 @NgModule({
-  declarations: [PresupuestosComponent, PresupuestoObraComponent, NewPresupuestoComponent, EditPresupuestoComponent, NewCapituloComponent, NewDetalleCapituloComponent, EditCapituloComponent, EditDetalleCapituloComponent],
+  declarations: [
+    components
+  ],
+
+
   imports: [
     CommonModule,
     PresupuestosRoutingModule,
@@ -27,6 +42,9 @@ import { EditDetalleCapituloComponent } from './components/edit-detalle-capitulo
     MaterialModule,
     FormsModule,
     ReactiveFormsModule
+  ],
+  exports: [
+    components
   ]
 })
 export class PresupuestosModule { }

@@ -1,9 +1,8 @@
 // table class
-.table-container {
+    .table-container {
   max-width: 100%;
   width: 100%;
   margin: 30px 0;
-
 
   .header-table {
     max-width: 100%;
@@ -29,7 +28,6 @@
     max-width: 100%;
   }
 
-
   tr:hover {
     background-color: whitesmoke;
   }
@@ -38,7 +36,6 @@
     min-width: 40px;
     text-align: center;
   }
-
 
   .mat-sort-header-container {
     display: flex;
@@ -74,7 +71,7 @@
   }
 
   .td-longtext::before {
-    content: '&nbsp;';
+    content: "&nbsp;";
     visibility: hidden;
   }
 
@@ -87,8 +84,6 @@
     text-overflow: ellipsis;
   }
 }
-
-
 
 .delete-table {
   position: relative;
@@ -107,8 +102,7 @@
   font-size: 18px;
   text-align: center;
 
-  grid-template-areas:
-    "btn-clear span btn-delete";
+  grid-template-areas: "btn-clear span btn-delete";
 
   span {
     grid-area: span;
@@ -117,7 +111,6 @@
   .btn-clear {
     grid-area: btn-clear;
     padding-left: 22px;
-
   }
 
   .btn-delete {
@@ -134,13 +127,11 @@
       color: red;
     }
   }
-
 }
 
 .btn-edit {
   mat-icon {
     color: var(--secondary);
-
   }
 }
 
@@ -148,7 +139,6 @@
 .mat-header-cell {
   padding: 0 10px;
 }
-
 
 @keyframes opacity-table {
   from {
@@ -168,8 +158,6 @@
       "btn-clear span btn-delete"
       "btn-clear span btn-delete";
     grid-gap: 0px;
-
-
   }
 }
 

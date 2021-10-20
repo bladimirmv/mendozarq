@@ -43,7 +43,6 @@ export class NewPresupuestoComponent implements OnInit, OnDestroy {
     this.initForm();
     this.initDataClientes();
     this.initInformacionUsuario();
-
   }
 
   ngOnDestroy(): void {
@@ -96,13 +95,14 @@ export class NewPresupuestoComponent implements OnInit, OnDestroy {
       .subscribe((usuario: Usuario) => {
         this.presupuestoForm.patchValue({
           uuidUsuario: usuario.uuid
-        })
+        });
       });
 
   }
 
   // ===================> onAddPresupuesto
   public onAddPresupuesto(presupuestoObra: PresupuestoObra): void {
+    this.initInformacionUsuario();
     presupuestoObra.fecha = new Date(moment().format('YYYY-MM-DD'));
     this.presupuestoObraSvc.addPresupuestoObra(presupuestoObra)
       .pipe(takeUntil(this.destroy$))

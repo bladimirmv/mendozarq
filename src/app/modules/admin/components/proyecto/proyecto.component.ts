@@ -26,8 +26,6 @@ export class ProyectoComponent implements OnInit, OnDestroy {
         shareReplay()
       ).subscribe(res => this.breakpoint = res);
     this.idPost = this.activatedRoute.snapshot.params.uuid;
-
-
   }
 
   onback(): void {

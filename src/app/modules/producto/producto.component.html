@@ -1,1 +1,145 @@
-<p>producto works!</p>
+<div class="content">
+  <div class="stats-container">
+    <app-status-card [icon]="'list'" color="info">
+      <div slot="title">Catgorias Totales</div>
+      <div slot="count">
+        {{ 0 }}
+      </div>
+    </app-status-card>
+
+    <app-status-card [icon]="'format_list_numbered'" color="accent">
+      <div slot="title">Categorias sin Uso</div>
+      <div slot="count">
+        {{ 0 }}
+      </div>
+    </app-status-card>
+
+    <app-status-card [icon]="'playlist_add_check'" color="success">
+      <div slot="title">Categoria en Uso</div>
+      <div slot="count">
+        {{ 0 }}
+      </div>
+    </app-status-card>
+  </div>
+
+  <div class="table-container mat-elevation-z2">
+    <div class="header-table" [style.display]="selected.length ? 'none' : 'grid'">
+      <mat-form-field>
+        <mat-label>Buscar</mat-label>
+        <input matInput autocomplete="off" (keyup)="applyFilter($event)" placeholder="Ex. bladimir"
+          [(ngModel)]="filterValue" #input />
+
+        <button mat-button *ngIf="filterValue" matSuffix mat-icon-button aria-label="Clear" (click)="applyFilter('')"
+          (click)="input.value = ''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <button mat-icon-button matTooltip="Nueva Catgoria" matTooltipPosition="below" class="btn-add">
+        <mat-icon class="mat-18" (click)="addProducto()">
+          add
+        </mat-icon>
+      </button>
+    </div>
+
+    <div *ngIf="selected.length">
+      <div class="delete-table">
+        <button mat-icon-button (click)="clearCheckbox()" class="btn-clear">
+          <mat-icon>clear</mat-icon>
+        </button>
+        <span> Seleccionados {{ selected.length }} </span>
+        <button mat-raised-button class="btn-delete" (click)="deleteProducto()">
+          Elminar
+        </button>
+      </div>
+    </div>
+
+
+    <div class="table-content">
+      <table mat-table [dataSource]="source" class="mat-elevation-z2" multiTemplateDataRows matSort>
+        <ng-container matColumnDef="seleccion" sticky>
+          <th *matHeaderCellDef class="actions-table">
+            <mat-checkbox color="warn" (change)="$event ? masterToggle() : null"
+              [checked]="selection.hasValue() && isAllSelected()"
+              [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+            </mat-checkbox>
+          </th>
+
+          <td *matCellDef="let row" class="actions-table">
+            <mat-checkbox color="warn" (click)="$event.stopPropagation()"
+              (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
+              [aria-label]="checkboxLabel(row)">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+        <!-- *estado -->
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+          <td mat-cell *matCellDef="let row">
+            <div [class]="row.estado ? 'producto-activo' : 'producto-no-activo'">
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- *nombre -->
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            {{ row.nombre | titlecase }}
+          </td>
+        </ng-container>
+
+        <!-- *precio -->
+        <ng-container matColumnDef="precio">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Precio</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            {{ row.precio | titlecase }}
+          </td>
+        </ng-container>
+
+        <!-- *stock-->
+        <ng-container matColumnDef="stock">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Stock</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            {{ row.stock | titlecase }}
+          </td>
+        </ng-container>
+
+        <!-- *descripcion-->
+        <ng-container matColumnDef="descripcion">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripcion</th>
+          <td mat-cell *matCellDef="let row" class="td-longtext text-center" [matTooltip]="row.descripcion"
+            matTooltipPosition="below">
+            <span>
+              {{ row.descripcion ? row.descripcion : "Sin descripcion" }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- *edit -->
+        <ng-container matColumnDef="edit" stickyEnd>
+          <th *matHeaderCellDef mat-sort-header></th>
+          <td *matCellDef="let row" class="text-center">
+            <button mat-icon-button (click)="editProducto(row)">
+              <mat-icon class="edit-icon"> edit </mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="10" align="center">
+            <div *ngIf="input.value; else noData">
+              No hay datos que coincidan con el filtro: "{{ input.value }}"
+            </div>
+            <ng-template #noData align="center">
+              <img src="./assets/no_data.svg" alt="" width="100" style="margin: 5px" class="no-select" />
+              <p>Tabla vacía, aún no agregaste un producto.</p>
+            </ng-template>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>

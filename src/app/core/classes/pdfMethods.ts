@@ -1,5 +1,6 @@
 import { DetalleCapitulo } from './../../shared/models/mendozarq/presupuestos.interface';
 import { CapituloPresupuestoView, PresupuestoObraView } from '@app/shared/models/mendozarq/presupuestos.interface';
+
 import * as moment from 'moment';
 export interface BodyTable {
   text?: string;
@@ -72,11 +73,33 @@ export class PdfMethods {
       background: '#FFFFFF',
       foreground: '#425066',
       fit: '65',
-      rowSpan: 3,
+      rowSpan: 4,
       border: [false]
 
     }]);
 
+    bodyInfo.push([{
+      text: 'Usuario:',
+      style: 'tableHeader',
+      colSpan: 1,
+      color: '#000000',
+      bold: true,
+      border: [false]
+
+    },
+    {
+      text: presupuesto.usuario ? this.toTitleCase(presupuesto.usuario) : 'Sin Usuario',
+      style: 'tableHeader',
+      colSpan: 1,
+      color: '#425066',
+      border: [false],
+      fontSize: 10,
+      margin: [0, 2, 0, 0]
+
+    },
+    {
+
+    }]);
     bodyInfo.push([{
       text: 'Cliente:',
       style: 'tableHeader',
@@ -118,7 +141,6 @@ export class PdfMethods {
       margin: [0, 2, 0, 0]
     },
     {
-
     }]);
 
     // *data
@@ -577,7 +599,7 @@ export class PdfMethods {
           color: '#425066'
         },
         {
-          text: moment(presupuesto ? presupuesto.fecha : '').format('MMMM/DD/YYYY').toUpperCase(),
+          text: moment(presupuesto ? presupuesto.creadoEn : '').format('MM/DD/YYYY[,] h:mm A').toUpperCase(),
           alignment: 'right',
           margin: [0, 14, 0, 0],
           fontSize: 14,

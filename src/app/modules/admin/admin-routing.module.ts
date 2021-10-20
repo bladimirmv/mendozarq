@@ -112,8 +112,11 @@ const routes: Routes = [
           import('@modules/servicio/servicio.module').then(m => m.ServicioModule)
       },
       {
-        path: 'presupuestos-obra', component: PresupuestoObraComponent
-      }
+        path: 'presupuestos', loadChildren: () =>
+          import('@modules/presupuestos-proyecto/presupuestos-proyecto.module').then(m => m.PresupuestosProyectoModule)
+      },
+
+
     ]
   },
   {

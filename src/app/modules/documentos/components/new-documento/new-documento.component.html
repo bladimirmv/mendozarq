@@ -61,7 +61,8 @@
 
 
 <mat-dialog-actions>
-  <button mat-button class="mat-btn-secondary" [matDialogClose]="false">Cancelar</button>
+  <button mat-button class="mat-btn-secondary" [matDialogClose]="false"
+    [disabled]="(isClicked && !continue)">Cancelar</button>
   <button mat-button class="mat-btn-success" (click)="uploadFiles()" [disabled]="!documentos.length"
     *ngIf="!isClicked else btn_continue">
     Guardar

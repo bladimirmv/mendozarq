@@ -4,13 +4,21 @@ import { CommonModule } from '@angular/common';
 import { ProductoRoutingModule } from './producto-routing.module';
 import { ProductoComponent } from './producto.component';
 import { NewProductoComponent } from './components/new-producto/new-producto.component';
+import { SharedModule } from '@app/shared/shared.module';
+import { MaterialModule } from '@app/material.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { EditProductoComponent } from './components/edit-producto/edit-producto.component';
 
 
 @NgModule({
-  declarations: [ProductoComponent, NewProductoComponent],
+  declarations: [ProductoComponent, NewProductoComponent, EditProductoComponent],
   imports: [
     CommonModule,
-    ProductoRoutingModule
+    ProductoRoutingModule,
+    SharedModule,
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class ProductoModule { }
