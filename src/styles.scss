@@ -26,6 +26,8 @@ $mendozarq-theme: mat-light-theme(
 @include angular-material-theme($mendozarq-theme);
 
 * {
+  font-size: 14px;
+
   font-family: Montserrat, sans-serif;
   --primary: #ff6e00;
   --secondary: #425066;
@@ -37,7 +39,7 @@ $mendozarq-theme: mat-light-theme(
 }
 
 body {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .mat-d {
@@ -234,21 +236,22 @@ mat-hint {
   font-weight: bold;
 }
 
-// ::-webkit-scrollbar {
-//   width: 5px;
-// }
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
 
-// /* Track */
-// ::-webkit-scrollbar-track {
-//   background: #f1f1f1;
-// }
-
-// /* Handle */
-// ::-webkit-scrollbar-thumb {
-//   background: rgb(212, 212, 212);
-// }
-
-// /* Handle on hover */
-// ::-webkit-scrollbar-thumb:hover {
-//   background: var(--primary);
-// }
+::-webkit-scrollbar-thumb {
+  background: rgb(212, 212, 212);
+  border-radius: 50px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(197, 196, 196);
+}
+.mat-sidenav-content::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.mat-sidenav-content::-webkit-scrollbar-thumb {
+  background: var(--primary);
+}

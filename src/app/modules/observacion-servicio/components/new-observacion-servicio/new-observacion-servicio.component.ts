@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { ServicioProyecto } from '@models/mendozarq/servicio.proyecto.interface';
@@ -8,8 +8,14 @@ import { takeUntil } from 'rxjs/operators';
 import { ObservacionServicioService } from '@app/core/services/mendozarq/observacion-servicio.service';
 import { ObservacionServicio } from '@app/shared/models/mendozarq/observacion.servicio.interface';
 import * as moment from 'moment';
+import { WarningModalComponent } from '@app/shared/components/warning-modal/warning-modal.component';
+import { Router } from '@angular/router';
 
-
+export interface warningDialog {
+  title: string;
+  paragraph: string;
+  btnPrimary: string;
+};
 @Component({
   selector: 'app-new-observacion-servicio',
   templateUrl: './new-observacion-servicio.component.html',
@@ -29,7 +35,9 @@ export class NewObservacionServicioComponent implements OnInit, OnDestroy {
     private toastrSvc: ToastrService,
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<NewObservacionServicioComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { sp?: ServicioProyecto; uuidVisita: string; disabled: boolean }) { }
+    @Inject(MAT_DIALOG_DATA) public data: { sp?: ServicioProyecto; uuidVisita: string; disabled: boolean },
+    private matdialog: MatDialog,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -58,6 +66,22 @@ export class NewObservacionServicioComponent implements OnInit, OnDestroy {
       .subscribe((servicio: ServicioProyecto[]) => {
         this.selectedServicio = servicio;
         this.servicio = servicio;
+
+        const warningDialog: warningDialog = {
+          title: 'Sin Servicios',
+          paragraph: 'No hay servicios disponibles en el proyecto para asignar una observacion.',
+          btnPrimary: 'Continuar'
+        };
+        if (!servicio.length) {
+          const dialogRef = this.matdialog.open(WarningModalComponent, {
+            data: warningDialog
+          });
+          dialogRef.afterClosed()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: boolean) => {
+              this.dialogRef.close(false);
+            });
+        }
       });
   }
 

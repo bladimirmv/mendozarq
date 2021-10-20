@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { NewPersonalComponent } from '@app/modules/personal/components/new-personal/new-personal.component';
 
 export interface warningDialog {
   title: string;
@@ -37,8 +38,8 @@ export class NewPersonalProyectoComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<NewPersonalProyectoComponent>,
     private matdialog: MatDialog,
+    private router: Router,
     @Inject(MAT_DIALOG_DATA) private personalProyecto: PersonalProyecto,
-    private router: Router
   ) { }
 
   ngOnInit(): void {

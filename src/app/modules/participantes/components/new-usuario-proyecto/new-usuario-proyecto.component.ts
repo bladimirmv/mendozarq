@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { Usuario } from '@app/shared/models/usuario.interface';
+import { NewUserComponent } from '@app/modules/users/components/new-user/new-user.component';
 export interface warningDialog {
   title: string;
   paragraph: string;
@@ -36,8 +37,8 @@ export class NewUsuarioProyectoComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<NewUsuarioProyectoComponent>,
     private matdialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) private usuarioProyecto: UsuarioProyecto,
-    private router: Router
+    private router: Router,
+    @Inject(MAT_DIALOG_DATA) private usuarioProyecto: UsuarioProyecto
   ) { }
 
   ngOnInit(): void {

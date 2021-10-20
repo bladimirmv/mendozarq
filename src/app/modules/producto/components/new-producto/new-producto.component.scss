@@ -9,6 +9,10 @@
   grid-column: span 2;
 }
 
+.text-center {
+  text-align: center;
+}
+
 mat-dialog-actions {
   display: grid;
   grid-template-areas: "secondary success";
@@ -41,7 +45,7 @@ mat-dialog-actions {
 }
 
 @media screen and (max-width: 625px) {
-  .new-proyecto-form {
+  .new-form {
     display: grid;
     grid-template-columns: minmax(100%, 1fr);
     grid-gap: 0;

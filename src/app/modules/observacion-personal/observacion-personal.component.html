@@ -106,7 +106,12 @@
         <!-- *correo -->
         <ng-container matColumnDef="correo">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> {{row.correo}} </td>
+          <td mat-cell *matCellDef="let row" class="td-longtext text-center" [matTooltip]="row.correo"
+            matTooltipPosition="below">
+            <span>
+              {{row.correo}}
+            </span>
+          </td>
         </ng-container>
 
         <!-- *cargo -->
@@ -203,7 +208,7 @@
             <ng-template #noData align="center">
               <img src="./assets/no_data.svg" alt="" width="100" style="margin: 5px;" class="no-select">
               <p>
-                Tabla vacía, aún no agregaste un servicio al proyecto.
+                Tabla vacía, aún no agregaste una observación.
               </p>
             </ng-template>
           </td>

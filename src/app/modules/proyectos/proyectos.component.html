@@ -83,10 +83,12 @@
         <!-- *nombre -->
         <ng-container matColumnDef="nombre">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
-          <td mat-cell *matCellDef="let row" class="text-center">
-            <a [routerLink]="['/admin/proyecto/', row.uuid]" class="link-proyecto">
-              {{row.nombre | titlecase}}
-            </a>
+          <td mat-cell *matCellDef="let row" class="td-longtext text-center">
+            <span>
+              <a [routerLink]="['/admin/proyecto/', row.uuid]" class="link-proyecto">
+                {{row.nombre | titlecase}}
+              </a>
+            </span>
           </td>
         </ng-container>
 
@@ -115,10 +117,12 @@
         <!-- *cliente -->
         <ng-container matColumnDef="cliente">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
-          <td mat-cell *matCellDef="let row" class="text-center">
-            <a [routerLink]="['/admin/usuario/', row.nombreCliente]" class="link-proyecto">
-              {{row.nombreCliente  + ' '+ row.apellidoPaterno + ' '+ row.apellidoMaterno | titlecase}}
-            </a>
+          <td mat-cell *matCellDef="let row" class="td-longtext text-center">
+            <span>
+              <a [routerLink]="['/admin/usuario/', row.nombreCliente]" class="link-proyecto">
+                {{row.nombreCliente  + ' '+ row.apellidoPaterno + ' '+ row.apellidoMaterno | titlecase}}
+              </a>
+            </span>
           </td>
         </ng-container>
 
@@ -134,14 +138,15 @@
         <!-- *fechaInicio -->
         <ng-container matColumnDef="fechaInicio">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Inicio </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> {{row.fechaInicio | date }} </td>
+          <td mat-cell *matCellDef="let row" class="text-center"> {{row.fechaInicio | date:'shortDate' }} </td>
         </ng-container>
 
         <!-- *fechaFinal -->
         <ng-container matColumnDef="fechaFinal">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Final </th>
-          <td mat-cell *matCellDef="let row" class="text-center">
-            {{row.fechaFinal | date}}
+          <td mat-cell *matCellDef="let row" class="text-center" [matTooltip]="row.fechaFinal|date:'fullDate'"
+            matTooltipPosition="below">
+            {{row.fechaFinal | date:'shortDate'}}
           </td>
         </ng-container>
 

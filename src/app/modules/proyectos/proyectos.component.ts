@@ -42,7 +42,7 @@ export class ProyectosComponent implements OnInit {
   constructor(
     private toastSvc: ToastrService,
     public dialog: MatDialog,
-    private proyectoSvc: ProyectoService) {
+    private proyectoSvc: ProyectoService,) {
   }
 
 

@@ -9,7 +9,7 @@
       <mat-label>Nombre</mat-label>
       <input matInput formControlName="nombre" autocomplete="off">
       <mat-hint align="end">
-        {{productoForm.value.nombre ? productoForm.value.nombre.length : 0}}/50
+        {{productoForm.value.nombre ? productoForm.value.nombre.length : 0}}/100
       </mat-hint>
       <mat-icon matSuffix [color]="isValidField('nombre').color">
         {{isValidField('nombre').icon}}
@@ -26,7 +26,16 @@
     <!-- *Estado -->
     <mat-form-field class="full-width " [color]="isValidField('estado').color">
       <mat-label>Estado</mat-label>
-      <input matInput formControlName="estado" autocomplete="off">
+      <mat-select formControlName="estado">
+        <mat-option [value]="true">
+          Activo
+        </mat-option>
+        <mat-option [value]="false">
+          Inactivo
+        </mat-option>
+      </mat-select>
+
+
       <mat-icon matSuffix [color]="isValidField('estado').color">
         {{isValidField('estado').icon}}
       </mat-icon>
@@ -36,21 +45,42 @@
     </mat-form-field>
 
     <!-- *Categorias -->
-    <mat-form-field class="full-width " [color]="isValidField('categorias').color">
+    <mat-form-field class="full-width">
       <mat-label>Categorias</mat-label>
-      <input matInput formControlName="categorias" autocomplete="off">
+      <mat-select style="position: relative;" formControlName="categorias" multiple>
+        <div style="padding: 5px 5px 0 5px;
+          position: -webkit-sticky; position: sticky; top: 0;  background-color: white;  z-index: 1; ">
+          <mat-form-field style=" width: 100%; ">
+            <mat-label>Buscar</mat-label>
+            <input matInput (keyup)="onKey($event.target.value)" autocomplete="off" #search>
+
+            <button mat-icon-button matSuffix *ngIf="search.value" (click)="onKey('')" (click)="search.value=''">
+              <mat-icon style="font-size: 20px;">
+                clear
+              </mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+
+        <mat-option *ngFor=" let categorias of selectedCategorias" [value]="categorias">
+          {{ categorias.nombre | titlecase}}
+
+        </mat-option>
+      </mat-select>
+
       <mat-icon matSuffix [color]="isValidField('categorias').color">
         {{isValidField('categorias').icon}}
       </mat-icon>
       <mat-error *ngIf="productoForm.get('categorias').errors?.required">
-        Ingrese un categorias.
+        Seleccione una categoria.
       </mat-error>
     </mat-form-field>
 
     <!-- *Precio -->
     <mat-form-field class="full-width " [color]="isValidField('precio').color">
       <mat-label>Precio</mat-label>
-      <input matInput formControlName="" autocomplete="off">
+      <span matSuffix>BS.</span>
+      <input matInput type="number" class="text-center" formControlName="precio" autocomplete="off">
       <mat-icon matSuffix [color]="isValidField('precio').color">
         {{isValidField('precio').icon}}
       </mat-icon>
@@ -59,10 +89,11 @@
       </mat-error>
     </mat-form-field>
 
+
     <!-- *Stock -->
-    <mat-form-field class="full-width " [color]="isValidField('stock').color">
+    <mat-form-field class="full-width " type="number" [color]="isValidField('stock').color">
       <mat-label>Stock</mat-label>
-      <input matInput formControlName="stock" autocomplete="off">
+      <input matInput type="number" class="text-center" formControlName="stock" autocomplete="off">
       <mat-icon matSuffix [color]="isValidField('stock').color">
         {{isValidField('stock').icon}}
       </mat-icon>
@@ -78,7 +109,7 @@
       <mat-label>Descripcion</mat-label>
       <textarea matInput placeholder="Ex. Nueva Descripcion" formControlName="descripcion"></textarea>
       <mat-hint align="end">
-        {{productoForm.value.descripcion ? productoForm.value.descripcion.length : 0}}/200
+        {{productoForm.value.descripcion ? productoForm.value.descripcion.length : 0}}/1000
       </mat-hint>
       <mat-icon matSuffix [color]="isValidField('descripcion').color" *ngIf="productoForm.value.descripcion">
         {{isValidField('descripcion').icon}}

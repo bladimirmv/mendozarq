@@ -28,7 +28,7 @@ export class ProductoComponent implements OnInit, OnDestroy {
   selected: Producto[] = [];
   selection = new SelectionModel<Producto>(true, []);
   filterValue: string;
-  public columns: Array<string> = ['seleccion', 'estado', 'nombre', 'precio', 'stock', 'descripcion', 'edit'];
+  public columns: Array<string> = ['seleccion', 'estado', 'nombre', 'precio', 'stock', 'categorias', 'descripcion', 'edit'];
   public source: MatTableDataSource<Producto> = new MatTableDataSource();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;

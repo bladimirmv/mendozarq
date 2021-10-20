@@ -140,7 +140,12 @@
 
         <ng-container matColumnDef="correo">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo </th>
-          <td mat-cell *matCellDef="let row"> {{row.correo}} </td>
+          <td mat-cell *matCellDef="let row" class="td-longtext text-center" [matTooltip]="row.correo"
+            matTooltipPosition="below">
+            <span>
+              {{row.correo}}
+            </span>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="username">

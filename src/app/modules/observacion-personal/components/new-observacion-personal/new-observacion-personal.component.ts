@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -8,7 +8,13 @@ import { ObservacionPersonal } from '@app/shared/models/mendozarq/observacion.pe
 import * as moment from 'moment';
 import { Personal } from '@app/shared/models/mendozarq/personal.interface';
 import { ObservacionPersonalService } from '@app/core/services/mendozarq/observacion-personal.service';
-
+import { Router } from '@angular/router';
+import { WarningModalComponent } from '@app/shared/components/warning-modal/warning-modal.component';
+export interface warningDialog {
+  title: string;
+  paragraph: string;
+  btnPrimary: string;
+};
 @Component({
   selector: 'app-new-observacion-personal',
   templateUrl: './new-observacion-personal.component.html',
@@ -28,7 +34,9 @@ export class NewObservacionPersonalComponent implements OnInit, OnDestroy {
     private toastrSvc: ToastrService,
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<NewObservacionPersonalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { personal?: Personal; uuidVisita: string; disabled: boolean }) { }
+    @Inject(MAT_DIALOG_DATA) public data: { personal?: Personal; uuidVisita: string; disabled: boolean },
+    private matdialog: MatDialog,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -57,6 +65,23 @@ export class NewObservacionPersonalComponent implements OnInit, OnDestroy {
       .subscribe((personal: Personal[]) => {
         this.selectedPersonal = personal;
         this.personal = personal;
+
+        const warningDialog: warningDialog = {
+          title: 'Sin Personal',
+          paragraph: 'No hay personal disponible en el proyecto para asignar una observacion.',
+          btnPrimary: 'Continuar'
+        };
+        if (!personal.length) {
+          const dialogRef = this.matdialog.open(WarningModalComponent, {
+            data: warningDialog
+          });
+
+          dialogRef.afterClosed()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: boolean) => {
+              this.dialogRef.close(false);
+            });
+        }
       });
   }
 
