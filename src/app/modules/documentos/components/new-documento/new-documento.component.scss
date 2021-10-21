@@ -57,9 +57,8 @@ progress::-webkit-progress-value {
 }
 
 img {
-  width: 250px
+  width: 250px;
 }
-
 
 .documento {
   padding: 5px;
@@ -70,10 +69,10 @@ img {
   grid-template-columns: auto 1fr auto;
   grid-template-rows: repeat(3, auto);
 
-  grid-template-areas: "icon_doc title icon_delete"
+  grid-template-areas:
+    "icon_doc title icon_delete"
     "icon_doc tam icon_delete"
     "icon_doc prog icon_delete";
-
 
   .icon-type {
     grid-area: icon_doc;
@@ -89,7 +88,6 @@ img {
     color: white;
     z-index: 100;
   }
-
 
   .icon-type .icon-documento {
     color: var(--secondary);
@@ -135,7 +133,6 @@ img {
     border: 2px solid var(--success);
   }
 
-
   .icon-type .c-error {
     color: var(--warn);
   }
@@ -143,11 +140,7 @@ img {
   .icon-type .c-success {
     color: var(--success);
   }
-
-
 }
-
-
 
 mat-dialog-actions {
   display: grid;
@@ -164,18 +157,18 @@ mat-dialog-actions {
   }
 }
 
-@media screen and (max-width:400px) {
+@media screen and (max-width: 400px) {
   mat-dialog-actions {
     margin: 0;
     padding: 0;
     grid-template-columns: auto;
     grid-gap: 10px;
-    grid-template-areas: "success"
+    grid-template-areas:
+      "success"
       "secondary";
 
     .mat-btn-success {
       margin: 0;
     }
-
   }
 }

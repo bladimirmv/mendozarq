@@ -4,18 +4,20 @@ import { environment } from '@env/environment';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, throwError } from 'rxjs';
 
-import { Producto } from '@models/liraki/producto.interface';
+import { FotoProducto, Producto, ResponseProducto } from '@models/liraki/producto.interface';
 import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
+
+
 export class ProductoService {
   private API_URL = environment.API_URL;
   constructor(private http: HttpClient, private toastrSvc: ToastrService) { }
 
   // ====================================================================
-  public addProducto(producto: Producto): Observable<Producto> {
+  public addProducto(producto: Producto): Observable<Producto | responseProducto> {
     return this.http
       .post<Producto>(`${this.API_URL}/api/producto`, producto)
       .pipe(catchError(error => this.handdleError(error)));
@@ -43,6 +45,22 @@ export class ProductoService {
     return this.http
       .delete(`${this.API_URL}/api/producto/${uuid}`)
       .pipe(catchError(error => this.handdleError(error)));
+  }
+
+
+
+  // ====================> addDocumentoProyecto
+  public addFotoProyecto(fotoProducto: FotoProducto, file: File): Observable<any> {
+    const formdata: FormData = new FormData();
+
+    formdata.append('file', file);
+    formdata.append('fotoProducto', JSON.stringify(fotoProducto));
+
+    return this.http
+      .post(`${this.API_URL}/api/producto/fotoProducto`, formdata, {
+        reportProgress: true,
+        observe: 'events'
+      });
   }
 
   // ====================> handdleError

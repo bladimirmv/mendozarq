@@ -8,6 +8,8 @@ import { SharedModule } from '@app/shared/shared.module';
 import { MaterialModule } from '@app/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditProductoComponent } from './components/edit-producto/edit-producto.component';
+import { DocumentosModule } from '../documentos/documentos.module';
+import { CdkMaterialModule } from '@app/cdk-material.module';
 
 
 @NgModule({
@@ -18,7 +20,9 @@ import { EditProductoComponent } from './components/edit-producto/edit-producto.
     SharedModule,
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DocumentosModule,
+    CdkMaterialModule
   ]
 })
 export class ProductoModule { }

@@ -89,7 +89,7 @@
         </ng-container>
 
         <!-- *precio -->
-        <ng-container matColumnDef="precio">
+        <ng-container matColumnDef="precio">fil
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Precio</th>
           <td mat-cell *matCellDef="let row" class="text-center">
             {{ row.precio }}
@@ -107,9 +107,10 @@
         <!-- *categorias-->
         <ng-container matColumnDef="categorias">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Categorias</th>
-          <td mat-cell *matCellDef="let row" class="text-center">
-            <span *ngFor="let categoria of row.categorias">
-              {{categoria.nombre}},
+          <td mat-cell *matCellDef="let row" class="td-longtext text-center" [matTooltip]="commaText(row.categorias)"
+            matTooltipPosition="below">
+            <span>
+              {{commaText(row.categorias)}}
             </span>
           </td>
         </ng-container>

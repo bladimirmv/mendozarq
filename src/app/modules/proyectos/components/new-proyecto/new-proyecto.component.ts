@@ -72,7 +72,7 @@ export class NewProyectoComponent implements OnInit, OnDestroy {
 
           dialogRef.afterClosed()
             .pipe(takeUntil(this.destroy$))
-            .subscribe(res => {
+            .subscribe((res: boolean) => {
               if (res) {
                 dialogRef.close();
                 this.dialogRef.close(this.proyectoForm);

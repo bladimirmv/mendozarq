@@ -14,8 +14,8 @@ export interface Producto {
 export interface FotoProducto {
   uuid?: string;
   creadoEn?: Date;
-  keyName: string;
-  location: string;
+  keyName?: string;
+  location?: string;
   size?: number;
   uuidProducto: string;
 }
@@ -29,4 +29,9 @@ export interface DetalleCategoriaProducto {
 export interface ProductoView extends Producto {
   categorias: Array<CategoriaProducto>;
   fotos: Array<FotoProducto>;
+}
+
+export interface ResponseProducto {
+  message: string;
+  data: Producto;
 }

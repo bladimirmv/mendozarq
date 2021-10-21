@@ -13,6 +13,7 @@ import { map, takeUntil } from 'rxjs/operators';
 import { NewProductoComponent } from './components/new-producto/new-producto.component';
 import { EditProductoComponent } from './components/edit-producto/edit-producto.component';
 import { DeleteModalComponent } from '@app/shared/components/delete-modal/delete-modal.component';
+import { CategoriaProducto } from '@app/shared/models/liraki/categoria.producto.interface';
 
 
 @Component({
@@ -62,6 +63,8 @@ export class ProductoComponent implements OnInit, OnDestroy {
       .subscribe((productos: Producto[]) => {
         this.source.data = productos;
         this.productos = productos;
+        console.log(productos);
+
       });
   }
 
@@ -143,6 +146,15 @@ export class ProductoComponent implements OnInit, OnDestroy {
         });
 
     });
+  }
+
+  public commaText(text: CategoriaProducto[]): string {
+    let result: string = '';
+    text.forEach((categroria: CategoriaProducto, index: number) => {
+      result += categroria.nombre;
+      result += (index === text.length - 1) ? '.' : ', ';
+    });
+    return result;
   }
 
   // !important, this part is for producto table.

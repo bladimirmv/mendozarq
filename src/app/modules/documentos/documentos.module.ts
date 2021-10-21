@@ -21,6 +21,9 @@ import { CarpetaProyectoComponent } from './components/carpeta-proyecto/carpeta-
     DocumentosRoutingModule,
     MaterialModule,
     ReactiveFormsModule
+  ],
+  exports: [
+    [DropzoneDirective]
   ]
 })
 export class DocumentosModule { }
