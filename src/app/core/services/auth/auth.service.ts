@@ -43,7 +43,7 @@ export class AuthService extends RoleValidator {
         map((usuario: UsuarioResponse) => {
           this.saveToken(usuario.token);
           this.loggedIn.next(true);
-          this.usuario.next(usuario.body);
+          // this.usuario.next(usuario.body);
           this.usuarioToken.next(usuario.token);
           return usuario;
         }),

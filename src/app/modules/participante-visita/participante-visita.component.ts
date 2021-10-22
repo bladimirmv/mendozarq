@@ -128,7 +128,7 @@ export class ParticipanteVisitaComponent implements OnInit, OnDestroy {
         .deleteParticipanteVisita(usuario.uuidParticipanteVisita)
         .pipe(takeUntil(this.destroy$))
         .subscribe(res => {
-          if (res && isLast) {
+          if (res) {
             this.toastrSvc.success('Se han eliminado correctamente', 'Usuarios Eliminado', {
               timeOut: 2000,
               progressBar: true,

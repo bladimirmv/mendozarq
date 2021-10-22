@@ -41,8 +41,8 @@ export class NewPresupuestoComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     moment.locale('es');
     this.initForm();
-    this.initDataClientes();
     this.initInformacionUsuario();
+    this.initDataClientes();
   }
 
   ngOnDestroy(): void {

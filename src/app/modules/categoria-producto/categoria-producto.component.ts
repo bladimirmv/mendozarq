@@ -129,7 +129,7 @@ export class CategoriaProductoComponent implements OnInit, OnDestroy {
         .deleteCategoriaProducto(servicio.uuid)
         .pipe(takeUntil(this.destroy$))
         .subscribe(res => {
-          if (res && isLast) {
+          if (res) {
             this.toastrSvc.success('Se han eliminado correctamente', 'Categorias Eliminados', {
               timeOut: 2000,
               progressBar: true,

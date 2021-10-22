@@ -158,7 +158,7 @@ export class ParticipantesComponent implements OnInit, OnDestroy {
         .deleteUsuarioProyecto(usuario.uuidUsuarioProyecto)
         .pipe(takeUntil(this.destroy$))
         .subscribe(res => {
-          if (res && isLast) {
+          if (res) {
             this.toastrSvc.success('Se han eliminado correctamente', 'Usuarios Eliminado', {
               timeOut: 2000,
               progressBar: true,
@@ -279,7 +279,7 @@ export class ParticipantesComponent implements OnInit, OnDestroy {
         .deletePersonalProyecto(personal.uuidPersonalProyecto)
         .pipe(takeUntil(this.destroy$))
         .subscribe(res => {
-          if (res && isLast) {
+          if (res) {
             this.toastrSvc.success('Se han eliminado correctamente', 'Personal Eliminado', {
               timeOut: 2000,
               progressBar: true,

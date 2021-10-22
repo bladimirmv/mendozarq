@@ -63,8 +63,6 @@ export class ProductoComponent implements OnInit, OnDestroy {
       .subscribe((productos: Producto[]) => {
         this.source.data = productos;
         this.productos = productos;
-        console.log(productos);
-
       });
   }
 

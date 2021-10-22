@@ -125,7 +125,7 @@ export class VisitasComponent implements OnInit, OnDestroy {
         .deleteVisitaProyecto(visita.uuid)
         .pipe(takeUntil(this.destroy$))
         .subscribe(res => {
-          if (res && isLast) {
+          if (res) {
             this.toastrSvc.success('Se han eliminado correctamente', 'Visitas Eliminado', {
               timeOut: 2000,
               progressBar: true,

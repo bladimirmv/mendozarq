@@ -140,7 +140,7 @@ export class PersonalComponent implements OnInit {
         .deletePersonal(personal.uuid)
         .pipe(takeUntil(this.destroy$))
         .subscribe(res => {
-          if (res && isLast) {
+          if (res) {
             this.toastSvc.success('Se han eliminado correctamente', 'Personal Eliminado', {
               timeOut: 2000,
               progressBar: true,

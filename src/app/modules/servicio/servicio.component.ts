@@ -128,7 +128,7 @@ export class ServicioComponent implements OnInit, OnDestroy {
         .deleteServicioProyecto(servicio.uuid)
         .pipe(takeUntil(this.destroy$))
         .subscribe(res => {
-          if (res && isLast) {
+          if (res) {
             this.toastrSvc.success('Se han eliminado correctamente', 'Servicios Eliminado', {
               timeOut: 2000,
               progressBar: true,

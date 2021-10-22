@@ -125,7 +125,7 @@ export class PresupuestosComponent implements OnInit, OnDestroy {
         .deletePresupuestoObra(servicio.uuid)
         .pipe(takeUntil(this.destroy$))
         .subscribe(res => {
-          if (res && isLast) {
+          if (res) {
             this.toastrSvc.success('Se han eliminado correctamente', 'Presupuestos Eliminados', {
               timeOut: 2000,
               progressBar: true,
