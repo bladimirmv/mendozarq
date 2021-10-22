@@ -11,7 +11,6 @@ import { CategoriaProducto } from '@models/liraki/categoria.producto.interface';
 import { CategoriaProductoService } from '@app/core/services/liraki/categoria-producto.service';
 import { WarningModalComponent } from '@app/shared/components/warning-modal/warning-modal.component';
 import { Router } from '@angular/router';
-import { NewCategoriaProductoComponent } from '@app/modules/categoria-producto/components/new-categoria-producto/new-categoria-producto.component';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
@@ -49,10 +48,6 @@ export class NewProductoComponent implements OnInit, OnDestroy {
   continue: boolean = false;
   private fotoProducto: FotoProducto = { uuidProducto: '' };
 
-  private AcceptTypes: string[] = [
-    // ''.jpg'', .jpeg, .png
-  ];
-
   selectedFiles: FileList;
   currentFileUpload: File;
   progress: { percentage: number } = { percentage: 0 };
@@ -68,7 +63,7 @@ export class NewProductoComponent implements OnInit, OnDestroy {
   ) { }
 
 
-  drop(event: CdkDragDrop<{ title: string, poster: string }[]>) {
+  drop(event: CdkDragDrop<uploadFile[]>) {
     moveItemInArray(this.images, event.previousIndex, event.currentIndex);
   }
 
@@ -198,21 +193,19 @@ export class NewProductoComponent implements OnInit, OnDestroy {
             case HttpEventType.Response:
               this.images[index].uploaded = true;
 
-              setTimeout(() => {
-                this.images[index].progress = 0;
-                if (this.checkStatusFile()) {
-                  this.continue = true;
-                }
-              }, 1500);
+              // setTimeout(() => {
+              this.images[index].progress = 0;
+              if (this.checkStatusFile()) {
+                this.continue = true;
+                this.toastrSvc.success('El producto se ha creado corectamente. 😀', 'Producto Creado', {
+                  timeOut: 6000
+                });
+              }
+            // }, 1500);
           }
         });
     });
   }
-
-  public continueProducto(): void {
-    // this.toastrSvc.success('El producto se ha creado corectamente. 😀', 'Producto Creado');
-  }
-
 
   // ====================> checkStatusFile
   checkStatusFile(): boolean {
@@ -232,18 +225,9 @@ export class NewProductoComponent implements OnInit, OnDestroy {
 
   // ====================> onDrop
   public onDrop(files: FileList): void {
-
-
-
-
-
     for (let i = 0; i < files.length; i++) {
-
-
       if (files.item(i).type.includes('image/') && this.images.length < 4) {
         console.log(this.images.length);
-
-
         const reader = new FileReader();
         reader.onload = () => {
           this.images.push({

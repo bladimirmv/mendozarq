@@ -74,9 +74,9 @@ export class ProductoComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: boolean) => {
-        if (res === true) {
-          this.getAllProducto();
-        }
+        // if (res === true) {
+        this.getAllProducto();
+        // }
       });
   }
 

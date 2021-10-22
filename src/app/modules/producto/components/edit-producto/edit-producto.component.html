@@ -1,1 +1,131 @@
-<p>edit-producto works!</p>
+<h2 align="center" mat-dialog-title>
+  Nuevo Producto
+</h2>
+<mat-dialog-content>
+  <form class="edit-form" [formGroup]="productoForm">
+
+    <mat-form-field class="full-width full-column" [color]="isValidField('nombre').color">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre" autocomplete="off">
+      <mat-hint align="end">
+        {{productoForm.value.nombre ? productoForm.value.nombre.length : 0}}/100
+      </mat-hint>
+      <mat-icon matSuffix [color]="isValidField('nombre').color">
+        {{isValidField('nombre').icon}}
+      </mat-icon>
+      <mat-error *ngIf="productoForm.get('nombre').errors?.required">
+        Ingrese un nombre.
+      </mat-error>
+      <mat-error *ngIf="productoForm.get('nombre').errors?.maxlength">
+        Debe contener {{productoForm.get('nombre').errors?.maxlength?.requiredLength}} digitos como maximo.
+      </mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field class="full-width " [color]="isValidField('estado').color">
+      <mat-label>Estado</mat-label>
+      <mat-select formControlName="estado">
+        <mat-option [value]="true">
+          Activo
+        </mat-option>
+        <mat-option [value]="false">
+          Inactivo
+        </mat-option>
+      </mat-select>
+
+
+      <mat-icon matSuffix [color]="isValidField('estado').color">
+        {{isValidField('estado').icon}}
+      </mat-icon>
+      <mat-error *ngIf="productoForm.get('estado').errors?.required">
+        Ingrese un estado.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Categorias</mat-label>
+      <mat-select style="position: relative;" formControlName="categorias" multiple>
+        <div style="padding: 5px 5px 0 5px;
+          position: -webkit-sticky; position: sticky; top: 0;  background-color: white;  z-index: 1; ">
+          <mat-form-field style=" width: 100%; ">
+            <mat-label>Buscar</mat-label>
+            <input matInput (keyup)="onKey($event.target.value)" autocomplete="off" #search>
+
+            <button mat-icon-button matSuffix *ngIf="search.value" (click)="onKey('')" (click)="search.value=''">
+              <mat-icon style="font-size: 20px;">
+                clear
+              </mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+
+        <mat-option *ngFor=" let categorias of selectedCategorias" [value]="categorias.uuid">
+          {{ categorias.nombre | titlecase}}
+
+        </mat-option>
+      </mat-select>
+
+      <mat-icon matSuffix [color]="isValidField('categorias').color">
+        {{isValidField('categorias').icon}}
+      </mat-icon>
+      <mat-error *ngIf="productoForm.get('categorias').errors?.required">
+        Seleccione una categoria.
+      </mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field class="full-width " [color]="isValidField('precio').color">
+      <mat-label>Precio</mat-label>
+      <span matSuffix>BS.</span>
+      <input matInput type="number" class="text-center" formControlName="precio" autocomplete="off">
+      <mat-icon matSuffix [color]="isValidField('precio').color">
+        {{isValidField('precio').icon}}
+      </mat-icon>
+      <mat-error *ngIf="productoForm.get('precio').errors?.required">
+        Ingrese un precio.
+      </mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field class="full-width " type="number" [color]="isValidField('stock').color">
+      <mat-label>Stock</mat-label>
+      <input matInput type="number" class="text-center" formControlName="stock" autocomplete="off">
+      <mat-icon matSuffix [color]="isValidField('stock').color">
+        {{isValidField('stock').icon}}
+      </mat-icon>
+      <mat-error *ngIf="productoForm.get('stock').errors?.required">
+        Ingrese un stock.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width full-column" [color]="isValidField('descripcion').color">
+      <mat-label>Descripcion</mat-label>
+      <textarea matInput placeholder="Ex. Nueva Descripcion" formControlName="descripcion"></textarea>
+      <mat-hint align="end">
+        {{productoForm.value.descripcion ? productoForm.value.descripcion.length : 0}}/1000
+      </mat-hint>
+      <mat-icon matSuffix [color]="isValidField('descripcion').color" *ngIf="productoForm.value.descripcion">
+        {{isValidField('descripcion').icon}}
+      </mat-icon>
+      <mat-error *ngIf="productoForm.get('descripcion').errors?.maxlength">
+        Debe contener {{productoForm.get('descripcion').errors?.maxlength?.requiredLength}} digitos como maximo.
+      </mat-error>
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="false" class="mat-btn-secondary full-width">Cancelar</button>
+  <button mat-button class="mat-btn-success" (click)="addProducto(productoForm.value)"
+    [disabled]="!productoForm.valid || !images.length" *ngIf="!isClicked else btn_continue">
+    Guardar
+  </button>
+</mat-dialog-actions>
+
+
+<ng-template #btn_continue>
+  <button mat-button class="mat-btn-success" [matDialogClose]="true" [disabled]="!continue">
+    Continuar
+  </button>
+</ng-template>

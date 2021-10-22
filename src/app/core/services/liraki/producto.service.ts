@@ -17,7 +17,7 @@ export class ProductoService {
   constructor(private http: HttpClient, private toastrSvc: ToastrService) { }
 
   // ====================================================================
-  public addProducto(producto: Producto): Observable<Producto | responseProducto> {
+  public addProducto(producto: Producto): Observable<Producto | ResponseProducto> {
     return this.http
       .post<Producto>(`${this.API_URL}/api/producto`, producto)
       .pipe(catchError(error => this.handdleError(error)));
