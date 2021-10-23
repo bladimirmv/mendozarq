@@ -25,8 +25,6 @@
   <div class="documento" [class.error]="documento.error === undefined ? false: true" [attr.disabled]="!continue"
     [class.success]="documento.uploaded" *ngFor="let documento of documentos">
 
-
-
     <div class="icon-type">
       <div class="type">
         {{getType(documento.file.name)}}
@@ -36,7 +34,6 @@
         insert_drive_file
       </mat-icon>
     </div>
-
 
     <div class="title">
       {{documento.file.name}}
@@ -49,7 +46,8 @@
 
     </mat-progress-bar>
 
-    <button mat-icon-button class="delete-documento" (click)="onDelete(documento)" *ngIf="!isClicked">
+    <button mat-icon-button class="delete-documento" (click)="onDelete(documento)"
+      *ngIf="!isClicked && (documento.error !== undefined)">
       <mat-icon>
         close
       </mat-icon>

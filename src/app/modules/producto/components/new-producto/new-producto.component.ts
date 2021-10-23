@@ -4,8 +4,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ProductoService } from '@app/core/services/liraki/producto.service';
 import { FotoProducto, Producto, ProductoView, ResponseProducto } from '@app/shared/models/liraki/producto.interface';
 import { ToastrService } from 'ngx-toastr';
-import { Subject, throwError } from 'rxjs';
-import { catchError, takeUntil } from 'rxjs/operators';
+import { forkJoin, Observable, of, Subject, throwError } from 'rxjs';
+import { catchError, takeUntil, tap } from 'rxjs/operators';
 
 import { CategoriaProducto } from '@models/liraki/categoria.producto.interface';
 import { CategoriaProductoService } from '@app/core/services/liraki/categoria-producto.service';
@@ -159,52 +159,58 @@ export class NewProductoComponent implements OnInit, OnDestroy {
   // !upload files
   // ====================> uploadFiles
   public uploadFiles(uuidProducto: string): void {
-
-    console.log(uuidProducto)
+    let fjImages: Array<Observable<any>> = [];
     this.isClicked = true;
+
     this.images.forEach((imageProducto: uploadFile, index) => {
-
-
       this.fotoProducto.uuidProducto = uuidProducto;
       this.fotoProducto.size = imageProducto.file.size;
 
-      console.log(imageProducto);
-      console.log(this.fotoProducto);
-
-
-
-      this.productoSvc.addFotoProyecto(this.fotoProducto, imageProducto.file)
+      fjImages.push(this.productoSvc
+        .addFotoProyecto(this.fotoProducto, imageProducto.file)
         .pipe(
           takeUntil(this.destroy$),
-          catchError(error => {
+          tap((event: HttpEvent<any>) => {
+            switch (event.type) {
+              case HttpEventType.UploadProgress:
+                this.images[index].progress = Math.round(event.loaded / event.total * 100);
+                break;
+              case HttpEventType.Response:
+                this.images[index].uploaded = true;
+                this.images[index].progress = 0;
+            }
+          }),
+          catchError((error) => {
             this.images[index].error = true;
             this.toastrSvc.error(`La imagen ${imageProducto.file.name} no se pudo subir.`, 'Ocurrio un Error!', {
               timeOut: 7000,
               enableHtml: true
             });
-            return throwError(error);
+            return of([]);
           }))
-        .subscribe((event: HttpEvent<any>) => {
-
-          switch (event.type) {
-            case HttpEventType.UploadProgress:
-              this.images[index].progress = Math.round(event.loaded / event.total * 100);
-              break;
-            case HttpEventType.Response:
-              this.images[index].uploaded = true;
-
-              // setTimeout(() => {
-              this.images[index].progress = 0;
-              if (this.checkStatusFile()) {
-                this.continue = true;
-                this.toastrSvc.success('El producto se ha creado corectamente. 😀', 'Producto Creado', {
-                  timeOut: 6000
-                });
-              }
-            // }, 1500);
-          }
-        });
+      );
     });
+
+
+    forkJoin(fjImages)
+      .subscribe((events: HttpEvent<any>[]) => {
+        this.toastrSvc.success(`${this.uploadedCounter()}. 😀`, 'Cargado Correctamente', {
+          timeOut: 6000
+        });
+        this.continue = true;
+      });
+  }
+
+  private uploadedCounter(): string {
+    let counter: number = 0;
+    let errors: number = 0;
+    this.images.forEach((documento: uploadFile, index) => {
+      if (documento.uploaded === true) counter++;
+      if (documento.error === true) errors++;
+    });
+    return (counter > 1 || counter === 0)
+      ? `${counter} cargas completas, ${errors} errores.`
+      : `${counter} carga completa, ${errors} errores.`;
   }
 
   // ====================> checkStatusFile
@@ -227,7 +233,6 @@ export class NewProductoComponent implements OnInit, OnDestroy {
   public onDrop(files: FileList): void {
     for (let i = 0; i < files.length; i++) {
       if (files.item(i).type.includes('image/') && this.images.length < 4) {
-        console.log(this.images.length);
         const reader = new FileReader();
         reader.onload = () => {
           this.images.push({

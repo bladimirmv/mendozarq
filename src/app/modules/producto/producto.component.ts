@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { ProductoService } from '@services/liraki/producto.service';
-import { Producto } from '@models/liraki/producto.interface';
+import { FotoProducto, Producto, ProductoView } from '@models/liraki/producto.interface';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
@@ -14,14 +14,27 @@ import { NewProductoComponent } from './components/new-producto/new-producto.com
 import { EditProductoComponent } from './components/edit-producto/edit-producto.component';
 import { DeleteModalComponent } from '@app/shared/components/delete-modal/delete-modal.component';
 import { CategoriaProducto } from '@app/shared/models/liraki/categoria.producto.interface';
+import { environment } from '@env/environment';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { ImgPreviewComponent } from '@app/shared/components/img-preview/img-preview.component';
+
 
 
 @Component({
   selector: 'app-producto',
   templateUrl: './producto.component.html',
-  styleUrls: ['./producto.component.scss']
+  styleUrls: ['./producto.component.scss'], animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ]
+
 })
 export class ProductoComponent implements OnInit, OnDestroy {
+
+  private API_URL = environment.API_URL;
 
   private destroy$: Subject<any> = new Subject<any>();
 
@@ -30,6 +43,7 @@ export class ProductoComponent implements OnInit, OnDestroy {
   selection = new SelectionModel<Producto>(true, []);
   filterValue: string;
   public columns: Array<string> = ['seleccion', 'estado', 'nombre', 'precio', 'stock', 'categorias', 'descripcion', 'edit'];
+  expandedElement: ProductoView | null;
   public source: MatTableDataSource<Producto> = new MatTableDataSource();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -146,6 +160,26 @@ export class ProductoComponent implements OnInit, OnDestroy {
     });
   }
 
+
+  // =====================> downloadFile
+  public downloadFile(foto: FotoProducto): void {
+
+    console.log(foto);
+
+    const link = document.createElement('a');
+    link.setAttribute('href', `${this.API_URL}/api/file/${foto.keyName}`);
+    link.setAttribute('download', foto.keyName);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  }
+  public modalPreview(src: string): void {
+
+    this.dialog.open(ImgPreviewComponent, {
+      data: src
+    });
+  }
+
   public commaText(text: CategoriaProducto[]): string {
     let result: string = '';
     text.forEach((categroria: CategoriaProducto, index: number) => {
@@ -153,6 +187,11 @@ export class ProductoComponent implements OnInit, OnDestroy {
       result += (index === text.length - 1) ? '.' : ', ';
     });
     return result;
+  }
+
+
+  public getImage(keyName: string): string {
+    return `${this.API_URL}/api/file/${keyName}`;
   }
 
   // !important, this part is for producto table.

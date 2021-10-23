@@ -55,3 +55,53 @@
     grid-column: span 1;
   }
 }
+
+td {
+  cursor: pointer;
+}
+
+tr:hover {
+  background-color: white;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.expanded-container {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+
+  &:hover {
+    background-color: white;
+  }
+}
+
+.expanded-container .foto-producto {
+  height: 100px;
+  width: 100px;
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+.button-img {
+  position: absolute;
+  right: 0;
+  margin: 0.5px;
+}

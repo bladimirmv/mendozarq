@@ -1,0 +1,17 @@
+img {
+  width: 100%;
+  height: auto;
+  max-width: 100vw;
+  max-height: 90vh;
+  object-fit: cover;
+}
+
+picture {
+  position: relative;
+}
+
+button {
+  position: absolute;
+  right: 0;
+  margin: 0.5px;
+}

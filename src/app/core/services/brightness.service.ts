@@ -19,6 +19,6 @@ export class BrightnessService {
     this.brightness.next(value);
   }
   reset(): void {
-    this.ChangeValue(100);
+    this.ChangeValue(100)
   }
 }
