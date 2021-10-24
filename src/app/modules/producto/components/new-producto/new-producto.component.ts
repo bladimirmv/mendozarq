@@ -125,8 +125,6 @@ export class NewProductoComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: ResponseProducto) => {
         this.uploadFiles(res.data.uuid);
-        console.log(res);
-
       });
   }
 

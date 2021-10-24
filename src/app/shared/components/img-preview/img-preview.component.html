@@ -1,10 +1,76 @@
-<picture>
-  <button mat-icon-button matTooltip="Cerrar" matTooltipPosition="below" matDialogClose
+<div class="dialog-content" align="center">
+
+  <button class="btn-close" mat-icon-button matTooltip="Cerrar" matTooltipPosition="below" matDialogClose
     style="background-color: rgba(0, 0, 0, 0.158); color: white;">
     <mat-icon class="mat-18">
       close
     </mat-icon>
   </button>
-  <img [src]="src" alt="">
 
-</picture>
+  <img loading="lazy" [src]="data.fotos[currentFoto]" alt="">
+
+
+
+  <div class="arrows-dialog">
+    <button class="btn-arrow btn-back" id="btn-left-prev" mat-icon-button matTooltip="back" matTooltipPosition="below"
+      (click)="onBack()">
+      <mat-icon class="mat-18">
+        arrow_back
+      </mat-icon>
+    </button>
+
+    <button class="btn-arrow btn-forward" id="btn-right-prev" mat-icon-button matTooltip="onForward"
+      matTooltipPosition="below" (click)="onForward()">
+      <mat-icon class="mat-18">
+        arrow_forward
+      </mat-icon>
+    </button>
+  </div>
+
+  <div class="info-dialog">
+    <h2>
+      {{currentFoto + 1}} de {{data.fotos.length}}
+    </h2>
+  </div>
+
+
+</div>
+
+
+<!-- <mat-dialog-actions>
+  <button class="btn-arrow btn-back" id="btn-left-prev" mat-icon-button matTooltip="back" matTooltipPosition="below"
+    (click)="onBack()">
+    <mat-icon class="mat-18">
+      arrow_back
+    </mat-icon>
+  </button>
+
+  <h2>
+    {{currentFoto + 1}} de {{data.fotos.length}}
+  </h2>
+
+
+  <button class="btn-arrow btn-forward" id="btn-right-prev" mat-icon-button matTooltip="onForward"
+    matTooltipPosition="below" (click)="onForward()">
+    <mat-icon class="mat-18">
+      arrow_forward
+    </mat-icon>
+  </button>
+</mat-dialog-actions> -->
+
+
+
+<!-- <div class="img-preview">
+
+  <button class="btn-left-prev" id="btn-left-prev" mat-icon-button matTooltip="descargar" matTooltipPosition="below">
+    <mat-icon class="mat-18">
+      arrow_back
+    </mat-icon>
+  </button>
+
+  <button class="btn-right-prev" id="btn-right-prev" mat-icon-button matTooltip="descargar" matTooltipPosition="below">
+    <mat-icon class="mat-18">
+      arrow_forward
+    </mat-icon>
+  </button>
+</div> -->

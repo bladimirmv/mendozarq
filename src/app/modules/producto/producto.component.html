@@ -149,57 +149,15 @@
 
 
               <picture *ngFor="let foto of element.fotos" style="position: relative;">
-                <button class="button-img" mat-icon-button matTooltip="Cerrar" matTooltipPosition="below"
+                <button class="button-img" mat-icon-button matTooltip="descargar" matTooltipPosition="below"
                   style="background-color: rgba(0, 0, 0, 0.158); color: white;" (click)="downloadFile(foto)">
                   <mat-icon class="mat-18">
                     cloud_download
                   </mat-icon>
                 </button>
                 <img loading="lazy" [src]="getImage(foto.keyName)" alt="" class="foto-producto"
-                  (click)="modalPreview(getImage(foto.keyName))">
+                  (click)="modalPreview(element.fotos, foto)">
               </picture>
-
-
-
-
-
-
-
-
-
-              <!-- <div cdkDropList class="example-list documento full-width full-column"
-                (cdkDropListDropped)="drop($event)">
-                <div class="example-box" class="documento full-width full-column" *ngFor="let foto of element.fotos"
-                  cdkDrag>
-                  <div class="icon-type">
-                    <div class="type">
-                      {{getType(image.file.name)}}
-                    </div>
-                    <mat-icon class="icon-documento" [class.c-error]="image.error === undefined ? false: true"
-                      [class.c-success]="image.uploaded">
-                      insert_drive_file
-                    </mat-icon>
-                  </div>
-                  <div class="title">
-                    {{image.file.name}}
-                  </div>
-                  <div class="size">
-                    {{ formatBytes(image.file.size)}}
-                  </div>
-                  <mat-progress-bar class="progress" mode="determinate" [value]="image.progress">
-                  </mat-progress-bar>
-                  <button mat-icon-button class="delete-documento" (click)="onDelete(image)" *ngIf="!isClicked">
-                    <mat-icon>
-                      close
-                    </mat-icon>
-                  </button>
-                  <img *cdkDragPreview [src]="image.src" [alt]="image.file.name" class="img-preview ">
-                </div>
-              </div> -->
-
-
-
-
 
             </div>
           </td>

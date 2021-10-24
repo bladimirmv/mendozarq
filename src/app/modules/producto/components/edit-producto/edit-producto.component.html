@@ -112,6 +112,66 @@
       </mat-error>
     </mat-form-field>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div cdkDropList class="example-list documento full-width full-column" (cdkDropListDropped)="drop($event)">
+      <div class="example-box" class="documento full-width full-column"
+        [class.error]="image.error === undefined ? false: true" [attr.disabled]="!continue"
+        [class.success]="image.uploaded" *ngFor="let image of images" cdkDrag>
+        <div class="icon-type">
+          <div class="type">
+            {{getType(image.file.name)}}
+          </div>
+          <mat-icon class="icon-documento" [class.c-error]="image.error === undefined ? false: true"
+            [class.c-success]="image.uploaded">
+            insert_drive_file
+          </mat-icon>
+        </div>
+        <div class="title">
+          {{image.file.name}}
+        </div>
+        <div class="size">
+          {{ formatBytes(image.file.size)}}
+        </div>
+        <mat-progress-bar class="progress" mode="determinate" [value]="image.progress">
+        </mat-progress-bar>
+        <button mat-icon-button class="delete-documento" (click)="onDelete(image)" *ngIf="!isClicked">
+          <mat-icon>
+            close
+          </mat-icon>
+        </button>
+        <img *cdkDragPreview [src]="image.src" [alt]="image.file.name" class="img-preview ">
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   </form>
 </mat-dialog-content>
 

@@ -163,9 +163,6 @@ export class ProductoComponent implements OnInit, OnDestroy {
 
   // =====================> downloadFile
   public downloadFile(foto: FotoProducto): void {
-
-    console.log(foto);
-
     const link = document.createElement('a');
     link.setAttribute('href', `${this.API_URL}/api/file/${foto.keyName}`);
     link.setAttribute('download', foto.keyName);
@@ -173,10 +170,14 @@ export class ProductoComponent implements OnInit, OnDestroy {
     link.click();
     link.remove();
   }
-  public modalPreview(src: string): void {
-
+  public modalPreview(fotos: FotoProducto[], foto: FotoProducto): void {
+    const keyNames: Array<string> = fotos.map((foto: FotoProducto) => `${this.API_URL}/api/file/${foto.keyName}`);
     this.dialog.open(ImgPreviewComponent, {
-      data: src
+      data: {
+        fotos: keyNames,
+        current: keyNames.indexOf(`${this.API_URL}/api/file/${foto.keyName}`)
+      },
+      panelClass: 'custom-dialog-container'
     });
   }
 

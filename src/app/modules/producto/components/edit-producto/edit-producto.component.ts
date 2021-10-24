@@ -4,8 +4,8 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { ProductoService } from '@app/core/services/liraki/producto.service';
 import { FotoProducto, Producto, ProductoView, ResponseProducto } from '@app/shared/models/liraki/producto.interface';
 import { ToastrService } from 'ngx-toastr';
-import { Subject, throwError } from 'rxjs';
-import { catchError, takeUntil } from 'rxjs/operators';
+import { forkJoin, Observable, of, Subject, throwError } from 'rxjs';
+import { catchError, takeUntil, tap } from 'rxjs/operators';
 
 import { CategoriaProducto } from '@models/liraki/categoria.producto.interface';
 import { CategoriaProductoService } from '@app/core/services/liraki/categoria-producto.service';
@@ -59,6 +59,7 @@ export class EditProductoComponent implements OnInit, OnDestroy {
     this.initForm();
     this.getAllCategorias();
 
+    console.log(this.data);
 
 
   }
@@ -119,17 +120,18 @@ export class EditProductoComponent implements OnInit, OnDestroy {
       });
   }
 
-  public addProducto(producto: ProductoView): void {
-    this.productoSvc
-      .addProducto(producto)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res: ResponseProducto) => {
-        // this.uploadFiles(res.data.uuid);
-        console.log(res);
+  public editProducto(producto: ProductoView): void {
+    // this.productoSvc
+    //   .addProducto(producto)
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((res: ResponseProducto) => {
+    //     // this.uploadFiles(res.data.uuid);
+    //     console.log(res);
 
-      });
+    //   });
+
+    this.uploadFiles('producto');
   }
-
 
   // ============> onKeySearch
   public onKey(value) {
@@ -155,4 +157,120 @@ export class EditProductoComponent implements OnInit, OnDestroy {
         ? { color: 'accent', status: true, icon: 'done' }
         : {};
   }
+
+
+
+  // !upload files
+  // ====================> uploadFiles
+  public uploadFiles(uuidProducto: string): void {
+    let fjImages: Array<Observable<any>> = [];
+    this.isClicked = true;
+
+    this.images.forEach((imageProducto: uploadFile, index) => {
+      this.fotoProducto.uuidProducto = uuidProducto;
+      this.fotoProducto.size = imageProducto.file.size;
+
+      fjImages.push(this.productoSvc
+        .addFotoProyecto(this.fotoProducto, imageProducto.file)
+        .pipe(
+          takeUntil(this.destroy$),
+          tap((event: HttpEvent<any>) => {
+            switch (event.type) {
+              case HttpEventType.UploadProgress:
+                this.images[index].progress = Math.round(event.loaded / event.total * 100);
+                break;
+              case HttpEventType.Response:
+                this.images[index].uploaded = true;
+                this.images[index].progress = 0;
+            }
+          }),
+          catchError((error) => {
+            this.images[index].error = true;
+            this.toastrSvc.error(`La imagen ${imageProducto.file.name} no se pudo subir.`, 'Ocurrio un Error!', {
+              timeOut: 7000,
+              enableHtml: true
+            });
+            return of([]);
+          }))
+      );
+    });
+
+
+    // forkJoin(fjImages)
+    //   .subscribe((events: HttpEvent<any>[]) => {
+    //     this.toastrSvc.success(`${this.uploadedCounter()}. 😀`, 'Cargado Correctamente', {
+    //       timeOut: 6000
+    //     });
+    //     this.continue = true;
+    //   });
+  }
+
+  private uploadedCounter(): string {
+    let counter: number = 0;
+    let errors: number = 0;
+    this.images.forEach((documento: uploadFile, index) => {
+      if (documento.uploaded === true) counter++;
+      if (documento.error === true) errors++;
+    });
+    return (counter > 1 || counter === 0)
+      ? `${counter} cargas completas, ${errors} errores.`
+      : `${counter} carga completa, ${errors} errores.`;
+  }
+
+  // ====================> checkStatusFile
+  checkStatusFile(): boolean {
+    let status: boolean = true;
+    this.images.forEach((documento: uploadFile) => {
+      if (documento.uploaded === false) {
+        status = false;
+      }
+    });
+    return status;
+  }
+
+  // ====================> toggleHover
+  public toggleHover(event: boolean): void {
+    this.isHovering = event;
+  }
+
+  // ====================> onDrop
+  public onDrop(files: FileList): void {
+    for (let i = 0; i < files.length; i++) {
+      if (files.item(i).type.includes('image/') && this.images.length < 4) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.images.push({
+            file: files.item(i),
+            progress: 0,
+            src: reader.result as string
+          });
+
+        }
+        reader.readAsDataURL(files.item(i))
+      }
+
+    }
+  }
+  // =====================> getType
+  public getType(nombre: string): string {
+    const arrayName = nombre.split('.');
+    return arrayName[arrayName.length - 1];
+  }
+  public onDelete(documento: uploadFile) {
+    this.images = this.images.filter((doc: uploadFile) => doc != documento);
+  }
+  // ======================== formatBytes
+  public formatBytes(bytes, decimals = 2) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  }
+
+
+
+
+
 }
