@@ -14,6 +14,8 @@ export interface Producto {
 export interface FotoProducto {
   uuid?: string;
   creadoEn?: Date;
+  nombre?: string;
+  indice?: number;
   keyName?: string;
   location?: string;
   size?: number;
@@ -34,4 +36,10 @@ export interface ProductoView extends Producto {
 export interface ResponseProducto {
   message: string;
   data: Producto;
+}
+
+
+export interface ProductoResponse {
+  message: string;
+  body: string;
 }

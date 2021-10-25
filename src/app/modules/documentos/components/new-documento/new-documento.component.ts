@@ -113,6 +113,7 @@ export class NewDocumentoComponent implements OnInit {
                 timeOut: 7000,
                 enableHtml: true
               });
+
               return of([]);
             })));
     });

@@ -1,6 +1,6 @@
 import { BrightnessService } from './../../services/brightness.service';
 import { AuthService } from '@app/core/services/auth/auth.service';
-import { Usuario, UsuarioResponse } from '@app/shared/models/usuario.interface';
+import { Roles, Usuario, UsuarioResponse } from '@app/shared/models/usuario.interface';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -39,34 +39,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-
-
-
-    // fetch('http://localhost:3000/api/usuario', {
-    //   method: 'get'
-    // })
-    //   .then(result => result.json())
-    //   .then(data => console.log(data))
-    //   .catch(error => console.log(error));
-
-
-
-    // fetch('http://localhost:3000/api/usuario/0a984c59-5cc1-41d7-8895-b0ad083faf1d', {
-    //   method: 'get'
-    // })
-    //   .then(res => res.json())
-    //   .then(data => {
-
-    //     if (data.error) {
-    //       console.log('hubo un error');
-    //     } else {
-    //       console.log(data);
-
-    //     }
-    //   })
-    //   .catch(error => console.log('error', error));
-
-
+    this.checkUserStatus();
   }
 
 
@@ -76,25 +49,31 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
   }
 
-  onLogIn(usr: Usuario): void {
-
+  public onLogIn(usr: Usuario): void {
     this.unsubscribe$.add(
       this.authSvc.login(usr)
         .subscribe((res: UsuarioResponse) => {
           if (res) {
-            switch (res.body.rol) {
-              case 'administrador':
-                this.router.navigate(['/admin']);
-                this.toastrSvc.info(res.body.nombre, 'Bienvenido! 👋');
-                break;
-              default:
-                break;
-            }
+            this.authSvc.roleNavigate(res.body);
           }
         })
     );
-
   }
+
+
+  private checkUserStatus(): void {
+    this.authSvc.usuario$
+      .subscribe((usuario: Usuario) => {
+        if (usuario) {
+          this.authSvc.roleNavigate(usuario);
+        }
+      });
+  }
+
+
+
+
+
 
   onRegister(usr: Usuario): void {
     // this.authSvc.getOneUsuario(usr.docid)

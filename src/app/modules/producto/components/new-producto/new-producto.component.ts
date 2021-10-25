@@ -20,11 +20,12 @@ export interface warningDialog {
   btnPrimary: string;
 };
 export class uploadFile {
-  file: File;
+  file?: File;
   progress: number;
   uploaded?: boolean;
   error?: boolean;
   src?: string;
+  foto?: FotoProducto;
 }
 
 
@@ -163,6 +164,7 @@ export class NewProductoComponent implements OnInit, OnDestroy {
     this.images.forEach((imageProducto: uploadFile, index) => {
       this.fotoProducto.uuidProducto = uuidProducto;
       this.fotoProducto.size = imageProducto.file.size;
+      this.fotoProducto.indice = index
 
       fjImages.push(this.productoSvc
         .addFotoProyecto(this.fotoProducto, imageProducto.file)

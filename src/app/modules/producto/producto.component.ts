@@ -48,6 +48,8 @@ export class ProductoComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+
+
   constructor(
     private productoSvc: ProductoService,
     private dialog: MatDialog,
@@ -63,6 +65,9 @@ export class ProductoComponent implements OnInit, OnDestroy {
     this.selection.changed
       .pipe(map(a => a.source))
       .subscribe(data => this.selected = data.selected);
+
+    // window.open("https://www.mywebsite.com", "_blank");
+
   }
 
   ngOnDestroy(): void {

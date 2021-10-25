@@ -63,6 +63,13 @@ export class ProductoService {
       });
   }
 
+  // ====================================================================
+  public deleteFotoProducto(uuid: string): Observable<any> {
+    return this.http
+      .delete(`${this.API_URL}/api/producto/fotoProducto/${uuid}`)
+      .pipe(catchError(error => this.handdleError(error)));
+  }
+
   // ====================> handdleError
   public handdleError(httpError: HttpErrorResponse | any): Observable<never> {
     let errorMessage = '';

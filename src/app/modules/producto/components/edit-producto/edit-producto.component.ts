@@ -2,7 +2,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ProductoService } from '@app/core/services/liraki/producto.service';
-import { FotoProducto, Producto, ProductoView, ResponseProducto } from '@app/shared/models/liraki/producto.interface';
+import { FotoProducto, Producto, ProductoResponse, ProductoView, ResponseProducto } from '@app/shared/models/liraki/producto.interface';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin, Observable, of, Subject, throwError } from 'rxjs';
 import { catchError, takeUntil, tap } from 'rxjs/operators';
@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { uploadFile } from '../new-producto/new-producto.component';
+import { environment } from '@env/environment';
+import { DeleteModalComponent } from '@app/shared/components/delete-modal/delete-modal.component';
 
 @Component({
   selector: 'app-edit-producto',
@@ -22,6 +24,8 @@ import { uploadFile } from '../new-producto/new-producto.component';
 })
 export class EditProductoComponent implements OnInit, OnDestroy {
   private destroy$: Subject<any> = new Subject<any>();
+  private API_URL = environment.API_URL;
+
 
   public productoForm: FormGroup;
   private categorias: CategoriaProducto[] = [];
@@ -47,7 +51,24 @@ export class EditProductoComponent implements OnInit, OnDestroy {
     private matdialog: MatDialog,
     private router: Router,
     @Inject(MAT_DIALOG_DATA) private data: ProductoView
-  ) { }
+  ) {
+
+    this.initVCurrentFotos();
+  }
+
+  initVCurrentFotos(): void {
+
+
+    this.data.fotos.forEach((foto: FotoProducto) => {
+      this.images.push({
+        uploaded: true,
+        progress: 0,
+        src: `${this.API_URL}/api/file/${foto.keyName}`,
+        foto
+      });
+    });
+
+  }
 
 
   drop(event: CdkDragDrop<uploadFile[]>) {
@@ -69,10 +90,6 @@ export class EditProductoComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  ongg(): void {
-    console.log(this.productoForm);
-
-  }
 
   private initForm(): void {
     let mRows: string[] = [];
@@ -130,13 +147,12 @@ export class EditProductoComponent implements OnInit, OnDestroy {
 
     //   });
 
-    this.uploadFiles('producto');
+    // this.uploadFiles('producto');
   }
 
   // ============> onKeySearch
   public onKey(value) {
     this.selectedCategorias = this._filter(value);
-    this.ongg();
   }
 
   // ============> filterCliente
@@ -205,6 +221,33 @@ export class EditProductoComponent implements OnInit, OnDestroy {
     //   });
   }
 
+
+
+
+
+  public onDelete(image: uploadFile) {
+
+    if (image.foto) {
+      const dialogRef = this.matdialog.open(DeleteModalComponent);
+      dialogRef.afterClosed()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res: boolean) => {
+          if (res) {
+            this.productoSvc.deleteFotoProducto(image.foto.uuid)
+              .pipe(takeUntil(this.destroy$))
+              .subscribe((imgRes: ProductoResponse) => {
+                this.images = this.images.filter((doc: uploadFile) => doc != image);
+                this.toastrSvc.success(`La foto ${imgRes.body} de ha eliminado correctamente. 😀`, 'Eliminado Correctamente', {
+                  timeOut: 6000
+                });
+              })
+          }
+        });
+    } else {
+      this.images = this.images.filter((doc: uploadFile) => doc != image);
+    }
+  }
+
   private uploadedCounter(): string {
     let counter: number = 0;
     let errors: number = 0;
@@ -236,7 +279,7 @@ export class EditProductoComponent implements OnInit, OnDestroy {
   // ====================> onDrop
   public onDrop(files: FileList): void {
     for (let i = 0; i < files.length; i++) {
-      if (files.item(i).type.includes('image/') && this.images.length < 4) {
+      if (files.item(i).type.includes('image/')) {
         const reader = new FileReader();
         reader.onload = () => {
           this.images.push({
@@ -256,9 +299,7 @@ export class EditProductoComponent implements OnInit, OnDestroy {
     const arrayName = nombre.split('.');
     return arrayName[arrayName.length - 1];
   }
-  public onDelete(documento: uploadFile) {
-    this.images = this.images.filter((doc: uploadFile) => doc != documento);
-  }
+
   // ======================== formatBytes
   public formatBytes(bytes, decimals = 2) {
     if (bytes === 0) return '0 Bytes';

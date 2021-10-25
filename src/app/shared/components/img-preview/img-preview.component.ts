@@ -14,8 +14,6 @@ export class ImgPreviewComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { fotos: string[]; current: number; }
   ) {
-    console.log(data);
-
   }
 
   ngOnInit(): void {

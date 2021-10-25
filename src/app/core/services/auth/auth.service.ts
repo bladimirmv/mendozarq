@@ -41,9 +41,9 @@ export class AuthService extends RoleValidator {
     return this.http.post<UsuarioResponse>(`${this.API_URL}/api/auth/login`, authData)
       .pipe(
         map((usuario: UsuarioResponse) => {
+          this.usuario.next(usuario.body);
           this.saveToken(usuario.token);
           this.loggedIn.next(true);
-          // this.usuario.next(usuario.body);
           this.usuarioToken.next(usuario.token);
           return usuario;
         }),
@@ -58,7 +58,6 @@ export class AuthService extends RoleValidator {
     this.usuario.next(null);
     this.usuarioToken.next(null);
     this.router.navigate(['/']);
-
   }
   // ====================================================================
   public checkToken(): any {
@@ -70,7 +69,7 @@ export class AuthService extends RoleValidator {
       if (isExpired) {
         this.logout();
         this.toastrSvc.warning('La sesion ha expirado, porfavor inicia sesion nuevamente', 'Sesion Expirada!', {
-          timeOut: 5000
+          timeOut: 7000
         });
       } else {
         this.loggedIn.next(true);
@@ -84,7 +83,18 @@ export class AuthService extends RoleValidator {
     localStorage.setItem('token', token);
   }
   // ====================================================================
-  public handdleError(httpError: HttpErrorResponse | any): Observable<never> {
+  public roleNavigate(usuario: Usuario): void {
+    switch (usuario.rol) {
+      case 'administrador':
+        this.router.navigate(['/admin']);
+        this.toastrSvc.info(usuario.nombre, 'Bienvenido! 👋');
+        break;
+      default:
+        break;
+    }
+  }
+  // ====================================================================
+  private handdleError(httpError: HttpErrorResponse | any): Observable<never> {
     let errorMessage = '';
 
     if (httpError.error.message) {
