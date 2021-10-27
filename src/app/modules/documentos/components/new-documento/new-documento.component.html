@@ -43,11 +43,9 @@
     </div>
 
     <mat-progress-bar class="progress" mode="determinate" [value]="documento.progress">
-
     </mat-progress-bar>
 
-    <button mat-icon-button class="delete-documento" (click)="onDelete(documento)"
-      *ngIf="!isClicked && (documento.error !== undefined)">
+    <button mat-icon-button class="delete-documento" (click)="onDelete(documento)" *ngIf="!isClicked">
       <mat-icon>
         close
       </mat-icon>

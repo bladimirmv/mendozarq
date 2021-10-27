@@ -1,5 +1,5 @@
 <h2 align="center" mat-dialog-title>
-  Nuevo Producto
+  Editar Producto
 </h2>
 <mat-dialog-content>
   <form class="edit-form" [formGroup]="productoForm">
@@ -113,86 +113,26 @@
     </mat-form-field>
 
 
-
-
-
-
-
-
-
-
-
-
-    <div class="dropzone no-select full-width full-column" appDropzone (hovered)="toggleHover($event)"
-      (dropped)="onDrop($event)" [class.hovering]="isHovering">
-
-      <mat-icon class="upload-icon">
-        cloud_upload
-      </mat-icon>
-
-      <p class="text-info" align="center">Arrastra y suelta uno o varios archivos aqui.</p>
-      <p class="text-hovering" align="center">Suelta aqui.</p>
-      <p>o</p>
-
-      <div class="file">
-        <label class="file-label">
-          <input class="file-input" type="file" (change)="onDrop($event.target.files)">
-          <span>
-            Buscar archivo
-          </span>
-        </label>
-      </div>
-    </div>
-
-
-
-
-
-    <div cdkDropList class="example-list documento full-width full-column" (cdkDropListDropped)="drop($event)">
-
-      <div class="example-box" class="documento full-width full-column"
-        [class.error]="image.error === undefined ? false: true" [attr.disabled]="!continue"
-        [class.success]="image.uploaded" *ngFor="let image of images" cdkDrag>
-        <div class="icon-type">
-          <div class="type">
-            {{image.uploaded ? getType(image.foto.nombre) : getType(image.file.name)}}
-          </div>
-          <mat-icon class="icon-documento" [class.c-error]="image.error === undefined ? false: true"
-            [class.c-success]="image.uploaded">
-            insert_drive_file
-          </mat-icon>
+    <div class="img-list full-column">
+      <button mat-raised-button class="img-item new-img mat-elevation-z4" matTooltip="Ordenar o Subir Foto"
+        matTooltipPosition="below" (click)="editFotoProducto()">
+        <mat-icon>
+          edit
+        </mat-icon>
+        <div>
+          Ordenar o Subir
         </div>
-        <div class="title">
-          {{image.foto ? image.foto.nombre  :image.file.name}}
-        </div>
-        <div class="size">
-          {{ formatBytes(image.foto ? image.foto.size  :image.file.size)}}
-        </div>
-        <mat-progress-bar class="progress" mode="determinate" [value]="image.progress">
-        </mat-progress-bar>
+      </button>
 
-        <button mat-icon-button class="delete-documento" (click)="onDelete(image)" *ngIf="!isClicked">
+      <picture class="img-item mat-elevation-z4" *ngFor="let image of images">
+        <img [src]="image.src" [alt]="image.nombre" (click)="modalPreview($event, images, image)">
+        <button mat-icon-button class="img-delete" (click)="onDelete($event,image)" *ngIf="!isClicked">
           <mat-icon>
             close
           </mat-icon>
         </button>
-
-        <img *cdkDragPreview [src]="image.src" [alt]="image.foto? image.foto.nombre  :image.file.name"
-          class="img-preview ">
-      </div>
+      </picture>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   </form>
@@ -200,9 +140,9 @@
 
 <mat-dialog-actions>
   <button mat-button [mat-dialog-close]="false" class="mat-btn-secondary full-width">Cancelar</button>
-  <button mat-button class="mat-btn-success" (click)="addProducto(productoForm.value)"
-    [disabled]="!productoForm.valid || !images.length" *ngIf="!isClicked else btn_continue">
-    Guardar
+  <button mat-button class="mat-btn-success" [disabled]="!productoForm.valid || !images.length"
+    *ngIf="!isClicked else btn_continue">
+    Actualizar
   </button>
 </mat-dialog-actions>
 

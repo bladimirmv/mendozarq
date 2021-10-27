@@ -182,7 +182,7 @@
 
 
 
-    <div cdkDropList class="example-list documento full-width full-column" (cdkDropListDropped)="drop($event)">
+    <div cdkDropList class="example-list documento  full-width full-column" (cdkDropListDropped)="drop($event)">
       <div class="example-box" class="documento full-width full-column"
         [class.error]="image.error === undefined ? false: true" [attr.disabled]="!continue"
         [class.success]="image.uploaded" *ngFor="let image of images" cdkDrag>

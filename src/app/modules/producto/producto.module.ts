@@ -10,10 +10,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditProductoComponent } from './components/edit-producto/edit-producto.component';
 import { DocumentosModule } from '../documentos/documentos.module';
 import { CdkMaterialModule } from '@app/cdk-material.module';
+import { EditFotoProductoComponent } from './components/edit-foto-producto/edit-foto-producto.component';
 
 
 @NgModule({
-  declarations: [ProductoComponent, NewProductoComponent, EditProductoComponent],
+  declarations: [ProductoComponent, NewProductoComponent, EditProductoComponent, EditFotoProductoComponent],
   imports: [
     CommonModule,
     ProductoRoutingModule,

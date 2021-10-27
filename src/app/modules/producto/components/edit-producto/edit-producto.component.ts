@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ProductoService } from '@app/core/services/liraki/producto.service';
@@ -6,6 +6,8 @@ import { FotoProducto, Producto, ProductoResponse, ProductoView, ResponseProduct
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin, Observable, of, Subject, throwError } from 'rxjs';
 import { catchError, takeUntil, tap } from 'rxjs/operators';
+import { EditFotoProductoComponent } from '@modules/producto/components/edit-foto-producto/edit-foto-producto.component';
+
 
 import { CategoriaProducto } from '@models/liraki/categoria.producto.interface';
 import { CategoriaProductoService } from '@app/core/services/liraki/categoria-producto.service';
@@ -16,6 +18,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { uploadFile } from '../new-producto/new-producto.component';
 import { environment } from '@env/environment';
 import { DeleteModalComponent } from '@app/shared/components/delete-modal/delete-modal.component';
+import { ImgPreviewComponent } from '@app/shared/components/img-preview/img-preview.component';
 
 @Component({
   selector: 'app-edit-producto',
@@ -33,10 +36,10 @@ export class EditProductoComponent implements OnInit, OnDestroy {
 
 
   isHovering: boolean;
-  images: uploadFile[] = [];
+  images: Array<{ src?: string } & FotoProducto> = [];
   isClicked: boolean = false;
   continue: boolean = false;
-  private fotoProducto: FotoProducto = { uuidProducto: '' };
+  // private fotoProducto: FotoProducto = { uuidProducto: '' };
 
   selectedFiles: FileList;
   currentFileUpload: File;
@@ -57,17 +60,13 @@ export class EditProductoComponent implements OnInit, OnDestroy {
   }
 
   initVCurrentFotos(): void {
-
-
+    this.images = [];
     this.data.fotos.forEach((foto: FotoProducto) => {
       this.images.push({
-        uploaded: true,
-        progress: 0,
         src: `${this.API_URL}/api/file/${foto.keyName}`,
-        foto
-      });
+        ...foto
+      })
     });
-
   }
 
 
@@ -79,17 +78,12 @@ export class EditProductoComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initForm();
     this.getAllCategorias();
-
-    console.log(this.data);
-
-
   }
 
   ngOnDestroy(): void {
     this.destroy$.next({});
     this.destroy$.complete();
   }
-
 
   private initForm(): void {
     let mRows: string[] = [];
@@ -98,6 +92,7 @@ export class EditProductoComponent implements OnInit, OnDestroy {
     });
 
     this.productoForm = this.fb.group({
+      uuid: [this.data.uuid],
       estado: [this.data.estado ? true : false, [Validators.required]],
       nombre: [this.data.nombre, [Validators.required, Validators.maxLength(100)]],
       categorias: [mRows, [Validators.required]],
@@ -137,17 +132,36 @@ export class EditProductoComponent implements OnInit, OnDestroy {
       });
   }
 
-  public editProducto(producto: ProductoView): void {
-    // this.productoSvc
-    //   .addProducto(producto)
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((res: ResponseProducto) => {
-    //     // this.uploadFiles(res.data.uuid);
-    //     console.log(res);
+  public editFotoProducto(): void {
+    this.images.forEach((v) => { delete v.src });
+    this.data.fotos = this.images;
 
-    //   });
 
-    // this.uploadFiles('producto');
+    this.initVCurrentFotos();
+
+    console.log(this.images);
+
+
+    const dialogRef = this.matdialog.open(EditFotoProductoComponent, {
+      data: this.data
+    });
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: boolean) => {
+        if (res) {
+          this.productoSvc.getFotoProducto(this.data.uuid)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((fotosProducto: FotoProducto[]) => {
+              this.images = [];
+              fotosProducto.forEach((foto: FotoProducto) => {
+                this.images.push({
+                  src: `${this.API_URL}/api/file/${foto.keyName}`,
+                  ...foto
+                })
+              });
+            });
+        }
+      });
   }
 
   // ============> onKeySearch
@@ -178,122 +192,156 @@ export class EditProductoComponent implements OnInit, OnDestroy {
 
   // !upload files
   // ====================> uploadFiles
-  public uploadFiles(uuidProducto: string): void {
-    let fjImages: Array<Observable<any>> = [];
-    this.isClicked = true;
-
-    this.images.forEach((imageProducto: uploadFile, index) => {
-      this.fotoProducto.uuidProducto = uuidProducto;
-      this.fotoProducto.size = imageProducto.file.size;
-
-      fjImages.push(this.productoSvc
-        .addFotoProyecto(this.fotoProducto, imageProducto.file)
-        .pipe(
-          takeUntil(this.destroy$),
-          tap((event: HttpEvent<any>) => {
-            switch (event.type) {
-              case HttpEventType.UploadProgress:
-                this.images[index].progress = Math.round(event.loaded / event.total * 100);
-                break;
-              case HttpEventType.Response:
-                this.images[index].uploaded = true;
-                this.images[index].progress = 0;
-            }
-          }),
-          catchError((error) => {
-            this.images[index].error = true;
-            this.toastrSvc.error(`La imagen ${imageProducto.file.name} no se pudo subir.`, 'Ocurrio un Error!', {
-              timeOut: 7000,
-              enableHtml: true
-            });
-            return of([]);
-          }))
-      );
-    });
+  // public uploadFiles(uuidProducto: string): void {
+  //   let fjImages: Array<Observable<any>> = [];
+  //   this.isClicked = true;
 
 
-    // forkJoin(fjImages)
-    //   .subscribe((events: HttpEvent<any>[]) => {
-    //     this.toastrSvc.success(`${this.uploadedCounter()}. 😀`, 'Cargado Correctamente', {
-    //       timeOut: 6000
-    //     });
-    //     this.continue = true;
-    //   });
+  //   this.images.forEach((imageProducto: uploadFile, index) => {
+  //     let fotoProducto: FotoProducto = { uuidProducto: '' };
+
+  //     fotoProducto.indice = index;
+
+  //     if (imageProducto.foto) {
+  //       fotoProducto = imageProducto.foto;
+  //     } else {
+  //       fotoProducto.uuidProducto = uuidProducto;
+  //       fotoProducto.size = imageProducto.file.size;
+  //     }
+
+
+
+
+  //     console.log(`(${index}): `, fotoProducto);
+
+
+
+
+  //     // fjImages.push(this.productoSvc
+  //     //   .addFotoProyecto(this.fotoProducto, imageProducto.file)
+  //     //   .pipe(
+  //     //     takeUntil(this.destroy$),
+  //     //     tap((event: HttpEvent<any>) => {
+  //     //       switch (event.type) {
+  //     //         case HttpEventType.UploadProgress:
+  //     //           this.images[index].progress = Math.round(event.loaded / event.total * 100);
+  //     //           break;
+  //     //         case HttpEventType.Response:
+  //     //           this.images[index].uploaded = true;
+  //     //           this.images[index].progress = 0;
+  //     //       }
+  //     //     }),
+  //     //     catchError((error) => {
+  //     //       this.images[index].error = true;
+  //     //       this.toastrSvc.error(`La imagen ${imageProducto.file.name} no se pudo subir.`, 'Ocurrio un Error!', {
+  //     //         timeOut: 7000,
+  //     //         enableHtml: true
+  //     //       });
+  //     //       return of([]);
+  //     //     }))
+  //     // );
+  //   });
+
+
+
+
+
+  //   // forkJoin(fjImages)
+  //   //   .subscribe((events: HttpEvent<any>[]) => {
+  //   //     this.toastrSvc.success(`${this.uploadedCounter()}. 😀`, 'Cargado Correctamente', {
+  //   //       timeOut: 6000
+  //   //     });
+  //   //     this.continue = true;
+  //   //   });
+  // }
+
+
+
+
+
+  public onDelete(e: Event, image: FotoProducto) {
+
+    e.stopPropagation()
+
+
+    const dialogRef = this.matdialog.open(DeleteModalComponent);
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: boolean) => {
+        if (res) {
+          this.productoSvc.deleteFotoProducto(image.uuid)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((imgRes: ProductoResponse) => {
+              this.images = this.images.filter((images: FotoProducto) => images != image);
+              this.toastrSvc.success(`${imgRes.body} se ha eliminado correctamente. 😀`, 'Eliminado Correctamente', {
+                timeOut: 6000
+              });
+            })
+        }
+      });
+
   }
 
-
-
-
-
-  public onDelete(image: uploadFile) {
-
-    if (image.foto) {
-      const dialogRef = this.matdialog.open(DeleteModalComponent);
-      dialogRef.afterClosed()
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((res: boolean) => {
-          if (res) {
-            this.productoSvc.deleteFotoProducto(image.foto.uuid)
-              .pipe(takeUntil(this.destroy$))
-              .subscribe((imgRes: ProductoResponse) => {
-                this.images = this.images.filter((doc: uploadFile) => doc != image);
-                this.toastrSvc.success(`La foto ${imgRes.body} de ha eliminado correctamente. 😀`, 'Eliminado Correctamente', {
-                  timeOut: 6000
-                });
-              })
-          }
-        });
-    } else {
-      this.images = this.images.filter((doc: uploadFile) => doc != image);
-    }
-  }
-
-  private uploadedCounter(): string {
-    let counter: number = 0;
-    let errors: number = 0;
-    this.images.forEach((documento: uploadFile, index) => {
-      if (documento.uploaded === true) counter++;
-      if (documento.error === true) errors++;
-    });
-    return (counter > 1 || counter === 0)
-      ? `${counter} cargas completas, ${errors} errores.`
-      : `${counter} carga completa, ${errors} errores.`;
-  }
+  // private uploadedCounter(): string {
+  //   let counter: number = 0;
+  //   let errors: number = 0;
+  //   this.images.forEach((documento: uploadFile, index) => {
+  //     if (documento.uploaded === true) counter++;
+  //     if (documento.error === true) errors++;
+  //   });
+  //   return (counter > 1 || counter === 0)
+  //     ? `${counter} cargas completas, ${errors} errores.`
+  //     : `${counter} carga completa, ${errors} errores.`;
+  // }
 
   // ====================> checkStatusFile
-  checkStatusFile(): boolean {
-    let status: boolean = true;
-    this.images.forEach((documento: uploadFile) => {
-      if (documento.uploaded === false) {
-        status = false;
-      }
-    });
-    return status;
-  }
+  // checkStatusFile(): boolean {
+  //   let status: boolean = true;
+  //   this.images.forEach((documento: uploadFile) => {
+  //     if (documento.uploaded === false) {
+  //       status = false;
+  //     }
+  //   });
+  //   return status;
+  // }
 
   // ====================> toggleHover
-  public toggleHover(event: boolean): void {
-    this.isHovering = event;
-  }
+  // public toggleHover(event: boolean): void {
+  //   this.isHovering = event;
+  // }
 
   // ====================> onDrop
-  public onDrop(files: FileList): void {
-    for (let i = 0; i < files.length; i++) {
-      if (files.item(i).type.includes('image/')) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          this.images.push({
-            file: files.item(i),
-            progress: 0,
-            src: reader.result as string
-          });
+  // public onDrop(files: FileList): void {
+  //   for (let i = 0; i < files.length; i++) {
+  //     if (files.item(i).type.includes('image/')) {
+  //       const reader = new FileReader();
+  //       reader.onload = () => {
+  //         this.images.push({
+  //           file: files.item(i),
+  //           progress: 0,
+  //           src: reader.result as string
+  //         });
 
-        }
-        reader.readAsDataURL(files.item(i))
-      }
+  //       }
+  //       reader.readAsDataURL(files.item(i))
+  //     }
 
-    }
+  //   }
+  // }
+
+
+  public modalPreview(e: Event, fotos: FotoProducto[], foto: FotoProducto): void {
+    e.stopPropagation()
+    const keyNames: Array<string> = fotos.map((foto: FotoProducto) => `${this.API_URL}/api/file/${foto.keyName}`);
+    this.matdialog.open(ImgPreviewComponent, {
+      data: {
+        fotos: keyNames,
+        current: keyNames.indexOf(`${this.API_URL}/api/file/${foto.keyName}`)
+      },
+      panelClass: 'custom-dialog-container'
+    });
   }
+
   // =====================> getType
   public getType(nombre: string): string {
     const arrayName = nombre.split('.');

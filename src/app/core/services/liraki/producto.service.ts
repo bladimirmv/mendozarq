@@ -63,10 +63,22 @@ export class ProductoService {
       });
   }
 
+  public getFotoProducto(uuid: string): Observable<FotoProducto[]> {
+    return this.http
+      .get<FotoProducto[]>(`${this.API_URL}/api/producto/fotoProducto/${uuid}`)
+      .pipe(catchError(error => this.handdleError(error)));
+  }
+
   // ====================================================================
   public deleteFotoProducto(uuid: string): Observable<any> {
     return this.http
       .delete(`${this.API_URL}/api/producto/fotoProducto/${uuid}`)
+      .pipe(catchError(error => this.handdleError(error)));
+  }
+  // ====================================================================
+  public updateFotoProducto(uuid: string, fotoProducto: FotoProducto): Observable<any> {
+    return this.http
+      .put(`${this.API_URL}/api/producto/fotoProducto/${uuid}`, fotoProducto)
       .pipe(catchError(error => this.handdleError(error)));
   }
 
