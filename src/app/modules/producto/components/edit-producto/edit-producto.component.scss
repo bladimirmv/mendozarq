@@ -116,13 +116,6 @@ progress::-webkit-progress-value {
   transition: width 0.1s ease;
 }
 
-// .img-list {
-//   display: flex;
-//   flex-direction: column;
-//   gap: 5px;
-//   margin-top: 5px;
-// }
-
 .img-itemds {
   cursor: pointer;
   border: 1px solid var(--secondary);
@@ -183,19 +176,8 @@ progress::-webkit-progress-value {
 
   .date-img {
     grid-area: date;
-    // height: 6px;
-
-    // color: white;
   }
 }
-
-// .img-content {
-//   display: flex;
-//   justify-content: center;
-//   background-color: blue;
-//   // max-width: 700px;
-//   width: 500px;
-// }
 
 .img-list {
   margin-top: 10px;
@@ -204,14 +186,32 @@ progress::-webkit-progress-value {
   grid-gap: 5px;
 
   border-radius: 5px;
-  border: 1px solid var(--secondary);
+  // border: 1px solid var(--secondary);
   padding: 5px;
+
+  background-color: whitesmoke;
 }
 
 .img-item {
+  cursor: pointer;
   border-radius: 5px;
   height: 110px;
   position: relative;
+}
+.img-item img {
+  border-radius: 5px;
+  height: 100%;
+  width: 100%;
+  max-width: 100%;
+  object-fit: cover;
+}
+
+.img-delete {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 @media screen and(max-width:650px) {
@@ -241,19 +241,4 @@ progress::-webkit-progress-value {
   .new-img div {
     display: none;
   }
-}
-.img-item img {
-  border-radius: 5px;
-  height: 100%;
-  width: 100%;
-  max-width: 100%;
-  object-fit: cover;
-}
-
-.img-delete {
-  position: absolute;
-  top: 0;
-  right: 0;
-  color: white;
-  background-color: rgba(0, 0, 0, 0.3);
 }

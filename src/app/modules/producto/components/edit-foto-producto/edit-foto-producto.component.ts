@@ -97,6 +97,8 @@ export class EditFotoProductoComponent implements OnInit, OnDestroy {
         this.images[index].progress = 0;
         fotoProducto = imageProducto.foto;
         fotoProducto.indice = index;
+        this.images[index].progress = 0;
+
 
         fjImages.push(this.productoSvc
           .updateFotoProducto(fotoProducto.uuid, fotoProducto)

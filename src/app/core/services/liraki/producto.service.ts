@@ -23,7 +23,7 @@ export class ProductoService {
       .pipe(catchError(error => this.handdleError(error)));
   }
   // ====================================================================
-  public updateProducto(uuid: string, producto: Producto): Observable<any> {
+  public updateProducto(uuid: string, producto: Producto & { categorias: string[] }): Observable<any> {
     return this.http
       .put(`${this.API_URL}/api/producto/${uuid}`, producto)
       .pipe(catchError(error => this.handdleError(error)));

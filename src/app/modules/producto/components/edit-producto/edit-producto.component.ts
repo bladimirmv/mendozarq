@@ -1,11 +1,11 @@
-import { Component, HostListener, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ProductoService } from '@app/core/services/liraki/producto.service';
-import { FotoProducto, Producto, ProductoResponse, ProductoView, ResponseProducto } from '@app/shared/models/liraki/producto.interface';
+import { FotoProducto, Producto, ProductoResponse, ProductoView } from '@app/shared/models/liraki/producto.interface';
 import { ToastrService } from 'ngx-toastr';
-import { forkJoin, Observable, of, Subject, throwError } from 'rxjs';
-import { catchError, takeUntil, tap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { EditFotoProductoComponent } from '@modules/producto/components/edit-foto-producto/edit-foto-producto.component';
 
 
@@ -13,7 +13,6 @@ import { CategoriaProducto } from '@models/liraki/categoria.producto.interface';
 import { CategoriaProductoService } from '@app/core/services/liraki/categoria-producto.service';
 import { warningDialog, WarningModalComponent } from '@app/shared/components/warning-modal/warning-modal.component';
 import { Router } from '@angular/router';
-import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { uploadFile } from '../new-producto/new-producto.component';
 import { environment } from '@env/environment';
@@ -29,17 +28,14 @@ export class EditProductoComponent implements OnInit, OnDestroy {
   private destroy$: Subject<any> = new Subject<any>();
   private API_URL = environment.API_URL;
 
-
   public productoForm: FormGroup;
   private categorias: CategoriaProducto[] = [];
   public selectedCategorias: CategoriaProducto[] = [];
-
 
   isHovering: boolean;
   images: Array<{ src?: string } & FotoProducto> = [];
   isClicked: boolean = false;
   continue: boolean = false;
-  // private fotoProducto: FotoProducto = { uuidProducto: '' };
 
   selectedFiles: FileList;
   currentFileUpload: File;
@@ -57,21 +53,6 @@ export class EditProductoComponent implements OnInit, OnDestroy {
   ) {
 
     this.initVCurrentFotos();
-  }
-
-  initVCurrentFotos(): void {
-    this.images = [];
-    this.data.fotos.forEach((foto: FotoProducto) => {
-      this.images.push({
-        src: `${this.API_URL}/api/file/${foto.keyName}`,
-        ...foto
-      })
-    });
-  }
-
-
-  drop(event: CdkDragDrop<uploadFile[]>) {
-    moveItemInArray(this.images, event.previousIndex, event.currentIndex);
   }
 
 
@@ -101,6 +82,20 @@ export class EditProductoComponent implements OnInit, OnDestroy {
       descripcion: [this.data.descripcion, Validators.maxLength(1000)]
     });
   }
+  private initVCurrentFotos(): void {
+    this.images = [];
+    this.data.fotos.forEach((foto: FotoProducto) => {
+      this.images.push({
+        src: `${this.API_URL}/api/file/${foto.keyName}`,
+        ...foto
+      })
+    });
+  }
+
+  public drop(event: CdkDragDrop<uploadFile[]>) {
+    moveItemInArray(this.images, event.previousIndex, event.currentIndex);
+  }
+
 
   private getAllCategorias(): void {
     this.categoriaSvc
@@ -135,12 +130,7 @@ export class EditProductoComponent implements OnInit, OnDestroy {
   public editFotoProducto(): void {
     this.images.forEach((v) => { delete v.src });
     this.data.fotos = this.images;
-
-
     this.initVCurrentFotos();
-
-    console.log(this.images);
-
 
     const dialogRef = this.matdialog.open(EditFotoProductoComponent, {
       data: this.data
@@ -169,7 +159,51 @@ export class EditProductoComponent implements OnInit, OnDestroy {
     this.selectedCategorias = this._filter(value);
   }
 
-  // ============> filterCliente
+  public onDelete(e: Event, image: FotoProducto) {
+    e.stopPropagation()
+    const dialogRef = this.matdialog.open(DeleteModalComponent);
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: boolean) => {
+        if (res) {
+          this.productoSvc.deleteFotoProducto(image.uuid)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((imgRes: ProductoResponse) => {
+              this.images = this.images.filter((images: FotoProducto) => images != image);
+              this.toastrSvc.success(`${imgRes.body} se ha eliminado correctamente. 😀`, 'Eliminado Correctamente', {
+                timeOut: 6000
+              });
+            })
+        }
+      });
+  }
+
+  public modalPreview(e: Event, fotos: FotoProducto[], foto: FotoProducto): void {
+    e.stopPropagation()
+    const keyNames: Array<string> = fotos.map((foto: FotoProducto) => `${this.API_URL}/api/file/${foto.keyName}`);
+    this.matdialog.open(ImgPreviewComponent, {
+      data: {
+        fotos: keyNames,
+        current: keyNames.indexOf(`${this.API_URL}/api/file/${foto.keyName}`)
+      },
+      panelClass: 'custom-dialog-container'
+    });
+  }
+
+  public editProducto(producto: Producto & { categorias: string[] }): void {
+
+    this.productoSvc.updateProducto(producto.uuid, producto)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.toastrSvc.success('El producto se ha actualizado correctamente. 😀', 'Actualizado Correctamente', {
+          timeOut: 6000
+        });
+
+        this.dialogRef.close(true);
+      })
+  }
+
+  // ============> filter
   private _filter(value: string): CategoriaProducto[] {
     const filterValue = value.toLowerCase();
 
@@ -187,161 +221,6 @@ export class EditProductoComponent implements OnInit, OnDestroy {
         ? { color: 'accent', status: true, icon: 'done' }
         : {};
   }
-
-
-
-  // !upload files
-  // ====================> uploadFiles
-  // public uploadFiles(uuidProducto: string): void {
-  //   let fjImages: Array<Observable<any>> = [];
-  //   this.isClicked = true;
-
-
-  //   this.images.forEach((imageProducto: uploadFile, index) => {
-  //     let fotoProducto: FotoProducto = { uuidProducto: '' };
-
-  //     fotoProducto.indice = index;
-
-  //     if (imageProducto.foto) {
-  //       fotoProducto = imageProducto.foto;
-  //     } else {
-  //       fotoProducto.uuidProducto = uuidProducto;
-  //       fotoProducto.size = imageProducto.file.size;
-  //     }
-
-
-
-
-  //     console.log(`(${index}): `, fotoProducto);
-
-
-
-
-  //     // fjImages.push(this.productoSvc
-  //     //   .addFotoProyecto(this.fotoProducto, imageProducto.file)
-  //     //   .pipe(
-  //     //     takeUntil(this.destroy$),
-  //     //     tap((event: HttpEvent<any>) => {
-  //     //       switch (event.type) {
-  //     //         case HttpEventType.UploadProgress:
-  //     //           this.images[index].progress = Math.round(event.loaded / event.total * 100);
-  //     //           break;
-  //     //         case HttpEventType.Response:
-  //     //           this.images[index].uploaded = true;
-  //     //           this.images[index].progress = 0;
-  //     //       }
-  //     //     }),
-  //     //     catchError((error) => {
-  //     //       this.images[index].error = true;
-  //     //       this.toastrSvc.error(`La imagen ${imageProducto.file.name} no se pudo subir.`, 'Ocurrio un Error!', {
-  //     //         timeOut: 7000,
-  //     //         enableHtml: true
-  //     //       });
-  //     //       return of([]);
-  //     //     }))
-  //     // );
-  //   });
-
-
-
-
-
-  //   // forkJoin(fjImages)
-  //   //   .subscribe((events: HttpEvent<any>[]) => {
-  //   //     this.toastrSvc.success(`${this.uploadedCounter()}. 😀`, 'Cargado Correctamente', {
-  //   //       timeOut: 6000
-  //   //     });
-  //   //     this.continue = true;
-  //   //   });
-  // }
-
-
-
-
-
-  public onDelete(e: Event, image: FotoProducto) {
-
-    e.stopPropagation()
-
-
-    const dialogRef = this.matdialog.open(DeleteModalComponent);
-    dialogRef.afterClosed()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res: boolean) => {
-        if (res) {
-          this.productoSvc.deleteFotoProducto(image.uuid)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((imgRes: ProductoResponse) => {
-              this.images = this.images.filter((images: FotoProducto) => images != image);
-              this.toastrSvc.success(`${imgRes.body} se ha eliminado correctamente. 😀`, 'Eliminado Correctamente', {
-                timeOut: 6000
-              });
-            })
-        }
-      });
-
-  }
-
-  // private uploadedCounter(): string {
-  //   let counter: number = 0;
-  //   let errors: number = 0;
-  //   this.images.forEach((documento: uploadFile, index) => {
-  //     if (documento.uploaded === true) counter++;
-  //     if (documento.error === true) errors++;
-  //   });
-  //   return (counter > 1 || counter === 0)
-  //     ? `${counter} cargas completas, ${errors} errores.`
-  //     : `${counter} carga completa, ${errors} errores.`;
-  // }
-
-  // ====================> checkStatusFile
-  // checkStatusFile(): boolean {
-  //   let status: boolean = true;
-  //   this.images.forEach((documento: uploadFile) => {
-  //     if (documento.uploaded === false) {
-  //       status = false;
-  //     }
-  //   });
-  //   return status;
-  // }
-
-  // ====================> toggleHover
-  // public toggleHover(event: boolean): void {
-  //   this.isHovering = event;
-  // }
-
-  // ====================> onDrop
-  // public onDrop(files: FileList): void {
-  //   for (let i = 0; i < files.length; i++) {
-  //     if (files.item(i).type.includes('image/')) {
-  //       const reader = new FileReader();
-  //       reader.onload = () => {
-  //         this.images.push({
-  //           file: files.item(i),
-  //           progress: 0,
-  //           src: reader.result as string
-  //         });
-
-  //       }
-  //       reader.readAsDataURL(files.item(i))
-  //     }
-
-  //   }
-  // }
-
-
-  public modalPreview(e: Event, fotos: FotoProducto[], foto: FotoProducto): void {
-    e.stopPropagation()
-    const keyNames: Array<string> = fotos.map((foto: FotoProducto) => `${this.API_URL}/api/file/${foto.keyName}`);
-    this.matdialog.open(ImgPreviewComponent, {
-      data: {
-        fotos: keyNames,
-        current: keyNames.indexOf(`${this.API_URL}/api/file/${foto.keyName}`)
-      },
-      panelClass: 'custom-dialog-container'
-    });
-  }
-
   // =====================> getType
   public getType(nombre: string): string {
     const arrayName = nombre.split('.');
@@ -357,9 +236,4 @@ export class EditProductoComponent implements OnInit, OnDestroy {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
-
-
-
-
-
 }
