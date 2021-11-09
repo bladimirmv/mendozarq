@@ -1,73 +1,100 @@
 <mat-sidenav-container class="main-side-nav mat-elevation-z8">
-
-
-  <mat-sidenav #drawer fixedInViewport [mode]="breakpoint ? 'over': 'side'" [opened]="!breakpoint" hasBackdrop="false"
-    class="mat-elevation-z2">
-
-    <img class="wave" src="./assets/wave-2.svg" alt="">
+  <mat-sidenav
+    #drawer
+    fixedInViewport
+    [mode]="breakpoint ? 'over' : 'side'"
+    [opened]="!breakpoint"
+    hasBackdrop="false"
+    class="mat-elevation-z2"
+  >
+    <img class="wave" src="./assets/wave-2.svg" alt="" />
     <div class="sidenav-container">
-
       <div>
-        <div class=" flex-closed">
+        <div class="flex-closed">
           <button mat-icon-button [matMenuTriggerFor]="menu">
-            <mat-icon class="backIcon">
-              brightness_7
-            </mat-icon>
+            <mat-icon class="backIcon"> brightness_7 </mat-icon>
           </button>
 
-
-          <mat-menu #menu="matMenu" style="overflow: hidden;">
-            <div mat-menu-item *ngIf="brightnessSvc.brightness$|async as brValue">
-              <mat-slider min="40" max="100" [value]="brValue" (change)="onBrightness($event)" color="primary">
+          <mat-menu #menu="matMenu" style="overflow: hidden">
+            <div
+              mat-menu-item
+              *ngIf="brightnessSvc.brightness$ | async as brValue"
+            >
+              <mat-slider
+                min="40"
+                max="100"
+                [value]="brValue"
+                (change)="onBrightness($event)"
+                color="primary"
+              >
               </mat-slider>
             </div>
           </mat-menu>
 
-
           <button mat-icon-button (click)="drawer.close()">
-            <mat-icon>
-              closed
-            </mat-icon>
+            <mat-icon> closed </mat-icon>
           </button>
         </div>
 
         <a class="logo-column" routerLink="/admin">
-          <img src="./assets/logo-wave.svg" width="300px" alt="">
+          <img src="./assets/logo-wave.svg" width="300px" alt="" />
 
           <span>MendozArq</span>
         </a>
       </div>
 
       <div class="anclas">
-
-        <button mat-button routerLink="dashboard" class="btn-admin" routerLinkActive="active  mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
+        <button
+          mat-button
+          routerLink="dashboard"
+          class="btn-admin"
+          routerLinkActive="active  mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false"
+        >
           <mat-icon class="mat-18 mr-3">dashboard</mat-icon>
           Tablero
         </button>
 
-        <button mat-button class="btn-admin" routerLink="usuarios" routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
+        <button
+          mat-button
+          class="btn-admin"
+          routerLink="usuarios"
+          routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false"
+        >
           <mat-icon class="mat-18 mr-3">contacts</mat-icon>
           Usuarios
         </button>
 
-        <button mat-button class="btn-admin" routerLink="personal" routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
-          <mat-icon class="mat-18 mr-3">
-            people</mat-icon>
+        <button
+          mat-button
+          class="btn-admin"
+          routerLink="personal"
+          routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false"
+        >
+          <mat-icon class="mat-18 mr-3"> people</mat-icon>
           Personal
         </button>
 
-        <button mat-button class="btn-admin" routerLink="presupuestos" routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
-          <mat-icon class="mat-18 mr-3">
-            receipt_long</mat-icon>
+        <button
+          mat-button
+          class="btn-admin"
+          routerLink="presupuestos"
+          routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false"
+        >
+          <mat-icon class="mat-18 mr-3"> receipt_long</mat-icon>
           Presupuesto de Obras
         </button>
 
-        <button mat-button class="btn-admin" routerLink="proyectos" routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
+        <button
+          mat-button
+          class="btn-admin"
+          routerLink="proyectos"
+          routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false"
+        >
           <mat-icon class="mat-18 mr-3">library_books</mat-icon>
           Proyectos
         </button>
@@ -80,70 +107,97 @@
 
         <mat-divider></mat-divider>
 
-        <button mat-button class="btn-admin" routerLink="importaciones" routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
+        <button
+          mat-button
+          class="btn-admin"
+          routerLink="importaciones"
+          routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false"
+        >
           <mat-icon class="mat-18 mr-3">input</mat-icon>
           Importaciones
         </button>
 
-        <button mat-button class="btn-admin" routerLink="producto" routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
+        <button
+          mat-button
+          class="btn-admin"
+          routerLink="producto"
+          routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false"
+        >
           <mat-icon class="mat-18 mr-3">widgets</mat-icon>
           Producto
         </button>
 
-        <button mat-button class="btn-admin" routerLink="categoria-producto" routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
+        <button
+          mat-button
+          class="btn-admin"
+          routerLink="categoria-producto"
+          routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false"
+        >
           <mat-icon class="mat-18 mr-3">category</mat-icon>
           Categoria Producto
         </button>
 
-        <button mat-button class="btn-admin" routerLink="reservas-producto" routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
+        <button
+          mat-button
+          class="btn-admin"
+          routerLink="reservas-producto"
+          routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false"
+        >
           <mat-icon class="mat-18 mr-3">list_alt</mat-icon>
           Reservas Productos
         </button>
 
-        <button mat-button class="btn-admin" routerLink="venta-producto" routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
+        <button
+          mat-button
+          class="btn-admin"
+          routerLink="venta-producto"
+          routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false"
+        >
           <mat-icon class="mat-18 mr-3">storefront</mat-icon>
           Venta
         </button>
 
-        <button mat-button class="btn-admin" routerLink="comentario-producto"
-          routerLinkActive="active mat-raised-button" (click)="breakpoint ? drawer.close() : false">
+        <button
+          mat-button
+          class="btn-admin"
+          routerLink="comentario-producto"
+          routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false"
+        >
           <mat-icon class="mat-18 mr-3">feedback</mat-icon>
           Comentarios
         </button>
-
       </div>
 
       <div class="btn-extra">
-        <!-- <button mat-raised-button class="btn-just-border" (click)="onback()">
-          Volver al inicio
-        </button> -->
         <button mat-raised-button class="btn-fill" (click)="onLogout()">
           Cerrar sesion
         </button>
       </div>
-
     </div>
-
   </mat-sidenav>
-
-
 
   <mat-sidenav-content>
     <mat-toolbar class="mat-elevation-z2 toolbar-between">
-
       <div class="logo-row-container">
-        <button (click)=" drawer.toggle()" mat-icon-button *ngIf="drawer.opened===false || breakpoint">
-          <mat-icon>
-            menu
-          </mat-icon>
+        <button
+          (click)="drawer.toggle()"
+          mat-icon-button
+          *ngIf="drawer.opened === false || breakpoint"
+        >
+          <mat-icon> menu </mat-icon>
         </button>
-        <a class="logo-row" routerLink="/admin" *ngIf="drawer.opened===false || breakpoint">
-          <img src="./assets/logo-wave.svg" alt="">
+        <a
+          class="logo-row"
+          routerLink="/admin"
+          *ngIf="drawer.opened === false || breakpoint"
+        >
+          <img src="./assets/logo-wave.svg" alt="" />
           <span>MendozArq</span>
         </a>
       </div>
@@ -159,11 +213,7 @@
           </span>
         </a> -->
 
-        <a class="circle-profile" *ngIf="authSvc.isLogged | async">
-          M
-        </a>
-
-
+        <a class="circle-profile" *ngIf="authSvc.isLogged | async"> M </a>
       </div>
     </mat-toolbar>
 
@@ -182,9 +232,7 @@
     </div> -->
 
     <!-- <div> -->
-    <router-outlet style="box-sizing: border-box;"></router-outlet>
+    <router-outlet style="box-sizing: border-box"></router-outlet>
     <!-- </div> -->
-
   </mat-sidenav-content>
-
 </mat-sidenav-container>

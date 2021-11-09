@@ -79,7 +79,9 @@ export class EditProductoComponent implements OnInit, OnDestroy {
       categorias: [mRows, [Validators.required]],
       precio: [this.data.precio, [Validators.required, Validators.pattern(/^[+]?\d+([.]\d+)?$/)]],
       stock: [this.data.stock, [Validators.required, Validators.pattern(/^(0|[1-9]\d*)$/)]],
-      descripcion: [this.data.descripcion, Validators.maxLength(1000)]
+      descripcion: [this.data.descripcion, Validators.maxLength(1000)],
+      descuento: [this.data.descuento, [Validators.required, Validators.pattern(/(^100(\.0{1,2})?$)|(^([1-9]([0-9])?|0)(\.[0-9]{1,2})?$)/)]]
+
     });
   }
   private initVCurrentFotos(): void {
@@ -94,6 +96,15 @@ export class EditProductoComponent implements OnInit, OnDestroy {
 
   public drop(event: CdkDragDrop<uploadFile[]>) {
     moveItemInArray(this.images, event.previousIndex, event.currentIndex);
+  }
+
+  public getDescuento(): string {
+    let result: number = 0;
+    this.productoForm.value.descuento > 100 || this.productoForm.value.descuento < 0
+      ? result = 0
+      : result = this.productoForm.value.precio -
+      (this.productoForm.value.precio * this.productoForm.value.descuento) / 100;
+    return result.toFixed(2);
   }
 
 

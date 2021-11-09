@@ -86,8 +86,18 @@ export class NewProductoComponent implements OnInit, OnDestroy {
       categorias: ['', [Validators.required]],
       precio: [0, [Validators.required, Validators.pattern(/^[+]?\d+([.]\d+)?$/)]],
       stock: [0, [Validators.required, Validators.pattern(/^(0|[1-9]\d*)$/)]],
-      descripcion: ['', Validators.maxLength(1000)]
+      descripcion: ['', Validators.maxLength(1000)],
+      descuento: [0, [Validators.required, Validators.pattern(/(^100(\.0{1,2})?$)|(^([1-9]([0-9])?|0)(\.[0-9]{1,2})?$)/)]]
     });
+  }
+
+  public getDescuento(): string {
+    let result: number = 0;
+    this.productoForm.value.descuento > 100 || this.productoForm.value.descuento < 0
+      ? result = 0
+      : result = this.productoForm.value.precio -
+      (this.productoForm.value.precio * this.productoForm.value.descuento) / 100;
+    return result.toFixed(2);
   }
 
   private getAllCategorias(): void {

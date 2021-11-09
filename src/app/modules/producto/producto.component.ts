@@ -159,7 +159,6 @@ export class ProductoComponent implements OnInit, OnDestroy {
             this.clearCheckbox();
           }
         });
-
     });
   }
 
