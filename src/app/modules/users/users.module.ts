@@ -22,9 +22,10 @@ import { ShowContrasenhaComponent } from './components/show-contrasenha/show-con
     UsersRoutingModule,
     MaterialModule,
     SharedModule,
-    FormsModule,
     ClipboardModule,
+    FormsModule,
     ReactiveFormsModule
   ]
 })
 export class UsersModule { }
+// bmvmendo123

@@ -27,8 +27,9 @@ export class NewUserComponent implements OnInit, OnDestroy {
     private usuarioSvc: UsuarioService,
     private matDialog: MatDialog,
     private dialogRef: MatDialogRef<NewUserComponent>) {
-
   }
+
+
 
   ngOnInit(): void {
     this.initForm();

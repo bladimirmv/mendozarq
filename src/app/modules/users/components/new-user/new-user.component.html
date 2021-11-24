@@ -2,13 +2,12 @@
 
 <mat-dialog-content class="mat-typography">
   <form class="new-user-form" [formGroup]="usuarioForm">
-
     <!-- *Nombre -->
     <mat-form-field class="full-width" [color]="isValidField('nombre').color">
       <mat-label>Nombre</mat-label>
-      <input matInput formControlName="nombre" autocomplete="no">
+      <input matInput formControlName="nombre" autocomplete="no" />
       <mat-icon matSuffix [color]="isValidField('nombre').color">
-        {{isValidField('nombre').icon}}
+        {{ isValidField("nombre").icon }}
       </mat-icon>
       <mat-error *ngIf="usuarioForm.get('nombre').errors?.required">
         Ingrese un nombre.
@@ -19,17 +18,24 @@
     </mat-form-field>
 
     <!-- *Apellido Paterno -->
-    <mat-form-field class="full-width" [color]="isValidField('apellidoPaterno').color">
+    <mat-form-field
+      class="full-width"
+      [color]="isValidField('apellidoPaterno').color"
+    >
       <mat-label>Apellido Paterno</mat-label>
-      <input matInput formControlName="apellidoPaterno" autocomplete="no">
+      <input matInput formControlName="apellidoPaterno" autocomplete="no" />
       <mat-icon matSuffix [color]="isValidField('apellidoPaterno').color">
-        {{isValidField('apellidoPaterno').icon}}
+        {{ isValidField("apellidoPaterno").icon }}
       </mat-icon>
       <mat-error *ngIf="usuarioForm.get('apellidoPaterno').errors?.required">
         Por favor ingrese el apellido paterno.
       </mat-error>
       <mat-error *ngIf="usuarioForm.get('apellidoPaterno').errors?.maxlength">
-        Debe contener {{usuarioForm.get('apellidoPaterno').errors?.maxlength?.requiredLength}} letras como maximo.
+        Debe contener
+        {{
+          usuarioForm.get("apellidoPaterno").errors?.maxlength?.requiredLength
+        }}
+        letras como maximo.
       </mat-error>
       <mat-error *ngIf="usuarioForm.get('apellidoPaterno').errors?.pattern">
         Debe incluir solo letras en minuscula.
@@ -37,14 +43,25 @@
     </mat-form-field>
 
     <!-- *Apellido Materno -->
-    <mat-form-field class="full-width" [color]="isValidField('apellidoMaterno').color">
+    <mat-form-field
+      class="full-width"
+      [color]="isValidField('apellidoMaterno').color"
+    >
       <mat-label>Apellido Materno</mat-label>
-      <mat-icon matSuffix [color]="isValidField('apellidoMaterno').color" *ngIf="usuarioForm.value.apellidoMaterno">
-        {{isValidField('apellidoMaterno').icon}}
+      <mat-icon
+        matSuffix
+        [color]="isValidField('apellidoMaterno').color"
+        *ngIf="usuarioForm.value.apellidoMaterno"
+      >
+        {{ isValidField("apellidoMaterno").icon }}
       </mat-icon>
-      <input matInput formControlName="apellidoMaterno" autocomplete="no">
+      <input matInput formControlName="apellidoMaterno" autocomplete="no" />
       <mat-error *ngIf="usuarioForm.get('apellidoMaterno').errors?.maxlength">
-        Debe contener {{usuarioForm.get('apellidoMaterno').errors?.maxlength?.requiredLength}} letras como maximo.
+        Debe contener
+        {{
+          usuarioForm.get("apellidoMaterno").errors?.maxlength?.requiredLength
+        }}
+        letras como maximo.
       </mat-error>
       <mat-error *ngIf="usuarioForm.get('apellidoMaterno').errors?.pattern">
         Debe incluir solo letras en minuscula.
@@ -56,26 +73,42 @@
       <mat-label>Celular</mat-label>
       <span matPrefix>+591 &nbsp;</span>
 
-      <input type="tel" matInput placeholder="69409749" formControlName="celular" autocomplete="off">
+      <input
+        type="tel"
+        matInput
+        placeholder="69409749"
+        formControlName="celular"
+        autocomplete="off"
+      />
 
       <mat-hint align="end">
-        {{usuarioForm.value.celular ? getString(usuarioForm.value.celular).length : 0}}/8
+        {{
+          usuarioForm.value.celular
+            ? getString(usuarioForm.value.celular).length
+            : 0
+        }}/8
       </mat-hint>
       <mat-icon matSuffix [color]="isValidField('celular').color">
-        {{isValidField('celular').icon}}
+        {{ isValidField("celular").icon }}
       </mat-icon>
       <mat-error *ngIf="usuarioForm.get('celular').errors?.required">
         Ingrese el numero de celular o telefono.
       </mat-error>
-      <mat-error *ngIf="usuarioForm.get('celular').errors?.pattern else min_maxLength">
+      <mat-error
+        *ngIf="usuarioForm.get('celular').errors?.pattern; else min_maxLength"
+      >
         Debe incluir solo numeros.
       </mat-error>
       <ng-template #min_maxLength>
         <mat-error *ngIf="usuarioForm.get('celular').errors?.minlength">
-          Debe contener {{usuarioForm.get('celular').errors?.minlength?.requiredLength}} numeros como minimo.
+          Debe contener
+          {{ usuarioForm.get("celular").errors?.minlength?.requiredLength }}
+          numeros como minimo.
         </mat-error>
         <mat-error *ngIf="usuarioForm.get('celular').errors?.maxlength">
-          Debe contener {{usuarioForm.get('celular').errors?.maxlength?.requiredLength}} numeros como maximo.
+          Debe contener
+          {{ usuarioForm.get("celular").errors?.maxlength?.requiredLength }}
+          numeros como maximo.
         </mat-error>
       </ng-template>
     </mat-form-field>
@@ -84,18 +117,10 @@
     <mat-form-field class="full-width" [color]="isValidField('rol').color">
       <mat-label>Rol</mat-label>
       <mat-select formControlName="rol">
-        <mat-option value="administrador">
-          Administrador
-        </mat-option>
-        <mat-option value="arquitecto">
-          Arquitecto
-        </mat-option>
-        <mat-option value="vendedor">
-          Vendedor
-        </mat-option>
-        <mat-option value="cliente">
-          Cliente
-        </mat-option>
+        <mat-option value="administrador"> Administrador </mat-option>
+        <mat-option value="arquitecto"> Arquitecto </mat-option>
+        <mat-option value="vendedor"> Vendedor </mat-option>
+        <mat-option value="cliente"> Cliente </mat-option>
       </mat-select>
     </mat-form-field>
 
@@ -103,83 +128,110 @@
     <mat-form-field class="full-width" [color]="isValidField('activo').color">
       <mat-label>Estado</mat-label>
       <mat-select formControlName="activo">
-        <mat-option [value]="true">
-          Activo
-        </mat-option>
-        <mat-option [value]="false">
-          Inactivo
-        </mat-option>
+        <mat-option [value]="true"> Activo </mat-option>
+        <mat-option [value]="false"> Inactivo </mat-option>
       </mat-select>
     </mat-form-field>
 
     <!-- *Username -->
     <mat-form-field [color]="isValidField('username').color">
-      <mat-checkbox matPrefix align="start" matTooltip="Generar Usuario" matTooltipPosition="below"
-        formControlName="autoUsuario" (change)="onCheckBox(usuarioForm.value)" style="margin-right: 10px;">
+      <mat-checkbox
+        matPrefix
+        align="start"
+        matTooltip="Generar Usuario"
+        matTooltipPosition="below"
+        formControlName="autoUsuario"
+        (change)="onCheckBox(usuarioForm.value)"
+        style="margin-right: 10px"
+      >
       </mat-checkbox>
       <mat-label>Username</mat-label>
-      <input matInput formControlName="username" autocomplete="off">
+      <input matInput formControlName="username" autocomplete="off" />
 
       <mat-hint align="end">
-        {{usuarioForm.value.username ? usuarioForm.value.username.length : 0}}/10
+        {{
+          usuarioForm.value.username ? usuarioForm.value.username.length : 0
+        }}/10
       </mat-hint>
-      <mat-icon matSuffix [color]="isValidField('username').color"
-        *ngIf="!usuarioForm.value.autoUsuario else isValidUsername">
-        {{isValidField('username').icon}}
+      <mat-icon
+        matSuffix
+        [color]="isValidField('username').color"
+        *ngIf="!usuarioForm.value.autoUsuario; else isValidUsername"
+      >
+        {{ isValidField("username").icon }}
       </mat-icon>
       <ng-template #isValidUsername>
-        <mat-icon matSuffix color="accent">
-          done
-        </mat-icon>
+        <mat-icon matSuffix color="accent"> done </mat-icon>
       </ng-template>
       <mat-error *ngIf="usuarioForm.get('username').errors?.required">
         Ingrese un nombre de usuario.
       </mat-error>
       <mat-error *ngIf="usuarioForm.get('username').errors?.minlength">
-        Debe contener {{usuarioForm.get('username').errors?.minlength?.requiredLength}} digitos como minimo.
+        Debe contener
+        {{ usuarioForm.get("username").errors?.minlength?.requiredLength }}
+        digitos como minimo.
       </mat-error>
       <mat-error *ngIf="usuarioForm.get('username').errors?.maxlength">
-        Debe contener {{usuarioForm.get('username').errors?.maxlength?.requiredLength}} digitos como maximo.
+        Debe contener
+        {{ usuarioForm.get("username").errors?.maxlength?.requiredLength }}
+        digitos como maximo.
       </mat-error>
     </mat-form-field>
 
     <!-- *Contrasenha -->
     <mat-form-field [color]="isValidField('contrasenha').color">
-      <mat-checkbox matPrefix formControlName="autoContrasenha" style="margin-right: 10px;"
-        matTooltip="Generar Contraseña" matTooltipPosition="below" (change)="onCheckBox(usuarioForm.value)">
+      <mat-checkbox
+        matPrefix
+        formControlName="autoContrasenha"
+        style="margin-right: 10px"
+        matTooltip="Generar Contraseña"
+        matTooltipPosition="below"
+        (change)="onCheckBox(usuarioForm.value)"
+      >
       </mat-checkbox>
       <mat-label>Contraseña</mat-label>
-      <input matInput formControlName="contrasenha">
+      <input matInput formControlName="contrasenha" />
       <mat-hint align="end">
-        {{usuarioForm.value.contrasenha ? usuarioForm.value.contrasenha.length : 0}}/20
+        {{
+          usuarioForm.value.contrasenha
+            ? usuarioForm.value.contrasenha.length
+            : 0
+        }}/20
       </mat-hint>
-      <mat-icon matSuffix [color]="isValidField('contrasenha').color"
-        *ngIf="!usuarioForm.value.autoContrasenha else isValidContrasenha">
-        {{isValidField('contrasenha').icon}}
+      <mat-icon
+        matSuffix
+        [color]="isValidField('contrasenha').color"
+        *ngIf="!usuarioForm.value.autoContrasenha; else isValidContrasenha"
+      >
+        {{ isValidField("contrasenha").icon }}
       </mat-icon>
       <ng-template #isValidContrasenha>
-        <mat-icon matSuffix color="accent">
-          done
-        </mat-icon>
+        <mat-icon matSuffix color="accent"> done </mat-icon>
       </ng-template>
       <mat-error *ngIf="usuarioForm.get('contrasenha').errors?.required">
         Ingrese una contraseña.
       </mat-error>
       <mat-error *ngIf="usuarioForm.get('contrasenha').errors?.minlength">
-        Debe contener {{usuarioForm.get('contrasenha').errors?.minlength?.requiredLength}} digitos como minimo.
+        Debe contener
+        {{ usuarioForm.get("contrasenha").errors?.minlength?.requiredLength }}
+        digitos como minimo.
       </mat-error>
       <mat-error *ngIf="usuarioForm.get('contrasenha').errors?.maxlength">
-        Debe contener {{usuarioForm.get('contrasenha').errors?.maxlength?.requiredLength}} digitos como maximo.
+        Debe contener
+        {{ usuarioForm.get("contrasenha").errors?.maxlength?.requiredLength }}
+        digitos como maximo.
       </mat-error>
     </mat-form-field>
 
-
     <!-- *Correo -->
-    <mat-form-field class="full-width  full-column" [color]="isValidField('correo').color">
+    <mat-form-field
+      class="full-width full-column"
+      [color]="isValidField('correo').color"
+    >
       <mat-label>Correo</mat-label>
-      <input matInput formControlName="correo">
+      <input matInput formControlName="correo" />
       <mat-icon matSuffix [color]="isValidField('correo').color">
-        {{isValidField('correo').icon}}
+        {{ isValidField("correo").icon }}
       </mat-icon>
       <mat-error *ngIf="usuarioForm.get('correo').errors?.required">
         Por favor ingrese el correo.
@@ -190,27 +242,47 @@
     </mat-form-field>
 
     <!-- *Direccion -->
-    <mat-form-field class="full-width full-column" [color]="isValidField('direccion').color">
+    <mat-form-field
+      class="full-width full-column"
+      [color]="isValidField('direccion').color"
+    >
       <mat-label>Direccion</mat-label>
-      <textarea matInput placeholder="Ex. Avenida Segunda" formControlName="direccion"></textarea>
+      <textarea
+        matInput
+        placeholder="Ex. Avenida Segunda"
+        formControlName="direccion"
+      ></textarea>
       <mat-hint align="end">
-        {{usuarioForm.value.direccion ? usuarioForm.value.direccion.length : 0}}/200
+        {{
+          usuarioForm.value.direccion ? usuarioForm.value.direccion.length : 0
+        }}/200
       </mat-hint>
-      <mat-icon matSuffix [color]="isValidField('direccion').color" *ngIf="usuarioForm.value.direccion">
-        {{isValidField('direccion').icon}}
+      <mat-icon
+        matSuffix
+        [color]="isValidField('direccion').color"
+        *ngIf="usuarioForm.value.direccion"
+      >
+        {{ isValidField("direccion").icon }}
       </mat-icon>
       <mat-error *ngIf="usuarioForm.get('direccion').errors?.maxlength">
-        Debe contener {{usuarioForm.get('direccion').errors?.maxlength?.requiredLength}} digitos como maximo.
+        Debe contener
+        {{ usuarioForm.get("direccion").errors?.maxlength?.requiredLength }}
+        digitos como maximo.
       </mat-error>
     </mat-form-field>
-
   </form>
-
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button mat-button mat-dialog-close class="mat-btn-secondary">Cancelar</button>
-  <button mat-button class="mat-btn-success" (click)="onAddUser(usuarioForm.value)" [disabled]="!usuarioForm.valid">
+  <button mat-button mat-dialog-close class="mat-btn-secondary">
+    Cancelar
+  </button>
+  <button
+    mat-button
+    class="mat-btn-success"
+    (click)="onAddUser(usuarioForm.value)"
+    [disabled]="!usuarioForm.valid"
+  >
     Guardar
   </button>
 </mat-dialog-actions>
