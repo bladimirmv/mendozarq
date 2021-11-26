@@ -35,9 +35,9 @@ export class EditUserComponent implements OnInit {
   // ============> onInitForm
   private initForm(): void {
     this.usuarioForm = this.fb.group({
-      nombre: [this.data.nombre, [Validators.required, Validators.maxLength(50), Validators.pattern(/^[a-z\s]+$/)]],
-      apellidoPaterno: [this.data.apellidoPaterno, [Validators.required, Validators.maxLength(50), Validators.pattern(/^[a-z\s]+$/)]],
-      apellidoMaterno: [this.data.apellidoMaterno, [Validators.maxLength(50), Validators.pattern(/^[a-z\s]+$/)]],
+      nombre: [this.data.nombre, [Validators.required, Validators.maxLength(50), Validators.pattern(/^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/)]],
+      apellidoPaterno: [this.data.apellidoPaterno, [Validators.required, Validators.maxLength(50), Validators.pattern(/^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/)]],
+      apellidoMaterno: [this.data.apellidoMaterno, [Validators.maxLength(50), Validators.pattern(/^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/)]],
       celular: [this.data.celular,
       [Validators.required, Validators.minLength(7), Validators.maxLength(8), Validators.pattern(/^[0-9]*$/)]],
       direccion: [this.data.direccion, [Validators.maxLength(200)]],

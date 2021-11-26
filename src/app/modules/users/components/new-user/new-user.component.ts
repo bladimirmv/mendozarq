@@ -41,9 +41,9 @@ export class NewUserComponent implements OnInit, OnDestroy {
   // ============> onInitForm
   private initForm(): void {
     this.usuarioForm = this.fb.group({
-      nombre: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[a-z\s]+$/)]],
-      apellidoPaterno: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[a-z\s]+$/)]],
-      apellidoMaterno: ['', [Validators.maxLength(50), Validators.pattern(/^[a-z\s]+$/)]],
+      nombre: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/)]],
+      apellidoPaterno: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/)]],
+      apellidoMaterno: ['', [Validators.maxLength(50), Validators.pattern(/^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/)]],
       celular: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(8), Validators.pattern(/^[0-9]*$/)]],
       direccion: ['', [Validators.maxLength(200)]],
       correo: ['', [Validators.required, Validators.pattern(/\S+@\S+\.\S+/)]],

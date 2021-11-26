@@ -13,7 +13,7 @@
         Ingrese un nombre.
       </mat-error>
       <mat-error *ngIf="usuarioForm.get('nombre').errors?.pattern">
-        Debe incluir solo letras en minuscula.
+        Ingresa un nombre valido.
       </mat-error>
     </mat-form-field>
 
@@ -38,7 +38,7 @@
         letras como maximo.
       </mat-error>
       <mat-error *ngIf="usuarioForm.get('apellidoPaterno').errors?.pattern">
-        Debe incluir solo letras en minuscula.
+        Ingresa un apellido valido.
       </mat-error>
     </mat-form-field>
 
@@ -64,7 +64,7 @@
         letras como maximo.
       </mat-error>
       <mat-error *ngIf="usuarioForm.get('apellidoMaterno').errors?.pattern">
-        Debe incluir solo letras en minuscula.
+        Ingresa un apellido valido.
       </mat-error>
     </mat-form-field>
 
