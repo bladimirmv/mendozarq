@@ -1,5 +1,5 @@
 // table class
-    .table-container {
+.table-container {
   max-width: 100%;
   width: 100%;
   margin: 30px 0;
@@ -12,7 +12,7 @@
     padding: 10px 20px;
     justify-content: center;
     align-items: center;
-    background-color: white;
+    background-color: var(--card-bg);
   }
 
   .table-content {
@@ -21,11 +21,22 @@
     scrollbar-width: thin;
     overflow: auto;
     scrollbar-width: 100px;
+    color: red !important;
   }
 
   table {
     width: 100%;
     max-width: 100%;
+    background-color: var(--card-bg);
+
+    .mat-cell {
+      color: var(--text-color);
+    }
+  }
+
+  mat-paginator {
+    background: var(--card-bg);
+    color: var(--text-color);
   }
 
   tr:hover {
@@ -89,7 +100,8 @@
   position: relative;
   height: 76px;
   background-color: var(--warn);
-  color: white;
+  background-color: var(--card-bg);
+
   animation: opacity-table 0.7s;
 
   display: grid;

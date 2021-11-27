@@ -1,12 +1,12 @@
 <mat-card class="stats-card mat-elevation-z2">
   <mat-card class="icon-card" [style.backgroundColor]="fullColor">
     <mat-icon>
-      {{icon}}
+      {{ icon }}
     </mat-icon>
   </mat-card>
 
   <div class="info-card">
-    <p>
+    <p class="title">
       <ng-content select="[slot=title]"></ng-content>
     </p>
     <p class="count-card">

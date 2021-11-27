@@ -1,4 +1,4 @@
-@import './../../../styles/side-nav.scss';
+@import "./../../../styles/side-nav.scss";
 
 .toolbar-between {
   display: flex;
@@ -10,8 +10,6 @@
   flex-flow: row nowrap;
 }
 
-
-
 .flex-closed {
   justify-content: space-between;
 
@@ -19,7 +17,6 @@
     color: var(--secondary);
   }
 }
-
 
 .usuarioSide {
   display: grid;
@@ -36,7 +33,6 @@
     font-size: 16px;
   }
 
-
   img {
     border-radius: 50px;
     background-color: whitesmoke;
@@ -45,9 +41,7 @@
     height: 50px;
     width: 50px;
     object-fit: cover;
-
   }
-
 }
 
 .circle-profile {
@@ -59,7 +53,6 @@
   place-items: center;
   color: white;
 }
-
 
 @media screen and(max-width:530px) {
   .usuarioSide {
