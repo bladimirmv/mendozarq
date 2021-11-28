@@ -88,7 +88,7 @@ export class NewCategoriaProductoComponent implements OnInit, OnDestroy {
   // ====================> onDrop
   public onDrop(files: FileList): void {
     for (let i = 0; i < files.length; i++) {
-      if (files.item(i).type.includes('image/') && this.documentos.length < 1) {
+      if (files.item(i).type.includes('image/') && (this.documentos.length === 0)) {
         const reader = new FileReader();
         reader.onload = () => {
           this.documentos.push({
@@ -96,9 +96,9 @@ export class NewCategoriaProductoComponent implements OnInit, OnDestroy {
             progress: 0,
             src: reader.result as string
           });
-
         }
         reader.readAsDataURL(files.item(i))
+        return
       }
     }
   }
