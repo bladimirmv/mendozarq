@@ -96,7 +96,7 @@ mat-toolbar {
   }
 
   span {
-    font-family: var(--font-head);
+    // font-family: var(--font-head);
     animation: type 1.5s steps(12);
     overflow: hidden;
     white-space: nowrap;
@@ -170,7 +170,6 @@ mat-toolbar {
 
 .logo-row {
   height: 100%;
-  // background-color: red;
   display: grid;
   grid-template-columns: auto auto;
   place-items: center;
@@ -204,10 +203,8 @@ mat-toolbar {
   outline: none;
 
   font-size: 14px;
-  color: var(--text-color);
 
   span {
-    font-family: cubano, sans-serif !important;
     background-image: linear-gradient(
       90deg,
       var(--text-color),
@@ -278,6 +275,9 @@ mat-toolbar {
   background-color: var(--btn-bg);
 
   span {
+    font-weight: 700;
+
+    // font-family: var(--font-head);
     background-image: linear-gradient(
       90deg,
       var(--orange-light),

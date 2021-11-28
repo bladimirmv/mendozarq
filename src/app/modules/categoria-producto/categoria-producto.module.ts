@@ -8,6 +8,7 @@ import { CategoriaProductoRoutingModule } from './categoria-producto-routing.mod
 import { CategoriaProductoComponent } from './categoria-producto.component';
 import { NewCategoriaProductoComponent } from './components/new-categoria-producto/new-categoria-producto.component';
 import { EditCategoriaProductoComponent } from './components/edit-categoria-producto/edit-categoria-producto.component';
+import { DocumentosModule } from '../documentos/documentos.module';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { EditCategoriaProductoComponent } from './components/edit-categoria-prod
     MaterialModule,
     ReactiveFormsModule,
     FormsModule,
-    SharedModule
+    SharedModule,
+    DocumentosModule
   ]
 })
 export class CategoriaProductoModule { }

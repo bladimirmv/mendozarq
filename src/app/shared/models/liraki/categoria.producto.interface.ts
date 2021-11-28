@@ -1,6 +1,9 @@
 export interface CategoriaProducto {
+  uuid: string;
   creadoEn?: Date;
-  uuid?: string;
   nombre: string;
-  descripcion: string;
+  descripcion?: string;
+  keyName: string;
+  location: string;
+  estado?: boolean;
 }

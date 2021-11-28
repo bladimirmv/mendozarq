@@ -242,7 +242,7 @@ export class NewProductoComponent implements OnInit, OnDestroy {
   // ====================> onDrop
   public onDrop(files: FileList): void {
     for (let i = 0; i < files.length; i++) {
-      if (files.item(i).type.includes('image/') && this.images.length < 4) {
+      if (files.item(i).type.includes('image/')) {
         const reader = new FileReader();
         reader.onload = () => {
           this.images.push({
@@ -254,7 +254,6 @@ export class NewProductoComponent implements OnInit, OnDestroy {
         }
         reader.readAsDataURL(files.item(i))
       }
-
     }
   }
   // =====================> getType

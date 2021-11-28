@@ -116,6 +116,7 @@ const routes: Routes = [
           import('@modules/presupuestos-proyecto/presupuestos-proyecto.module').then(m => m.PresupuestosProyectoModule)
       },
 
+      { path: 'jitsiMeet', loadChildren: () => import('@modules/jitsi-meet/jitsi-meet.module').then(m => m.JitsiMeetModule) },
 
     ]
   },

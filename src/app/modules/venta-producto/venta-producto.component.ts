@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-venta-producto',
   templateUrl: './venta-producto.component.html',
@@ -7,9 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VentaProductoComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+  ) { }
 
   ngOnInit(): void {
+
   }
+
+
+
+
+
+
 
 }

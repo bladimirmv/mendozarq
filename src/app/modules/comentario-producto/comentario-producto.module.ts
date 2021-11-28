@@ -9,7 +9,7 @@ import { ComentarioProductoComponent } from './comentario-producto.component';
   declarations: [ComentarioProductoComponent],
   imports: [
     CommonModule,
-    ComentarioProductoRoutingModule
+    ComentarioProductoRoutingModule,
   ]
 })
 export class ComentarioProductoModule { }

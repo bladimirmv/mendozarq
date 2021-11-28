@@ -1,5 +1,14 @@
-<mat-sidenav-container class="main-side-nav mat-elevation-z8" [style.filter]="'brightness(7 0%)'">
-  <mat-sidenav #drawer fixedInViewport [mode]="breakpoint ? 'over' : 'side'" [opened]="!breakpoint" hasBackdrop="false">
+<mat-sidenav-container
+  class="main-side-nav mat-elevation-z8"
+  [style.filter]="'brightness(7 0%)'"
+>
+  <mat-sidenav
+    #drawer
+    fixedInViewport
+    [mode]="breakpoint ? 'over' : 'side'"
+    [opened]="!breakpoint"
+    hasBackdrop="false"
+  >
     <img class="wave" src="./assets/wave-2.svg" alt="" />
     <div class="sidenav-container">
       <div>
@@ -19,44 +28,90 @@
       </div>
 
       <div class="anclas">
-        <button mat-button routerLink="descripcion" class="btn-admin" routerLinkActive="active  mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
+        <button
+          mat-button
+          routerLink="descripcion"
+          class="btn-admin"
+          routerLinkActive="active  mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false"
+        >
           <mat-icon class="mat-18 mr-3">description</mat-icon>
           Descripcion
         </button>
 
-        <button mat-button class="btn-admin" routerLink="cronograma" routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
+        <button
+          mat-button
+          class="btn-admin"
+          routerLink="cronograma"
+          routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false"
+        >
           <mat-icon class="mat-18 mr-3">event_note</mat-icon>
           Planificacion
         </button>
 
-        <button mat-button routerLink="visitas" class="btn-admin" routerLinkActive="active  mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
+        <button
+          mat-button
+          routerLink="visitas"
+          class="btn-admin"
+          routerLinkActive="active  mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false"
+        >
           <mat-icon class="mat-18 mr-3">apartment</mat-icon>
           Visitas de la Obra
         </button>
 
-        <button mat-button class="btn-admin" routerLink="participantes" routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
+        <button
+          mat-button
+          class="btn-admin"
+          routerLink="participantes"
+          routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false"
+        >
           <mat-icon class="mat-18 mr-3">people</mat-icon>
           Participantes
         </button>
 
-        <button mat-button class="btn-admin" routerLink="documentos" routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
+        <button
+          mat-button
+          class="btn-admin"
+          routerLink="documentos"
+          routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false"
+        >
           <mat-icon class="mat-18 mr-3">cloud</mat-icon>
           Documentos
         </button>
 
-        <button mat-button class="btn-admin" routerLink="servicios" routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
+        <button
+          mat-button
+          class="btn-admin"
+          routerLink="servicios"
+          routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false"
+        >
           <mat-icon class="mat-18 mr-3">view_list</mat-icon>
           Servicios
         </button>
 
-        <button mat-button class="btn-admin" routerLink="presupuestos" routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
+        <button
+          mat-button
+          class="btn-admin"
+          routerLink="jitsiMeet"
+          routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false"
+        >
+          <mat-icon class="mat-18 mr-3">meeting_room</mat-icon>
+          Jitsi Meet
+        </button>
+
+        <button
+          mat-button
+          class="btn-admin"
+          routerLink="presupuestos"
+          routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false"
+        >
           <mat-icon class="mat-18 mr-3">receipt_long</mat-icon>
           Presupuesto Proyecto
         </button>
@@ -81,10 +136,18 @@
   <mat-sidenav-content>
     <mat-toolbar class="mat-elevation-z2 toolbar-between">
       <div class="logo-row-container">
-        <button (click)="drawer.toggle()" mat-icon-button *ngIf="drawer.opened === false || breakpoint">
+        <button
+          (click)="drawer.toggle()"
+          mat-icon-button
+          *ngIf="drawer.opened === false || breakpoint"
+        >
           <mat-icon> menu </mat-icon>
         </button>
-        <a class="logo-row" routerLink="/admin" *ngIf="drawer.opened === false || breakpoint">
+        <a
+          class="logo-row"
+          routerLink="/admin"
+          *ngIf="drawer.opened === false || breakpoint"
+        >
           <img src="./assets/logo-wave.svg" alt="" />
           <span>MendozArq</span>
         </a>

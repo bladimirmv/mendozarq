@@ -49,7 +49,7 @@ export class NewProyectoComponent implements OnInit, OnDestroy {
   // =====================> onInitForm
   private initForm(): void {
     this.proyectoForm = this.fb.group({
-      nombre: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[0-9a-z\s]+$/)]],
+      nombre: ['', [Validators.required, Validators.maxLength(50)]],
       descripcion: ['', Validators.maxLength(200)],
       estado: [true, Validators.required],
       fechaInicio: [Validators.required],
