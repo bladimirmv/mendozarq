@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpInterceptor, HttpEvent, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
+import { Usuario } from '@app/shared/models/usuario.interface';
 @Injectable()
 export class AdminInterceptor implements HttpInterceptor {
 
@@ -51,6 +52,8 @@ export class AdminInterceptor implements HttpInterceptor {
 
 
     // if (url.some(path => req.url.includes(path))) {
+
+
 
 
     const authToken = this.authSvc.userTokenValue;

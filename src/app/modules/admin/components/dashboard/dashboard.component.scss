@@ -1,6 +1,6 @@
 .content::after {
   content: "";
-  background-image: url('./../../../../../assets/bg.svg');
+  background-image: url("./../../../../../assets/bg.svg");
   background-position: bottom;
   background-repeat: no-repeat;
   background-size: 100%;
@@ -21,10 +21,7 @@
   justify-content: center;
   align-items: center;
   padding: 0 10px;
-
 }
-
-
 
 @media screen and(max-width: 960px) {
   .stats-container {
@@ -43,5 +40,48 @@
 
   app-status-card:last-child {
     grid-column: span 1;
+  }
+}
+
+.console {
+  * {
+    font-family: var(--font-mono);
+  }
+
+  border-radius: 5px;
+
+  background-color: var(--secondary);
+  color: white;
+  font-family: var(--font-mono) !important;
+
+  max-width: 100%;
+
+  overflow: auto;
+  min-height: 300px;
+  .log {
+    min-width: 600px;
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+    margin: 0 10px;
+  }
+
+  .log .path {
+    color: var(--info);
+    font-weight: bold;
+  }
+
+  .option-I {
+    color: var(--success);
+    font-weight: bold;
+  }
+
+  .option-U {
+    color: var(--accent);
+    font-weight: bold;
+  }
+  .option-D {
+    color: var(--warn);
+    font-weight: bold;
   }
 }
