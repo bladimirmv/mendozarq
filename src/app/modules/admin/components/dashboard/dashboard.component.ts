@@ -2,21 +2,32 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
+import { WebsocketService } from '@services/sockets/websocket.service';
+import { Logs } from '@models/logs/logs.interface';
+
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
+  public Logs: Logs[] = [] as Logs[];
 
-
-  constructor() {
-
-  }
+  constructor(private wsService: WebsocketService) {}
 
   ngOnInit(): void {
+    moment.locale('es');
 
+    this.wsService.emit('ws:getLogs');
+    this.wsService.listen('ws:getLogs').subscribe((logs: Logs[]) => {
+      this.Logs = logs;
+      console.log(logs);
+    });
   }
 
+  public formatDate(date: Date): string {
+    return moment(date).fromNow();
+  }
 }

@@ -17,20 +17,23 @@
   </div>
 
   <div class="console mat-elevation-z2">
-    <div class="log">
+    <div class="log" *ngFor="let log of Logs">
       <div>
-        <span class="path">~@mendozarq/usuario> </span>
-        <span>bladimir medrano vargas</span>
-        <span class="option-I"> -I </span>
-        <span class="option-I" style="width: 10px; border-bottom: 1px solid"
-          >1959b3c3-798c-4a16-9dfd-1bbf8713b685
+        <span class="path">~@{{ log.path }}/{{ log.tabla }}> </span>
+        <span>{{ log.creadoPor ? log.creadoPor : "Sin Nombre" }}</span>
+        <span [class]="'option-' + log.operacion"> -{{ log.operacion }} </span>
+        <span
+          [class]="'option-' + log.operacion"
+          style="width: 10px; border-bottom: 1px solid"
+        >
+          {{ log.uuidRow }}
         </span>
       </div>
 
-      <span style="white-space: nowrap">⏲12/2/21, 11:47 PM</span>
+      <span style="white-space: nowrap">⏲{{ formatDate(log.creadoEn) }}</span>
     </div>
 
-    <div class="log">
+    <!-- <div class="log">
       <div>
         <span class="path">~@liraki/producto> </span>
         <span> bladimir medrano vargas</span>
@@ -40,8 +43,8 @@
         </span>
       </div>
       <span style="white-space: nowrap">⏲12/2/21, 11:47 PM</span>
-    </div>
-    <div class="log">
+    </div> -->
+    <!-- <div class="log">
       <div>
         <span class="path">~@liraki/categoriaProducto> </span>
         <span> bladimir medrano vargas</span>
@@ -51,6 +54,6 @@
         </span>
       </div>
       <span style="white-space: nowrap">⏲12/2/21, 11:47 PM</span>
-    </div>
+    </div> -->
   </div>
 </div>

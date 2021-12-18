@@ -4,7 +4,7 @@ import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class WebsocketService {
   socketStatus: boolean = false;
@@ -32,9 +32,6 @@ export class WebsocketService {
       console.log('Socket disconnected');
       this.socketStatus = true;
     });
-
-
-
   }
 
   // ==========> emit function
@@ -47,9 +44,7 @@ export class WebsocketService {
     return new Observable((subscriber) => {
       this.socket.on(eventName, (data) => {
         subscriber.next(data);
-      })
-    })
+      });
+    });
   }
-
-
 }
