@@ -1,90 +1,101 @@
 <div class="main" id="main" onContextMenu>
-
   <div id="main_contextmenu" class="contextmenu mat-elevation-z2">
-    <div align="center" class="title-menu">
-      Agregar
-    </div>
-    <hr>
+    <div align="center" class="title-menu">Agregar</div>
+    <hr />
 
-    <button mat-button class="link" oncontextmenu="return false;" (click)="newDocumento()">
-      <mat-icon class="mat-18">
-        upload_file
-      </mat-icon>
+    <button
+      mat-button
+      class="link"
+      oncontextmenu="return false;"
+      (click)="newDocumento()"
+    >
+      <mat-icon class="mat-18"> upload_file </mat-icon>
       Documento
     </button>
-    <button mat-button class="link" oncontextmenu="return false;" (click)="newCarpeta()">
-      <mat-icon class="mat-18">
-        create_new_folder
-      </mat-icon>
+    <button
+      mat-button
+      class="link"
+      oncontextmenu="return false;"
+      (click)="newCarpeta()"
+    >
+      <mat-icon class="mat-18"> create_new_folder </mat-icon>
       Carpeta
     </button>
-    <div align="center" class="title-menu">
-      Acciones
-    </div>
-    <hr>
-    <button mat-button class="link" oncontextmenu="return false;" (click)="syncData()">
-      <mat-icon class="mat-18">
-        sync
-      </mat-icon>
+    <div align="center" class="title-menu">Acciones</div>
+    <hr />
+    <button
+      mat-button
+      class="link"
+      oncontextmenu="return false;"
+      (click)="syncData()"
+    >
+      <mat-icon class="mat-18"> sync </mat-icon>
       Actualizar
     </button>
   </div>
 
   <div id="folder_contextmenu" class="contextmenu">
     <div class="link" oncontextmenu="return false;">
-      <mat-icon class="mat-18">
-        delete
-      </mat-icon>
+      <mat-icon class="mat-18"> delete </mat-icon>
       Eliminar
     </div>
     <div class="link" oncontextmenu="return false;">
-      <mat-icon class="mat-18">
-        edit
-      </mat-icon>
+      <mat-icon class="mat-18"> edit </mat-icon>
       Renombrar
     </div>
   </div>
 
   <div id="document_contextmenu" class="contextmenu">
     <div class="link" oncontextmenu="return false;">
-      <mat-icon class="mat-18">
-        delete
-      </mat-icon>
+      <mat-icon class="mat-18"> delete </mat-icon>
       Eliminar
-
     </div>
   </div>
 
-
   <div class="content" id="content">
     <div class="bar-actions mat-elevation-z2">
-      <button mat-icon-button (click)="syncData()" matTooltip="Actualizar" matTooltipPosition="below">
-        <mat-icon>
-          sync
-        </mat-icon>
+      <button
+        mat-icon-button
+        (click)="syncData()"
+        matTooltip="Actualizar"
+        matTooltipPosition="below"
+      >
+        <mat-icon> sync </mat-icon>
       </button>
 
-      <button mat-icon-button (click)="newCarpeta()" matTooltip="Nueva Carpeta" matTooltipPosition="below">
-        <mat-icon>
-          create_new_folder
-        </mat-icon>
+      <button
+        mat-icon-button
+        (click)="newCarpeta()"
+        matTooltip="Nueva Carpeta"
+        matTooltipPosition="below"
+      >
+        <mat-icon> create_new_folder </mat-icon>
       </button>
 
-      <button mat-icon-button (click)="newDocumento()" matTooltip="Nuevo Documento" matTooltipPosition="below">
-        <mat-icon>
-          upload_file
-        </mat-icon>
+      <button
+        mat-icon-button
+        (click)="newDocumento()"
+        matTooltip="Nuevo Documento"
+        matTooltipPosition="below"
+      >
+        <mat-icon> upload_file </mat-icon>
       </button>
     </div>
 
     <div class="list" id="list">
       <!-- *Carpeta -->
       <div class="item mat-elevation-z2" *ngFor="let carpeta of carpetas">
-        <mat-icon class="mat-18" mat-list-icon class="folder no-select">folder</mat-icon>
+        <mat-icon class="mat-18" mat-list-icon class="folder no-select"
+          >folder</mat-icon
+        >
         <div class="detail">
           <div class="title-document">
-            <a [routerLink]="['carpeta/', carpeta.uuid]" [matTooltip]="carpeta.nombre" matTooltipPosition="below">
-              {{carpeta.nombre | titlecase}}
+            <a
+              [routerLink]="['carpeta/', carpeta.uuid]"
+              [matTooltip]="carpeta.nombre"
+              matTooltipPosition="below"
+            >
+              {{ carpeta.nombre | titlecase }}
             </a>
           </div>
           <mat-icon class="more-icon" [matMenuTriggerFor]="menu">
@@ -93,40 +104,43 @@
 
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="deleteCarpeta(carpeta.uuid)">
-              <mat-icon class="mat-18">
-                delete
-              </mat-icon>
+              <mat-icon class="mat-18"> delete </mat-icon>
               Eliminar
             </button>
             <button mat-menu-item (click)="updateCarpeta(carpeta)">
-              <mat-icon class="mat-18">
-                edit
-              </mat-icon>
+              <mat-icon class="mat-18"> edit </mat-icon>
               Renombrar
             </button>
           </mat-menu>
           <div mat-line class="date-carpeta no-select">
-            {{carpeta.fechaCreacion | date}}
+            {{ carpeta.fechaCreacion | date }}
           </div>
         </div>
       </div>
 
       <!-- *Documento -->
       <div class="item mat-elevation-z2" *ngFor="let documento of documentos">
-
         <div class="document">
           <div class="type">
-            {{getType(documento.nombre)}}
+            {{ getType(documento.nombre) }}
           </div>
-          <mat-icon class="mat-18" mat-list-icon class="document no-select">
+          <mat-icon
+            class="mat-18"
+            mat-list-icon
+            class="document no-select"
+            [style.color]="getIcon(getType(documento.nombre))"
+          >
             insert_drive_file
           </mat-icon>
         </div>
 
-
         <div class="detail">
-          <div class="title-document" [matTooltip]="documento.nombre" matTooltipPosition="below">
-            {{documento.nombre}}
+          <div
+            class="title-document"
+            [matTooltip]="documento.nombre"
+            matTooltipPosition="below"
+          >
+            {{ documento.nombre }}
           </div>
           <mat-icon class="more-icon" [matMenuTriggerFor]="menuDocumento">
             more_vert
@@ -134,38 +148,27 @@
 
           <mat-menu #menuDocumento="matMenu">
             <button mat-menu-item (click)="downloadFile(documento)">
-              <mat-icon class="mat-18">
-                cloud_download
-              </mat-icon>
+              <mat-icon class="mat-18"> cloud_download </mat-icon>
               Descargar
             </button>
 
             <button mat-menu-item (click)="updateDocumento(documento)">
-              <mat-icon class="mat-18">
-                edit
-              </mat-icon>
+              <mat-icon class="mat-18"> edit </mat-icon>
               Renombrar
             </button>
             <button mat-menu-item (click)="deleteDocumento(documento.uuid)">
-              <mat-icon class="mat-18">
-                delete
-              </mat-icon>
+              <mat-icon class="mat-18"> delete </mat-icon>
               Eliminar
             </button>
             <button mat-menu-item (click)="infoDocumento(documento)">
-              <mat-icon class="mat-18">
-                info
-              </mat-icon>
+              <mat-icon class="mat-18"> info </mat-icon>
               Informacion
             </button>
           </mat-menu>
 
           <div class="date-size">
-
-
-            {{formatBytes(documento.size)}}
+            {{ formatBytes(documento.size) }}
           </div>
-
         </div>
       </div>
     </div>

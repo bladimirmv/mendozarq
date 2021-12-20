@@ -1,7 +1,15 @@
-import { Component, HostListener, Inject, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  Inject,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 
-
-import { CarpetaProyecto, DocumentoProyecto } from '@models/mendozarq/documentos.proyecto.interface';
+import {
+  CarpetaProyecto,
+  DocumentoProyecto,
+} from '@models/mendozarq/documentos.proyecto.interface';
 import { DocumentosService } from '@services/mendozarq/documentos.service';
 import { pipe, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -22,19 +30,16 @@ export interface Section {
 @Component({
   selector: 'app-documentos',
   templateUrl: './documentos.component.html',
-  styleUrls: ['./documentos.component.scss']
+  styleUrls: ['./documentos.component.scss'],
 })
 export class DocumentosComponent implements OnInit, OnDestroy {
-
   private API_URL = environment.API_URL;
-
 
   public carpetas: CarpetaProyecto[] = [];
   public documentos: DocumentoProyecto[] = [];
 
   private destroy$ = new Subject<any>();
   private uuidProyecto: string = '';
-
 
   @HostListener('window:click', ['$event'])
   onClick(event) {
@@ -45,37 +50,42 @@ export class DocumentosComponent implements OnInit, OnDestroy {
   @HostListener('contextmenu', ['$event'])
   onContextMenu(event: any) {
     event.preventDefault();
-    const main_menu = document.querySelector("#main_contextmenu") as HTMLDivElement;
-    main_menu.style.top = event.offsetY + "px";
-    main_menu.style.left = event.offsetX + "px";
+    const main_menu = document.querySelector(
+      '#main_contextmenu'
+    ) as HTMLDivElement;
+    main_menu.style.top = event.offsetY + 'px';
+    main_menu.style.left = event.offsetX + 'px';
 
-    if (event.target.id !== 'content' && event.target.id !== 'list' && event.target.id !== 'main') {
+    if (
+      event.target.id !== 'content' &&
+      event.target.id !== 'list' &&
+      event.target.id !== 'main'
+    ) {
       main_menu.classList.remove('active');
     } else {
-      const folder_menu = document.querySelector("#folder_contextmenu") as HTMLDivElement;
-      const doc_menu = document.querySelector("#document_contextmenu") as HTMLDivElement;
+      const folder_menu = document.querySelector(
+        '#folder_contextmenu'
+      ) as HTMLDivElement;
+      const doc_menu = document.querySelector(
+        '#document_contextmenu'
+      ) as HTMLDivElement;
       folder_menu.classList.remove('active');
       doc_menu.classList.remove('active');
       main_menu.classList.add('active');
     }
   }
 
-
   constructor(
     private documentosSvc: DocumentosService,
     private dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
-    private toastrSvc: ToastrService,
-
-  ) {
-
-  }
+    private toastrSvc: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.uuidProyecto = this.activatedRoute.snapshot.parent.parent.params.uuid;
     this.getAllCarpetas();
     this.getAllDocumentos();
-
   }
   // =====================> onDestroy
   ngOnDestroy(): void {
@@ -95,14 +105,16 @@ export class DocumentosComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((carpetas: CarpetaProyecto[]) => {
         this.carpetas = carpetas;
-      })
+      });
   }
 
   // =====================> newCarpeta
   public newCarpeta(): void {
-
-    const dialogRef = this.dialog.open(NewCarpetaComponent, { data: this.uuidProyecto });
-    dialogRef.afterClosed()
+    const dialogRef = this.dialog.open(NewCarpetaComponent, {
+      data: this.uuidProyecto,
+    });
+    dialogRef
+      .afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         if (res) {
@@ -115,14 +127,19 @@ export class DocumentosComponent implements OnInit, OnDestroy {
   public deleteCarpeta(uuid: string): void {
     const dialogRef = this.dialog.open(DeleteModalComponent);
 
-    dialogRef.afterClosed()
+    dialogRef
+      .afterClosed()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(res => {
+      .subscribe((res) => {
         if (res) {
-          this.documentosSvc.deleteCarpetaProyecto(uuid)
+          this.documentosSvc
+            .deleteCarpetaProyecto(uuid)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-              this.toastrSvc.success('Carpeta eliminado correctamente. 😀', 'Carpeta Eliminado');
+              this.toastrSvc.success(
+                'Carpeta eliminado correctamente. 😀',
+                'Carpeta Eliminado'
+              );
               this.getAllCarpetas();
             });
         }
@@ -131,9 +148,11 @@ export class DocumentosComponent implements OnInit, OnDestroy {
 
   // =====================> updateCarpeta
   public updateCarpeta(carpetaProyecto: CarpetaProyecto): void {
-
-    const dialogRef = this.dialog.open(EditCarpetaComponent, { data: carpetaProyecto });
-    dialogRef.afterClosed()
+    const dialogRef = this.dialog.open(EditCarpetaComponent, {
+      data: carpetaProyecto,
+    });
+    dialogRef
+      .afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         if (res) {
@@ -142,7 +161,6 @@ export class DocumentosComponent implements OnInit, OnDestroy {
       });
   }
 
-
   // =====================> getAllDocumentos
   private getAllDocumentos(): void {
     this.documentosSvc
@@ -150,25 +168,25 @@ export class DocumentosComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((documentos: DocumentoProyecto[]) => {
         this.documentos = documentos;
-      })
+      });
   }
 
   // =====================> newDocumento
   public newDocumento(): void {
-
     const documento: DocumentoProyecto = {
       uuidProyecto: this.uuidProyecto,
-      path: 'root'
-    }
+      path: 'root',
+    };
     const matOptions: MatDialogConfig = {
       data: documento,
       width: '600px',
       height: 'auto',
       maxWidth: '600px',
-      minWidth: '200px'
-    }
+      minWidth: '200px',
+    };
     const dialogRef = this.dialog.open(NewDocumentoComponent, matOptions);
-    dialogRef.afterClosed()
+    dialogRef
+      .afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.getAllDocumentos();
@@ -179,14 +197,19 @@ export class DocumentosComponent implements OnInit, OnDestroy {
   public deleteDocumento(uuid: string): void {
     const dialogRef = this.dialog.open(DeleteModalComponent);
 
-    dialogRef.afterClosed()
+    dialogRef
+      .afterClosed()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(res => {
+      .subscribe((res) => {
         if (res) {
-          this.documentosSvc.deleteDocumentoProyecto(uuid)
+          this.documentosSvc
+            .deleteDocumentoProyecto(uuid)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-              this.toastrSvc.success('Documento eliminado correctamente. 😀', 'Documento Eliminado');
+              this.toastrSvc.success(
+                'Documento eliminado correctamente. 😀',
+                'Documento Eliminado'
+              );
               this.getAllDocumentos();
             });
         }
@@ -194,9 +217,11 @@ export class DocumentosComponent implements OnInit, OnDestroy {
   }
   // =====================> updateDocumento
   public updateDocumento(documentoProyecto: DocumentoProyecto): void {
-
-    const dialogRef = this.dialog.open(EditDocumentoComponent, { data: documentoProyecto });
-    dialogRef.afterClosed()
+    const dialogRef = this.dialog.open(EditDocumentoComponent, {
+      data: documentoProyecto,
+    });
+    dialogRef
+      .afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         if (res) {
@@ -216,16 +241,14 @@ export class DocumentosComponent implements OnInit, OnDestroy {
   }
 
   public infoDocumento(documentoProyecto: DocumentoProyecto): void {
-    this.dialog.open(InfoDocumentoComponent, { data: documentoProyecto })
+    this.dialog.open(InfoDocumentoComponent, { data: documentoProyecto });
   }
-
 
   // =====================> getType
   public getType(nombre: string): string {
     const arrayName = nombre.split('.');
     return arrayName[arrayName.length - 1];
   }
-
 
   // ======================== formatBytes
   public formatBytes(bytes, decimals = 2) {
@@ -240,4 +263,51 @@ export class DocumentosComponent implements OnInit, OnDestroy {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
 
+  public getIcon(type: string): string {
+    const icons = [
+      { color: '', type: ['zip', 'rar', 'tar', 'dmg', 'jar'] },
+
+      {
+        color: 'var(--blue-dark)',
+        type: ['doc', 'docx', 'rtf', 'txt', 'odt', 'tex'],
+      },
+      {
+        color: 'var(--orange-dark)',
+        type: ['ai', 'svg', 'jpg', 'gif', 'png', 'jpeg', 'tif', 'psd', 'raw'],
+      },
+      { color: 'var(--red)', type: ['pdf'] },
+      {
+        color: 'var(--green-dark)',
+        type: ['xml', 'csv', 'xls'],
+      },
+      {
+        color: 'var(--purple-dark)',
+        type: [
+          'webm',
+          'mkv',
+          'avi',
+          'mov',
+          'm4v',
+          'mpeg',
+          'mp4',
+          'mp3',
+          'm4a',
+          'ogg',
+          'acc',
+          'flac',
+        ],
+      },
+    ];
+
+    let result: string = 'var(--secondary)';
+
+    icons.forEach((icon) => {
+      if (icon.type.includes(type)) {
+        result = icon.color;
+        return;
+      }
+    });
+
+    return result;
+  }
 }

@@ -20,7 +20,13 @@
     <div class="log" *ngFor="let log of Logs">
       <div>
         <span class="path">~@{{ log.path }}/{{ log.tabla }}> </span>
-        <span>{{ log.creadoPor ? log.creadoPor : "Sin Nombre" }}</span>
+        <span>{{
+          log.creadoPor
+            ? log.creadoPor
+            : log.hostname
+            ? log.hostname
+            : "Sin nombre"
+        }}</span>
         <span [class]="'option-' + log.operacion"> -{{ log.operacion }} </span>
         <span
           [class]="'option-' + log.operacion"

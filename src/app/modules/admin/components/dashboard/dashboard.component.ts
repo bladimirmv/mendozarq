@@ -23,7 +23,6 @@ export class DashboardComponent implements OnInit {
     this.wsService.emit('ws:getLogs');
     this.wsService.listen('ws:getLogs').subscribe((logs: Logs[]) => {
       this.Logs = logs;
-      console.log(logs);
     });
   }
 

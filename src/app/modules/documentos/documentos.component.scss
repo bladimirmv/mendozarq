@@ -1,6 +1,6 @@
 .content::after {
   content: "";
-  background-image: url('./../../../assets/bg.svg');
+  background-image: url("./../../../assets/bg.svg");
   background-position: bottom;
   background-repeat: no-repeat;
   background-size: 100%;
@@ -12,7 +12,6 @@
   position: absolute;
   z-index: -1;
 }
-
 
 .main {
   width: 100%;
@@ -57,7 +56,6 @@
 
   .link mat-icon {
     padding-right: 5px;
-
   }
 
   .link:hover {
@@ -102,8 +100,6 @@
     background-color: white;
   }
 
-
-
   .folder {
     color: var(--accent);
     font-size: 50px;
@@ -115,7 +111,6 @@
     position: relative;
     display: grid;
     place-items: center;
-
   }
 
   .document .type {
@@ -127,7 +122,7 @@
   }
 
   .document mat-icon {
-    color: var(--secondary);
+    // color: var(--secondary);
     font-size: 50px;
     width: auto;
     height: auto;
@@ -181,7 +176,6 @@
     -ms-user-select: none;
     user-select: none;
   }
-
 }
 
 @media screen and(max-width: 1300px) {

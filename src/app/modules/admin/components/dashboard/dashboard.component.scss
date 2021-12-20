@@ -58,8 +58,11 @@
 
   overflow: auto;
   min-height: 300px;
+  max-height: 300px;
+
   .log {
     min-width: 600px;
+
     display: flex;
     justify-content: space-between;
     gap: 50px;
