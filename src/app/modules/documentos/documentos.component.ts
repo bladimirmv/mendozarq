@@ -6,6 +6,8 @@ import {
   OnInit,
 } from '@angular/core';
 
+import axios from 'axios';
+
 import {
   CarpetaProyecto,
   DocumentoProyecto,
@@ -232,12 +234,23 @@ export class DocumentosComponent implements OnInit, OnDestroy {
 
   // =====================> downloadFile
   public downloadFile(documento: DocumentoProyecto): void {
-    const link = document.createElement('a');
-    link.setAttribute('href', `${this.API_URL}/api/file/${documento.keyName}`);
-    link.setAttribute('download', documento.nombre);
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
+    fetch(`${this.API_URL}/api/file/${documento.keyName}`, {
+      method: 'GET',
+    })
+      .then((response: any) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', documento.nombre);
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch((err) => {
+        this.toastrSvc.error(
+          'No se pudo descargar el archivo. 🙁',
+          'Ocurrio un Error!'
+        );
+      });
   }
 
   public infoDocumento(documentoProyecto: DocumentoProyecto): void {

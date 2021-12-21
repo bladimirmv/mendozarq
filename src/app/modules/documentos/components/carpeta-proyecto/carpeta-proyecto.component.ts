@@ -1,8 +1,10 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 
-
-import { DocumentoProyCarpeta, DocumentoProyecto } from '@models/mendozarq/documentos.proyecto.interface';
+import {
+  DocumentoProyCarpeta,
+  DocumentoProyecto,
+} from '@models/mendozarq/documentos.proyecto.interface';
 import { DocumentosService } from '@services/mendozarq/documentos.service';
 import { Subject } from 'rxjs';
 
@@ -19,7 +21,7 @@ import { InfoDocumentoComponent } from '../info-documento/info-documento.compone
 @Component({
   selector: 'app-carpeta-proyecto',
   templateUrl: './carpeta-proyecto.component.html',
-  styleUrls: ['./carpeta-proyecto.component.scss']
+  styleUrls: ['./carpeta-proyecto.component.scss'],
 })
 export class CarpetaProyectoComponent implements OnInit, OnDestroy {
   private API_URL = environment.API_URL;
@@ -29,8 +31,6 @@ export class CarpetaProyectoComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<any>();
   private uuidProyecto: string = '';
   private uuidCarpeta: string = '';
-
-
 
   @HostListener('window:click', ['$event'])
   onClick(event) {
@@ -43,16 +43,26 @@ export class CarpetaProyectoComponent implements OnInit, OnDestroy {
     event.preventDefault();
     console.log(event);
 
-    const main_menu = document.querySelector("#main_contextmenu") as HTMLDivElement;
-    main_menu.style.top = event.offsetY + "px";
-    main_menu.style.left = event.offsetX + "px";
+    const main_menu = document.querySelector(
+      '#main_contextmenu'
+    ) as HTMLDivElement;
+    main_menu.style.top = event.offsetY + 'px';
+    main_menu.style.left = event.offsetX + 'px';
     console.log(event.target.id);
 
-    if (event.target.id !== 'content' && event.target.id !== 'list' && event.target.id !== 'main') {
+    if (
+      event.target.id !== 'content' &&
+      event.target.id !== 'list' &&
+      event.target.id !== 'main'
+    ) {
       main_menu.classList.remove('active');
     } else {
-      const folder_menu = document.querySelector("#folder_contextmenu") as HTMLDivElement;
-      const doc_menu = document.querySelector("#document_contextmenu") as HTMLDivElement;
+      const folder_menu = document.querySelector(
+        '#folder_contextmenu'
+      ) as HTMLDivElement;
+      const doc_menu = document.querySelector(
+        '#document_contextmenu'
+      ) as HTMLDivElement;
       folder_menu.classList.remove('active');
       doc_menu.classList.remove('active');
       main_menu.classList.add('active');
@@ -65,13 +75,12 @@ export class CarpetaProyectoComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private toastrSvc: ToastrService,
     private location: Location
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.uuidProyecto = this.activatedRoute.snapshot.parent.parent.params.uuid;
     this.uuidCarpeta = this.activatedRoute.snapshot.params.uuid;
     this.getAllDocumentos();
-
   }
   // =====================> onDestroy
   ngOnDestroy(): void {
@@ -89,28 +98,27 @@ export class CarpetaProyectoComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((documentos: DocumentoProyecto[]) => {
         this.documentos = documentos;
-      })
+      });
   }
 
   // =====================> newDocumentoCarpeta
   public newDocumento(): void {
-
     const documento: DocumentoProyCarpeta = {
       uuidProyecto: this.uuidProyecto,
       uuidCarpeta: this.uuidCarpeta,
-      path: 'folder'
-    }
+      path: 'folder',
+    };
     const matOptions: MatDialogConfig = {
       data: documento,
       width: '600px',
       height: 'auto',
       maxWidth: '600px',
-      minWidth: '200px'
-    }
-
+      minWidth: '200px',
+    };
 
     const dialogRef = this.dialog.open(NewDocumentoComponent, matOptions);
-    dialogRef.afterClosed()
+    dialogRef
+      .afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.getAllDocumentos();
@@ -121,14 +129,19 @@ export class CarpetaProyectoComponent implements OnInit, OnDestroy {
   public deleteDocumento(uuid: string): void {
     const dialogRef = this.dialog.open(DeleteModalComponent);
 
-    dialogRef.afterClosed()
+    dialogRef
+      .afterClosed()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(res => {
+      .subscribe((res) => {
         if (res) {
-          this.documentosSvc.deleteDocumentoProyecto(uuid)
+          this.documentosSvc
+            .deleteDocumentoProyecto(uuid)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-              this.toastrSvc.success('Documento eliminado correctamente. 😀', 'Documento Eliminado');
+              this.toastrSvc.success(
+                'Documento eliminado correctamente. 😀',
+                'Documento Eliminado'
+              );
               this.getAllDocumentos();
             });
         }
@@ -136,9 +149,11 @@ export class CarpetaProyectoComponent implements OnInit, OnDestroy {
   }
   // =====================> updateDocumento
   public updateDocumento(documentoProyecto: DocumentoProyecto): void {
-
-    const dialogRef = this.dialog.open(EditDocumentoComponent, { data: documentoProyecto });
-    dialogRef.afterClosed()
+    const dialogRef = this.dialog.open(EditDocumentoComponent, {
+      data: documentoProyecto,
+    });
+    dialogRef
+      .afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         if (res) {
@@ -149,25 +164,34 @@ export class CarpetaProyectoComponent implements OnInit, OnDestroy {
 
   // =====================> downloadFile
   public downloadFile(documento: DocumentoProyecto): void {
-    const link = document.createElement('a');
-    link.setAttribute('href', `${this.API_URL}/api/file/${documento.keyName}`);
-    link.setAttribute('download', documento.nombre);
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
+    fetch(`${this.API_URL}/api/file/${documento.keyName}`, {
+      method: 'GET',
+    })
+      .then((response: any) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', documento.nombre);
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch((err) => {
+        this.toastrSvc.error(
+          'No se pudo descargar el archivo. 🙁',
+          'Ocurrio un Error!'
+        );
+      });
   }
 
   public infoDocumento(documentoProyecto: DocumentoProyecto): void {
-    this.dialog.open(InfoDocumentoComponent, { data: documentoProyecto })
+    this.dialog.open(InfoDocumentoComponent, { data: documentoProyecto });
   }
-
 
   // =====================> getType
   public getType(nombre: string): string {
     const arrayName = nombre.split('.');
     return arrayName[arrayName.length - 1];
   }
-
 
   // ======================== formatBytes
   public formatBytes(bytes, decimals = 2) {
@@ -182,9 +206,7 @@ export class CarpetaProyectoComponent implements OnInit, OnDestroy {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
 
-
   public onBack(): void {
     this.location.back();
   }
-
 }
