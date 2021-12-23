@@ -6,6 +6,8 @@ import { WebsocketService } from '@services/sockets/websocket.service';
 import { Logs } from '@models/logs/logs.interface';
 
 import * as moment from 'moment';
+import { MatDialog } from '@angular/material/dialog';
+import { InfoLogComponent } from '../info-log/info-log.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,7 +17,7 @@ import * as moment from 'moment';
 export class DashboardComponent implements OnInit {
   public Logs: Logs[] = [] as Logs[];
 
-  constructor(private wsService: WebsocketService) {}
+  constructor(private wsService: WebsocketService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     moment.locale('es');
@@ -28,5 +30,11 @@ export class DashboardComponent implements OnInit {
 
   public formatDate(date: Date): string {
     return moment(date).fromNow();
+  }
+
+  public openInfo(log: Logs): void {
+    this.dialog.open(InfoLogComponent, {
+      data: log,
+    });
   }
 }

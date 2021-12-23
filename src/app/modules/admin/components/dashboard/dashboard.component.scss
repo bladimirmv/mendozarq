@@ -48,6 +48,8 @@
     font-family: var(--font-mono);
   }
 
+  resize: vertical;
+
   border-radius: 5px;
 
   background-color: var(--secondary);
@@ -57,16 +59,30 @@
   max-width: 100%;
 
   overflow: auto;
+
+  height: 300px;
   min-height: 300px;
-  max-height: 300px;
+  max-height: 400px;
+
+  .header-console {
+    background-color: var(--info);
+    text-align: center;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  }
 
   .log {
-    min-width: 600px;
+    min-width: 500px;
 
+    margin: 0 10px;
+  }
+
+  .header-log {
     display: flex;
     justify-content: space-between;
     gap: 50px;
-    margin: 0 10px;
   }
 
   .log .path {
@@ -80,7 +96,7 @@
 
     position: relative;
     margin: 0 10px;
-    z-index: 9 !important;
+    z-index: 99 !important;
   }
 
   .path .root-path::after {
@@ -92,12 +108,43 @@
     width: 0;
     height: 0;
     border-top: solid 7px var(--info);
-    border-left: solid 5px transparent;
-    border-right: solid 5px var(--info);
+    border-left: solid 10px transparent;
+    border-right: solid 10px var(--info);
     border-bottom: solid 7px var(--info);
   }
 
   .path .root-path::before {
+    content: "";
+    z-index: -9;
+    position: absolute;
+    top: 0;
+    right: -20px;
+    width: 0;
+    height: 0;
+    border-top: solid 7px transparent;
+    border-left: solid 10px var(--info);
+    border-right: solid 10px transparent;
+    border-bottom: solid 7px transparent;
+  }
+  .path .table {
+    background-color: var(--accent);
+    color: var(--secondary);
+    margin-left: -20px;
+    padding-left: 25px;
+    position: relative;
+    z-index: 9 !important;
+  }
+
+  .path .table-I {
+    background-color: var(--green-light);
+    color: white;
+  }
+  .path .table-D {
+    background-color: var(--warn);
+    color: white;
+  }
+
+  .path .table-I::after {
     content: " ";
     z-index: -9;
     position: absolute;
@@ -105,22 +152,13 @@
     right: -20px;
     width: 0;
     height: 0;
-    border-top: solid 7px var(--accent);
-    border-left: solid 10px var(--info);
-    border-right: solid 10px var(--accent);
-    border-bottom: solid 7px var(--accent);
+    border-top: solid 7px transparent;
+    border-left: solid 10px var(--green-light);
+    border-right: solid 10px transparent;
+    border-bottom: solid 7px transparent;
   }
 
-  .path .table {
-    background-color: var(--accent);
-    color: var(--text-color);
-    margin: 0 10px 0 5px;
-
-    position: relative;
-
-    z-index: 99999999 !important;
-  }
-  .path .table::after {
+  .path .table-U::after {
     content: " ";
     z-index: -9;
     position: absolute;
@@ -134,17 +172,42 @@
     border-bottom: solid 7px transparent;
   }
 
+  .path .table-D::after {
+    content: " ";
+    z-index: -9;
+    position: absolute;
+    top: 0;
+    right: -20px;
+    width: 0;
+    height: 0;
+    border-top: solid 7px transparent;
+    border-left: solid 10px var(--warn);
+    border-right: solid 10px transparent;
+    border-bottom: solid 7px transparent;
+  }
+
   .option-I {
     color: var(--green-light);
     font-weight: bold;
   }
 
   .option-U {
-    color: var(--info);
+    color: var(--accent);
     font-weight: bold;
   }
   .option-D {
     color: var(--warn);
     font-weight: bold;
   }
+
+  .uuid-table {
+    // color: white;
+    cursor: pointer;
+  }
+
+  .uuid-table:hover {
+    border-bottom: 1px solid;
+  }
+
+  // style="width: 10px; border-bottom: 1px solid"
 }

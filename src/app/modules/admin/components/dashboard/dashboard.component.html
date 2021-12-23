@@ -17,29 +17,55 @@
   </div>
 
   <div class="console mat-elevation-z2">
+    <div class="header-console">MENDOZARQ-LIRAKI LOGS</div>
+
     <div class="log" *ngFor="let log of Logs">
-      <div>
+      <div class="header-log">
         <div class="path">
           <span class="root-path">~@{{ log.path }}</span>
-          <span class="table">{{ log.tabla }} </span>
+          <span [class]="'table table-' + log.operacion">{{ log.tabla }} </span>
         </div>
-        <span>{{
+        <span style="white-space: nowrap">⏲{{ formatDate(log.creadoEn) }}</span>
+      </div>
+
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="18px"
+        width="18px"
+        viewBox="0 0 24 24"
+        fill="#ffffff"
+      >
+        <path d="M24 24H0V0h24v24z" fill="none" opacity=".87" />
+        <path
+          d="M19 15l-6 6-1.42-1.42L15.17 16H4V4h2v10h9.17l-3.59-3.58L13 9l6 6z"
+        />
+      </svg>
+
+      <span
+        >{{
           log.creadoPor
             ? log.creadoPor
             : log.hostname
             ? log.hostname
             : "Sin nombre"
-        }}</span>
-        <span [class]="'option-' + log.operacion"> -{{ log.operacion }} </span>
-        <span
-          [class]="'option-' + log.operacion"
-          style="width: 10px; border-bottom: 1px solid"
-        >
-          {{ log.uuidRow }}
-        </span>
-      </div>
-
-      <span style="white-space: nowrap">⏲{{ formatDate(log.creadoEn) }}</span>
+        }}
+        --->
+      </span>
+      <span>
+        {{
+          log.operacion == "I"
+            ? "insertó"
+            : log.operacion == "U"
+            ? "actualizó"
+            : "eliminó"
+        }}
+      </span>
+      <span
+        [class]="'uuid-table option-' + log.operacion"
+        (click)="openInfo(log)"
+      >
+        {{ log.uuidRow }}
+      </span>
     </div>
 
     <!-- <div class="log">

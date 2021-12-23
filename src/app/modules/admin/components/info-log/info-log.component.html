@@ -1,0 +1,47 @@
+<h2 mat-dialog-title align="center">Información</h2>
+
+<div>
+  <span class="text-bold">Fecha: </span>
+  <span>{{ fecha }}</span>
+</div>
+
+<div>
+  <span class="text-bold">CreadoPor: </span>
+  <span>{{ log.creadoPor ? log.creadoPor : "N/A" }}</span>
+</div>
+
+<div>
+  <span class="text-bold">UUID CreadoPor: </span>
+  <span>{{ log.uuidCreadoPor ? log.uuidCreadoPor : "N/A" }}</span>
+</div>
+
+<div>
+  <span class="text-bold">Operación: </span>
+  <span>{{
+    log.operacion == "I"
+      ? "insertó"
+      : log.operacion == "U"
+      ? "actualizó"
+      : "eliminó"
+  }}</span>
+</div>
+
+<div>
+  <span class="text-bold">Host: </span>
+  <span>{{ log.hostname ? log.hostname : "N/A" }}</span>
+</div>
+
+<div>
+  <span class="text-bold">DB: </span>
+  <span>{{ log.path }}</span>
+</div>
+
+<div>
+  <span class="text-bold">Tabla: </span>
+  <span>{{ log.tabla }}</span>
+</div>
+
+<div>
+  <span class="text-bold">UUID Fila: </span>
+  <span>{{ log.uuidRow }}</span>
+</div>
