@@ -19,7 +19,10 @@
   <div class="console mat-elevation-z2">
     <div class="log" *ngFor="let log of Logs">
       <div>
-        <span class="path">~@{{ log.path }}/{{ log.tabla }}> </span>
+        <div class="path">
+          <span class="root-path">~@{{ log.path }}</span>
+          <span class="table">{{ log.tabla }} </span>
+        </div>
         <span>{{
           log.creadoPor
             ? log.creadoPor

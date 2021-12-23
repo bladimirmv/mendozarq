@@ -70,17 +70,77 @@
   }
 
   .log .path {
-    color: var(--info);
     font-weight: bold;
+    display: inline;
+  }
+
+  .path .root-path {
+    color: white;
+    background-color: var(--info);
+
+    position: relative;
+    margin: 0 10px;
+    z-index: 9 !important;
+  }
+
+  .path .root-path::after {
+    content: " ";
+    z-index: -9;
+    position: absolute;
+    top: 0;
+    left: -10px;
+    width: 0;
+    height: 0;
+    border-top: solid 7px var(--info);
+    border-left: solid 5px transparent;
+    border-right: solid 5px var(--info);
+    border-bottom: solid 7px var(--info);
+  }
+
+  .path .root-path::before {
+    content: " ";
+    z-index: -9;
+    position: absolute;
+    top: 0;
+    right: -20px;
+    width: 0;
+    height: 0;
+    border-top: solid 7px var(--accent);
+    border-left: solid 10px var(--info);
+    border-right: solid 10px var(--accent);
+    border-bottom: solid 7px var(--accent);
+  }
+
+  .path .table {
+    background-color: var(--accent);
+    color: var(--text-color);
+    margin: 0 10px 0 5px;
+
+    position: relative;
+
+    z-index: 99999999 !important;
+  }
+  .path .table::after {
+    content: " ";
+    z-index: -9;
+    position: absolute;
+    top: 0;
+    right: -20px;
+    width: 0;
+    height: 0;
+    border-top: solid 7px transparent;
+    border-left: solid 10px var(--accent);
+    border-right: solid 10px transparent;
+    border-bottom: solid 7px transparent;
   }
 
   .option-I {
-    color: var(--success);
+    color: var(--green-light);
     font-weight: bold;
   }
 
   .option-U {
-    color: var(--accent);
+    color: var(--info);
     font-weight: bold;
   }
   .option-D {
