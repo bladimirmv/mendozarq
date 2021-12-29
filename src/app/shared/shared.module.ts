@@ -11,6 +11,7 @@ import { CdkMaterialModule } from '@app/cdk-material.module';
 import { DeleteModalComponent } from './components/delete-modal/delete-modal.component';
 import { WarningModalComponent } from './components/warning-modal/warning-modal.component';
 import { ImgPreviewComponent } from './components/img-preview/img-preview.component';
+import { AppearanceComponent } from './components/appearance/appearance.component';
 
 const SharedComponents: any[] = [
   ModalComponent,
@@ -25,7 +26,8 @@ const SharedComponents: any[] = [
     SharedComponents,
     DeleteModalComponent,
     WarningModalComponent,
-    ImgPreviewComponent
+    ImgPreviewComponent,
+    AppearanceComponent
   ],
   imports: [
     CommonModule,

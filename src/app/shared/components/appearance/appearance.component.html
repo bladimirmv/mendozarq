@@ -1,0 +1,51 @@
+<div class="container-appearance">
+  <h2>Brillo:</h2>
+  <mat-slider
+    *ngIf="brightnessSvc.brightness$ | async as brValue"
+    min="40"
+    max="100"
+    [value]="brValue"
+    color="primary"
+    class="silder"
+    (change)="onBrightness($event)"
+  >
+  </mat-slider>
+
+  <h2>Apariencia:</h2>
+  <mat-radio-group
+    aria-label="Select an option"
+    class="themes no-select"
+    color="primary"
+  >
+    <div
+      class="theme"
+      [ngClass]="{ 'theme-active': !darkTheme }"
+      (click)="changeRadio(false)"
+    >
+      <img
+        src="./assets/light_theme.svg"
+        alt="light theme image"
+        class="no-select"
+      />
+
+      <mat-radio-button value="1" [checked]="!darkTheme"
+        >Claro</mat-radio-button
+      >
+    </div>
+
+    <div
+      class="theme"
+      [ngClass]="{ 'theme-active': darkTheme }"
+      (click)="changeRadio(true)"
+    >
+      <img
+        src="./assets/dark_theme.svg"
+        alt="dark theme image"
+        class="no-select"
+      />
+      <mat-radio-button value="2" [checked]="darkTheme"
+        >Oscuro</mat-radio-button
+      >
+    </div>
+  </mat-radio-group>
+</div>

@@ -30,6 +30,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatListModule } from '@angular/material/list';
+import { MatRadioModule } from '@angular/material/radio';
 
 import { ToastrModule } from 'ngx-toastr';
 const matModules = [
@@ -62,9 +63,9 @@ const matModules = [
   MatChipsModule,
   MatSlideToggleModule,
   MatAutocompleteModule,
-  MatListModule
+  MatListModule,
+  MatRadioModule,
 ];
-
 
 @NgModule({
   declarations: [],
@@ -74,9 +75,9 @@ const matModules = [
     ToastrModule.forRoot({
       timeOut: 2000,
       positionClass: 'toast-top-right',
-      preventDuplicates: true
-    })
+      preventDuplicates: true,
+    }),
   ],
-  exports: [matModules, ToastrModule]
+  exports: [matModules, ToastrModule],
 })
-export class MaterialModule { }
+export class MaterialModule {}

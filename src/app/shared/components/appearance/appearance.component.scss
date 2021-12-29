@@ -1,0 +1,49 @@
+.container-appearance {
+  width: 100%;
+  max-width: 400px;
+  // border-radius: 5px;
+
+  h2 {
+    color: var(--text-color);
+  }
+}
+
+.themes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-row: 1fr;
+  gap: 10px;
+
+  .theme {
+    border: 1px solid var(--text-color);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    color: var(--text-color);
+  }
+
+  .theme-active {
+    border: 2px solid var(--primary);
+  }
+
+  img {
+    max-width: 100%;
+    border-radius: 5px 5px 0 0;
+  }
+}
+
+.mat-radio-button ~ .mat-radio-button {
+  margin-left: 16px;
+}
+
+mat-radio-button {
+  margin: 5px;
+}
+
+mat-slider {
+  width: 100%;
+}
+.mat-card-content {
+  background-color: green !important;
+}

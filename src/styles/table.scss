@@ -21,7 +21,6 @@
     scrollbar-width: thin;
     overflow: auto;
     scrollbar-width: 100px;
-    color: red !important;
 
     font-family: var(--font-body);
   }
@@ -37,6 +36,7 @@
 
     * {
       color: var(--text-color);
+      border-color: var(--text-color);
     }
   }
 
@@ -46,7 +46,7 @@
   }
 
   tr:hover {
-    background-color: whitesmoke;
+    background-color: var(--text-hover);
   }
 
   .actions-table {
@@ -73,7 +73,7 @@
   }
 
   .edit-icon {
-    color: var(--secondary);
+    color: var(--text-color);
   }
 
   .long-txt {
@@ -149,7 +149,7 @@
 
 .btn-edit {
   mat-icon {
-    color: var(--secondary);
+    color: var(--text-color);
   }
 }
 

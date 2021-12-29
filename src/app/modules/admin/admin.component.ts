@@ -7,11 +7,13 @@ import { Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { MatDialog } from '@angular/material/dialog';
+import { AppearanceComponent } from '@app/shared/components/appearance/appearance.component';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.scss']
+  styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent implements OnInit, OnDestroy {
   public modeSidenav = 'side';
@@ -23,41 +25,51 @@ export class AdminComponent implements OnInit, OnDestroy {
     private location: Location,
     public brightnessSvc: BrightnessService,
     public authSvc: AuthService,
-    public locationBarSvc: LocationBarService) {
-  }
-
-  onBrightness(e): void {
-    this.brightnessSvc.ChangeValue(e.value);
+    public locationBarSvc: LocationBarService,
+    private dialog: MatDialog
+  ) {
+    this.brightnessSvc.theme$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.brightnessSvc.toggleTheme(res);
+      });
   }
 
   ngOnInit(): void {
-    this.breakpointObserver.observe('(max-width: 700px)')
+    this.breakpointObserver
+      .observe('(max-width: 700px)')
       .pipe(
         takeUntil(this.destroy$),
-        map(res => res.matches),
+        map((res) => res.matches),
         shareReplay()
-      ).subscribe(res => this.breakpoint = res);
+      )
+      .subscribe((res) => (this.breakpoint = res));
 
     this.locationBarSvc.pushLocation({
       icon: 'dashboard',
       name: 'Administracion',
-      link: '/admin'
+      link: '/admin',
     });
-
   }
   ngOnDestroy(): void {
     this.destroy$.next({});
     this.destroy$.complete();
     this.locationBarSvc.deleteLocation();
   }
-  onback(): void {
+  public onback(): void {
     this.location.back();
   }
-  onForward(): void {
+  public onForward(): void {
     this.location.forward();
   }
 
-  onLogout(): void {
+  public onLogout(): void {
     this.authSvc.logout();
+  }
+
+  public settings(): void {
+    this.dialog.open(AppearanceComponent, {
+      panelClass: 'custom-bg-dialog-container',
+    });
   }
 }

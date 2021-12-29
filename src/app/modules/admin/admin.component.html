@@ -11,8 +11,22 @@
     <div class="sidenav-container">
       <div>
         <div class="flex-closed">
-          <button mat-icon-button [matMenuTriggerFor]="menu">
+          <button mat-icon-button (click)="settings()">
+            <mat-icon class="backIcon"> settings </mat-icon>
+          </button>
+
+          <!-- <button mat-icon-button [matMenuTriggerFor]="menu">
             <mat-icon class="backIcon"> brightness_7 </mat-icon>
+          </button>
+
+          <button
+            mat-icon-button
+            (click)="!darkTheme ? (darkTheme = true) : (darkTheme = false)"
+            (click)="theme()"
+          >
+            <mat-icon class="backIcon">
+              {{ darkTheme ? "light_mode" : "dark_mode" }}
+            </mat-icon>
           </button>
 
           <mat-menu #menu="matMenu" style="overflow: hidden">
@@ -29,7 +43,7 @@
               >
               </mat-slider>
             </div>
-          </mat-menu>
+          </mat-menu> -->
 
           <button mat-icon-button (click)="drawer.close()">
             <mat-icon> closed </mat-icon>

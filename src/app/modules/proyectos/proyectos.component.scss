@@ -1,6 +1,6 @@
 .content::after {
   content: "";
-  background-image: url('./../../../assets/bg.svg');
+  background-image: url("./../../../assets/bg.svg");
   background-position: bottom;
   background-repeat: no-repeat;
   background-size: 100%;
@@ -36,18 +36,6 @@
   border-radius: 25px;
 }
 
-.link-proyecto {
-  color: var(--secondary);
-  text-decoration: none;
-  border-bottom: 1px solid var(--secondary);
-
-  &:hover {
-    color: var(--primary);
-    border-bottom: 1px solid var(--primary);
-
-  }
-}
-
 @media screen and(max-width: 960px) {
   .stats-container {
     grid-template-columns: repeat(2, 1fr);
@@ -68,14 +56,12 @@
   }
 }
 
-
 @media screen and(max-width: 1150px) {
   .proyect-content {
     padding: 20px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 10px;
-
   }
 }
 
@@ -85,6 +71,5 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 10px;
-
   }
 }

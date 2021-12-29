@@ -53,6 +53,7 @@ $mendozarq-theme: mat-light-theme(
   --gray4: #454e56;
   --gray5: #2a2e35;
   --gray6: #12181b;
+  --text-hover: whitesmoke;
 
   --red: #ff3860;
   --red-dark: #ff1443;
@@ -127,6 +128,8 @@ $mendozarq-theme: mat-light-theme(
 }
 
 .dark-theme {
+  --text-hover: var(--gray4);
+
   --background: var(--gray6);
   --background-opacity: rgba(18, 24, 27, 0.58);
   --text-color: var(--gray2);
@@ -345,9 +348,9 @@ mat-hint {
 }
 
 .custom-a {
-  color: var(--secondary);
+  color: var(--text-color);
   text-decoration: none;
-  border-bottom: 1px solid var(--secondary);
+  border-bottom: 1px solid var(--text-color);
 
   &:hover {
     color: var(--primary);
@@ -383,12 +386,17 @@ mat-hint {
   padding: 0px !important;
 }
 
-.watermark {
-  left: 32px;
-  top: 32px;
-  background-image: url(./assets/logo.svg) !important;
-  background-position: center left !important;
-  visibility: hidden !important;
+.custom-bg-dialog-container .mat-dialog-container {
+  background-color: var(--card-bg) !important;
+}
 
-  display: none;
+::-moz-selection {
+  /* Code for Firefox */
+  color: white;
+  background: var(--primary);
+}
+
+::selection {
+  color: white;
+  background: var(--primary);
 }

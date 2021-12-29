@@ -6,8 +6,6 @@ import {
   OnInit,
 } from '@angular/core';
 
-import axios from 'axios';
-
 import {
   CarpetaProyecto,
   DocumentoProyecto,
