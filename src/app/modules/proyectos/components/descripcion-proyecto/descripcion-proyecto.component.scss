@@ -1,6 +1,6 @@
 .content::after {
   content: "";
-  background-image: url('./../../../../../assets/bg.svg');
+  background-image: url("./../../../../../assets/bg.svg");
   background-position: bottom;
   background-repeat: no-repeat;
   background-size: 100%;
@@ -23,7 +23,6 @@
   grid-template-rows: auto;
 }
 
-
 //  *form
 .edit-proyecto-form {
   width: auto;
@@ -32,9 +31,10 @@
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 10px;
   margin: 20px;
-  background-color: rgba($color: #fafafa, $alpha: 0.75);
+  background-color: transparent;
+
   padding: 15px;
-  box-shadow: 0px 0px 10px 10px #fafafa;
+  // box-shadow: 0px 0px 10px 10px var(--card-bg);
 }
 
 .full-column {
@@ -56,13 +56,11 @@ mat-dialog-actions {
   }
 }
 
-
-@media screen and (max-width:460px) {
+@media screen and (max-width: 460px) {
   .edit-proyecto-form {
     display: grid;
     grid-template-columns: minmax(150px, 100%);
     padding: 5px;
-
   }
 
   .full-column {

@@ -27,13 +27,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     public authSvc: AuthService,
     public locationBarSvc: LocationBarService,
     private dialog: MatDialog
-  ) {
-    this.brightnessSvc.theme$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.brightnessSvc.toggleTheme(res);
-      });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.breakpointObserver
@@ -50,6 +44,12 @@ export class AdminComponent implements OnInit, OnDestroy {
       name: 'Administracion',
       link: '/admin',
     });
+
+    this.brightnessSvc.theme$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.brightnessSvc.toggleTheme(res);
+      });
   }
   ngOnDestroy(): void {
     this.destroy$.next({});

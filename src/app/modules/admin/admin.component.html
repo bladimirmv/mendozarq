@@ -15,36 +15,6 @@
             <mat-icon class="backIcon"> settings </mat-icon>
           </button>
 
-          <!-- <button mat-icon-button [matMenuTriggerFor]="menu">
-            <mat-icon class="backIcon"> brightness_7 </mat-icon>
-          </button>
-
-          <button
-            mat-icon-button
-            (click)="!darkTheme ? (darkTheme = true) : (darkTheme = false)"
-            (click)="theme()"
-          >
-            <mat-icon class="backIcon">
-              {{ darkTheme ? "light_mode" : "dark_mode" }}
-            </mat-icon>
-          </button>
-
-          <mat-menu #menu="matMenu" style="overflow: hidden">
-            <div
-              mat-menu-item
-              *ngIf="brightnessSvc.brightness$ | async as brValue"
-            >
-              <mat-slider
-                min="40"
-                max="100"
-                [value]="brValue"
-                (change)="onBrightness($event)"
-                color="primary"
-              >
-              </mat-slider>
-            </div>
-          </mat-menu> -->
-
           <button mat-icon-button (click)="drawer.close()">
             <mat-icon> closed </mat-icon>
           </button>
@@ -66,7 +36,7 @@
           (click)="breakpoint ? drawer.close() : false"
         >
           <mat-icon class="mat-18 mr-3">dashboard</mat-icon>
-          <span> Tablero </span>
+          Tablero
         </button>
 
         <button
@@ -77,7 +47,7 @@
           (click)="breakpoint ? drawer.close() : false"
         >
           <mat-icon class="mat-18 mr-3">contacts</mat-icon>
-          <span> Usuarios </span>
+          Usuarios
         </button>
 
         <button
@@ -88,7 +58,7 @@
           (click)="breakpoint ? drawer.close() : false"
         >
           <mat-icon class="mat-18 mr-3"> people</mat-icon>
-          <span> Personal </span>
+          Personal
         </button>
 
         <button
@@ -99,7 +69,7 @@
           (click)="breakpoint ? drawer.close() : false"
         >
           <mat-icon class="mat-18 mr-3"> receipt_long</mat-icon>
-          <span> Presupuesto de Obras </span>
+          Presupuesto de Obras
         </button>
 
         <button
@@ -110,7 +80,7 @@
           (click)="breakpoint ? drawer.close() : false"
         >
           <mat-icon class="mat-18 mr-3">library_books</mat-icon>
-          <span> Proyectos </span>
+          Proyectos
         </button>
 
         <!-- <button mat-button class="btn-admin" routerLink="herramienta" routerLinkActive="active mat-raised-button"
@@ -129,7 +99,7 @@
           (click)="breakpoint ? drawer.close() : false"
         >
           <mat-icon class="mat-18 mr-3">input</mat-icon>
-          <span> Importaciones </span>
+          Importaciones
         </button>
 
         <button
@@ -140,7 +110,7 @@
           (click)="breakpoint ? drawer.close() : false"
         >
           <mat-icon class="mat-18 mr-3">widgets</mat-icon>
-          <span> Producto </span>
+          Producto
         </button>
 
         <button
@@ -151,7 +121,7 @@
           (click)="breakpoint ? drawer.close() : false"
         >
           <mat-icon class="mat-18 mr-3">category</mat-icon>
-          <span> Categoria Producto </span>
+          Categoria Producto
         </button>
 
         <button
@@ -162,7 +132,7 @@
           (click)="breakpoint ? drawer.close() : false"
         >
           <mat-icon class="mat-18 mr-3">list_alt</mat-icon>
-          <span> Reservas Productos </span>
+          Reservas Productos
         </button>
 
         <button
@@ -173,7 +143,7 @@
           (click)="breakpoint ? drawer.close() : false"
         >
           <mat-icon class="mat-18 mr-3">storefront</mat-icon>
-          <span> Venta </span>
+          Venta
         </button>
 
         <button
@@ -184,7 +154,7 @@
           (click)="breakpoint ? drawer.close() : false"
         >
           <mat-icon class="mat-18 mr-3">feedback</mat-icon>
-          <span> Comentarios </span>
+          Comentarios
         </button>
       </div>
 

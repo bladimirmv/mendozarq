@@ -29,16 +29,21 @@ export class BrightnessService {
     if (value) {
       body.classList.add('dark-theme');
     }
+
+    this.theme.next(value);
   }
 
   checkValue(): void {
     const value: number = localStorage.getItem('brightness') as any;
+    this.brightness.next(value);
 
     const theme: string = localStorage.getItem('theme') as any;
     this.theme.next(theme ? (theme == 'dark' ? true : false) : false);
   }
   reset(): void {
     this.ChangeValue(100);
-    this.toggleTheme(false);
+
+    const body = document.querySelector('body');
+    body.classList.remove('dark-theme');
   }
 }

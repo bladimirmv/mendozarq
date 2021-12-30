@@ -2,6 +2,8 @@
   <h2>Brillo:</h2>
   <mat-slider
     *ngIf="brightnessSvc.brightness$ | async as brValue"
+    thumbLabel
+    [displayWith]="formatLabel"
     min="40"
     max="100"
     [value]="brValue"

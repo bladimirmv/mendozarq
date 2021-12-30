@@ -8,10 +8,11 @@ import { VisitaProyectoService } from '@app/core/services/mendozarq/visita-proye
 import { VisitaProyecto } from '@app/shared/models/mendozarq/visita.proyecto.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '@app/core/services/auth/auth.service';
+import { BrightnessService } from '@app/core/services/brightness.service';
 @Component({
   selector: 'app-visita',
   templateUrl: './visita.component.html',
-  styleUrls: ['./visita.component.scss']
+  styleUrls: ['./visita.component.scss'],
 })
 export class VisitaComponent implements OnInit, OnDestroy {
   public modeSidenav = 'side';
@@ -26,21 +27,27 @@ export class VisitaComponent implements OnInit, OnDestroy {
     private breakpointObserver: BreakpointObserver,
     private activatedRoute: ActivatedRoute,
     private visitaProyectoSvc: VisitaProyectoService,
+    private brightnessSvc: BrightnessService,
     private router: Router,
     private authSvc: AuthService
-
   ) {
     this.uuidVisita = this.activatedRoute.snapshot.params.uuid;
     this.checkProyecto();
   }
   ngOnInit(): void {
-
-    this.breakpointObserver.observe('(max-width: 700px)')
+    this.brightnessSvc.theme$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.brightnessSvc.toggleTheme(res);
+      });
+    this.breakpointObserver
+      .observe('(max-width: 700px)')
       .pipe(
         takeUntil(this.destroy$),
-        map(res => res.matches),
+        map((res) => res.matches),
         shareReplay()
-      ).subscribe(res => this.breakpoint = res);
+      )
+      .subscribe((res) => (this.breakpoint = res));
   }
 
   ngOnDestroy(): void {
@@ -50,16 +57,22 @@ export class VisitaComponent implements OnInit, OnDestroy {
 
   // ====================> checkProyecto
   private checkProyecto(): void {
-    this.visitaProyectoSvc.getOneVisitaProyecto(this.uuidVisita)
-      .pipe(takeUntil(this.destroy$),
+    this.visitaProyectoSvc
+      .getOneVisitaProyecto(this.uuidVisita)
+      .pipe(
+        takeUntil(this.destroy$),
         catchError((httpError: HttpErrorResponse) => {
-          if (httpError.error.message && typeof httpError.error.message === 'string') {
+          if (
+            httpError.error.message &&
+            typeof httpError.error.message === 'string'
+          ) {
             if (httpError.status === 404) {
               this.router.navigate(['/admin']);
             }
           }
           return throwError(httpError);
-        }))
+        })
+      )
       .subscribe((visita: VisitaProyecto) => {
         this.urlBack = `/admin/proyecto/${visita.uuidProyecto}/visitas`;
       });
@@ -73,8 +86,5 @@ export class VisitaComponent implements OnInit, OnDestroy {
   // ====================> onLogout
   public onLogout(): void {
     this.authSvc.logout();
-
   }
-
-
 }

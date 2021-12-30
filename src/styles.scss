@@ -9,9 +9,35 @@
 @import "./styles/toast.custom.scss";
 
 @include mat-core();
+
+$mat-dark-theme-background: (
+  status-bar: black,
+  app-bar: map_get($mat-grey, 900),
+  background: var(--background),
+  hover: rgba(white, 0.04),
+  // TODO(kara): check style with Material Design UX
+  card: var(--card-bg),
+  dialog: var(--card-bg),
+  disabled-button: rgba(white, 0.12),
+  raised-button: var(--card-bg),
+  focused-button: $light-focused,
+  selected-button: var(--background),
+  selected-disabled-button: var(--card-bg),
+  disabled-button-toggle: black,
+  unselected-chip: map_get($mat-grey, 700),
+  disabled-list-option: black,
+  tooltip: map_get($mat-grey, 700),
+);
+
+$mat-orange: (
+  600: var(--primary),
+  contrast: (
+    600: $dark-primary-text,
+  ),
+);
+
 // hue. Available color palettes: https://material.io/design/color/
 $mendozarq-primary: mat-palette($mat-orange, 600);
-// $mendozarq-accent: mat-palette($mat-pink, A200, A100, A400);
 $mendozarq-accent: mat-palette($mat-green);
 $mendozarq-success: mat-palette($mat-green);
 $mendozarq-warn: mat-palette($mat-red);
@@ -27,6 +53,12 @@ $mendozarq-theme: mat-light-theme(
   )
 );
 @include angular-material-theme($mendozarq-theme);
+
+$mendozarq-dark-theme: mat-dark-theme(
+  $mendozarq-primary,
+  $mendozarq-accent,
+  $mendozarq-warn
+);
 
 * {
   font-size: 14px;
@@ -128,11 +160,14 @@ $mendozarq-theme: mat-light-theme(
 }
 
 .dark-theme {
+  @include angular-material-theme($mendozarq-dark-theme);
+
+  // @include all-component-themes($mendozarq-dark-theme);
   --text-hover: var(--gray4);
 
   --background: var(--gray6);
   --background-opacity: rgba(18, 24, 27, 0.58);
-  --text-color: var(--gray2);
+  --text-color: var(--gray0);
   --btn-bg: var(--gray4);
   --border-gradient: white;
   --nav-shadow: 4px 0 10px -3px #010101;
@@ -221,54 +256,81 @@ mat-toolbar {
 .mat-btn-primary {
   margin-top: 100px;
   // border-radius: 25px;
-  background-color: var(--primary);
+  background-color: var(--primary) !important;
   color: white;
   font-size: 16px;
   font-weight: bold;
 
   &:hover {
     color: white;
-    box-shadow: 0 0 2px 2px var(--primary);
+    box-shadow: 0 0 2px 2px var(--primary) !important;
   }
 }
 
 .mat-btn-success {
   margin-top: 100px;
   // border-radius: 25px;
-  background-color: var(--success);
+  background-color: var(--success) !important;
   color: white;
   font-size: 16px;
   font-weight: bold;
 
   &:hover {
     color: white;
-    box-shadow: 0 0 2px 2px var(--success);
+    box-shadow: 0 0 2px 2px var(--success) !important;
   }
 }
 
 .mat-btn-info {
   margin-top: 100px;
-  background-color: var(--info);
+  background-color: var(--info) !important;
   color: white;
   font-size: 16px;
   font-weight: bold;
 
   &:hover {
     color: white;
-    box-shadow: 0 0 2px 2px var(--info);
+    box-shadow: 0 0 2px 2px var(--info) !important;
   }
 }
 
 .mat-btn-accent {
   margin-top: 100px;
-  background-color: var(--accent);
+  background-color: var(--accent) !important;
   color: white;
   font-size: 16px;
   font-weight: bold;
 
   &:hover {
     color: white;
-    box-shadow: 0 0 2px 2px var(--accent);
+    box-shadow: 0 0 2px 2px var(--accent) !important;
+  }
+}
+
+.mat-btn-warn {
+  margin-top: 100px;
+  // border-radius: 25px;
+  background-color: var(--warn) !important;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+
+  &:hover {
+    color: white;
+    box-shadow: 0 0 2px 2px var(--warn) !important;
+  }
+}
+
+.mat-btn-secondary {
+  // border-radius: 25px;
+  background-color: var(--secondary) !important;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+
+  &:hover {
+    color: white;
+    box-shadow: 0 0 2px 2px var(--secondary) !important;
   }
 }
 
@@ -284,34 +346,6 @@ mat-toolbar {
 mat-hint {
   font-weight: bold;
 }
-
-.mat-btn-warn {
-  margin-top: 100px;
-  // border-radius: 25px;
-  background-color: var(--warn);
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-
-  &:hover {
-    color: white;
-    box-shadow: 0 0 2px 2px var(--warn);
-  }
-}
-
-.mat-btn-secondary {
-  // border-radius: 25px;
-  background-color: var(--secondary);
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-
-  &:hover {
-    color: white;
-    box-shadow: 0 0 2px 2px var(--secondary);
-  }
-}
-
 // ===========> Forms
 
 .is-valid {
@@ -399,4 +433,19 @@ mat-hint {
 ::selection {
   color: white;
   background: var(--primary);
+}
+
+::ng-deep .mat-focused .mat-form-field-label {
+  /*change color of label*/
+  color: green !important;
+}
+
+::ng-deep.mat-form-field-underline {
+  /*change color of underline*/
+  background-color: green !important;
+}
+
+::ng-deep.mat-form-field-ripple {
+  /*change color of underline when focused*/
+  background-color: green !important;
 }

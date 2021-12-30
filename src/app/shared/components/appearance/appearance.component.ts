@@ -14,8 +14,6 @@ export class AppearanceComponent implements OnInit, OnDestroy {
   private destroy$: Subject<any> = new Subject<any>();
 
   constructor(public brightnessSvc: BrightnessService) {
-    this.brightnessSvc.checkValue();
-
     this.brightnessSvc.theme$
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
@@ -29,6 +27,14 @@ export class AppearanceComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  formatLabel(value: number) {
+    // if (value >= 1000) {
+    return Math.round(((value - 40) * 100) / 60) + '%';
+    // }
+
+    return value;
   }
 
   public changeRadio(value: boolean): void {

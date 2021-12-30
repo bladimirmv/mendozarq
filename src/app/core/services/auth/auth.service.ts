@@ -12,6 +12,7 @@ import { Usuario } from '@app/shared/models/usuario.interface';
 import { UsuarioResponse } from '@shared/models/usuario.interface';
 import { environment } from '@env/environment';
 import { Router } from '@angular/router';
+import { BrightnessService } from '../brightness.service';
 
 const helper = new JwtHelperService();
 @Injectable({
