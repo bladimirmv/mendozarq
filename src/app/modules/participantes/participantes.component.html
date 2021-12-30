@@ -1,288 +1,413 @@
 <div class="content">
   <!-- *usuarioProyecto -->
   <div class="table-container mat-elevation-z2">
-    <div class="title-card">
-      Usuarios - Proyecto
-    </div>
+    <div class="title-card">Usuarios - Proyecto</div>
 
-    <div class="header-table" [style.display]="selectedUsuario.length ? 'none' : 'grid'">
+    <div
+      class="header-table"
+      [style.display]="selectedUsuario.length ? 'none' : 'grid'"
+    >
       <mat-form-field>
         <mat-label>Buscar</mat-label>
-        <input matInput autocomplete="off" (keyup)="applyFilterUsuario($event)" placeholder="Ex. bladimir"
-          [(ngModel)]="filterValueUsuario" #inputUsuario>
+        <input
+          matInput
+          autocomplete="off"
+          (keyup)="applyFilterUsuario($event)"
+          placeholder="Ex. bladimir"
+          [(ngModel)]="filterValueUsuario"
+          #inputUsuario
+        />
 
-        <button mat-button *ngIf="filterValueUsuario" matSuffix mat-icon-button aria-label="Clear"
-          (click)="applyFilterUsuario('')" (click)="inputUsuario.value = ''">
+        <button
+          mat-button
+          *ngIf="filterValueUsuario"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="applyFilterUsuario('')"
+          (click)="inputUsuario.value = ''"
+        >
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
-      <button mat-icon-button matTooltip="Asignar Usuarios" matTooltipPosition="below" class="btn-add"
-        (click)="newUsuario()">
-        <mat-icon class="mat-18">
-          add
-        </mat-icon>
+      <button
+        mat-icon-button
+        matTooltip="Asignar Usuarios"
+        matTooltipPosition="below"
+        class="btn-add"
+        (click)="newUsuario()"
+      >
+        <mat-icon class="mat-18"> add </mat-icon>
       </button>
     </div>
 
     <div *ngIf="selectedUsuario.length">
       <div class="delete-table">
-        <button mat-icon-button (click)="clearCheckboxUsuario()" class="btn-clear">
+        <button
+          mat-icon-button
+          (click)="clearCheckboxUsuario()"
+          class="btn-clear"
+        >
           <mat-icon>clear</mat-icon>
         </button>
-        <span>
-          Seleccionados {{selectedUsuario.length}}
-        </span>
-        <button mat-raised-button class="btn-delete" (click)="deleteUsuario()">Elminar</button>
+        <span> Seleccionados {{ selectedUsuario.length }} </span>
+        <button class="btn-delete" (click)="deleteUsuario()">Elminar</button>
       </div>
     </div>
 
     <div class="table-content">
-      <table mat-table [dataSource]="usuarioSource" class="mat-elevation-z2" multiTemplateDataRows matSort>
-
+      <table
+        mat-table
+        [dataSource]="usuarioSource"
+        class="mat-elevation-z2"
+        multiTemplateDataRows
+        matSort
+      >
         <ng-container matColumnDef="seleccion" sticky>
           <th *matHeaderCellDef class="actions-table">
-            <mat-checkbox color="warn" (change)="$event ? masterToggleUsuario() : null"
+            <mat-checkbox
+              color="warn"
+              (change)="$event ? masterToggleUsuario() : null"
               [checked]="selectionUsuario.hasValue() && isAllSelectedUsuario()"
-              [indeterminate]="selectionUsuario.hasValue() && !isAllSelectedUsuario()"
-              [aria-label]="checkboxLabelUsuario()">
+              [indeterminate]="
+                selectionUsuario.hasValue() && !isAllSelectedUsuario()
+              "
+              [aria-label]="checkboxLabelUsuario()"
+            >
             </mat-checkbox>
           </th>
           <td *matCellDef="let row" class="actions-table">
-            <mat-checkbox color="warn" (click)="$event.stopPropagation() "
-              (change)="$event ? selectionUsuario.toggle(row) : null" [checked]="selectionUsuario.isSelected(row)"
-              [aria-label]="checkboxLabelUsuario(row)">
+            <mat-checkbox
+              color="warn"
+              (click)="$event.stopPropagation()"
+              (change)="$event ? selectionUsuario.toggle(row) : null"
+              [checked]="selectionUsuario.isSelected(row)"
+              [aria-label]="checkboxLabelUsuario(row)"
+            >
             </mat-checkbox>
           </td>
         </ng-container>
 
-
         <!-- *Estado -->
         <ng-container matColumnDef="estado">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
           <td mat-cell *matCellDef="let row" class="text-center">
-            <div [class]="row.activo ? 'personal-activo' : 'personal-no-activo'">
-            </div>
+            <div
+              [class]="row.activo ? 'personal-activo' : 'personal-no-activo'"
+            ></div>
           </td>
         </ng-container>
 
         <!-- *nombre -->
         <ng-container matColumnDef="nombre">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> {{row.nombre}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            {{ row.nombre }}
+          </td>
         </ng-container>
 
         <!-- *apellidos -->
         <ng-container matColumnDef="apellidos">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Apellidos </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Apellidos</th>
           <td mat-cell *matCellDef="let row" class="text-center">
-            {{row.apellidoPaterno+' '+row.apellidoMaterno | titlecase}}
+            {{ row.apellidoPaterno + " " + row.apellidoMaterno | titlecase }}
           </td>
         </ng-container>
 
         <!-- *rol -->
         <ng-container matColumnDef="rol">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Rol </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Rol</th>
           <td mat-cell *matCellDef="let row" class="text-center">
-            <div [class]="row.rol === 'administrador' ? 'admin-chip' : 'arqui-chip' ">{{row.rol }}</div>
+            <div
+              [class]="
+                row.rol === 'administrador' ? 'admin-chip' : 'arqui-chip'
+              "
+            >
+              {{ row.rol }}
+            </div>
           </td>
         </ng-container>
 
         <!-- *celular -->
         <ng-container matColumnDef="celular">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Celular </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> {{row.celular}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Celular</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            {{ row.celular }}
+          </td>
         </ng-container>
 
         <!-- *direccion -->
         <ng-container matColumnDef="direccion">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Direccion </th>
-          <td mat-cell *matCellDef="let row" class="td-longtext text-center" [matTooltip]="row.direccion"
-            matTooltipPosition="below">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Direccion</th>
+          <td
+            mat-cell
+            *matCellDef="let row"
+            class="td-longtext text-center"
+            [matTooltip]="row.direccion"
+            matTooltipPosition="below"
+          >
             <span>
-              {{row.direccion ? row.direccion : 'Sin direccion'}}
+              {{ row.direccion ? row.direccion : "Sin direccion" }}
             </span>
           </td>
         </ng-container>
 
         <!-- *username -->
         <ng-container matColumnDef="username">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Username </th>
-          <td mat-cell *matCellDef="let row"> {{row.username}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Username</th>
+          <td mat-cell *matCellDef="let row">{{ row.username }}</td>
         </ng-container>
 
         <!-- *correo -->1
         <ng-container matColumnDef="correo">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo </th>
-          <td mat-cell *matCellDef="let row" class="td-longtext text-center" [matTooltip]="row.correo"
-            matTooltipPosition="below">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Correo</th>
+          <td
+            mat-cell
+            *matCellDef="let row"
+            class="td-longtext text-center"
+            [matTooltip]="row.correo"
+            matTooltipPosition="below"
+          >
             <span>
-              {{row.correo}}
+              {{ row.correo }}
             </span>
           </td>
         </ng-container>
 
         <!-- *cargo -->
         <ng-container matColumnDef="descripcion">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripcion </th>
-          <td mat-cell *matCellDef="let row" class="td-longtext text-center" [matTooltip]="row.descripcion"
-            matTooltipPosition="below">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripcion</th>
+          <td
+            mat-cell
+            *matCellDef="let row"
+            class="td-longtext text-center"
+            [matTooltip]="row.descripcion"
+            matTooltipPosition="below"
+          >
             <span>
-              {{row.descripcion ? row.descripcion : 'Sin descripcion'}}
+              {{ row.descripcion ? row.descripcion : "Sin descripcion" }}
             </span>
           </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="usuariosColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: usuariosColumns;"></tr>
+        <tr mat-row *matRowDef="let row; columns: usuariosColumns"></tr>
         <tr class="mat-row" *matNoDataRow>
           <td class="mat-cell" colspan="10" align="center">
-            <div *ngIf="inputUsuario.value else noData">
-              No hay datos que coincidan con el filtro: "{{inputUsuario.value}}"
+            <div *ngIf="inputUsuario.value; else noData">
+              No hay datos que coincidan con el filtro: "{{
+                inputUsuario.value
+              }}"
             </div>
             <ng-template #noData align="center">
-              <img src="./assets/no_data.svg" alt="" width="50" style="margin: 0px;" class="no-select">
-              <p>
-                Tabla vacía, aún no agregaste un usuario al proyecto.
-              </p>
+              <img
+                src="./assets/no_data.svg"
+                alt=""
+                width="50"
+                style="margin: 0px"
+                class="no-select"
+              />
+              <p>Tabla vacía, aún no agregaste un usuario al proyecto.</p>
             </ng-template>
           </td>
         </tr>
       </table>
     </div>
-    <mat-paginator #usuarioPaginator [pageSizeOptions]="[ 5, 10, 20]" showFirstLastButtons></mat-paginator>
-
+    <mat-paginator
+      #usuarioPaginator
+      [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons
+    ></mat-paginator>
   </div>
 
   <!-- *personalProyecto -->
   <div class="table-container mat-elevation-z2">
-    <div class="title-card personal-color">
-      Personal - Proyecto
-    </div>
-    <div class="header-table" [style.display]="selectedPersonal.length ? 'none' : 'grid'">
+    <div class="title-card personal-color">Personal - Proyecto</div>
+    <div
+      class="header-table"
+      [style.display]="selectedPersonal.length ? 'none' : 'grid'"
+    >
       <mat-form-field>
         <mat-label>Buscar</mat-label>
-        <input matInput autocomplete="off" (keyup)="applyFilterPersonal($event)" placeholder="Ex. bladimir"
-          [(ngModel)]="filterValuePersonal" #input>
+        <input
+          matInput
+          autocomplete="off"
+          (keyup)="applyFilterPersonal($event)"
+          placeholder="Ex. bladimir"
+          [(ngModel)]="filterValuePersonal"
+          #input
+        />
 
-        <button mat-button *ngIf="filterValuePersonal" matSuffix mat-icon-button aria-label="Clear"
-          (click)="applyFilterPersonal('')" (click)="input.value = ''">
+        <button
+          mat-button
+          *ngIf="filterValuePersonal"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="applyFilterPersonal('')"
+          (click)="input.value = ''"
+        >
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
-      <button mat-icon-button matTooltip="Asignar Personal" matTooltipPosition="below" class="btn-add"
-        (click)="newPersonal()">
-        <mat-icon class="mat-18">
-          add
-        </mat-icon>
+      <button
+        mat-icon-button
+        matTooltip="Asignar Personal"
+        matTooltipPosition="below"
+        class="btn-add"
+        (click)="newPersonal()"
+      >
+        <mat-icon class="mat-18"> add </mat-icon>
       </button>
     </div>
 
     <div *ngIf="selectedPersonal.length">
       <div class="delete-table">
-        <button mat-icon-button (click)="clearCheckboxPersonal()" class="btn-clear">
+        <button
+          mat-icon-button
+          (click)="clearCheckboxPersonal()"
+          class="btn-clear"
+        >
           <mat-icon>clear</mat-icon>
         </button>
-        <span>
-          Seleccionados {{selectedPersonal.length}}
-        </span>
-        <button mat-raised-button class="btn-delete" (click)="deletePersonal()">Elminar</button>
+        <span> Seleccionados {{ selectedPersonal.length }} </span>
+        <button class="btn-delete" (click)="deletePersonal()">Elminar</button>
       </div>
     </div>
 
     <div class="table-content">
-      <table mat-table [dataSource]="personalSource" class="mat-elevation-z2" multiTemplateDataRows matSort>
-
+      <table
+        mat-table
+        [dataSource]="personalSource"
+        class="mat-elevation-z2"
+        multiTemplateDataRows
+        matSort
+      >
         <ng-container matColumnDef="seleccion" sticky>
           <th *matHeaderCellDef class="actions-table">
-            <mat-checkbox color="warn" (change)="$event ? masterTogglePersonal() : null"
-              [checked]="selectionPersonal.hasValue() && isAllSelectedPersonal()"
-              [indeterminate]="selectionPersonal.hasValue() && !isAllSelectedPersonal()"
-              [aria-label]="checkboxLabelPersonal()">
+            <mat-checkbox
+              color="warn"
+              (change)="$event ? masterTogglePersonal() : null"
+              [checked]="
+                selectionPersonal.hasValue() && isAllSelectedPersonal()
+              "
+              [indeterminate]="
+                selectionPersonal.hasValue() && !isAllSelectedPersonal()
+              "
+              [aria-label]="checkboxLabelPersonal()"
+            >
             </mat-checkbox>
           </th>
           <td *matCellDef="let row" class="actions-table">
-            <mat-checkbox color="warn" (click)="$event.stopPropagation() "
-              (change)="$event ? selectionPersonal.toggle(row) : null" [checked]="selectionPersonal.isSelected(row)"
-              [aria-label]="checkboxLabelPersonal(row)">
+            <mat-checkbox
+              color="warn"
+              (click)="$event.stopPropagation()"
+              (change)="$event ? selectionPersonal.toggle(row) : null"
+              [checked]="selectionPersonal.isSelected(row)"
+              [aria-label]="checkboxLabelPersonal(row)"
+            >
             </mat-checkbox>
           </td>
         </ng-container>
 
-
         <!-- *Estado -->
         <ng-container matColumnDef="estado">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
           <td mat-cell *matCellDef="let row" class="text-center">
-            <div [class]="row.activo ? 'personal-activo' : 'personal-no-activo'">
-            </div>
+            <div
+              [class]="row.activo ? 'personal-activo' : 'personal-no-activo'"
+            ></div>
           </td>
         </ng-container>
 
         <!-- *nombre -->
         <ng-container matColumnDef="nombre">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> {{row.nombre}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            {{ row.nombre }}
+          </td>
         </ng-container>
 
         <!-- *apellidos -->
         <ng-container matColumnDef="apellidos">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Apellidos </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Apellidos</th>
           <td mat-cell *matCellDef="let row" class="text-center">
-            {{row.apellidoPaterno+' '+row.apellidoMaterno | titlecase}}
+            {{ row.apellidoPaterno + " " + row.apellidoMaterno | titlecase }}
           </td>
         </ng-container>
 
         <!-- *celular -->
         <ng-container matColumnDef="celular">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Celular </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> {{row.celular}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Celular</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            {{ row.celular }}
+          </td>
         </ng-container>
 
         <!-- *direccion -->
         <ng-container matColumnDef="direccion">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Direccion </th>
-          <td mat-cell *matCellDef="let row" class="td-longtext text-center" [matTooltip]="row.direccion"
-            matTooltipPosition="below">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Direccion</th>
+          <td
+            mat-cell
+            *matCellDef="let row"
+            class="td-longtext text-center"
+            [matTooltip]="row.direccion"
+            matTooltipPosition="below"
+          >
             <span>
-              {{row.direccion ? row.direccion : 'Sin direccion'}}
+              {{ row.direccion ? row.direccion : "Sin direccion" }}
             </span>
           </td>
         </ng-container>
 
         <!-- *correo -->
         <ng-container matColumnDef="correo">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> {{row.correo}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Correo</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            {{ row.correo }}
+          </td>
         </ng-container>
 
         <!-- *cargo -->
         <ng-container matColumnDef="descripcion">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripcion </th>
-          <td mat-cell *matCellDef="let row" class="td-longtext text-center" [matTooltip]="row.descripcion"
-            matTooltipPosition="below">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripcion</th>
+          <td
+            mat-cell
+            *matCellDef="let row"
+            class="td-longtext text-center"
+            [matTooltip]="row.descripcion"
+            matTooltipPosition="below"
+          >
             <span>
-              {{row.descripcion ? row.descripcion : 'Sin descripcion'}}
+              {{ row.descripcion ? row.descripcion : "Sin descripcion" }}
             </span>
           </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="personalColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: personalColumns;"></tr>
+        <tr mat-row *matRowDef="let row; columns: personalColumns"></tr>
         <tr class="mat-row" *matNoDataRow>
           <td class="mat-cell" colspan="10" align="center">
-            <div *ngIf="input.value else noData">
-              No hay datos que coincidan con el filtro: "{{input.value}}"
+            <div *ngIf="input.value; else noData">
+              No hay datos que coincidan con el filtro: "{{ input.value }}"
             </div>
             <ng-template #noData align="center">
-              <img src="./assets/no_data.svg" alt="" width="60" style="margin: 0px;" class="no-select">
-              <p>
-                Tabla vacía, aún no agregaste un personal al proyecto.
-              </p>
+              <img
+                src="./assets/no_data.svg"
+                alt=""
+                width="60"
+                style="margin: 0px"
+                class="no-select"
+              />
+              <p>Tabla vacía, aún no agregaste un personal al proyecto.</p>
             </ng-template>
           </td>
         </tr>
       </table>
     </div>
-    <mat-paginator #personalPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-
+    <mat-paginator
+      #personalPaginator
+      [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons
+    ></mat-paginator>
   </div>
 </div>

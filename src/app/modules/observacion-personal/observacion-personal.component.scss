@@ -1,6 +1,6 @@
 .content::after {
   content: "";
-  background-image: url('./../../../assets/bg.svg');
+  background-image: url("./../../../assets/bg.svg");
   background-position: bottom;
   background-repeat: no-repeat;
   background-size: 100%;
@@ -60,35 +60,19 @@ td {
   cursor: pointer;
 }
 
-tr:hover {
-  background-color: white;
-}
-
 tr.example-detail-row {
   height: 0;
 }
 
-tr.example-element-row:not(.example-expanded-row):hover {
-  background: whitesmoke;
-}
-
-tr.example-element-row:not(.example-expanded-row):active {
-  background: #efefef;
-}
-
-
-
 .con-observacion {
   font-weight: 600;
   color: red;
-
 }
 
 .sin-observacion {
   font-weight: 600;
   color: var(--success);
 }
-
 
 .example-element-row td {
   border-bottom-width: 0;
@@ -101,7 +85,6 @@ tr.example-element-row:not(.example-expanded-row):active {
   flex-wrap: wrap;
 
   &:hover {
-    background-color: white;
   }
 }
 
@@ -112,11 +95,10 @@ tr.example-element-row:not(.example-expanded-row):active {
   word-wrap: break-word;
 
   &:hover {
-    background-color: rgb(255, 244, 244);
+    // background-color: rgb(255, 244, 244);
+    // background-color: var(--card-bg);
     border-radius: 5px;
-
   }
-
 
   .estado {
     display: flex;
@@ -136,7 +118,7 @@ tr.example-element-row:not(.example-expanded-row):active {
 
   .creadoEn {
     margin-top: -15px;
-    color: var(--secondary);
+    color: var(--text-color);
   }
 
   .creadoEn mat-icon {
@@ -145,7 +127,7 @@ tr.example-element-row:not(.example-expanded-row):active {
     width: auto;
     height: auto;
     vertical-align: middle;
-    color: var(--secondary);
+    color: var(--text-color);
   }
 
   .creadoEn span {
@@ -157,6 +139,5 @@ tr.example-element-row:not(.example-expanded-row):active {
     width: 100%;
     word-break: break-all;
     padding: 10px;
-
   }
 }

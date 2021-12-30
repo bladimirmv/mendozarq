@@ -24,16 +24,17 @@
   justify-content: flex-end;
   align-items: center;
   margin-top: 10px;
-  background-color: white;
+  background-color: var(--card-bg);
   border-radius: 5px;
 
   mat-icon {
-    color: var(--secondary);
+    color: var(--text-color);
   }
 }
 
 .contextmenu {
-  background-color: white;
+  background-color: var(--card-bg);
+
   width: 160px;
   border-radius: 5px;
   transform: scale(0);
@@ -44,7 +45,7 @@
   .link {
     padding: 8px 10px;
     font-size: 15px;
-    color: var(--secondary);
+    color: var(--text-color);
     display: grid;
     grid-template-columns: auto 1fr;
     justify-content: center;
@@ -59,12 +60,12 @@
   }
 
   .link:hover {
-    background-color: whitesmoke;
+    background-color: var(--text-hover);
     border-radius: 5px;
   }
 
   .title-menu {
-    color: var(--secondary);
+    color: var(--text-color);
     padding: 5px 0;
   }
 
@@ -97,7 +98,7 @@
     grid-template-columns: auto minmax(auto, 1fr);
     cursor: pointer;
     border-radius: 5px;
-    background-color: white;
+    background-color: var(--card-bg);
   }
 
   .folder {
@@ -122,7 +123,6 @@
   }
 
   .document mat-icon {
-    // color: var(--secondary);
     font-size: 50px;
     width: auto;
     height: auto;
@@ -148,7 +148,7 @@
 
   .title-document a {
     text-decoration: none;
-    color: var(--secondary);
+    color: var(--text-color);
   }
 
   .title-document a:hover {

@@ -1,54 +1,64 @@
 <div class="content">
   <div class="stats-container">
     <app-status-card [icon]="'people'" color="info">
-      <div slot="title">
-        Totales
-      </div>
+      <div slot="title">Totales</div>
       <div slot="count">
-        {{personal ? personal.length : 0}}
+        {{ personal ? personal.length : 0 }}
       </div>
     </app-status-card>
 
     <app-status-card [icon]="'how_to_reg'" color="success">
-      <div slot="title">
-        Activos
-      </div>
+      <div slot="title">Activos</div>
       <div slot="count">
-        {{personal ? (personal |statePersonal:'activo') : 0}}
+        {{ personal ? (personal | statePersonal: "activo") : 0 }}
       </div>
     </app-status-card>
 
     <app-status-card [icon]="'block'" color="warn">
-      <div slot="title">
-        Inactivos
-      </div>
+      <div slot="title">Inactivos</div>
       <div slot="count">
-        {{personal ? (personal | statePersonal:'inactivo') : 0}}
+        {{ personal ? (personal | statePersonal: "inactivo") : 0 }}
       </div>
     </app-status-card>
   </div>
 
-
-
   <!-- table -->
   <div class="table-container mat-elevation-z2">
-
-    <div class="header-table" [style.display]="selected.length ? 'none' : 'grid'">
+    <div
+      class="header-table"
+      [style.display]="selected.length ? 'none' : 'grid'"
+    >
       <mat-form-field>
         <mat-label>Buscar</mat-label>
-        <input matInput autocomplete="off" (keyup)="applyFilter($event)" placeholder="Ex. bladimir"
-          [(ngModel)]="filterValue" #input>
-        <button mat-button *ngIf="filterValue" matSuffix mat-icon-button aria-label="Clear" (click)="applyFilter('')"
-          (click)="input.value = ''">
+        <input
+          matInput
+          autocomplete="off"
+          (keyup)="applyFilter($event)"
+          placeholder="Ex. bladimir"
+          [(ngModel)]="filterValue"
+          #input
+        />
+        <button
+          mat-button
+          *ngIf="filterValue"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="applyFilter('')"
+          (click)="input.value = ''"
+        >
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
 
-      <button mat-icon-button (click)="onAddPersonal()" matTooltip="Nuevo Personal" matTooltipPosition="below"
-        class="btn-add">
-        <mat-icon class="mat-18">
-          add
-        </mat-icon>
+      <button
+        mat-icon-button
+        (click)="onAddPersonal()"
+        matTooltip="Nuevo Personal"
+        matTooltipPosition="below"
+        class="btn-add"
+      >
+        <mat-icon class="mat-18"> add </mat-icon>
       </button>
     </div>
 
@@ -57,92 +67,116 @@
         <button mat-icon-button (click)="clearCheckbox()" class="btn-clear">
           <mat-icon>clear</mat-icon>
         </button>
-        <span>
-          Seleccionados {{selected.length}}
-        </span>
-        <button mat-raised-button class="btn-delete" (click)="onDeletePersonal()">Elminar</button>
+        <span> Seleccionados {{ selected.length }} </span>
+        <button class="btn-delete" (click)="onDeletePersonal()">Elminar</button>
       </div>
     </div>
 
     <div class="table-content">
       <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
-
         <ng-container matColumnDef="seleccion" sticky>
           <th *matHeaderCellDef class="actions-table">
-            <mat-checkbox color="warn" (change)="$event ? masterToggle() : null"
+            <mat-checkbox
+              color="warn"
+              (change)="$event ? masterToggle() : null"
               [checked]="selection.hasValue() && isAllSelected()"
-              [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+              [indeterminate]="selection.hasValue() && !isAllSelected()"
+              [aria-label]="checkboxLabel()"
+            >
             </mat-checkbox>
           </th>
           <td *matCellDef="let row" class="actions-table">
-            <mat-checkbox color="warn" (click)="$event.stopPropagation() "
-              (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
-              [aria-label]="checkboxLabel(row)">
+            <mat-checkbox
+              color="warn"
+              (click)="$event.stopPropagation()"
+              (change)="$event ? selection.toggle(row) : null"
+              [checked]="selection.isSelected(row)"
+              [aria-label]="checkboxLabel(row)"
+            >
             </mat-checkbox>
           </td>
         </ng-container>
 
         <!-- *Estado -->
         <ng-container matColumnDef="activo">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
           <td mat-cell *matCellDef="let row" class="text-center">
-            <div [class]="row.activo ? 'personal-activo' : 'personal-no-activo'"></div>
+            <div
+              [class]="row.activo ? 'personal-activo' : 'personal-no-activo'"
+            ></div>
           </td>
         </ng-container>
 
         <!-- *nombre -->
         <ng-container matColumnDef="nombre">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> {{row.nombre}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            {{ row.nombre }}
+          </td>
         </ng-container>
 
         <!-- *apellidos -->
         <ng-container matColumnDef="apellidos">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Apellidos </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Apellidos</th>
           <td mat-cell *matCellDef="let row" class="text-center">
-            {{row.apellidoPaterno+' '+row.apellidoMaterno | titlecase}}
+            {{ row.apellidoPaterno + " " + row.apellidoMaterno | titlecase }}
           </td>
         </ng-container>
 
         <!-- *celular -->
         <ng-container matColumnDef="celular">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Celular </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> {{row.celular}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Celular</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            {{ row.celular }}
+          </td>
         </ng-container>
 
         <!-- *direccion -->
         <ng-container matColumnDef="direccion">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Direccion </th>
-          <td mat-cell *matCellDef="let row" class="td-longtext text-center" [matTooltip]="row.direccion"
-            matTooltipPosition="below">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Direccion</th>
+          <td
+            mat-cell
+            *matCellDef="let row"
+            class="td-longtext text-center"
+            [matTooltip]="row.direccion"
+            matTooltipPosition="below"
+          >
             <span>
-              {{row.direccion ? row.direccion : 'Sin direccion'}}
+              {{ row.direccion ? row.direccion : "Sin direccion" }}
             </span>
           </td>
         </ng-container>
 
         <!-- *correo -->
         <ng-container matColumnDef="correo">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo </th>
-          <td mat-cell *matCellDef="let row" class="text-center"> {{row.correo}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Correo</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            {{ row.correo }}
+          </td>
         </ng-container>
 
         <!-- *cargo -->
         <ng-container matColumnDef="descripcion">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripcion </th>
-          <td mat-cell *matCellDef="let row" class="td-longtext text-center" [matTooltip]="row.descripcion"
-            matTooltipPosition="below">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripcion</th>
+          <td
+            mat-cell
+            *matCellDef="let row"
+            class="td-longtext text-center"
+            [matTooltip]="row.descripcion"
+            matTooltipPosition="below"
+          >
             <span>
-              {{row.descripcion ? row.descripcion : 'Sin descripcion'}}
+              {{ row.descripcion ? row.descripcion : "Sin descripcion" }}
             </span>
           </td>
         </ng-container>
 
         <!-- *sueldo -->
         <ng-container matColumnDef="sueldo">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Sueldo </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Sueldo</th>
           <td mat-cell *matCellDef="let row" class="text-center">
-            {{row.sueldo + ' ' + row.moneda}}. </td>
+            {{ row.sueldo + " " + row.moneda }}.
+          </td>
         </ng-container>
 
         <!-- *edit -->
@@ -152,30 +186,32 @@
           </th>
           <td *matCellDef="let row" class="text-center">
             <button mat-icon-button (click)="onUpdatePersonal(row)">
-              <mat-icon class="edit-icon">
-                edit
-              </mat-icon>
+              <mat-icon class="edit-icon"> edit </mat-icon>
             </button>
           </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         <tr class="mat-row" *matNoDataRow>
           <td class="mat-cell" colspan="10" align="center">
-            <div *ngIf="input.value else noData">
-              No hay datos que coincidan con el filtro: "{{input.value}}"
+            <div *ngIf="input.value; else noData">
+              No hay datos que coincidan con el filtro: "{{ input.value }}"
             </div>
             <ng-template #noData align="center">
-              <img src="./assets/no_data.svg" alt="" width="100" style="margin: 5px;" class="no-select">
-              <p>
-                Tabla vacía, aún no creaste un personal.
-              </p>
+              <img
+                src="./assets/no_data.svg"
+                alt=""
+                width="100"
+                style="margin: 5px"
+                class="no-select"
+              />
+              <p>Tabla vacía, aún no creaste un personal.</p>
             </ng-template>
           </td>
         </tr>
       </table>
     </div>
-    <mat-paginator [pageSizeOptions]="[ 5, 10, 100]"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[5, 10, 100]"></mat-paginator>
   </div>
 </div>

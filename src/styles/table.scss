@@ -96,7 +96,7 @@
   position: relative;
   height: 76px;
   background-color: var(--warn) !important;
-  background-color: var(--card-bg);
+  // background-color: var(--card-bg);
 
   animation: opacity-table 0.7s;
 
@@ -115,26 +115,28 @@
   span {
     grid-area: span;
     color: white !important;
+    font-weight: bold;
   }
 
   .btn-clear {
     grid-area: btn-clear;
     padding-left: 22px;
   }
-
   .btn-delete {
     width: auto;
     margin: 0 5px;
     color: white !important;
     background-color: var(--warn) !important;
     border: 1px solid white !important;
+    border-radius: 5px;
     text-transform: uppercase;
     grid-area: btn-delete;
-
-    &:hover {
-      background-color: white !important;
-      color: red !important;
-    }
+    padding: 10px 16px;
+    font-weight: bold;
+  }
+  .btn-delete:hover {
+    background-color: white !important;
+    color: red !important;
   }
 }
 
