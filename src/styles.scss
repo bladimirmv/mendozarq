@@ -162,9 +162,7 @@ $mendozarq-dark-theme: mat-dark-theme(
 .dark-theme {
   @include angular-material-theme($mendozarq-dark-theme);
 
-  // @include all-component-themes($mendozarq-dark-theme);
   --text-hover: var(--gray4);
-
   --background: var(--gray6);
   --background-opacity: rgba(18, 24, 27, 0.58);
   --text-color: var(--gray0);
@@ -403,10 +401,13 @@ mat-hint {
 
 ::-webkit-scrollbar-thumb {
   background: rgb(212, 212, 212);
+  background: var(--primary);
+
   border-radius: 25px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(197, 196, 196);
+  background: var(--primary);
 }
 .mat-sidenav-content::-webkit-scrollbar {
   width: 6px;
