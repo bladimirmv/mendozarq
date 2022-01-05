@@ -31,7 +31,7 @@ export class AppearanceComponent implements OnInit, OnDestroy {
 
   formatLabel(value: number) {
     // if (value >= 1000) {
-    return Math.round(((value - 40) * 100) / 60) + '%';
+    return Math.round(((value - 40) * 100) / 60);
     // }
 
     return value;

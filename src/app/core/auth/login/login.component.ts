@@ -10,7 +10,8 @@ import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -18,25 +19,19 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  private unsubscribe$: Subscription = new Subscription();
+  private destroy$: Subject<any> = new Subject<any>();
 
   public year: number = new Date().getUTCFullYear();
+  public hide = true;
 
-  hide = true;
   public loginForm: FormGroup = new FormGroup({
     username: new FormControl('blado959', Validators.required),
     contrasenha: new FormControl('bmvmendo123', Validators.required),
   });
 
-  public registerForm: FormGroup = new FormGroup({
-    docid: new FormControl('', Validators.required),
-  });
-
   constructor(
-    private router: Router,
     private authSvc: AuthService,
-    private toastrSvc: ToastrService,
-    private brigthtnessSvc: BrightnessService // public gg: WebsocketService
+    private brigthtnessSvc: BrightnessService
   ) {
     this.brigthtnessSvc.reset();
   }
@@ -46,41 +41,28 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.unsubscribe$) {
-      this.unsubscribe$.unsubscribe();
-    }
+    this.destroy$.next({});
+    this.destroy$.complete();
   }
 
   public onLogIn(usr: Usuario): void {
-    this.unsubscribe$.add(
-      this.authSvc.login(usr).subscribe((res: UsuarioResponse) => {
+    this.authSvc
+      .login(usr)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: UsuarioResponse) => {
         if (res) {
           this.authSvc.roleNavigate(res.body);
         }
-      })
-    );
+      });
   }
 
   private checkUserStatus(): void {
-    this.authSvc.usuario$.subscribe((usuario: Usuario) => {
-      if (usuario) {
-        this.authSvc.roleNavigate(usuario);
-      }
-    });
-  }
-
-  onRegister(usr: Usuario): void {
-    // this.authSvc.getOneUsuario(usr.docid)
-    //   .subscribe(res => {
-    //     if (res) {
-    //       if (res.activo === true) {
-    //         this.toastrSvc.error('Cuenta en uso', 'Ocurrio un Error!');
-    //       } else {
-    //         this.router.navigate([`registro/${usr.docid}`]);
-    //       }
-    //     } else {
-    //       this.toastrSvc.error('Codigo incorrecto', 'Ocurrio un Error!');
-    //     }
-    //   });
+    this.authSvc.usuario$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((usuario: Usuario) => {
+        if (usuario) {
+          this.authSvc.roleNavigate(usuario);
+        }
+      });
   }
 }

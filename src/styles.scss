@@ -13,7 +13,7 @@
 $mat-dark-theme-background: (
   status-bar: black,
   app-bar: map_get($mat-grey, 900),
-  background: var(--background),
+  background: white,
   hover: rgba(white, 0.04),
   // TODO(kara): check style with Material Design UX
   card: var(--card-bg),
@@ -434,4 +434,8 @@ mat-hint {
 ::selection {
   color: white;
   background: var(--primary);
+}
+
+.mat-slider-thumb-label-text {
+  color: white !important;
 }

@@ -3,14 +3,17 @@
   <mat-slider
     *ngIf="brightnessSvc.brightness$ | async as brValue"
     thumbLabel
-    [displayWith]="formatLabel"
+    [thumbLabel]="true"
     min="40"
+    [displayWith]="formatLabel"
     max="100"
     [value]="brValue"
     color="primary"
     class="silder"
     (change)="onBrightness($event)"
+    aria-labelledby="example-name-label"
   >
+    >
   </mat-slider>
 
   <h2>Apariencia:</h2>

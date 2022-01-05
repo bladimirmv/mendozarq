@@ -29,6 +29,9 @@
 
   img {
     max-width: 100%;
+    width: 100%;
+    min-height: 60px;
+    height: 100%;
     border-radius: 5px 5px 0 0;
   }
 }
@@ -46,4 +49,8 @@ mat-slider {
 }
 .mat-card-content {
   background-color: green !important;
+}
+
+.example-name-label {
+  color: white !important;
 }

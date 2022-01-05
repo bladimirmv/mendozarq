@@ -11,9 +11,6 @@
         <img class="avatar" src="./assets/avatar.svg" alt="avatar" />
       </div>
       <h2 class="title">Bienvenido</h2>
-
-      <!-- <mat-tab-group animationDuration="0ms">
-        <mat-tab class="mat-tab" label="Inicio de Sesion"> -->
       <form
         class="form"
         [formGroup]="loginForm"
@@ -58,25 +55,6 @@
           Iniciar sesión
         </button>
       </form>
-      <!--
-        </mat-tab>
-        <mat-tab label="Registro">
-          <form class="form" [formGroup]="registerForm" (ngSubmit)="onRegister(registerForm.value)">
-
-            <mat-form-field>
-              <mat-label>Codigo de registro</mat-label>
-              <input matInput formControlName="docid" autocomplete="off" [type]="hide ? 'password' : 'text'">
-              <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-                [attr.aria-pressed]="hide">
-                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-              </button>
-            </mat-form-field>
-
-            <button type="submit" class="btn-login" mat-button>Acceder</button>
-          </form>
-        </mat-tab>
-
-      </mat-tab-group> -->
     </div>
   </div>
 </div>

@@ -37,9 +37,8 @@ export class VisitaComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.brightnessSvc.theme$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.brightnessSvc.toggleTheme(res);
-      });
+      .subscribe((res) => {});
+
     this.breakpointObserver
       .observe('(max-width: 700px)')
       .pipe(

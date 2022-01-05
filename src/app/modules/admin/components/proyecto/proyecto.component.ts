@@ -27,7 +27,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
     this.brightnessSvc.theme$
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        this.brightnessSvc.toggleTheme(res);
+        // this.brightnessSvc.toggleTheme(res);
       });
 
     this.breakpointObserver

@@ -2,7 +2,7 @@ import { LocationBarService } from '../../core/services/mendozarq/location-bar.s
 import { AuthService } from '@app/core/services/auth/auth.service';
 import { BrightnessService } from './../../core/services/brightness.service';
 import { Location } from '@angular/common';
-import { map, shareReplay, takeUntil } from 'rxjs/operators';
+import { map, shareReplay, take, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
@@ -27,7 +27,11 @@ export class AdminComponent implements OnInit, OnDestroy {
     public authSvc: AuthService,
     public locationBarSvc: LocationBarService,
     private dialog: MatDialog
-  ) {}
+  ) {
+    this.brightnessSvc.theme$.pipe(take(1)).subscribe((res: boolean) => {
+      this.brightnessSvc.toggleTheme(true);
+    });
+  }
 
   ngOnInit(): void {
     this.breakpointObserver
@@ -39,22 +43,16 @@ export class AdminComponent implements OnInit, OnDestroy {
       )
       .subscribe((res) => (this.breakpoint = res));
 
-    this.locationBarSvc.pushLocation({
-      icon: 'dashboard',
-      name: 'Administracion',
-      link: '/admin',
-    });
-
-    this.brightnessSvc.theme$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.brightnessSvc.toggleTheme(res);
-      });
+    // this.locationBarSvc.pushLocation({
+    //   icon: 'dashboard',
+    //   name: 'Administracion',
+    //   link: '/admin',
+    // });
   }
   ngOnDestroy(): void {
     this.destroy$.next({});
     this.destroy$.complete();
-    this.locationBarSvc.deleteLocation();
+    // this.locationBarSvc.deleteLocation();
   }
   public onback(): void {
     this.location.back();
