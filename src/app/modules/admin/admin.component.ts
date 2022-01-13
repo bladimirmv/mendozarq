@@ -9,6 +9,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatDialog } from '@angular/material/dialog';
 import { AppearanceComponent } from '@app/shared/components/appearance/appearance.component';
+import { Usuario } from '@app/shared/models/usuario.interface';
 
 @Component({
   selector: 'app-admin',
@@ -19,6 +20,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   public modeSidenav = 'side';
   public breakpoint: boolean;
   private destroy$: Subject<any> = new Subject<any>();
+  public current_usuario: Usuario = [] as Usuario;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -29,7 +31,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     private dialog: MatDialog
   ) {
     this.brightnessSvc.theme$.pipe(take(1)).subscribe((res: boolean) => {
-      this.brightnessSvc.toggleTheme(true);
+      this.brightnessSvc.toggleTheme(res);
     });
   }
 
@@ -43,11 +45,11 @@ export class AdminComponent implements OnInit, OnDestroy {
       )
       .subscribe((res) => (this.breakpoint = res));
 
-    // this.locationBarSvc.pushLocation({
-    //   icon: 'dashboard',
-    //   name: 'Administracion',
-    //   link: '/admin',
-    // });
+    this.authSvc.usuario$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((usuario: Usuario) => {
+        this.current_usuario = usuario;
+      });
   }
   ngOnDestroy(): void {
     this.destroy$.next({});

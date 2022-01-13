@@ -185,38 +185,29 @@
           <span>MendozArq</span>
         </a>
       </div>
-      <div class="user-details">
-        <!-- <button mat-icon-button>
-          <mat-icon>
-            account_circle
-          </mat-icon>
-        </button> -->
-        <!-- <a routerLink="/perfil" class="usuarioSide" *ngIf="authSvc.isLogged | async">
-          <span>
-            <img src="./assets/avatar.svg" alt="">
-          </span>
-        </a> -->
 
-        <a class="circle-profile" *ngIf="authSvc.isLogged | async"> M </a>
+      <div class="user-details">
+        <button
+          mat-icon-button
+          class="circle-profile"
+          [matMenuTriggerFor]="menu"
+          aria-label="Example icon-button with a menu"
+          *ngIf="authSvc.isLogged | async"
+        >
+          <span>
+            {{ current_usuario.nombre.substring(0, 1) }}
+          </span>
+        </button>
+
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>
+            <mat-icon>account_circle</mat-icon>
+            <span>Ver perfil</span>
+          </button>
+        </mat-menu>
       </div>
     </mat-toolbar>
 
-    <!-- <div class=" content">
-      <div class="mat-elevation-z2 " *ngIf="locationBarSvc.locationList$|async as ltnbar"
-        style=" z-index: 1000; background-color: white; color: black; padding: 8px ; display: flex; margin:10px 0px; border-radius: 2.5px; overflow: auto;">
-        <a *ngFor="let location of ltnbar" [routerLink]="location.link"
-          style=" padding-left: 2.5px; text-decoration: none;">
-          <span style="color: black; font-size: 16px; display: flex; align-items: center; font-style:italic;">
-            <mat-icon class=" mat-18" style="font-size: 20px; display: grid;place-items: center;">
-              {{location.icon}}</mat-icon>
-            {{location.name}}/
-          </span>
-        </a>
-      </div>
-    </div> -->
-
-    <!-- <div> -->
     <router-outlet style="box-sizing: border-box"></router-outlet>
-    <!-- </div> -->
   </mat-sidenav-content>
 </mat-sidenav-container>

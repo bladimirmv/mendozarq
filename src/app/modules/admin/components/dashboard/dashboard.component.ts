@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { map, shareReplay, takeUntil } from 'rxjs/operators';
 
 import { WebsocketService } from '@services/sockets/websocket.service';
 import { Logs } from '@models/logs/logs.interface';
@@ -14,18 +14,28 @@ import { InfoLogComponent } from '../info-log/info-log.component';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   public Logs: Logs[] = [] as Logs[];
+  private destroy$: Subject<any> = new Subject<any>();
 
-  constructor(private wsService: WebsocketService, private dialog: MatDialog) {}
+  constructor(private wsService: WebsocketService, private dialog: MatDialog) {
+    this.wsService.emit('ws:getLogs');
+  }
 
   ngOnInit(): void {
     moment.locale('es');
 
-    this.wsService.emit('ws:getLogs');
-    this.wsService.listen('ws:getLogs').subscribe((logs: Logs[]) => {
-      this.Logs = logs;
-    });
+    this.wsService
+      .listen('ws:getLogs')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((logs: Logs[]) => {
+        this.Logs = logs;
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   public formatDate(date: Date): string {

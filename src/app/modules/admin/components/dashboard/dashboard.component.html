@@ -22,7 +22,7 @@
     <div class="log" *ngFor="let log of Logs">
       <div class="header-log">
         <div class="path">
-          <span class="root-path">~@{{ log.path }}</span>
+          <span class="root-path"> ~@{{ log.path }} </span>
           <span [class]="'table table-' + log.operacion">{{ log.tabla }} </span>
         </div>
         <span style="white-space: nowrap">⏲{{ formatDate(log.creadoEn) }}</span>
@@ -41,15 +41,15 @@
         />
       </svg>
 
-      <span
-        >{{
+      <span>
+        {{
           log.creadoPor
             ? log.creadoPor
             : log.hostname
             ? log.hostname
             : "Sin nombre"
         }}
-        --->
+        ==>
       </span>
       <span>
         {{
@@ -67,28 +67,5 @@
         {{ log.uuidRow }}
       </span>
     </div>
-
-    <!-- <div class="log">
-      <div>
-        <span class="path">~@liraki/producto> </span>
-        <span> bladimir medrano vargas</span>
-        <span class="option-D"> -D </span>
-        <span class="option-D" style="width: 10px"
-          >1959b3c3-798c-4a16-9dfd-1bbf8713b685
-        </span>
-      </div>
-      <span style="white-space: nowrap">⏲12/2/21, 11:47 PM</span>
-    </div> -->
-    <!-- <div class="log">
-      <div>
-        <span class="path">~@liraki/categoriaProducto> </span>
-        <span> bladimir medrano vargas</span>
-        <span class="option-U"> -U </span>
-        <span class="option-U" style="width: 10px; border-bottom: 1px solid"
-          >1959b3c3-798c-4a16-9dfd-1bbf8713b685
-        </span>
-      </div>
-      <span style="white-space: nowrap">⏲12/2/21, 11:47 PM</span>
-    </div> -->
   </div>
 </div>
