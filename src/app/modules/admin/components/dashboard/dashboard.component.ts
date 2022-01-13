@@ -24,12 +24,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     moment.locale('es');
+    this.wsService.emit('ws:getLogs');
 
     this.wsService
       .listen('ws:getLogs')
       .pipe(takeUntil(this.destroy$))
       .subscribe((logs: Logs[]) => {
         this.Logs = logs;
+        console.log(logs);
       });
   }
 
