@@ -11,13 +11,15 @@ export class WebsocketService {
   private socket: Socket;
 
   constructor() {
-    this.socket = io(environment.socketConfig.url);
+    this.socket = io(environment.socketConfig.url, { multiplex: false });
     this.checkStatus();
   }
 
   // ==========> server status
-  private checkStatus() {
+  public checkStatus() {
     const usuarioToken = localStorage.getItem('token') || null;
+
+    console.log(usuarioToken);
 
     this.socket.on('connect', () => {
       console.log('Socket connected');

@@ -141,6 +141,8 @@ $mendozarq-dark-theme: mat-dark-theme(
   --card-border: 1px solid var(--nav-bg);
   --card-radius: 0.25em;
   --footer-bg: var(--secondary);
+  --sobreCard-bg: whitesmoke;
+
   transition: all 0.3s ease;
 }
 
@@ -184,6 +186,7 @@ $mendozarq-dark-theme: mat-dark-theme(
   --card-border: 1px solid var(--nav-bg);
   --card-radius: 0.25em;
   --footer-bg: var(--nav-bg);
+  --sobreCard-bg: var(--gray4);
 
   transition: all 0.3s ease;
 }

@@ -48,11 +48,11 @@ mat-dialog-actions {
   min-height: 200px;
   height: auto;
   font-weight: 200;
-  border: 2px dashed var(--secondary);
+  border: 2px dashed var(--text-color);
   border-radius: 5px;
-  background: white;
+  background: var(--sobreCard-bg);
   margin: 10px 0;
-  color: var(--secondary);
+  color: var(--text-color);
 
   .text-hovering {
     display: none;
@@ -74,6 +74,7 @@ mat-dialog-actions {
     padding: 5px;
     border-radius: 5px;
     color: white;
+    cursor: pointer;
     font-weight: bold;
   }
 
@@ -85,7 +86,7 @@ mat-dialog-actions {
     width: auto;
     height: auto;
     font-size: 80px;
-    color: var(--info);
+    color: var(--text-color);
   }
 
   &.hovering .upload-icon {
@@ -101,7 +102,9 @@ progress::-webkit-progress-value {
   cursor: pointer;
   padding: 5px;
   margin: 5px 0;
-  border: 2px dashed var(--secondary);
+  border: 2px dashed var(--text-color);
+  background-color: var(--card-bg);
+
   box-sizing: border-box;
   width: auto;
   display: grid;
@@ -216,7 +219,8 @@ progress::-webkit-progress-value {
   border: dashed 1px #ccc;
   min-height: 60px;
   display: block;
-  background: white;
+  background-color: var(--sobreCard-bg);
+
   border-radius: 4px;
   overflow: hidden;
 }

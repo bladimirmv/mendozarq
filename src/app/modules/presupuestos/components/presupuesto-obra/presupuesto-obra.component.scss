@@ -1,6 +1,6 @@
 .content::after {
   content: "";
-  background-image: url('./../../../../../assets/bg.svg');
+  background-image: url("./../../../../../assets/bg.svg");
   background-position: bottom;
   background-repeat: no-repeat;
   background-size: 100%;
@@ -12,7 +12,6 @@
   position: absolute;
   z-index: -1;
 }
-
 
 .content {
   display: grid;
@@ -53,12 +52,12 @@
     justify-content: flex-end;
     align-items: center;
     margin-top: 10px;
-    background-color: white;
+    background-color: var(--card-bg);
     border-radius: 5px;
     padding: 0 10px;
 
     mat-icon {
-      color: var(--secondary);
+      color: var(--text-color);
     }
   }
 
@@ -74,7 +73,7 @@
     margin-top: 10px;
     grid-gap: 10px;
     padding: 10px;
-    background-color: white;
+    background-color: var(--card-bg);
     border-radius: 5px;
     margin: 5px;
   }
@@ -99,24 +98,14 @@
   .detalle {
     background-color: red;
   }
-
 }
-
-
-
-
-
-
-
-
-
 
 td {
   cursor: pointer;
 }
 
 tr:hover {
-  background-color: white;
+  // background-color: white;
 }
 
 tr.example-detail-row {
@@ -124,7 +113,7 @@ tr.example-detail-row {
 }
 
 tr.example-element-row:not(.example-expanded-row):hover {
-  background: whitesmoke;
+  // background: whitesmoke;
 }
 
 tr.example-element-row:not(.example-expanded-row):active {
@@ -135,10 +124,9 @@ tr.example-element-row:not(.example-expanded-row):active {
   overflow: hidden;
 
   &:hover {
-    background-color: white;
+    background-color: red;
   }
 }
-
 
 @media screen and (max-width: "1000px") {
   .content {
@@ -148,12 +136,9 @@ tr.example-element-row:not(.example-expanded-row):active {
       height: calc(100vh - 70px);
     }
   }
-
 }
 
-
-@media screen and (max-width:500px) {
-
+@media screen and (max-width: 500px) {
   .content {
     .edit-form {
       display: grid;
@@ -173,9 +158,6 @@ tr.example-element-row:not(.example-expanded-row):active {
     margin: 0;
   }
 }
-
-
-
 
 // .example-list {
 //   width: 500px;

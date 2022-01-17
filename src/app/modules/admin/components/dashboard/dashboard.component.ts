@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { map, shareReplay, takeUntil } from 'rxjs/operators';
 
@@ -14,29 +14,35 @@ import { InfoLogComponent } from '../info-log/info-log.component';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent implements OnInit, OnDestroy {
+export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   public Logs: Logs[] = [] as Logs[];
   private destroy$: Subject<any> = new Subject<any>();
 
-  constructor(private wsService: WebsocketService, private dialog: MatDialog) {
+  constructor(private wsService: WebsocketService, private dialog: MatDialog) {}
+
+  ngAfterViewInit(): void {
+    moment.locale('es');
+    this.wsService.checkStatus();
     this.wsService.emit('ws:getLogs');
   }
 
   ngOnInit(): void {
-    moment.locale('es');
-    this.wsService.emit('ws:getLogs');
+    this.getDataSocket();
+  }
 
+  getDataSocket(): void {
+    this.wsService.emit('ws:getLogs');
     this.wsService
       .listen('ws:getLogs')
       .pipe(takeUntil(this.destroy$))
       .subscribe((logs: Logs[]) => {
         this.Logs = logs;
-        console.log(logs);
+        console.log('logs:', logs);
       });
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next({});
     this.destroy$.complete();
   }
 

@@ -5,6 +5,16 @@
   padding: 10px;
 }
 
+.select-search {
+  padding: 5px 5px 0 5px;
+  position: -webkit-sticky;
+  position: sticky !important;
+  top: 0;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  z-index: 1;
+}
+
 .text-center {
   text-align: center;
 }
@@ -13,7 +23,7 @@
   grid-column: span 3;
 }
 
-@media screen and (max-width:625px) {
+@media screen and (max-width: 625px) {
   .new-form {
     display: grid;
     grid-template-columns: minmax(100%, 1fr);
@@ -31,8 +41,7 @@ mat-dialog-actions {
   grid-template-columns: repeat(2, 1fr);
 }
 
-
-@media screen and (max-width:400px) {
+@media screen and (max-width: 400px) {
   mat-dialog-actions {
     margin: 0;
     padding: 0;
@@ -45,7 +54,6 @@ mat-dialog-actions {
       margin: 5px 0;
       width: 100%;
     }
-
   }
 
   .full-column {
