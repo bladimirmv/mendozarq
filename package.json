@@ -26,6 +26,8 @@
     "@angular/router": "~10.0.3",
     "@auth0/angular-jwt": "^5.0.2",
     "angular-google-charts": "^1.1.6",
+    "highcharts": "^9.3.2",
+    "jsbarcode": "^3.11.5",
     "moment": "^2.29.1",
     "ngx-electron": "^2.2.0",
     "ngx-toastr": "^13.0.0",

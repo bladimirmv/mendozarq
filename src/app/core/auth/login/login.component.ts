@@ -37,6 +37,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.authSvc.checkToken();
     this.checkUserStatus();
   }
 
@@ -62,6 +63,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       .subscribe((usuario: Usuario) => {
         if (usuario) {
           this.authSvc.roleNavigate(usuario);
+          console.log();
         }
       });
   }

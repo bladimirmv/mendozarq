@@ -1,0 +1,268 @@
+<div class="table-container mat-elevation-z2" style="margin-top: 5px">
+  <div
+    class="header-table"
+    [style.display]="selectedVentaProducto.length ? 'none' : 'grid'"
+  >
+    <mat-form-field>
+      <mat-label>Buscar</mat-label>
+      <input
+        matInput
+        autocomplete="off"
+        (keyup)="applyFilterVentaProducto($event)"
+        placeholder="Ex. bladimir"
+        [(ngModel)]="filterValueVentaProducto"
+        #inputSearch
+      />
+
+      <button
+        mat-button
+        *ngIf="filterValueVentaProducto"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="applyFilterVentaProducto('')"
+        (click)="input.value = ''"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <button
+      mat-icon-button
+      matTooltip="Nuevo Capitulo"
+      matTooltipPosition="below"
+      class="btn-add"
+      (click)="addVentaProducto()"
+    >
+      <mat-icon class="mat-18"> add </mat-icon>
+    </button>
+  </div>
+
+  <div *ngIf="selectedVentaProducto.length">
+    <div class="delete-table">
+      <button mat-icon-button (click)="clearCheckbox()" class="btn-clear">
+        <mat-icon>clear</mat-icon>
+      </button>
+      <span> Seleccionados {{ selectedVentaProducto.length }} </span>
+      <button class="btn-delete" (click)="deleteVentaProducto()">
+        Elminar
+      </button>
+    </div>
+  </div>
+
+  <div class="table-content">
+    <table
+      mat-table
+      [dataSource]="dataSourceVentaProducto"
+      multiTemplateDataRows
+      class="mat-elevation-z2"
+      matSort
+    >
+      <ng-container matColumnDef="seleccion" sticky>
+        <th *matHeaderCellDef class="actions-table">
+          <mat-checkbox
+            color="warn"
+            (change)="$event ? masterToggle() : null"
+            [checked]="
+              selectionVentaProducto.hasValue() && isAllSelectedVentaProducto()
+            "
+            [indeterminate]="
+              selectionVentaProducto.hasValue() && !isAllSelectedVentaProducto()
+            "
+            [aria-label]="checkboxLabel()"
+          >
+          </mat-checkbox>
+        </th>
+        <td *matCellDef="let row" class="actions-table">
+          <mat-checkbox
+            color="warn"
+            (click)="$event.stopPropagation()"
+            (change)="$event ? selectionVentaProducto.toggle(row) : null"
+            [checked]="selectionVentaProducto.isSelected(row)"
+            [aria-label]="checkboxLabel(row)"
+          >
+          </mat-checkbox>
+        </td>
+
+        <td mat-footer-cell *matFooterCellDef></td>
+      </ng-container>
+
+      <!-- *descuento -->
+      <ng-container matColumnDef="descuento">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>DTO.</th>
+        <td mat-cell *matCellDef="let row" class="text-center">
+          {{ row.descuento }}%
+        </td>
+      </ng-container>
+
+      <!-- *precio -->
+      <ng-container matColumnDef="precio">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Precio</th>
+        <td mat-cell *matCellDef="let row" class="text-center">
+          {{ row.precio | number: "1.2-2" }}
+        </td>
+        <td mat-footer-cell *matFooterCellDef></td>
+      </ng-container>
+
+      <ng-container matColumnDef="expandedDetail">
+        <td
+          mat-cell
+          *matCellDef="let element"
+          [attr.colspan]="columnsToDisplay.length"
+          style="white-space: normal"
+        >
+          <div
+            class="detail-container"
+            [@detailExpand]="
+              element == expandedElement ? 'expanded' : 'collapsed'
+            "
+          >
+            <table
+              *ngIf="element.detalles.length"
+              mat-table
+              [dataSource]="element.detalles"
+              class="mat-elevation-z2"
+            >
+              <!-- *descripcion -->
+              <ng-container matColumnDef="descripcion">
+                <th mat-header-cell *matHeaderCellDef class="text-center">
+                  Descripcion
+                </th>
+                <td
+                  mat-cell
+                  class="td-longtext detalle-descripcion text-center"
+                  *matCellDef="let detalle"
+                >
+                  <span>
+                    {{ detalle.descripcion }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- *unidad -->
+              <ng-container matColumnDef="unidad">
+                <th mat-header-cell *matHeaderCellDef class="text-center">
+                  Unidad
+                </th>
+                <td mat-cell class="text-center" *matCellDef="let detalle">
+                  {{ detalle.unidad }}
+                </td>
+              </ng-container>
+
+              <!-- *cantidad -->
+              <ng-container matColumnDef="cantidad">
+                <th mat-header-cell *matHeaderCellDef class="text-center">
+                  Cantidad
+                </th>
+                <td mat-cell class="text-center" *matCellDef="let detalle">
+                  {{ detalle.cantidad }}
+                </td>
+              </ng-container>
+
+              <!-- *precioUnitario-->
+              <ng-container matColumnDef="precioUnitario">
+                <th mat-header-cell *matHeaderCellDef class="text-center">
+                  Precio
+                </th>
+                <td mat-cell class="text-center" *matCellDef="let detalle">
+                  {{ detalle.precioUnitario }}
+                </td>
+              </ng-container>
+
+              <!-- *precioUnitario-->
+              <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef class="text-center">
+                  Total
+                </th>
+                <td mat-cell class="text-center" *matCellDef="let detalle">
+                  {{ detalle.total }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="options" stickyEnd>
+                <th *matHeaderCellDef></th>
+                <td class="text-center" *matCellDef="let detalle">
+                  <button mat-icon-button [matMenuTriggerFor]="menu">
+                    <mat-icon> more_horiz </mat-icon>
+                    <mat-menu #menu="matMenu">
+                      <button mat-menu-item>
+                        <mat-icon>edit</mat-icon>
+                        <span>Editar</span>
+                      </button>
+                      <button mat-menu-item>
+                        <mat-icon>delete</mat-icon>
+                        <span>Eliminar</span>
+                      </button>
+                    </mat-menu>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr
+                mat-header-row
+                *matHeaderRowDef="[
+                  'descripcion',
+                  'unidad',
+                  'cantidad',
+                  'precioUnitario',
+                  'total',
+                  'options'
+                ]"
+              ></tr>
+              <tr
+                mat-row
+                *matRowDef="
+                  let row;
+                  columns: [
+                    'descripcion',
+                    'unidad',
+                    'cantidad',
+                    'precioUnitario',
+                    'total',
+                    'options'
+                  ]
+                "
+              ></tr>
+            </table>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr
+        mat-row
+        *matRowDef="let element; columns: columnsToDisplay"
+        class="example-element-row"
+        [class.example-expanded-row]="expandedElement === element"
+        (click)="expandedElement = expandedElement === element ? null : element"
+      ></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: ['expandedDetail']"
+        class="example-detail-row"
+      ></tr>
+      <tr mat-footer-row *matFooterRowDef="columnsToDisplay; sticky: true"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="10" align="center">
+          <div *ngIf="inputSearch.value; else noData">
+            No hay datos que coincidan con el filtro: "{{ inputSearch.value }}"
+          </div>
+          <ng-template #noData align="center">
+            <img
+              src="./assets/no_data.svg"
+              alt=""
+              width="100"
+              style="margin: 5px"
+              class="no-select"
+            />
+            <p>Tabla vacía, aún no agregaste una venta.</p>
+          </ng-template>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20, 100]"
+    showFirstLastButtons
+  ></mat-paginator>
+</div>

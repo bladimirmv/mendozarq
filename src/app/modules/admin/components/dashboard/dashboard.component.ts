@@ -23,11 +23,11 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit(): void {
     moment.locale('es');
     this.wsService.checkStatus();
-    this.wsService.emit('ws:getLogs');
   }
 
   ngOnInit(): void {
     this.getDataSocket();
+    this.wsService.emit('ws:getLogs');
   }
 
   getDataSocket(): void {
@@ -37,7 +37,6 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe((logs: Logs[]) => {
         this.Logs = logs;
-        console.log('logs:', logs);
       });
   }
 

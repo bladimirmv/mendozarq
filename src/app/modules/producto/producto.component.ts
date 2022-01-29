@@ -1,8 +1,13 @@
+import { PdfService } from '@services/pdf/pdf.service';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { ProductoService } from '@services/liraki/producto.service';
-import { FotoProducto, Producto, ProductoView } from '@models/liraki/producto.interface';
+import {
+  FotoProducto,
+  Producto,
+  ProductoView,
+} from '@models/liraki/producto.interface';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
@@ -15,25 +20,33 @@ import { EditProductoComponent } from './components/edit-producto/edit-producto.
 import { DeleteModalComponent } from '@app/shared/components/delete-modal/delete-modal.component';
 import { CategoriaProducto } from '@app/shared/models/liraki/categoria.producto.interface';
 import { environment } from '@env/environment';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 import { ImgPreviewComponent } from '@app/shared/components/img-preview/img-preview.component';
 
-
+import * as JsBarcode from 'jsbarcode';
 
 @Component({
   selector: 'app-producto',
   templateUrl: './producto.component.html',
-  styleUrls: ['./producto.component.scss'], animations: [
+  styleUrls: ['./producto.component.scss'],
+  animations: [
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),
       state('expanded', style({ height: '*' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+      transition(
+        'expanded <=> collapsed',
+        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')
+      ),
     ]),
-  ]
-
+  ],
 })
 export class ProductoComponent implements OnInit, OnDestroy {
-
   private API_URL = environment.API_URL;
 
   private destroy$: Subject<any> = new Subject<any>();
@@ -42,19 +55,30 @@ export class ProductoComponent implements OnInit, OnDestroy {
   selected: Producto[] = [];
   selection = new SelectionModel<Producto>(true, []);
   filterValue: string;
-  public columns: Array<string> = ['seleccion', 'estado', 'nombre', 'precio', 'stock', 'categorias', 'descripcion', 'edit'];
+  public columns: Array<string> = [
+    'seleccion',
+    'estado',
+    'nombre',
+    'precio',
+    'stock',
+    'categorias',
+    'descripcion',
+    'barcode',
+    'edit',
+  ];
   expandedElement: ProductoView | null;
   public source: MatTableDataSource<Producto> = new MatTableDataSource();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-
+  pdfResult: any;
 
   constructor(
     private productoSvc: ProductoService,
     private dialog: MatDialog,
     private toastrSvc: ToastrService,
-  ) { }
+    private pdfSvc: PdfService
+  ) {}
 
   ngOnInit(): void {
     this.getAllProducto();
@@ -63,16 +87,63 @@ export class ProductoComponent implements OnInit, OnDestroy {
     this.source.sort = this.sort;
 
     this.selection.changed
-      .pipe(map(a => a.source))
-      .subscribe(data => this.selected = data.selected);
+      .pipe(map((a) => a.source))
+      .subscribe((data) => (this.selected = data.selected));
 
     // window.open("https://www.mywebsite.com", "_blank");
-
   }
 
   ngOnDestroy(): void {
     this.destroy$.next({});
     this.destroy$.complete();
+  }
+
+  private async generatePdf(uuid: string): Promise<void> {
+    const docDefinition = {
+      pageSize: {
+        width: 68,
+        height: 68,
+      },
+      pageMargins: [5, 5, 5, 5],
+      content: [
+        {
+          qr: uuid ? uuid : 'sin uuid',
+          background: '#FFFFFF',
+          fit: '70',
+        },
+      ],
+    };
+
+    this.pdfResult = this.pdfSvc.createPdf(docDefinition);
+    this.pdfSvc.open(this.pdfResult);
+
+    // this.pdfSvc.dowload(this.pdfSvc.createPdf(docDefinition), `qr_(${uuid})`);
+
+    // console.log(await this.pdfSvc.getPdfDataUrl(this.pdfResult));
+
+    // const a = document.createElement('a');
+    // a.href = await this.pdfSvc.getPdfDataUrl(this.pdfResult);
+    // a.download = '';
+    // a.click();
+  }
+
+  dowloadBarcode(producto: Producto): void {
+    // var a = document.createElement('a'); //Create <a>
+    // a.href = this.textToBase64Barcode(producto.uuid); //Image Base64 Goes here
+    // a.download = producto.nombre + '.png';
+    // a.click(); //Downloaded file
+
+    this.generatePdf(producto.uuid);
+  }
+
+  private textToBase64Barcode(text) {
+    var canvas = document.createElement('canvas');
+    JsBarcode(canvas, text, {
+      lineColor: '#000000',
+
+      displayValue: true,
+    });
+    return canvas.toDataURL('image/png');
   }
 
   private getAllProducto(): void {
@@ -99,7 +170,7 @@ export class ProductoComponent implements OnInit, OnDestroy {
 
   public editProducto(producto: Producto): void {
     const dialogRef = this.dialog.open(EditProductoComponent, {
-      data: producto
+      data: producto,
     });
 
     dialogRef
@@ -129,13 +200,17 @@ export class ProductoComponent implements OnInit, OnDestroy {
     this.productoSvc
       .deleteProducto(this.selected[0].uuid)
       .pipe(takeUntil(this.destroy$))
-      .subscribe(res => {
+      .subscribe((res) => {
         if (res) {
-          this.toastrSvc.success('Se ha eliminado correctamente', 'Producto Eliminado', {
-            timeOut: 2000,
-            progressBar: true,
-            progressAnimation: 'increasing'
-          });
+          this.toastrSvc.success(
+            'Se ha eliminado correctamente',
+            'Producto Eliminado',
+            {
+              timeOut: 2000,
+              progressBar: true,
+              progressAnimation: 'increasing',
+            }
+          );
           this.getAllProducto();
           this.clearCheckbox();
         }
@@ -148,20 +223,23 @@ export class ProductoComponent implements OnInit, OnDestroy {
       this.productoSvc
         .deleteProducto(servicio.uuid)
         .pipe(takeUntil(this.destroy$))
-        .subscribe(res => {
+        .subscribe((res) => {
           if (res && isLast) {
-            this.toastrSvc.success('Se han eliminado correctamente', 'Productos Eliminados', {
-              timeOut: 2000,
-              progressBar: true,
-              progressAnimation: 'increasing'
-            });
-            this.getAllProducto()
+            this.toastrSvc.success(
+              'Se han eliminado correctamente',
+              'Productos Eliminados',
+              {
+                timeOut: 2000,
+                progressBar: true,
+                progressAnimation: 'increasing',
+              }
+            );
+            this.getAllProducto();
             this.clearCheckbox();
           }
         });
     });
   }
-
 
   // =====================> downloadFile
   public downloadFile(foto: FotoProducto): void {
@@ -173,13 +251,15 @@ export class ProductoComponent implements OnInit, OnDestroy {
     link.remove();
   }
   public modalPreview(fotos: FotoProducto[], foto: FotoProducto): void {
-    const keyNames: Array<string> = fotos.map((foto: FotoProducto) => `${this.API_URL}/api/file/${foto.keyName}`);
+    const keyNames: Array<string> = fotos.map(
+      (foto: FotoProducto) => `${this.API_URL}/api/file/${foto.keyName}`
+    );
     this.dialog.open(ImgPreviewComponent, {
       data: {
         fotos: keyNames,
-        current: keyNames.indexOf(`${this.API_URL}/api/file/${foto.keyName}`)
+        current: keyNames.indexOf(`${this.API_URL}/api/file/${foto.keyName}`),
       },
-      panelClass: 'custom-dialog-container'
+      panelClass: 'custom-dialog-container',
     });
   }
 
@@ -187,11 +267,10 @@ export class ProductoComponent implements OnInit, OnDestroy {
     let result: string = '';
     text.forEach((categroria: CategoriaProducto, index: number) => {
       result += categroria.nombre;
-      result += (index === text.length - 1) ? '.' : ', ';
+      result += index === text.length - 1 ? '.' : ', ';
     });
     return result;
   }
-
 
   public getImage(keyName: string): string {
     return `${this.API_URL}/api/file/${keyName}`;
@@ -201,8 +280,8 @@ export class ProductoComponent implements OnInit, OnDestroy {
   // =====================> applyFilter
   applyFilter(event: Event | string): void {
     typeof event === 'string'
-      ? this.filterValue = event
-      : this.filterValue = (event.target as HTMLInputElement).value;
+      ? (this.filterValue = event)
+      : (this.filterValue = (event.target as HTMLInputElement).value);
 
     this.source.filter = this.filterValue.trim().toLowerCase();
     if (this.source.paginator) {
@@ -217,9 +296,9 @@ export class ProductoComponent implements OnInit, OnDestroy {
   }
   // =====================> masterToggle
   masterToggle(): void {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.source.data.forEach(row => this.selection.select(row));
+    this.isAllSelected()
+      ? this.selection.clear()
+      : this.source.data.forEach((row) => this.selection.select(row));
   }
   // =====================> clearCheckbox
   clearCheckbox(): void {
@@ -230,7 +309,8 @@ export class ProductoComponent implements OnInit, OnDestroy {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.uuid}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
+      row.uuid
+    }`;
   }
-
 }

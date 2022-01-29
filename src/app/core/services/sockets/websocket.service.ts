@@ -19,8 +19,6 @@ export class WebsocketService {
   public checkStatus() {
     const usuarioToken = localStorage.getItem('token') || null;
 
-    console.log(usuarioToken);
-
     this.socket.on('connect', () => {
       console.log('Socket connected');
       this.socketStatus = true;

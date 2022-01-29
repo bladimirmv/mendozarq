@@ -54,7 +54,7 @@
       </mat-form-field>
       <button
         mat-icon-button
-        matTooltip="Nueva Catgoria"
+        matTooltip="Nuevo producto"
         matTooltipPosition="below"
         class="btn-add"
         (click)="addProducto()"
@@ -173,11 +173,31 @@
           </td>
         </ng-container>
 
+        <!-- *barcode -->
+        <ng-container matColumnDef="barcode" stickyEnd>
+          <th *matHeaderCellDef mat-sort-header></th>
+          <td *matCellDef="let row" class="text-center">
+            <button
+              mat-icon-button
+              (click)="dowloadBarcode(row)"
+              matTooltip="Codigo de barras"
+              matTooltipPosition="below"
+              (click)="expandedElement = expandedElement === row ? null : row"
+            >
+              <mat-icon class="edit-icon"> qr_code</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
         <!-- *edit -->
         <ng-container matColumnDef="edit" stickyEnd>
           <th *matHeaderCellDef mat-sort-header></th>
           <td *matCellDef="let row" class="text-center">
-            <button mat-icon-button (click)="editProducto(row)">
+            <button
+              mat-icon-button
+              (click)="editProducto(row)"
+              (click)="expandedElement = expandedElement === row ? null : row"
+            >
               <mat-icon class="edit-icon"> edit </mat-icon>
             </button>
           </td>

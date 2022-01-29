@@ -3,13 +3,19 @@ import { CommonModule } from '@angular/common';
 
 import { VentaProductoRoutingModule } from './venta-producto-routing.module';
 import { VentaProductoComponent } from './venta-producto.component';
-
+import { SharedModule } from '@app/shared/shared.module';
+import { MaterialModule } from '@app/material.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [VentaProductoComponent],
   imports: [
     CommonModule,
-    VentaProductoRoutingModule
-  ]
+    VentaProductoRoutingModule,
+    SharedModule,
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
 })
-export class VentaProductoModule { }
+export class VentaProductoModule {}

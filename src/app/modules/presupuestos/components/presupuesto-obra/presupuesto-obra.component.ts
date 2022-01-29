@@ -10,14 +10,25 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UsuarioService } from '@app/core/services/auth/usuario.service';
 import { PresupuestosService } from '@app/core/services/mendozarq/presupuestos.service';
 import { ClienteModalComponent } from '@app/modules/proyectos/components/cliente-modal/cliente-modal.component';
-import { CapituloPresupuesto, CapituloPresupuestoView, PresupuestoObra, PresupuestoObraView } from '@app/shared/models/mendozarq/presupuestos.interface';
+import {
+  CapituloPresupuesto,
+  CapituloPresupuestoView,
+  PresupuestoObra,
+  PresupuestoObraView,
+} from '@app/shared/models/mendozarq/presupuestos.interface';
 import { Usuario } from '@app/shared/models/usuario.interface';
 import { PdfService } from '@services/pdf/pdf.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
-import { map, reduce, take, takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -34,17 +45,28 @@ import { CapituloPresupuestoService } from '@app/core/services/mendozarq/capitul
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),
       state('expanded', style({ height: '*' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+      transition(
+        'expanded <=> collapsed',
+        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')
+      ),
     ]),
-  ]
+  ],
 })
 export class PresupuestoObraComponent implements OnInit, OnDestroy {
-
   public panelOpenState = false;
   private capitulos: CapituloPresupuestoView[] = [];
   public filterValueCapitulo: string;
-  public dataSourceCapitulo: MatTableDataSource<CapituloPresupuesto> = new MatTableDataSource();
-  public columnsToDisplay: Array<string> = ['seleccion', 'nombre', 'precio', 'descuento', 'precioDescuento', 'total', 'options'];
+  public dataSourceCapitulo: MatTableDataSource<CapituloPresupuesto> =
+    new MatTableDataSource();
+  public columnsToDisplay: Array<string> = [
+    'seleccion',
+    'nombre',
+    'precio',
+    'descuento',
+    'precioDescuento',
+    'total',
+    'options',
+  ];
   public expandedElement: CapituloPresupuesto | null;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -74,9 +96,8 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
     private toastrSvc: ToastrService,
     private router: Router,
     private presupuestosSvc: PresupuestosService,
-    private detalleCapituloSvc: DetalleCapituloService) {
-
-  }
+    private detalleCapituloSvc: DetalleCapituloService
+  ) {}
 
   ngOnInit(): void {
     this.uuidPresupuesto = this.activateRoute.snapshot.params.uuid;
@@ -87,18 +108,18 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
     this.dataSourceCapitulo.paginator = this.paginator;
     this.dataSourceCapitulo.sort = this.sort;
 
-
     this.selectionCapitulo.changed
-      .pipe(takeUntil(this.destroy$),
-        map(a => a.source))
-      .subscribe(data => this.selectedCapitulo = data.selected);
+      .pipe(
+        takeUntil(this.destroy$),
+        map((a) => a.source)
+      )
+      .subscribe((data) => (this.selectedCapitulo = data.selected));
   }
 
   ngOnDestroy(): void {
     this.destroy$.next({});
     this.destroy$.complete();
   }
-
 
   private initData() {
     this.initDataClientes();
@@ -109,26 +130,41 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
   // ============> onInitForm
   private initForm(): void {
     this.presupuestoForm = this.fb.group({
-      nombre: [this.presupuesto.nombre, [Validators.required, Validators.maxLength(50), Validators.pattern(/^[0-9a-z\s]+$/)]],
-      descripcion: [this.presupuesto.descripcion, [Validators.required, Validators.maxLength(200)]],
+      nombre: [
+        this.presupuesto.nombre,
+        [
+          Validators.required,
+          Validators.maxLength(50),
+          Validators.pattern(/^[0-9a-z\s]+$/),
+        ],
+      ],
+      descripcion: [
+        this.presupuesto.descripcion,
+        [Validators.required, Validators.maxLength(200)],
+      ],
       iva: [this.presupuesto.iva, [Validators.required]],
-      uuidCliente: [this.presupuesto.uuidCliente, Validators.required]
+      uuidCliente: [this.presupuesto.uuidCliente, Validators.required],
     });
   }
 
   // ===================> initDataClientes
   private initDataClientes(): void {
-    this.usuarioSvc.getAllUsuarios()
-      .pipe(map((usuarios: Usuario[]) =>
-        usuarios.filter((usuario: Usuario) => usuario.rol === 'cliente')
-      ), takeUntil(this.destroy$))
+    this.usuarioSvc
+      .getAllUsuarios()
+      .pipe(
+        map((usuarios: Usuario[]) =>
+          usuarios.filter((usuario: Usuario) => usuario.rol === 'cliente')
+        ),
+        takeUntil(this.destroy$)
+      )
       .subscribe((clientes: Usuario[]) => {
         if (!clientes.length) {
           const dialogRef = this.dialog.open(ClienteModalComponent);
 
-          dialogRef.afterClosed()
+          dialogRef
+            .afterClosed()
             .pipe(takeUntil(this.destroy$))
-            .subscribe(res => {
+            .subscribe((res) => {
               if (res) {
                 dialogRef.close();
                 this.router.navigate(['admin/usuarios']);
@@ -156,27 +192,30 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
         this.initForm();
         if (generatePDF) this.generatePdf();
       });
-
   }
   // ===================> onUpdatePresupuesto
   public onUpdatePresupuesto(presupuestoObra: PresupuestoObra): void {
     presupuestoObra.uuid = this.presupuesto.uuid;
 
-    this.presupuestoObraSvc.updatePresupuestoObra(presupuestoObra.uuid, presupuestoObra)
+    this.presupuestoObraSvc
+      .updatePresupuestoObra(presupuestoObra.uuid, presupuestoObra)
       .pipe(takeUntil(this.destroy$))
-      .subscribe(res => {
+      .subscribe((res) => {
         if (res) {
-          this.toastrSvc.success('El presupuesto se ha actualizado correctamente. 😀', 'Presupuesto Actualizado');
+          this.toastrSvc.success(
+            'El presupuesto se ha actualizado correctamente. 😀',
+            'Presupuesto Actualizado'
+          );
           this.getPresuspuesto(true);
         }
       });
   }
 
-
   // ? capitulo
   // ====================>
   private getCapituloPresupuesto(generatePDF?: boolean): void {
-    this.capituloPresupuestoSvc.getAllCapituloPresupuesto(this.uuidPresupuesto)
+    this.capituloPresupuestoSvc
+      .getAllCapituloPresupuesto(this.uuidPresupuesto)
       .pipe(takeUntil(this.destroy$))
       .subscribe((capitulos: CapituloPresupuestoView[]) => {
         this.dataSourceCapitulo.data = capitulos;
@@ -192,9 +231,10 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
 
   public onAddCapitulo(): void {
     const dialogRef = this.dialog.open(NewCapituloComponent, {
-      data: this.uuidPresupuesto
+      data: this.uuidPresupuesto,
     });
-    dialogRef.afterClosed()
+    dialogRef
+      .afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: boolean) => {
         if (res) this.getCapituloPresupuesto(true);
@@ -203,10 +243,11 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
 
   public onUpdateCapitulo(capituloPresupuesto: CapituloPresupuesto): void {
     const dialogRef = this.dialog.open(EditCapituloComponent, {
-      data: capituloPresupuesto
+      data: capituloPresupuesto,
     });
 
-    dialogRef.afterClosed()
+    dialogRef
+      .afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: boolean) => {
         if (res) this.getCapituloPresupuesto();
@@ -216,7 +257,8 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
   public onDeleteCapitulo(capitulo: CapituloPresupuesto): void {
     const dialogRef = this.dialog.open(DeleteModalComponent);
 
-    dialogRef.afterClosed()
+    dialogRef
+      .afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: boolean) => {
         if (res) {
@@ -228,16 +270,21 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
   }
 
   private deleteOneCapitulo(): void {
-    this.capituloPresupuestoSvc.deleteCapituloPresupuesto(this.selectedCapitulo[0].uuid)
+    this.capituloPresupuestoSvc
+      .deleteCapituloPresupuesto(this.selectedCapitulo[0].uuid)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.getCapituloPresupuesto();
         this.clearCheckbox();
-        this.toastrSvc.success('Se ha eliminado correctamente 😀', 'Capitulo Eliminado', {
-          timeOut: 2000,
-          progressBar: true,
-          progressAnimation: 'increasing'
-        })
+        this.toastrSvc.success(
+          'Se ha eliminado correctamente 😀',
+          'Capitulo Eliminado',
+          {
+            timeOut: 2000,
+            progressBar: true,
+            progressAnimation: 'increasing',
+          }
+        );
       });
   }
 
@@ -247,14 +294,18 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
       this.capituloPresupuestoSvc
         .deleteCapituloPresupuesto(capitulo.uuid)
         .pipe(takeUntil(this.destroy$))
-        .subscribe(res => {
+        .subscribe((res) => {
           if (res && isLast) {
-            this.toastrSvc.success('Se han eliminado correctamente 😀', 'Capitulos Eliminados', {
-              timeOut: 2000,
-              progressBar: true,
-              progressAnimation: 'increasing'
-            });
-            this.getCapituloPresupuesto()
+            this.toastrSvc.success(
+              'Se han eliminado correctamente 😀',
+              'Capitulos Eliminados',
+              {
+                timeOut: 2000,
+                progressBar: true,
+                progressAnimation: 'increasing',
+              }
+            );
+            this.getCapituloPresupuesto();
             this.clearCheckbox();
           }
         });
@@ -262,12 +313,12 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
   }
 
   public onUpdateDetalleCapitulo(detalleCapitulo: DetalleCapitulo) {
-
     const dialogRef = this.dialog.open(EditDetalleCapituloComponent, {
-      data: detalleCapitulo
+      data: detalleCapitulo,
     });
 
-    dialogRef.afterClosed()
+    dialogRef
+      .afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: boolean) => {
         if (res) this.getCapituloPresupuesto();
@@ -277,8 +328,11 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
   // ? detalle capitulo
   // ===================>
   public onAddDettalleCapitulo(CapituloView: CapituloPresupuestoView): void {
-    const dialogRef = this.dialog.open(NewDetalleCapituloComponent, { data: CapituloView });
-    dialogRef.afterClosed()
+    const dialogRef = this.dialog.open(NewDetalleCapituloComponent, {
+      data: CapituloView,
+    });
+    dialogRef
+      .afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: boolean) => {
         res ? this.getCapituloPresupuesto() : false;
@@ -289,24 +343,26 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
   public onDeleteDetalleCapitulo(uuid: string): void {
     const dialogRef = this.dialog.open(DeleteModalComponent);
 
-    dialogRef.afterClosed()
+    dialogRef
+      .afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: boolean) => {
-        res
-          ? this.deleteDetalleCapitulo(uuid)
-          : null;
+        res ? this.deleteDetalleCapitulo(uuid) : null;
       });
   }
 
   private deleteDetalleCapitulo(uuid: string): void {
-    this.detalleCapituloSvc.deleteDetalleCapitulo(uuid)
+    this.detalleCapituloSvc
+      .deleteDetalleCapitulo(uuid)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
-        this.toastrSvc.success('Se ha eliminado correctamente. 😀', 'Detalle Eliminado')
+        this.toastrSvc.success(
+          'Se ha eliminado correctamente. 😀',
+          'Detalle Eliminado'
+        );
         this.getCapituloPresupuesto();
       });
   }
-
 
   // !core funtions
   // ===================> clearForm
@@ -323,12 +379,19 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
 
   // =====================>
   public getTotalBruto(): number {
-    return Number(this.capitulos.map(t => t.total).reduce((acc, value) => acc + value, 0).toFixed(2));
+    return Number(
+      this.capitulos
+        .map((t) => t.total)
+        .reduce((acc, value) => acc + value, 0)
+        .toFixed(2)
+    );
   }
 
   // =====================>
   public getTotalWithIVA(): number {
-    return Number((this.getTotalBruto() * (this.presupuesto.iva / 100)).toFixed(2));
+    return Number(
+      (this.getTotalBruto() * (this.presupuesto.iva / 100)).toFixed(2)
+    );
   }
 
   // =====================>
@@ -338,10 +401,8 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
 
   // =====================>
   public numberWithCommas(x: number): string {
-    console.log(x)
-    return (x != 0)
-      ? x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-      : '0';
+    console.log(x);
+    return x != 0 ? x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '0';
   }
 
   // ===========> getString
@@ -357,24 +418,30 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
   }
 
   // ===========> isValidField
-  public isValidField(field: string): { color?: string; status?: boolean; icon?: string; } {
+  public isValidField(field: string): {
+    color?: string;
+    status?: boolean;
+    icon?: string;
+  } {
     const validateFIeld = this.presupuestoForm.get(field);
-    return (!validateFIeld.valid && validateFIeld.touched)
+    return !validateFIeld.valid && validateFIeld.touched
       ? { color: 'warn', status: false, icon: 'close' }
       : validateFIeld.valid
-        ? { color: 'accent', status: true, icon: 'done' }
-        : {};
+      ? { color: 'accent', status: true, icon: 'done' }
+      : {};
   }
 
   // ============> filterCliente
   private _filter(value: string): Usuario[] {
     const filterValue = value.toLowerCase();
 
-    return this.clientes.filter(cliente => {
-      return cliente.nombre.toLowerCase().indexOf(filterValue) === 0
-        || cliente.apellidoPaterno.toLowerCase().indexOf(filterValue) === 0
-        || cliente.apellidoMaterno.toLowerCase().indexOf(filterValue) === 0;
-    })
+    return this.clientes.filter((cliente) => {
+      return (
+        cliente.nombre.toLowerCase().indexOf(filterValue) === 0 ||
+        cliente.apellidoPaterno.toLowerCase().indexOf(filterValue) === 0 ||
+        cliente.apellidoMaterno.toLowerCase().indexOf(filterValue) === 0
+      );
+    });
   }
 
   // ============> onKeySearch
@@ -386,16 +453,15 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
     this.router.navigate(['admin/presupuestos']);
   }
 
-
-
-
   // !important, this part is for table.
   // =====================> applyFilterPersonal
   applyFilterCapitulo(event: Event | string): void {
     typeof event === 'string'
-      ? this.filterValueCapitulo = event
-      : this.filterValueCapitulo = (event.target as HTMLInputElement).value;
-    this.dataSourceCapitulo.filter = this.filterValueCapitulo.trim().toLowerCase();
+      ? (this.filterValueCapitulo = event)
+      : (this.filterValueCapitulo = (event.target as HTMLInputElement).value);
+    this.dataSourceCapitulo.filter = this.filterValueCapitulo
+      .trim()
+      .toLowerCase();
     if (this.dataSourceCapitulo.paginator) {
       this.dataSourceCapitulo.paginator.firstPage();
     }
@@ -408,9 +474,11 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
   }
   // =====================>
   masterToggle(): void {
-    this.isAllSelectedCapitulos() ?
-      this.selectionCapitulo.clear() :
-      this.dataSourceCapitulo.data.forEach(row => this.selectionCapitulo.select(row));
+    this.isAllSelectedCapitulos()
+      ? this.selectionCapitulo.clear()
+      : this.dataSourceCapitulo.data.forEach((row) =>
+          this.selectionCapitulo.select(row)
+        );
   }
   // =====================>
   clearCheckbox(): void {
@@ -421,11 +489,10 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
     if (!row) {
       return `${this.isAllSelectedCapitulos() ? 'select' : 'deselect'} all`;
     }
-    return `${this.selectionCapitulo.isSelected(row) ? 'deselect' : 'select'} row ${row.uuid}`;
+    return `${
+      this.selectionCapitulo.isSelected(row) ? 'deselect' : 'select'
+    } row ${row.uuid}`;
   }
-
-
-
 
   // ============================================= PDF ======================================================
 
@@ -434,19 +501,29 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
     let pdf: Array<any> = [];
 
     pdf = await this.pdfSvc.presupuesto(pdf, this.presupuesto, this.capitulos);
-    pdf = await this.pdfSvc.detallePresupuesto(pdf, this.presupuesto, this.capitulos);
+    pdf = await this.pdfSvc.detallePresupuesto(
+      pdf,
+      this.presupuesto,
+      this.capitulos
+    );
 
     const docDefinition = {
       content: pdf,
-      watermark: { text: '©MENDOZARQ', color: '#FF6E00', opacity: 0.06, bold: true, italics: false, },
+      watermark: {
+        text: '©MENDOZARQ',
+        color: '#FF6E00',
+        opacity: 0.06,
+        bold: true,
+        italics: false,
+      },
       info: {
         title: `Presupuesto - ${this.presupuesto.uuid}`,
-        author: '©MENDOZARQ'
+        author: '©MENDOZARQ',
       },
       pageMargins: [60, 40, 40, 60],
       pageSize: 'letter',
       defaultStyle: {
-        font: 'Roboto'
+        font: 'Roboto',
       },
       footer: (currentPage, pageCount) => {
         if (currentPage) {
@@ -455,22 +532,27 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
             text: `Pagina ${currentPage} de ${pageCount}`,
             alignment: 'center',
             margin: [0, 20, 0, 0],
-            color: '#425066'
+            color: '#425066',
           };
         }
-      }
+      },
     };
 
     this.pdfResult = this.pdfSvc.createPdf(docDefinition);
 
-    const pdfIframe = document.querySelector('#pdf-iframe') as HTMLIFrameElement;
+    const pdfIframe = document.querySelector(
+      '#pdf-iframe'
+    ) as HTMLIFrameElement;
     pdfIframe.src = await this.pdfSvc.getPdfDataUrl(this.pdfResult);
   }
 
   // ====================> downloadPdf
   public downloadPdf(): void {
     if (this.pdfResult) {
-      this.pdfSvc.dowload(this.pdfResult, `Presupuesto(${this.presupuesto.uuid})`);
+      this.pdfSvc.dowload(
+        this.pdfResult,
+        `Presupuesto(${this.presupuesto.uuid})`
+      );
     }
   }
 
@@ -487,5 +569,4 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
       this.pdfSvc.print(this.pdfResult);
     }
   }
-
 }
