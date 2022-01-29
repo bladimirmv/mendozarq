@@ -47,7 +47,7 @@
     "@types/node": "^12.11.1",
     "angular-cli-ghpages": "^0.6.2",
     "codelyzer": "^6.0.0",
-    "electron": "^9.2.1",
+    "electron": "^11.5.0",
     "electron-builder": "^22.8.0",
     "firebase-tools": "^8.0.0",
     "fuzzy": "^0.1.3",
