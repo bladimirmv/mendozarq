@@ -1,0 +1,8 @@
+<div class="content">
+  <div *ngIf="!planificacionProyecto.uuid" class="no-data">
+    <img src="./assets/chart.svg" alt="" />
+
+    <button mat-button class="mat-btn-primary">Crear Planificacion</button>
+  </div>
+  <app-gantt-chart *ngIf="planificacionProyecto.uuid"></app-gantt-chart>
+</div>

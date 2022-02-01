@@ -36,6 +36,9 @@ const routes: Routes = [
   { path: 'participante-visita', loadChildren: () => import('./modules/participante-visita/participante-visita.module').then(m => m.ParticipanteVisitaModule) },
 
 
+  { path: 'planificacion', loadChildren: () => import('./modules/planificacion/planificacion.module').then(m => m.PlanificacionModule) },
+
+
 
 
 

@@ -4,9 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './admin.component';
 import { ProyectoComponent } from './components/proyecto/proyecto.component';
 import { VisitaComponent } from './components/visita/visita.component';
-import { PresupuestoObraComponent } from '@modules/presupuestos/components/presupuesto-obra/presupuesto-obra.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { ShowContrasenhaComponent } from './../users/components/show-contrasenha/show-contrasenha.component';
 import { DescripcionProyectoComponent } from './../proyectos/components/descripcion-proyecto/descripcion-proyecto.component';
 
 const routes: Routes = [
@@ -138,10 +136,10 @@ const routes: Routes = [
         component: DescripcionProyectoComponent,
       },
       {
-        path: 'cronograma',
+        path: 'planificacion',
         loadChildren: () =>
-          import('@modules/cronograma/cronograma.module').then(
-            (m) => m.CronogramaModule
+          import('@modules/planificacion/planificacion.module').then(
+            (m) => m.PlanificacionModule
           ),
       },
       {
