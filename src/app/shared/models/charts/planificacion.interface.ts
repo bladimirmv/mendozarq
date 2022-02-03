@@ -17,6 +17,7 @@ export interface TareaPlanificacionProyecto {
   uuidPadre?: string;
   hito?: boolean;
   uuidPlanificacionProyecto?: string;
+  color?: string;
 }
 
 export interface PlanificacionProyectoView extends PlanificacionProyecto {

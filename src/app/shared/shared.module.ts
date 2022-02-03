@@ -12,7 +12,6 @@ import { DeleteModalComponent } from './components/delete-modal/delete-modal.com
 import { WarningModalComponent } from './components/warning-modal/warning-modal.component';
 import { ImgPreviewComponent } from './components/img-preview/img-preview.component';
 import { AppearanceComponent } from './components/appearance/appearance.component';
-
 const SharedComponents: any[] = [
   ModalComponent,
   ButtonComponent,
@@ -27,16 +26,9 @@ const SharedComponents: any[] = [
     DeleteModalComponent,
     WarningModalComponent,
     ImgPreviewComponent,
-    AppearanceComponent
+    AppearanceComponent,
   ],
-  imports: [
-    CommonModule,
-    MaterialModule,
-    FormsModule,
-    CdkMaterialModule
-  ],
-  exports: [
-    SharedComponents
-  ]
+  imports: [CommonModule, MaterialModule, FormsModule, CdkMaterialModule],
+  exports: [SharedComponents],
 })
-export class SharedModule { }
+export class SharedModule {}

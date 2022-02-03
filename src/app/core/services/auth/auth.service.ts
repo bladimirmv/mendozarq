@@ -67,25 +67,27 @@ export class AuthService extends RoleValidator {
   // ====================================================================
   public checkToken(): any {
     const usuarioToken = localStorage.getItem('token') || null;
-    if (usuarioToken) {
-      const isExpired = helper.isTokenExpired(usuarioToken);
-      const { iat, exp, ...usuarioJwt } = helper.decodeToken(usuarioToken);
 
-      if (isExpired) {
-        this.logout();
-        this.toastrSvc.warning(
-          'La sesion ha expirado, porfavor inicia sesion nuevamente',
-          'Sesion Expirada!',
-          {
-            timeOut: 7000,
-          }
-        );
-      }
-
-      this.loggedIn.next(true);
-      this.usuarioToken.next(usuarioToken);
-      this.usuario.next(usuarioJwt);
+    if (!usuarioToken) {
+      this.logout();
+      return;
     }
+    const isExpired = helper.isTokenExpired(usuarioToken);
+    const { iat, exp, ...usuarioJwt } = helper.decodeToken(usuarioToken);
+
+    if (isExpired) {
+      this.logout();
+      this.toastrSvc.warning(
+        'La sesion ha expirado, porfavor inicia sesion nuevamente',
+        'Sesion Expirada!',
+        {
+          timeOut: 7000,
+        }
+      );
+    }
+    this.loggedIn.next(true);
+    this.usuarioToken.next(usuarioToken);
+    this.usuario.next(usuarioJwt);
   }
   // ====================================================================
   public saveToken(token: string): void {

@@ -1,3 +1,4 @@
+import { AuthService } from './../../../../core/services/auth/auth.service';
 import { Location } from '@angular/common';
 import { map, shareReplay, takeUntil } from 'rxjs/operators';
 import { Subject, Subscription } from 'rxjs';
@@ -20,7 +21,8 @@ export class ProyectoComponent implements OnInit, OnDestroy {
     private breakpointObserver: BreakpointObserver,
     private location: Location,
     private brightnessSvc: BrightnessService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private authSvs: AuthService
   ) {}
   idPost: string;
   ngOnInit(): void {
@@ -47,7 +49,9 @@ export class ProyectoComponent implements OnInit, OnDestroy {
     this.location.forward();
   }
 
-  onLogout(): void {}
+  onLogout(): void {
+    this.authSvs.logout();
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next({});

@@ -1,3 +1,4 @@
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from './../../shared/shared.module';
 import { MaterialModule } from '@app/material.module';
 import { NgModule } from '@angular/core';
@@ -8,14 +9,23 @@ import { PlanificacionComponent } from './planificacion.component';
 import { GanttChartComponent } from './components/gantt-chart/gantt-chart.component';
 import { NewTareaPlanificacionComponent } from './new-tarea-planificacion/new-tarea-planificacion.component';
 import { EditTareaPlanificacionComponent } from './edit-tarea-planificacion/edit-tarea-planificacion.component';
+import { NewPlanificacionProyectoComponent } from './new-planificacion-proyecto/new-planificacion-proyecto.component';
 
 @NgModule({
-  declarations: [PlanificacionComponent, GanttChartComponent, NewTareaPlanificacionComponent, EditTareaPlanificacionComponent],
+  declarations: [
+    PlanificacionComponent,
+    GanttChartComponent,
+    NewTareaPlanificacionComponent,
+    EditTareaPlanificacionComponent,
+    NewPlanificacionProyectoComponent,
+  ],
   imports: [
     CommonModule,
     PlanificacionRoutingModule,
     MaterialModule,
     SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
 })
 export class PlanificacionModule {}

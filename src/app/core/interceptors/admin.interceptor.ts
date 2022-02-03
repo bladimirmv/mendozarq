@@ -52,6 +52,7 @@ export class AdminInterceptor implements HttpInterceptor {
     // ];
 
     // if (url.some(path => req.url.includes(path))) {
+    this.authSvc.checkToken();
 
     const authToken = this.authSvc.userTokenValue;
     const authRequest = req.clone({

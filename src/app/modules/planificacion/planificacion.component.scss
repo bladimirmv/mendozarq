@@ -11,6 +11,7 @@
   right: 0;
   position: absolute;
   z-index: -1;
+  height: 100%;
 }
 
 .no-data {
@@ -22,5 +23,11 @@
   justify-content: center;
   img {
     width: 400px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .no-data img {
+    width: 90%;
   }
 }

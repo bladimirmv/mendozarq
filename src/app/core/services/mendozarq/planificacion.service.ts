@@ -1,3 +1,4 @@
+import { TareaPlanificacionProyecto } from './../../../shared/models/charts/planificacion.interface';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
@@ -7,7 +8,7 @@ import { catchError } from 'rxjs/operators';
 import {
   PlanificacionProyecto,
   PlanificacionProyectoView,
-} from '@models/charts/planificacion.models';
+} from '@app/shared/models/charts/planificacion.interface';
 import { environment } from '@env/environment.prod';
 @Injectable({
   providedIn: 'root',
@@ -61,6 +62,23 @@ export class PlanificacionService {
   public deletePlanificacionProyecto(uuid: string): Observable<any> {
     return this.http
       .delete(`${this.API_URL}/api/planificacionProyecto/${uuid}`)
+      .pipe(catchError((error) => this.handdleError(error)));
+  }
+
+  public addTareaPlanificacionProyecto(
+    tareaPlanificacionProyecto: TareaPlanificacionProyecto
+  ): Observable<any> {
+    return this.http
+      .post<TareaPlanificacionProyecto>(
+        `${this.API_URL}/api/planificacionProyecto/tarea`,
+        tareaPlanificacionProyecto
+      )
+      .pipe(catchError((error) => this.handdleError(error)));
+  }
+
+  public deleteTareaPlanificacionProyecto(uuid: string): Observable<any> {
+    return this.http
+      .delete(`${this.API_URL}/api/planificacionProyecto/tarea/${uuid}`)
       .pipe(catchError((error) => this.handdleError(error)));
   }
 

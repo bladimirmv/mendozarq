@@ -128,7 +128,9 @@
         <button mat-raised-button class="btn-just-border" routerLink="/admin">
           Volver al inicio
         </button>
-        <button mat-raised-button class="btn-fill">Cerrar sesion</button>
+        <button mat-raised-button class="btn-fill" (click)="onLogout()">
+          Cerrar sesion
+        </button>
       </div>
     </div>
   </mat-sidenav>

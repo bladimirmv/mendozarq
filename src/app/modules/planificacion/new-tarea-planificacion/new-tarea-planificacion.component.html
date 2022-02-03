@@ -1,1 +1,151 @@
-<p>new-tarea-planificacion works!</p>
+<h2 align="center" mat-dialog-title>Nueva Tarea</h2>
+<mat-dialog-content>
+  <form class="new-form" [formGroup]="tareaPlanificacionForm">
+    <!-- *Nombre -->
+    <mat-form-field
+      class="full-width full-column"
+      [color]="isValidField('nombre').color"
+    >
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre" autocomplete="off" />
+      <mat-hint align="end">
+        {{
+          tareaPlanificacionForm.value.nombre
+            ? tareaPlanificacionForm.value.nombre.length
+            : 0
+        }}/50
+      </mat-hint>
+      <mat-icon matSuffix [color]="isValidField('nombre').color">
+        {{ isValidField("nombre").icon }}
+      </mat-icon>
+      <mat-error *ngIf="tareaPlanificacionForm.get('nombre').errors?.required">
+        Ingrese un nombre.
+      </mat-error>
+      <mat-error *ngIf="tareaPlanificacionForm.get('nombre').errors?.maxlength">
+        Debe contener
+        {{
+          tareaPlanificacionForm.get("nombre").errors?.maxlength?.requiredLength
+        }}
+        digitos como maximo.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width full-column">
+      <mat-label>Capitulo</mat-label>
+      <mat-icon matSuffix [color]="isValidField('uuidPadre').color">
+        {{ isValidField("uuidPadre").icon }}
+      </mat-icon>
+      <mat-select formControlName="uuidPadre">
+        <mat-option value="">Ninguno</mat-option>
+
+        <mat-option *ngFor="let cap of capitulos" [value]="cap.uuid">{{
+          cap.nombre
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="full-width full-column">
+      <mat-label>Dependencia</mat-label>
+      <mat-icon matSuffix [color]="isValidField('dependencia').color">
+        {{ isValidField("dependencia").icon }}
+      </mat-icon>
+      <mat-select formControlName="dependencia">
+        <mat-option value="">Ninguno</mat-option>
+
+        <mat-option *ngFor="let dep of dependencias" [value]="dep.uuid">{{
+          dep.nombre
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- *fechas -->
+    <mat-form-field class="full-width full-column">
+      <mat-label>Ingrese un rago de fecha</mat-label>
+      <mat-date-range-input
+        [formGroup]="tareaPlanificacionForm"
+        [rangePicker]="picker"
+      >
+        <input
+          matStartDate
+          formControlName="fechaInicio"
+          placeholder="Fecha Inicio"
+        />
+        <input
+          matEndDate
+          formControlName="fechaFinal"
+          placeholder="Fecha final"
+        />
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+      <mat-error
+        *ngIf="
+          tareaPlanificacionForm.controls.fechaInicio.hasError(
+            'matStartDateInvalid'
+          )
+        "
+        >Fecha de inicio invalida</mat-error
+      >
+      <mat-error
+        *ngIf="
+          tareaPlanificacionForm.controls.fechaFinal.hasError(
+            'matEndDateInvalid'
+          )
+        "
+        >Fecha final invalida</mat-error
+      >
+
+      <mat-error
+        *ngIf="
+          tareaPlanificacionForm.get('fechaInicio').errors?.required ||
+          tareaPlanificacionForm.get('fechaFinal').errors?.required
+        "
+      >
+        Ingrese un rango de fechas.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-label>Color</mat-label>
+    <input
+      type="color"
+      class="full-width full-column"
+      formControlName="color"
+    />
+
+    <mat-label>Avance</mat-label>
+    <mat-slider
+      formControlName="avance"
+      thumbLabel
+      [displayWith]="0"
+      tickInterval="10"
+      step="1"
+      min="0"
+      max="100"
+      aria-label="units"
+      class="full-width full-column"
+      color="primary"
+    ></mat-slider>
+
+    <mat-checkbox formControlName="hito" class="full-width full-column"
+      >Milestone o Hito</mat-checkbox
+    >
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button
+    mat-button
+    [mat-dialog-close]="false"
+    class="mat-btn-secondary full-width"
+  >
+    Cancelar
+  </button>
+  <button
+    mat-button
+    class="mat-btn-success"
+    [disabled]="!tareaPlanificacionForm.valid"
+    (click)="newPlanificacionProyecto(tareaPlanificacionForm.value)"
+  >
+    Guardar
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,84 @@
+<h2 align="center" mat-dialog-title>Planificación Proyecto</h2>
+<mat-dialog-content>
+  <form class="new-form" [formGroup]="planificacionForm">
+    <!-- *Titulo -->
+    <mat-form-field
+      class="full-width full-column"
+      [color]="isValidField('titulo').color"
+    >
+      <mat-label>Titulo</mat-label>
+      <input matInput formControlName="titulo" autocomplete="off" />
+      <mat-hint align="end">
+        {{
+          planificacionForm.value.titulo
+            ? planificacionForm.value.titulo.length
+            : 0
+        }}/50
+      </mat-hint>
+      <mat-icon matSuffix [color]="isValidField('titulo').color">
+        {{ isValidField("titulo").icon }}
+      </mat-icon>
+      <mat-error *ngIf="planificacionForm.get('titulo').errors?.required">
+        Ingrese un titulo.
+      </mat-error>
+      <mat-error *ngIf="planificacionForm.get('titulo').errors?.maxlength">
+        Debe contener
+        {{ planificacionForm.get("titulo").errors?.maxlength?.requiredLength }}
+        digitos como maximo.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- *Subtitulo -->
+    <mat-form-field
+      class="full-width full-column"
+      [color]="isValidField('subtitulo').color"
+    >
+      <mat-label>Subtitulo</mat-label>
+      <textarea
+        matInput
+        placeholder="Ex. Nueva Subtitulo"
+        formControlName="subtitulo"
+        rows="4"
+      ></textarea>
+      <mat-hint align="end">
+        {{
+          planificacionForm.value.subtitulo
+            ? planificacionForm.value.subtitulo.length
+            : 0
+        }}/200
+      </mat-hint>
+      <mat-icon
+        matSuffix
+        [color]="isValidField('subtitulo').color"
+        *ngIf="planificacionForm.value.subtitulo"
+      >
+        {{ isValidField("subtitulo").icon }}
+      </mat-icon>
+      <mat-error *ngIf="planificacionForm.get('subtitulo').errors?.maxlength">
+        Debe contener
+        {{
+          planificacionForm.get("subtitulo").errors?.maxlength?.requiredLength
+        }}
+        digitos como maximo.
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button
+    mat-button
+    [mat-dialog-close]="false"
+    class="mat-btn-secondary full-width"
+  >
+    Cancelar
+  </button>
+  <button
+    mat-button
+    class="mat-btn-success"
+    [disabled]="!planificacionForm.valid"
+    (click)="newPlanificacionProyecto(planificacionForm.value)"
+  >
+    Guardar
+  </button>
+</mat-dialog-actions>

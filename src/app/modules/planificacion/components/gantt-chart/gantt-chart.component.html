@@ -1,7 +1,8 @@
 <button mat-button (click)="deleteTarea()" [disabled]="!canDelete">
   Eliminar
 </button>
-
 <button mat-button [disabled]="!canEdit">Editar</button>
+
+<button mat-button (click)="addTareaPlanificacion()">Nuevo</button>
 
 <div id="container" #divRef></div>
