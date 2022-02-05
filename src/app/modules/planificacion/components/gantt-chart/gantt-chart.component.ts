@@ -67,50 +67,41 @@ export class GanttChartComponent implements OnInit {
     });
   }
 
-  public deleteTarea(): void {
+  private onDeleteCascadeCapitulos(): any {
     const points: any[] = this.chart.getSelectedPoints();
-    const dialogRef = this.matDialog.open(DeleteModalComponent);
-    let capitulos: Array<any> = [];
-    let tareas: Array<any> = [];
+    let capitulos: Array<string> = [];
+    let tareas: Array<string> = [];
 
     capitulos = points
       .map((point) => {
-        if (!point.parent) {
-          // return this.planificacionSvc.deleteTareaPlanificacionProyecto(
-          //   point.id
-          // );
-
-          return point.id;
-        }
+        if (!point.parent) return point.id;
       })
       .filter((cap) => cap !== undefined);
 
-    tareas = points
-      .map((point) => {
-        if (point.parent) {
-          // return this.planificacionSvc.deleteTareaPlanificacionProyecto(
-          //   point.id
-          // );
-          return point.id;
-        }
-      })
-      .filter((t) => t !== undefined);
+    tareas = points.map((point) => {
+      if (point.parent) return point.id;
+    });
 
     capitulos.forEach((cap) => {
-      tareas = tareas.concat(
-        this.chart.series[0].points
-          .map((point) => {
+      tareas = tareas
+        .concat(
+          this.chart.series[0].points.map((point) => {
             if (point.parent === cap && !tareas.includes(point.id)) {
               return point.id;
             }
           })
-          .filter((p) => p !== undefined)
-      );
+        )
+        .filter((tareas) => tareas !== undefined);
     });
 
-    console.log('cap', capitulos);
+    return { capitulos, tareas };
+  }
 
-    console.log('tasks', tareas);
+  public deleteTarea(): void {
+    const points: any[] = this.chart.getSelectedPoints();
+    const dialogRef = this.matDialog.open(DeleteModalComponent);
+    let capitulos: Array<Observable<any>> = [];
+    let tareas: Array<Observable<any>> = [];
 
     dialogRef
       .afterClosed()
