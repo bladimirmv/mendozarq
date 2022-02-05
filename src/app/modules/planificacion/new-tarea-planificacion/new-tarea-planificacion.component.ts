@@ -61,17 +61,15 @@ export class NewTareaPlanificacionComponent implements OnInit, OnDestroy {
       uuidPadre: [''],
       hito: [false],
       uuidPlanificacionProyecto: [this.planificacionView.uuid],
-      color: [''],
+      color: ['#ffffff'],
     });
   }
 
-  public newPlanificacionProyecto(
-    tareaPlanificacionProyecto: TareaPlanificacionProyecto
-  ): void {
-    tareaPlanificacionProyecto.uuidPlanificacionProyecto =
-      this.planificacionView.uuid;
+  public newPlanificacionProyecto(tarea: TareaPlanificacionProyecto): void {
+    tarea.color = tarea.color == '#ffffff' ? '' : tarea.color;
+    tarea.uuidPlanificacionProyecto = this.planificacionView.uuid;
     this.planificacionSvc
-      .addTareaPlanificacionProyecto(tareaPlanificacionProyecto)
+      .addTareaPlanificacionProyecto(tarea)
       .subscribe((res) => {
         if (res) {
           this.dialogRef.close(true);

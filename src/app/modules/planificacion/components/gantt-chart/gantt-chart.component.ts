@@ -1,3 +1,4 @@
+import { DetalleCapituloService } from '@services/mendozarq/detalle-capitulo.service';
 import { ToastrService } from 'ngx-toastr';
 import { DeleteModalComponent } from './../../../../shared/components/delete-modal/delete-modal.component';
 import { TareaPlanificacionProyecto } from './../../../../shared/models/charts/planificacion.interface';
@@ -7,7 +8,7 @@ import { PlanificacionProyectoView } from '../../../../shared/models/charts/plan
 import { filter, takeUntil } from 'rxjs/operators';
 import { PlanificacionService } from './../../../../core/services/mendozarq/planificacion.service';
 import { PlanificacionProyecto } from '../../../../shared/models/charts/planificacion.interface';
-import { observable, Subject } from 'rxjs';
+import { Observable, observable, Subject, forkJoin } from 'rxjs';
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import * as Highcharts from 'highcharts/highcharts-gantt';
 import HC_exporting from 'highcharts/modules/exporting';
@@ -69,29 +70,81 @@ export class GanttChartComponent implements OnInit {
   public deleteTarea(): void {
     const points: any[] = this.chart.getSelectedPoints();
     const dialogRef = this.matDialog.open(DeleteModalComponent);
+    let capitulos: Array<any> = [];
+    let tareas: Array<any> = [];
+
+    capitulos = points
+      .map((point) => {
+        if (!point.parent) {
+          // return this.planificacionSvc.deleteTareaPlanificacionProyecto(
+          //   point.id
+          // );
+
+          return point.id;
+        }
+      })
+      .filter((cap) => cap !== undefined);
+
+    tareas = points
+      .map((point) => {
+        if (point.parent) {
+          // return this.planificacionSvc.deleteTareaPlanificacionProyecto(
+          //   point.id
+          // );
+          return point.id;
+        }
+      })
+      .filter((t) => t !== undefined);
+
+    capitulos.forEach((cap) => {
+      tareas = tareas.concat(
+        this.chart.series[0].points
+          .map((point) => {
+            if (point.parent === cap && !tareas.includes(point.id)) {
+              return point.id;
+            }
+          })
+          .filter((p) => p !== undefined)
+      );
+    });
+
+    console.log('cap', capitulos);
+
+    console.log('tasks', tareas);
 
     dialogRef
       .afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: boolean) => {
-        if (res) {
-          points.forEach((point: any) => {
-            console.log(point);
-
-            this.planificacionSvc
-              .deleteTareaPlanificacionProyecto(point.id)
-              .subscribe(() => {
-                this.toastrSvc.success(
-                  'Se ha eliminado correctamente! ',
-                  'Planificación Eliminado 😀'
-                );
-
-                this.canDelete = false;
-                this.canEdit = false;
-                this.initPlanificacionProyecto();
-              });
-          });
+        if (!res) {
+          return;
         }
+
+        // if (tareas) {
+        //   forkJoin(tareas).subscribe((res) => {
+        //     console.log('tareas', res);
+        //     if (capitulos) {
+        //       forkJoin(capitulos).subscribe((res) => {
+        //         console.log('caps', res);
+        //       });
+        //     }
+        //   });
+        // }
+
+        // points.forEach((point: any) => {
+        //   this.planificacionSvc
+        //     .deleteTareaPlanificacionProyecto(point.id)
+        //     .subscribe(() => {
+        //       this.toastrSvc.success(
+        //         'Se ha eliminado correctamente! ',
+        //         'Planificación Eliminado 😀'
+        //       );
+
+        //       this.canDelete = false;
+        //       this.canEdit = false;
+        //       this.initPlanificacionProyecto();
+        //     });
+        // });
       });
   }
 

@@ -1,7 +1,11 @@
 import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { DocumentosService } from '@app/core/services/mendozarq/documentos.service';
 
 import { DocumentoProyCarpeta } from '@models/mendozarq/documentos.proyecto.interface';
@@ -22,17 +26,15 @@ export class uploadFile {
 @Component({
   selector: 'app-new-documento',
   templateUrl: './new-documento.component.html',
-  styleUrls: ['./new-documento.component.scss']
+  styleUrls: ['./new-documento.component.scss'],
 })
 export class NewDocumentoComponent implements OnInit {
-
   isHovering: boolean;
   documentos: uploadFile[] = [];
   isClicked: boolean = false;
   continue: boolean = false;
 
   public allUploaded: boolean = false;
-
 
   private destroy$ = new Subject<any>();
   public documentoForm: FormGroup;
@@ -46,13 +48,10 @@ export class NewDocumentoComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public documentoData: DocumentoProyCarpeta,
     private toastrSvc: ToastrService,
     private dialogRef: MatDialogRef<NewDocumentoComponent>,
-    private dialog: MatDialog,
+    private dialog: MatDialog
+  ) {}
 
-  ) { }
-
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy$.next({});
@@ -68,75 +67,101 @@ export class NewDocumentoComponent implements OnInit {
     let fjCarpetaDocumento: Array<Observable<any>> = [];
 
     this.documentos.forEach((documento: uploadFile, index) => {
-      this.documentoData.fechaCreacion = new Date(moment().format('YYYY-MM-DD'));
+      this.documentoData.fechaCreacion = new Date(
+        moment().format('YYYY-MM-DD')
+      );
       this.documentoData.size = documento.file.size;
 
       this.documentoData.path === 'root'
-        ? fjDocumentos.push(this.documentosSvc.addDocumentoProyecto(this.documentoData, documento.file)
-          .pipe(
-            takeUntil(this.destroy$),
-            tap((event: HttpEvent<any>) => {
-              switch (event.type) {
-                case HttpEventType.UploadProgress:
-                  this.documentos[index].progress = Math.round(event.loaded / event.total * 100);
-                  break;
-                case HttpEventType.Response:
-                  this.documentos[index].uploaded = true;
-                  this.documentos[index].progress = 0;
-              }
-            }),
-            catchError((error) => {
-              this.documentos[index].error = true;
-              this.toastrSvc.error(`El archivo ${documento.file.name} no se pudo subir.`, 'Ocurrio un Error!', {
-                timeOut: 7000,
-                enableHtml: true
-              });
-              return of([]);
+        ? fjDocumentos.push(
+            this.documentosSvc
+              .addDocumentoProyecto(this.documentoData, documento.file)
+              .pipe(
+                takeUntil(this.destroy$),
+                tap((event: HttpEvent<any>) => {
+                  switch (event.type) {
+                    case HttpEventType.UploadProgress:
+                      this.documentos[index].progress = Math.round(
+                        (event.loaded / event.total) * 100
+                      );
+                      break;
+                    case HttpEventType.Response:
+                      this.documentos[index].uploaded = true;
+                      this.documentos[index].progress = 0;
+                  }
+                }),
+                catchError((error) => {
+                  this.documentos[index].error = true;
+                  this.toastrSvc.error(
+                    `El archivo ${documento.file.name} no se pudo subir.`,
+                    'Ocurrio un Error!',
+                    {
+                      timeOut: 7000,
+                      enableHtml: true,
+                    }
+                  );
+                  return of([]);
+                })
+              )
+          )
+        : fjCarpetaDocumento.push(
+            this.documentosSvc
+              .addDocumentoCarpeta(this.documentoData, documento.file)
+              .pipe(
+                takeUntil(this.destroy$),
+                tap((event: HttpEvent<any>) => {
+                  switch (event.type) {
+                    case HttpEventType.UploadProgress:
+                      this.documentos[index].progress = Math.round(
+                        (event.loaded / event.total) * 100
+                      );
+                      break;
+                    case HttpEventType.Response:
+                      this.documentos[index].uploaded = true;
+                      this.documentos[index].progress = 0;
+                  }
+                }),
+                catchError((error) => {
+                  this.documentos[index].error = true;
+                  this.toastrSvc.error(
+                    `El archivo ${documento.file.name} no se pudo subir.`,
+                    'Ocurrio un Error!',
+                    {
+                      timeOut: 7000,
+                      enableHtml: true,
+                    }
+                  );
 
-            })))
-        : fjCarpetaDocumento.push(this.documentosSvc.addDocumentoCarpeta(this.documentoData, documento.file)
-          .pipe(
-            takeUntil(this.destroy$),
-            tap((event: HttpEvent<any>) => {
-              switch (event.type) {
-                case HttpEventType.UploadProgress:
-                  this.documentos[index].progress = Math.round(event.loaded / event.total * 100);
-                  break;
-                case HttpEventType.Response:
-                  this.documentos[index].uploaded = true;
-                  this.documentos[index].progress = 0;
-              }
-            }),
-            catchError(error => {
-              this.documentos[index].error = true;
-              this.toastrSvc.error(`El archivo ${documento.file.name} no se pudo subir.`, 'Ocurrio un Error!', {
-                timeOut: 7000,
-                enableHtml: true
-              });
-
-              return of([]);
-            })));
+                  return of([]);
+                })
+              )
+          );
     });
 
-
     if (fjDocumentos.length) {
-      forkJoin(fjDocumentos)
-        .subscribe((events: HttpEvent<any>[]) => {
-          this.toastrSvc.success(`${this.uploadedCounter()}. 😀`, 'Cargado Correctamente', {
-            timeOut: 6000
-          });
-          this.continue = true;
-        });
+      forkJoin(fjDocumentos).subscribe((events: HttpEvent<any>[]) => {
+        this.toastrSvc.success(
+          `${this.uploadedCounter()}. 😀`,
+          'Cargado Correctamente',
+          {
+            timeOut: 6000,
+          }
+        );
+        this.continue = true;
+      });
     }
 
     if (fjCarpetaDocumento.length) {
-      forkJoin(fjCarpetaDocumento)
-        .subscribe((events: HttpEvent<any>[]) => {
-          this.toastrSvc.success(`${this.uploadedCounter()}. 😀`, 'Cargado Correctamente', {
-            timeOut: 6000
-          });
-          this.continue = true;
-        });
+      forkJoin(fjCarpetaDocumento).subscribe((events: HttpEvent<any>[]) => {
+        this.toastrSvc.success(
+          `${this.uploadedCounter()}. 😀`,
+          'Cargado Correctamente',
+          {
+            timeOut: 6000,
+          }
+        );
+        this.continue = true;
+      });
     }
   }
 
@@ -174,7 +199,6 @@ export class NewDocumentoComponent implements OnInit {
   //     });
   // }
 
-
   uploadedCounter(): string {
     let counter: number = 0;
     let errors: number = 0;
@@ -182,7 +206,7 @@ export class NewDocumentoComponent implements OnInit {
       if (documento.uploaded === true) counter++;
       if (documento.error === true) errors++;
     });
-    return (counter > 1 || counter === 0)
+    return counter > 1 || counter === 0
       ? `${counter} cargas completas, ${errors} errores.`
       : `${counter} carga completa, ${errors} errores.`;
   }
@@ -208,15 +232,15 @@ export class NewDocumentoComponent implements OnInit {
     for (let i = 0; i < files.length; i++) {
       this.documentos.push({
         file: files.item(i),
-        progress: 0
+        progress: 0,
       });
     }
   }
 
-
-
   public onDelete(documento: uploadFile) {
-    this.documentos = this.documentos.filter((doc: uploadFile) => doc != documento);
+    this.documentos = this.documentos.filter(
+      (doc: uploadFile) => doc != documento
+    );
   }
 
   // ======================== formatBytes
