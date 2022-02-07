@@ -36,8 +36,6 @@
         {{ isValidField("uuidPadre").icon }}
       </mat-icon>
       <mat-select formControlName="uuidPadre">
-        <mat-option value="">Ninguno</mat-option>
-
         <mat-option *ngFor="let cap of capitulos" [value]="cap.uuid">{{
           cap.nombre
         }}</mat-option>

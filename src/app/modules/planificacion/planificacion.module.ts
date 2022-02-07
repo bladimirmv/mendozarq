@@ -10,6 +10,7 @@ import { GanttChartComponent } from './components/gantt-chart/gantt-chart.compon
 import { NewTareaPlanificacionComponent } from './new-tarea-planificacion/new-tarea-planificacion.component';
 import { EditTareaPlanificacionComponent } from './edit-tarea-planificacion/edit-tarea-planificacion.component';
 import { NewPlanificacionProyectoComponent } from './new-planificacion-proyecto/new-planificacion-proyecto.component';
+import { NewCapituloComponent } from './new-capitulo/new-capitulo.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { NewPlanificacionProyectoComponent } from './new-planificacion-proyecto/
     NewTareaPlanificacionComponent,
     EditTareaPlanificacionComponent,
     NewPlanificacionProyectoComponent,
+    NewCapituloComponent,
   ],
   imports: [
     CommonModule,

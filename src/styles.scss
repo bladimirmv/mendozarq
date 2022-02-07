@@ -174,7 +174,7 @@ $mendozarq-dark-theme: mat-dark-theme(
   --h-border: 2px dashed var(--gray1);
   --card-border: 1px solid var(--gray1);
   --footer-bg: var(--secondary);
-  transition: all 0.5s ease;
+  // transition: all 0.5s ease;
 }
 
 .dark-theme {
@@ -200,7 +200,7 @@ $mendozarq-dark-theme: mat-dark-theme(
   --footer-bg: var(--nav-bg);
   --sobreCard-bg: var(--gray4);
 
-  transition: all 0.3s ease;
+  // transition: all 0.3s ease;
 }
 .gradient-text {
   background-image: linear-gradient(

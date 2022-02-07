@@ -35,13 +35,8 @@ export class NewTareaPlanificacionComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.capitulos = this.planificacionView.data.filter(
-      (tarea: TareaPlanificacionProyecto) => !tarea.uuidPadre
-    );
-
-    this.dependencias = this.planificacionView.data.filter(
-      (tarea: TareaPlanificacionProyecto) => tarea.uuidPadre
-    );
+    this.capitulos = this.planificacionView.capitulos;
+    this.dependencias = this.planificacionView.tareas;
 
     this.initForm();
   }
@@ -58,16 +53,15 @@ export class NewTareaPlanificacionComponent implements OnInit, OnDestroy {
       fechaFinal: ['', Validators.required],
       avance: [0],
       dependencia: [''],
-      uuidPadre: [''],
+      uuidCapitulo: ['', Validators.required],
       hito: [false],
-      uuidPlanificacionProyecto: [this.planificacionView.uuid],
       color: ['#ffffff'],
     });
   }
 
   public newPlanificacionProyecto(tarea: TareaPlanificacionProyecto): void {
     tarea.color = tarea.color == '#ffffff' ? '' : tarea.color;
-    tarea.uuidPlanificacionProyecto = this.planificacionView.uuid;
+    tarea.uuidCapitulo = this.planificacionView.uuid;
     this.planificacionSvc
       .addTareaPlanificacionProyecto(tarea)
       .subscribe((res) => {

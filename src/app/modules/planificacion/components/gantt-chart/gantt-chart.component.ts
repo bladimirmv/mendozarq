@@ -1,14 +1,17 @@
 import { DetalleCapituloService } from '@services/mendozarq/detalle-capitulo.service';
 import { ToastrService } from 'ngx-toastr';
 import { DeleteModalComponent } from './../../../../shared/components/delete-modal/delete-modal.component';
-import { TareaPlanificacionProyecto } from './../../../../shared/models/charts/planificacion.interface';
+import {
+  TareaPlanificacionProyecto,
+  CapituloPlanificacionProyecto,
+} from './../../../../shared/models/charts/planificacion.interface';
 import { NewTareaPlanificacionComponent } from './../../new-tarea-planificacion/new-tarea-planificacion.component';
 import { MatDialog } from '@angular/material/dialog';
 import { PlanificacionProyectoView } from '../../../../shared/models/charts/planificacion.interface';
 import { filter, takeUntil } from 'rxjs/operators';
 import { PlanificacionService } from './../../../../core/services/mendozarq/planificacion.service';
 import { PlanificacionProyecto } from '../../../../shared/models/charts/planificacion.interface';
-import { Observable, observable, Subject, forkJoin } from 'rxjs';
+import { Observable, observable, Subject, forkJoin, of } from 'rxjs';
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import * as Highcharts from 'highcharts/highcharts-gantt';
 import HC_exporting from 'highcharts/modules/exporting';
@@ -62,12 +65,15 @@ export class GanttChartComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((res: boolean) => {
       if (res) {
-        this.initPlanificacionProyecto();
+        // this.initPlanificacionProyecto();
       }
     });
   }
 
-  private onDeleteCascadeCapitulos(): any {
+  private onDeleteCascadeCapitulos(): {
+    capitulos: Array<string>;
+    tareas: Array<string>;
+  } {
     const points: any[] = this.chart.getSelectedPoints();
     let capitulos: Array<string> = [];
     let tareas: Array<string> = [];
@@ -77,7 +83,6 @@ export class GanttChartComponent implements OnInit {
         if (!point.parent) return point.id;
       })
       .filter((cap) => cap !== undefined);
-
     tareas = points.map((point) => {
       if (point.parent) return point.id;
     });
@@ -99,9 +104,19 @@ export class GanttChartComponent implements OnInit {
 
   public deleteTarea(): void {
     const points: any[] = this.chart.getSelectedPoints();
+
     const dialogRef = this.matDialog.open(DeleteModalComponent);
-    let capitulos: Array<Observable<any>> = [];
-    let tareas: Array<Observable<any>> = [];
+    const { capitulos, tareas } = this.onDeleteCascadeCapitulos();
+    let capitulos$: Array<Observable<any>>;
+    let tareas$: Array<Observable<any>>;
+
+    capitulos$ = capitulos.map((cap) =>
+      this.planificacionSvc.deletePlanificacionProyecto(cap)
+    );
+
+    tareas$ = tareas.map((tar) =>
+      this.planificacionSvc.deletePlanificacionProyecto(tar)
+    );
 
     dialogRef
       .afterClosed()
@@ -111,31 +126,31 @@ export class GanttChartComponent implements OnInit {
           return;
         }
 
-        // if (tareas) {
-        //   forkJoin(tareas).subscribe((res) => {
-        //     console.log('tareas', res);
-        //     if (capitulos) {
-        //       forkJoin(capitulos).subscribe((res) => {
-        //         console.log('caps', res);
-        //       });
-        //     }
-        //   });
-        // }
+        if (tareas) {
+          forkJoin(tareas).subscribe((res) => {
+            console.log('tareas', res);
+            if (capitulos) {
+              forkJoin(capitulos).subscribe((res) => {
+                console.log('caps', res);
+              });
+            }
+          });
+        }
 
-        // points.forEach((point: any) => {
-        //   this.planificacionSvc
-        //     .deleteTareaPlanificacionProyecto(point.id)
-        //     .subscribe(() => {
-        //       this.toastrSvc.success(
-        //         'Se ha eliminado correctamente! ',
-        //         'Planificación Eliminado 😀'
-        //       );
+        points.forEach((point: any) => {
+          this.planificacionSvc
+            .deleteTareaPlanificacionProyecto(point.id)
+            .subscribe(() => {
+              this.toastrSvc.success(
+                'Se ha eliminado correctamente! ',
+                'Planificación Eliminado 😀'
+              );
 
-        //       this.canDelete = false;
-        //       this.canEdit = false;
-        //       this.initPlanificacionProyecto();
-        //     });
-        // });
+              this.canDelete = false;
+              this.canEdit = false;
+              this.initPlanificacionProyecto();
+            });
+        });
       });
   }
 
@@ -284,31 +299,46 @@ export class GanttChartComponent implements OnInit {
             name: 'Project 1s',
             type: 'gantt',
             id: 'dd',
-            data: this.planificacionProyecto.data.map(
-              (tarea: TareaPlanificacionProyecto) => {
-                let data: any;
-                if (tarea.hito) {
-                  data = {
-                    start: new Date(tarea.fechaInicio).getTime(),
-                    end: new Date(tarea.fechaInicio).getTime(),
-                    completed: 0,
-                  };
-                }
-
+            data: this.planificacionProyecto.capitulos
+              .map((tarea: CapituloPlanificacionProyecto) => {
                 return {
                   id: tarea.uuid,
                   name: tarea.nombre,
                   start: new Date(tarea.fechaInicio).getTime(),
-                  end: tarea.hito ? 0 : new Date(tarea.fechaFinal).getTime(),
+                  end: new Date(tarea.fechaFinal).getTime(),
                   completed: tarea.avance / 100,
                   dependency: tarea.dependencia,
-                  parent: tarea.uuidPadre,
-                  milestone: tarea.hito ? true : false,
                   color: tarea.color,
-                  ...data,
                 };
-              }
-            ),
+              })
+              .concat(
+                this.planificacionProyecto.tareas.map(
+                  (tarea: TareaPlanificacionProyecto) => {
+                    let data: any;
+                    if (tarea.hito) {
+                      data = {
+                        start: new Date(tarea.fechaInicio).getTime(),
+                        end: new Date(tarea.fechaInicio).getTime(),
+                        completed: 0,
+                      };
+                    }
+                    return {
+                      id: tarea.uuid,
+                      name: tarea.nombre,
+                      start: new Date(tarea.fechaInicio).getTime(),
+                      end: tarea.hito
+                        ? 0
+                        : new Date(tarea.fechaFinal).getTime(),
+                      completed: tarea.avance / 100,
+                      dependency: tarea.dependencia,
+                      parent: tarea.uuidCapitulo,
+                      milestone: tarea.hito ? true : false,
+                      color: tarea.color,
+                      ...data,
+                    };
+                  }
+                )
+              ),
           },
         ],
       }
@@ -319,7 +349,7 @@ export class GanttChartComponent implements OnInit {
 
   private initPlanificacionProyecto(): void {
     this.planificacionSvc
-      .getOnePlanificacionProyecto(this.uuidProyecto)
+      .getAllPlanificacionProyectoByUuid(this.uuidProyecto)
       .pipe(takeUntil(this.destroy$))
       .subscribe((planificaion: PlanificacionProyectoView) => {
         this.planificacionProyecto = planificaion;

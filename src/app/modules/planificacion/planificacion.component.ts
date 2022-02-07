@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { PlanificacionProyectoView } from '@app/shared/models/charts/planificacion.interface';
+import { PlanificacionProyecto } from '@app/shared/models/charts/planificacion.interface';
 import { PlanificacionService } from '@services/mendozarq/planificacion.service';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 
@@ -16,8 +16,8 @@ export class PlanificacionComponent
   implements OnInit, OnDestroy, AfterViewInit
 {
   private destroy$: Subject<any> = new Subject<any>();
-  public planificacionProyecto: PlanificacionProyectoView | null =
-    {} as PlanificacionProyectoView;
+  public planificacionProyecto: PlanificacionProyecto | null =
+    {} as PlanificacionProyecto;
 
   public uuidProyecto: string;
   public isNewPlanificacion: boolean = false;
@@ -45,7 +45,7 @@ export class PlanificacionComponent
     this.planificacionSvc
       .getOnePlanificacionProyecto(this.uuidProyecto)
       .pipe(takeUntil(this.destroy$))
-      .subscribe((planificaion: PlanificacionProyectoView) => {
+      .subscribe((planificaion: PlanificacionProyecto) => {
         this.planificacionProyecto = planificaion;
         this.showChart = true;
 

@@ -6,6 +6,18 @@ export interface PlanificacionProyecto {
   uuidProyecto: string;
 }
 
+export interface CapituloPlanificacionProyecto {
+  uuid: string;
+  creadoEn?: Date;
+  nombre: string;
+  fechaInicio: Date;
+  fechaFinal?: Date;
+  avance?: number;
+  dependencia?: string;
+  color?: string;
+  uuidPlanificacionProyecto?: string;
+}
+
 export interface TareaPlanificacionProyecto {
   uuid: string;
   creadoEn?: Date;
@@ -14,12 +26,12 @@ export interface TareaPlanificacionProyecto {
   fechaFinal?: Date;
   avance?: number;
   dependencia?: string;
-  uuidPadre?: string;
   hito?: boolean;
-  uuidPlanificacionProyecto?: string;
   color?: string;
+  uuidCapitulo?: string;
 }
 
 export interface PlanificacionProyectoView extends PlanificacionProyecto {
-  data: TareaPlanificacionProyecto[];
+  capitulos: CapituloPlanificacionProyecto[];
+  tareas: TareaPlanificacionProyecto[];
 }

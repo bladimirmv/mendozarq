@@ -1,4 +1,7 @@
-import { TareaPlanificacionProyecto } from './../../../shared/models/charts/planificacion.interface';
+import {
+  TareaPlanificacionProyecto,
+  CapituloPlanificacionProyecto,
+} from './../../../shared/models/charts/planificacion.interface';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
@@ -31,33 +34,35 @@ export class PlanificacionService {
 
   public getOnePlanificacionProyecto(
     uuid: string
-  ): Observable<PlanificacionProyectoView> {
+  ): Observable<PlanificacionProyecto> {
     return this.http
-      .get<PlanificacionProyectoView>(
+      .get<PlanificacionProyecto>(
         `${this.API_URL}/api/planificacionProyecto/${uuid}`
       )
       .pipe(catchError((error) => this.handdleError(error)));
   }
 
-  public getAllPlanificacionProyecto(): Observable<PlanificacionProyecto[]> {
+  public getAllPlanificacionProyectoByUuid(
+    uuid: string
+  ): Observable<PlanificacionProyectoView> {
     return this.http
-      .get<PlanificacionProyecto[]>(
-        `${this.API_URL}/api/planificacionProyecto/`
+      .get<PlanificacionProyectoView>(
+        `${this.API_URL}/api/planificacionProyecto/all/${uuid}`
       )
       .pipe(catchError((error) => this.handdleError(error)));
   }
 
-  public updatePlanificacionProyecto(
-    uuid: string,
-    planificacionProyecto: PlanificacionProyecto
-  ): Observable<any> {
-    return this.http
-      .put(
-        `${this.API_URL}/api/planificacionproyecto/${uuid}`,
-        planificacionProyecto
-      )
-      .pipe(catchError((error) => this.handdleError(error)));
-  }
+  // public updatePlanificacionProyecto(
+  //   uuid: string,
+  //   planificacionProyecto: PlanificacionProyecto
+  // ): Observable<any> {
+  //   return this.http
+  //     .put(
+  //       `${this.API_URL}/api/planificacionproyecto/${uuid}`,
+  //       planificacionProyecto
+  //     )
+  //     .pipe(catchError((error) => this.handdleError(error)));
+  // }
 
   public deletePlanificacionProyecto(uuid: string): Observable<any> {
     return this.http
@@ -65,6 +70,7 @@ export class PlanificacionService {
       .pipe(catchError((error) => this.handdleError(error)));
   }
 
+  // *Tarea planificacion
   public addTareaPlanificacionProyecto(
     tareaPlanificacionProyecto: TareaPlanificacionProyecto
   ): Observable<any> {
@@ -79,6 +85,24 @@ export class PlanificacionService {
   public deleteTareaPlanificacionProyecto(uuid: string): Observable<any> {
     return this.http
       .delete(`${this.API_URL}/api/planificacionProyecto/tarea/${uuid}`)
+      .pipe(catchError((error) => this.handdleError(error)));
+  }
+
+  // *Capitulo planificacion
+  public addCapituloPlanificacionProyecto(
+    tareaPlanificacionProyecto: CapituloPlanificacionProyecto
+  ): Observable<any> {
+    return this.http
+      .post<CapituloPlanificacionProyecto>(
+        `${this.API_URL}/api/planificacionProyecto/capitulo`,
+        tareaPlanificacionProyecto
+      )
+      .pipe(catchError((error) => this.handdleError(error)));
+  }
+
+  public deleteCapituloPlanificacionProyecto(uuid: string): Observable<any> {
+    return this.http
+      .delete(`${this.API_URL}/api/planificacionProyecto/capitulo/${uuid}`)
       .pipe(catchError((error) => this.handdleError(error)));
   }
 
