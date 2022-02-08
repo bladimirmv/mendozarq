@@ -1,8 +1,23 @@
-<button mat-button (click)="deleteTarea()" [disabled]="!canDelete">
-  Eliminar
-</button>
-<button mat-button [disabled]="!canEdit">Editar</button>
+<div class="bar-options mat-elevation-z2">
+  <button
+    mat-icon-button
+    [disabled]="!canDelete"
+    (click)="deleteTarea()"
+    matTooltip="Eliminar"
+  >
+    <mat-icon> delete </mat-icon>
+  </button>
+  <button mat-icon-button [disabled]="!canEdit" matTooltip="Editar">
+    <mat-icon> edit </mat-icon>
+  </button>
 
-<button mat-button (click)="addTareaPlanificacion()">Nuevo</button>
+  <button mat-icon-button matTooltip="Nueva Tarea">
+    <mat-icon> post_add </mat-icon>
+  </button>
+
+  <button mat-icon-button matTooltip="Nuevo Capítulo">
+    <mat-icon> add </mat-icon>
+  </button>
+</div>
 
 <div id="container" #divRef></div>

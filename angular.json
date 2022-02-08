@@ -21,7 +21,8 @@
               "lodash",
               "@angular/common/locales/fr",
               "lodash/dropRight",
-              "socket.io-client"
+              "socket.io-client",
+              "highcharts/modules/exporting"
             ],
             "outputPath": "dist/mendozarq",
             "index": "src/index.html",
