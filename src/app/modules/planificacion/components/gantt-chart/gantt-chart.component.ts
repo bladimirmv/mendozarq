@@ -1,3 +1,4 @@
+import { BrightnessService } from './../../../../core/services/brightness.service';
 import { style } from '@angular/animations';
 import { NewCapituloPlanificacionComponent } from './../new-capitulo-planificacion/new-capitulo-planificacion.component';
 import { ToastrService } from 'ngx-toastr';
@@ -35,6 +36,7 @@ export class GanttChartComponent implements OnInit {
   public canEdit: boolean = false;
   public canAddTarea: boolean = false;
   public darkMode: boolean = false;
+  public selectedPoints: number = 0;
 
   private destroy$: Subject<any> = new Subject<any>();
   private chart: any;
@@ -46,15 +48,20 @@ export class GanttChartComponent implements OnInit {
   constructor(
     private planificacionSvc: PlanificacionService,
     private matDialog: MatDialog,
-    private toastrSvc: ToastrService
+    private toastrSvc: ToastrService,
+    private brightnessSvc: BrightnessService
   ) {}
 
   ngAfterViewInit() {
+    this.brightnessSvc.theme$.subscribe((darkTheme: boolean) => {
+      this.darkMode = darkTheme;
+    });
     this.initPlanificacionProyecto();
   }
   ngOnInit(): void {
     // this.series = this.chart.series;
     // console.log(this.series);
+    // Activate the custom button
   }
 
   public toggleMode(): void {
@@ -173,7 +180,6 @@ export class GanttChartComponent implements OnInit {
         xDateFormat: '%A, %b %e, %Y',
         formatter: function () {
           let _this: any = this;
-
           return `<b>${this.key}</b>
           <br/>
           Inicio: ${Highcharts.dateFormat('%A, %d de %b  %Y', _this.x)}
@@ -190,6 +196,9 @@ export class GanttChartComponent implements OnInit {
           text: this.planificacionProyecto.titulo,
           style: {
             color: '#ff6e00',
+            fontWeight: '900',
+            fontSize: '24px',
+            cursor: 'pointer',
           },
         },
 
@@ -228,12 +237,16 @@ export class GanttChartComponent implements OnInit {
                     this.chart.getSelectedPoints().length > 0 ? true : false;
                   this.canEdit =
                     this.chart.getSelectedPoints().length === 1 ? true : false;
+
+                  this.selectedPoints = this.chart.getSelectedPoints().length;
                 },
                 unselect: () => {
                   this.canDelete =
                     this.chart.getSelectedPoints().length > 0 ? true : false;
                   this.canEdit =
                     this.chart.getSelectedPoints().length === 1 ? true : false;
+
+                  this.selectedPoints = this.chart.getSelectedPoints().length;
                 },
               },
             },
@@ -259,13 +272,15 @@ export class GanttChartComponent implements OnInit {
           enabled: true,
         },
         chart: {
+          shadow: true,
           renderTo: this.divReference.nativeElement as HTMLElement,
           spacingLeft: 1,
-          borderRadius: 25,
+          borderRadius: 5,
           backgroundColor: this.darkMode ? '#2a2e35' : '#ffffff',
           plotBorderColor: '#ff6e00',
           style: {
             color: '#ff6e00',
+            border: '#ff6e00',
           },
         },
         xAxis: [
@@ -278,9 +293,6 @@ export class GanttChartComponent implements OnInit {
             grid: {
               enabled: true,
             },
-            gridLineDashStyle: 'Dot',
-            gridLineColor: '#dbe1e8',
-            gridLineWidth: 2,
             dateTimeLabelFormats: {
               week: '%e de %b %Y',
               day: '%d',
@@ -298,9 +310,6 @@ export class GanttChartComponent implements OnInit {
             grid: {
               enabled: true,
             },
-            gridLineDashStyle: 'Dot',
-            gridLineColor: '#dbe1e8',
-            gridLineWidth: 2,
             dateTimeLabelFormats: {
               week: '%e de %b %Y',
               day: '%d',
@@ -319,8 +328,6 @@ export class GanttChartComponent implements OnInit {
             grid: {
               enabled: true,
             },
-            gridLineDashStyle: 'Dot',
-            gridLineWidth: 2,
           },
         ],
         tooltip: {

@@ -31,6 +31,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatBadgeModule } from '@angular/material/badge';
 
 import { ToastrModule } from 'ngx-toastr';
 const matModules = [
@@ -65,6 +66,7 @@ const matModules = [
   MatAutocompleteModule,
   MatListModule,
   MatRadioModule,
+  MatBadgeModule,
 ];
 
 @NgModule({

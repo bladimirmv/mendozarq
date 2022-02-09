@@ -6,13 +6,21 @@
       {{ darkMode ? "dark_mode" : "light_mode" }}
     </mat-icon>
   </button>
+
   <button
     mat-icon-button
     [disabled]="!canDelete"
     (click)="onDeleteCapituloOrTarea()"
     matTooltip="Eliminar"
   >
-    <mat-icon [ngClass]="{ 'warn-color': canDelete }"> delete </mat-icon>
+    <mat-icon
+      [ngClass]="{ 'warn-color': canDelete }"
+      [matBadge]="selectedPoints"
+      [matBadgeColor]="selectedPoints ? 'warn' : 'none'"
+      [matBadgeHidden]="!selectedPoints"
+    >
+      delete
+    </mat-icon>
   </button>
   <button mat-icon-button [disabled]="!canEdit" matTooltip="Editar">
     <mat-icon [ngClass]="{ 'accent-color': canEdit }"> edit </mat-icon>
@@ -34,6 +42,16 @@
   >
     <mat-icon class="success-color"> add </mat-icon>
   </button>
+
+  <button
+    mat-icon-button
+    (click)="onAddTareaPlanificacion()"
+    matTooltip="Editar Planificacion"
+  >
+    <mat-icon class="accent-color"> edit_note </mat-icon>
+  </button>
 </div>
 
-<div id="container" #divRef style="overflow: hidden"></div>
+<div style="width: 100%; overflow: hidden">
+  <div id="container" #divRef></div>
+</div>

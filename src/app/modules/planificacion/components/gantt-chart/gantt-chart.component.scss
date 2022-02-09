@@ -1,7 +1,7 @@
 #container {
-  max-width: 1050px;
-  width: 95%;
-  margin: 1em auto;
+  max-width: 1490px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .bar-options {
@@ -11,8 +11,10 @@
   background-color: var(--nav-bg);
   margin-top: 10px;
   border-radius: 25px;
-  width: 95%;
+  width: 100%;
   margin: 10px auto;
+  max-width: 100%;
+  align-items: center;
 }
 
 .info-color {
@@ -35,8 +37,6 @@
   color: var(--purple-dark);
 }
 
-@media screen and (max-width: 400px) {
-  #container {
-    width: 90%;
-  }
+.primary-color {
+  color: var(--primary);
 }
