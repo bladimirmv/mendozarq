@@ -1,6 +1,6 @@
-<h2 align="center" mat-dialog-title>Nueva Tarea</h2>
+<h2 align="center" mat-dialog-title>Nuevo Capítulo</h2>
 <mat-dialog-content>
-  <form class="new-form" [formGroup]="tareaPlanificacionForm">
+  <form class="new-form" [formGroup]="capituloPlanificacionForm">
     <!-- *Nombre -->
     <mat-form-field
       class="full-width full-column"
@@ -10,36 +10,29 @@
       <input matInput formControlName="nombre" autocomplete="off" />
       <mat-hint align="end">
         {{
-          tareaPlanificacionForm.value.nombre
-            ? tareaPlanificacionForm.value.nombre.length
+          capituloPlanificacionForm.value.nombre
+            ? capituloPlanificacionForm.value.nombre.length
             : 0
         }}/50
       </mat-hint>
       <mat-icon matSuffix [color]="isValidField('nombre').color">
         {{ isValidField("nombre").icon }}
       </mat-icon>
-      <mat-error *ngIf="tareaPlanificacionForm.get('nombre').errors?.required">
+      <mat-error
+        *ngIf="capituloPlanificacionForm.get('nombre').errors?.required"
+      >
         Ingrese un nombre.
       </mat-error>
-      <mat-error *ngIf="tareaPlanificacionForm.get('nombre').errors?.maxlength">
+      <mat-error
+        *ngIf="capituloPlanificacionForm.get('nombre').errors?.maxlength"
+      >
         Debe contener
         {{
-          tareaPlanificacionForm.get("nombre").errors?.maxlength?.requiredLength
+          capituloPlanificacionForm.get("nombre").errors?.maxlength
+            ?.requiredLength
         }}
         digitos como maximo.
       </mat-error>
-    </mat-form-field>
-
-    <mat-form-field class="full-width full-column">
-      <mat-label>Capitulo</mat-label>
-      <mat-icon matSuffix [color]="isValidField('uuidPadre').color">
-        {{ isValidField("uuidPadre").icon }}
-      </mat-icon>
-      <mat-select formControlName="uuidPadre">
-        <mat-option *ngFor="let cap of capitulos" [value]="cap.uuid">{{
-          cap.nombre
-        }}</mat-option>
-      </mat-select>
     </mat-form-field>
 
     <mat-form-field class="full-width full-column">
@@ -60,7 +53,7 @@
     <mat-form-field class="full-width full-column">
       <mat-label>Ingrese un rago de fecha</mat-label>
       <mat-date-range-input
-        [formGroup]="tareaPlanificacionForm"
+        [formGroup]="capituloPlanificacionForm"
         [rangePicker]="picker"
       >
         <input
@@ -78,7 +71,7 @@
       <mat-date-range-picker #picker></mat-date-range-picker>
       <mat-error
         *ngIf="
-          tareaPlanificacionForm.controls.fechaInicio.hasError(
+          capituloPlanificacionForm.controls.fechaInicio.hasError(
             'matStartDateInvalid'
           )
         "
@@ -86,7 +79,7 @@
       >
       <mat-error
         *ngIf="
-          tareaPlanificacionForm.controls.fechaFinal.hasError(
+          capituloPlanificacionForm.controls.fechaFinal.hasError(
             'matEndDateInvalid'
           )
         "
@@ -95,8 +88,8 @@
 
       <mat-error
         *ngIf="
-          tareaPlanificacionForm.get('fechaInicio').errors?.required ||
-          tareaPlanificacionForm.get('fechaFinal').errors?.required
+          capituloPlanificacionForm.get('fechaInicio').errors?.required ||
+          capituloPlanificacionForm.get('fechaFinal').errors?.required
         "
       >
         Ingrese un rango de fechas.
@@ -123,10 +116,6 @@
       class="full-width full-column"
       color="primary"
     ></mat-slider>
-
-    <mat-checkbox formControlName="hito" class="full-width full-column"
-      >Milestone o Hito</mat-checkbox
-    >
   </form>
 </mat-dialog-content>
 
@@ -141,8 +130,8 @@
   <button
     mat-button
     class="mat-btn-success"
-    [disabled]="!tareaPlanificacionForm.valid"
-    (click)="newPlanificacionProyecto(tareaPlanificacionForm.value)"
+    [disabled]="!capituloPlanificacionForm.valid"
+    (click)="newPlanificacionProyecto(capituloPlanificacionForm.value)"
   >
     Guardar
   </button>

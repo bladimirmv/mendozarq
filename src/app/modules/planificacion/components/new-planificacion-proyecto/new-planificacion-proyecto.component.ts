@@ -1,10 +1,10 @@
-import { PlanificacionService } from './../../../core/services/mendozarq/planificacion.service';
-import { PlanificacionProyecto } from '../../../shared/models/charts/planificacion.interface';
+import { PlanificacionService } from '@services/mendozarq/planificacion.service';
+import { PlanificacionProyecto } from '@models/charts/planificacion.interface';
 import { takeUntil } from 'rxjs/operators';
-import { Proyecto } from './../../../shared/models/mendozarq/proyecto.interface';
+import { Proyecto } from '@models/mendozarq/proyecto.interface';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { ProyectoService } from './../../../core/services/mendozarq/proyecto.service';
+import { ProyectoService } from '@services/mendozarq/proyecto.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';

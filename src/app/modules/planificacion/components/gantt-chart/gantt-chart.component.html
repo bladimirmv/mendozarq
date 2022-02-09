@@ -1,23 +1,39 @@
 <div class="bar-options mat-elevation-z2">
+  <button mat-icon-button (click)="toggleMode()" matTooltip="Apariencia">
+    <mat-icon
+      [ngClass]="{ 'darkMode-color': darkMode, 'accent-color': !darkMode }"
+    >
+      {{ darkMode ? "dark_mode" : "light_mode" }}
+    </mat-icon>
+  </button>
   <button
     mat-icon-button
     [disabled]="!canDelete"
-    (click)="deleteTarea()"
+    (click)="onDeleteCapituloOrTarea()"
     matTooltip="Eliminar"
   >
-    <mat-icon> delete </mat-icon>
+    <mat-icon [ngClass]="{ 'warn-color': canDelete }"> delete </mat-icon>
   </button>
   <button mat-icon-button [disabled]="!canEdit" matTooltip="Editar">
-    <mat-icon> edit </mat-icon>
+    <mat-icon [ngClass]="{ 'accent-color': canEdit }"> edit </mat-icon>
   </button>
 
-  <button mat-icon-button matTooltip="Nueva Tarea">
-    <mat-icon> post_add </mat-icon>
+  <button
+    mat-icon-button
+    [disabled]="!canAddTarea"
+    (click)="onAddTareaPlanificacion()"
+    matTooltip="Nueva Tarea"
+  >
+    <mat-icon [ngClass]="{ 'info-color': canAddTarea }"> post_add </mat-icon>
   </button>
 
-  <button mat-icon-button matTooltip="Nuevo Capítulo">
-    <mat-icon> add </mat-icon>
+  <button
+    mat-icon-button
+    (click)="onAddCapituloPlanificacion()"
+    matTooltip="Nuevo Capítulo"
+  >
+    <mat-icon class="success-color"> add </mat-icon>
   </button>
 </div>
 
-<div id="container" #divRef></div>
+<div id="container" #divRef style="overflow: hidden"></div>

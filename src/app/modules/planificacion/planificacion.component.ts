@@ -1,4 +1,4 @@
-import { NewPlanificacionProyectoComponent } from './new-planificacion-proyecto/new-planificacion-proyecto.component';
+import { NewPlanificacionProyectoComponent } from './components/new-planificacion-proyecto/new-planificacion-proyecto.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';

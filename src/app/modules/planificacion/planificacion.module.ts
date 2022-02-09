@@ -1,16 +1,18 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from './../../shared/shared.module';
 import { MaterialModule } from '@app/material.module';
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { PlanificacionRoutingModule } from './planificacion-routing.module';
 import { PlanificacionComponent } from './planificacion.component';
 import { GanttChartComponent } from './components/gantt-chart/gantt-chart.component';
-import { NewTareaPlanificacionComponent } from './new-tarea-planificacion/new-tarea-planificacion.component';
-import { EditTareaPlanificacionComponent } from './edit-tarea-planificacion/edit-tarea-planificacion.component';
-import { NewPlanificacionProyectoComponent } from './new-planificacion-proyecto/new-planificacion-proyecto.component';
-import { NewCapituloComponent } from './new-capitulo/new-capitulo.component';
+import { NewTareaPlanificacionComponent } from './components/new-tarea-planificacion/new-tarea-planificacion.component';
+import { EditTareaPlanificacionComponent } from './components/edit-tarea-planificacion/edit-tarea-planificacion.component';
+import { NewPlanificacionProyectoComponent } from './components/new-planificacion-proyecto/new-planificacion-proyecto.component';
+
+import { NewCapituloPlanificacionComponent } from './components/new-capitulo-planificacion/new-capitulo-planificacion.component';
+import { EditCapituloPlanificacionComponent } from './components/edit-capitulo-planificacion/edit-capitulo-planificacion.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,8 @@ import { NewCapituloComponent } from './new-capitulo/new-capitulo.component';
     NewTareaPlanificacionComponent,
     EditTareaPlanificacionComponent,
     NewPlanificacionProyectoComponent,
-    NewCapituloComponent,
+    NewCapituloPlanificacionComponent,
+    EditCapituloPlanificacionComponent,
   ],
   imports: [
     CommonModule,

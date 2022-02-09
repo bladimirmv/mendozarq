@@ -1,23 +1,21 @@
-import { DetalleCapituloService } from '@services/mendozarq/detalle-capitulo.service';
+import { style } from '@angular/animations';
+import { NewCapituloPlanificacionComponent } from './../new-capitulo-planificacion/new-capitulo-planificacion.component';
 import { ToastrService } from 'ngx-toastr';
-import { DeleteModalComponent } from './../../../../shared/components/delete-modal/delete-modal.component';
+import { DeleteModalComponent } from '@shared/components/delete-modal/delete-modal.component';
 import {
   TareaPlanificacionProyecto,
   CapituloPlanificacionProyecto,
-} from './../../../../shared/models/charts/planificacion.interface';
-import { NewTareaPlanificacionComponent } from './../../new-tarea-planificacion/new-tarea-planificacion.component';
+} from '@models/charts/planificacion.interface';
+import { NewTareaPlanificacionComponent } from './../new-tarea-planificacion/new-tarea-planificacion.component';
 import { MatDialog } from '@angular/material/dialog';
-import { PlanificacionProyectoView } from '../../../../shared/models/charts/planificacion.interface';
-import { filter, takeUntil } from 'rxjs/operators';
-import { PlanificacionService } from './../../../../core/services/mendozarq/planificacion.service';
-import { PlanificacionProyecto } from '../../../../shared/models/charts/planificacion.interface';
-import { Observable, observable, Subject, forkJoin, of } from 'rxjs';
+import { PlanificacionProyectoView } from '@models/charts/planificacion.interface';
+import { takeUntil } from 'rxjs/operators';
+import { PlanificacionService } from '@services/mendozarq/planificacion.service';
+import { Observable, Subject, forkJoin } from 'rxjs';
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import * as Highcharts from 'highcharts/highcharts-gantt';
 import HC_exporting from 'highcharts/modules/exporting';
 HC_exporting(Highcharts);
-
-import * as moment from 'moment';
 
 import {
   spanish,
@@ -31,11 +29,12 @@ import {
 })
 export class GanttChartComponent implements OnInit {
   @ViewChild('divRef', { static: false }) divReference: ElementRef;
-  @ViewChild('btnDelete', { static: false }) btnDelete: ElementRef;
   @Input() uuidProyecto: string;
 
   public canDelete: boolean = false;
   public canEdit: boolean = false;
+  public canAddTarea: boolean = false;
+  public darkMode: boolean = false;
 
   private destroy$: Subject<any> = new Subject<any>();
   private chart: any;
@@ -58,65 +57,58 @@ export class GanttChartComponent implements OnInit {
     // console.log(this.series);
   }
 
-  public addTareaPlanificacion(): void {
+  public toggleMode(): void {
+    this.darkMode = this.darkMode ? false : true;
+    this.ganttChartInit();
+  }
+
+  public onAddTareaPlanificacion(): void {
     const dialogRef = this.matDialog.open(NewTareaPlanificacionComponent, {
       data: this.planificacionProyecto,
     });
 
     dialogRef.afterClosed().subscribe((res: boolean) => {
       if (res) {
-        // this.initPlanificacionProyecto();
+        this.initPlanificacionProyecto();
       }
     });
   }
 
-  private onDeleteCascadeCapitulos(): {
-    capitulos: Array<string>;
-    tareas: Array<string>;
-  } {
-    const points: any[] = this.chart.getSelectedPoints();
-    let capitulos: Array<string> = [];
-    let tareas: Array<string> = [];
-
-    capitulos = points
-      .map((point) => {
-        if (!point.parent) return point.id;
-      })
-      .filter((cap) => cap !== undefined);
-    tareas = points.map((point) => {
-      if (point.parent) return point.id;
+  public onAddCapituloPlanificacion(): void {
+    const dialogRef = this.matDialog.open(NewCapituloPlanificacionComponent, {
+      data: this.planificacionProyecto,
     });
 
-    capitulos.forEach((cap) => {
-      tareas = tareas
-        .concat(
-          this.chart.series[0].points.map((point) => {
-            if (point.parent === cap && !tareas.includes(point.id)) {
-              return point.id;
-            }
-          })
-        )
-        .filter((tareas) => tareas !== undefined);
+    dialogRef.afterClosed().subscribe((res: boolean) => {
+      if (res) {
+        this.initPlanificacionProyecto();
+      }
     });
-
-    return { capitulos, tareas };
   }
 
-  public deleteTarea(): void {
+  public onDeleteCapituloOrTarea(): void {
     const points: any[] = this.chart.getSelectedPoints();
-
     const dialogRef = this.matDialog.open(DeleteModalComponent);
-    const { capitulos, tareas } = this.onDeleteCascadeCapitulos();
     let capitulos$: Array<Observable<any>>;
     let tareas$: Array<Observable<any>>;
 
-    capitulos$ = capitulos.map((cap) =>
-      this.planificacionSvc.deletePlanificacionProyecto(cap)
-    );
+    capitulos$ = points
+      .map((point) => {
+        if (!point.parent)
+          return this.planificacionSvc.deleteCapituloPlanificacionProyecto(
+            point.id
+          );
+      })
+      .filter((cap) => cap !== undefined);
 
-    tareas$ = tareas.map((tar) =>
-      this.planificacionSvc.deletePlanificacionProyecto(tar)
-    );
+    tareas$ = points
+      .map((point) => {
+        if (point.parent)
+          return this.planificacionSvc.deleteTareaPlanificacionProyecto(
+            point.id
+          );
+      })
+      .filter((tar) => tar !== undefined);
 
     dialogRef
       .afterClosed()
@@ -125,32 +117,42 @@ export class GanttChartComponent implements OnInit {
         if (!res) {
           return;
         }
-
-        if (tareas) {
-          forkJoin(tareas).subscribe((res) => {
-            console.log('tareas', res);
-            if (capitulos) {
-              forkJoin(capitulos).subscribe((res) => {
-                console.log('caps', res);
-              });
-            }
+        if (capitulos$) {
+          forkJoin(capitulos$).subscribe((res: Array<any>) => {
+            console.log('caps', res);
+            this.toastrSvc.success(
+              'Se ha eliminado correctamente! ',
+              `Capítulos Eliminados: ${res.length} 😀`
+            );
+            this.canDelete = false;
+            this.canEdit = false;
+            this.initPlanificacionProyecto();
           });
         }
 
-        points.forEach((point: any) => {
-          this.planificacionSvc
-            .deleteTareaPlanificacionProyecto(point.id)
-            .subscribe(() => {
-              this.toastrSvc.success(
-                'Se ha eliminado correctamente! ',
-                'Planificación Eliminado 😀'
-              );
+        if (tareas$) {
+          forkJoin(tareas$).subscribe((res: Array<any>) => {
+            console.log('tareas', res);
+            this.toastrSvc.success(
+              'Se ha eliminado correctamente! ',
+              `Tareas Eliminados: ${res.length} 😀`
+            );
+            this.canDelete = false;
+            this.canEdit = false;
+            this.initPlanificacionProyecto();
+          });
+        }
+      });
+  }
 
-              this.canDelete = false;
-              this.canEdit = false;
-              this.initPlanificacionProyecto();
-            });
-        });
+  private initPlanificacionProyecto(): void {
+    this.planificacionSvc
+      .getAllPlanificacionProyectoByUuid(this.uuidProyecto)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((planificaion: PlanificacionProyectoView) => {
+        this.planificacionProyecto = planificaion;
+        this.canAddTarea = !!planificaion.capitulos.length;
+        this.ganttChartInit();
       });
   }
 
@@ -161,6 +163,7 @@ export class GanttChartComponent implements OnInit {
       chart: {
         style: {
           fontFamily: 'Montserrat',
+          color: '#ff6e00',
         },
       },
       credits: {
@@ -185,10 +188,16 @@ export class GanttChartComponent implements OnInit {
       {
         title: {
           text: this.planificacionProyecto.titulo,
+          style: {
+            color: '#ff6e00',
+          },
         },
 
         subtitle: {
           text: this.planificacionProyecto.subtitulo,
+          style: {
+            color: this.darkMode ? '#ffffff' : '#000000',
+          },
         },
 
         plotOptions: {
@@ -208,7 +217,7 @@ export class GanttChartComponent implements OnInit {
             dataLabels: {
               style: {
                 cursor: 'pointer',
-                color: '#ffffff',
+                color: '#ff6e00',
               },
             },
             allowPointSelect: true,
@@ -252,13 +261,25 @@ export class GanttChartComponent implements OnInit {
         chart: {
           renderTo: this.divReference.nativeElement as HTMLElement,
           spacingLeft: 1,
+          borderRadius: 25,
+          backgroundColor: this.darkMode ? '#2a2e35' : '#ffffff',
+          plotBorderColor: '#ff6e00',
+          style: {
+            color: '#ff6e00',
+          },
         },
         xAxis: [
           {
+            labels: {
+              style: {
+                color: this.darkMode ? '#ffffff' : '#000000',
+              },
+            },
             grid: {
               enabled: true,
             },
             gridLineDashStyle: 'Dot',
+            gridLineColor: '#dbe1e8',
             gridLineWidth: 2,
             dateTimeLabelFormats: {
               week: '%e de %b %Y',
@@ -269,6 +290,17 @@ export class GanttChartComponent implements OnInit {
           },
 
           {
+            labels: {
+              style: {
+                color: this.darkMode ? '#ffffff' : '#000000',
+              },
+            },
+            grid: {
+              enabled: true,
+            },
+            gridLineDashStyle: 'Dot',
+            gridLineColor: '#dbe1e8',
+            gridLineWidth: 2,
             dateTimeLabelFormats: {
               week: '%e de %b %Y',
               day: '%d',
@@ -279,6 +311,11 @@ export class GanttChartComponent implements OnInit {
         ],
         yAxis: [
           {
+            labels: {
+              style: {
+                color: '#ff6e00',
+              },
+            },
             grid: {
               enabled: true,
             },
@@ -296,9 +333,9 @@ export class GanttChartComponent implements OnInit {
         },
         series: [
           {
-            name: 'Project 1s',
+            name: 'PLANIFICACION PROYECTO',
             type: 'gantt',
-            id: 'dd',
+            id: 'PLANIFICACION PROYECTO',
             data: this.planificacionProyecto.capitulos
               .map((tarea: CapituloPlanificacionProyecto) => {
                 return {
@@ -345,15 +382,5 @@ export class GanttChartComponent implements OnInit {
     );
 
     this.series = this.chart.series[0];
-  }
-
-  private initPlanificacionProyecto(): void {
-    this.planificacionSvc
-      .getAllPlanificacionProyectoByUuid(this.uuidProyecto)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((planificaion: PlanificacionProyectoView) => {
-        this.planificacionProyecto = planificaion;
-        this.ganttChartInit();
-      });
   }
 }

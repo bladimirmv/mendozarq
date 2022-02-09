@@ -1,24 +1,22 @@
+import { CapituloPlanificacionProyecto } from './../../../../shared/models/charts/planificacion.interface';
 import {
   TareaPlanificacionProyecto,
   PlanificacionProyectoView,
-} from './../../../shared/models/charts/planificacion.interface';
+} from '@models/charts/planificacion.interface';
 import { PlanificacionService } from '@services/mendozarq/planificacion.service';
-import { PlanificacionProyecto } from '@models/charts/planificacion.interface';
-import { takeUntil, filter } from 'rxjs/operators';
-import { Proyecto } from '@models/mendozarq/proyecto.interface';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
-import { SeriesCheckboxClickEventObject } from 'highcharts';
+
 @Component({
-  selector: 'app-new-tarea-planificacion',
-  templateUrl: './new-tarea-planificacion.component.html',
-  styleUrls: ['./new-tarea-planificacion.component.scss'],
+  selector: 'app-new-capitulo-planificacion',
+  templateUrl: './new-capitulo-planificacion.component.html',
+  styleUrls: ['./new-capitulo-planificacion.component.scss'],
 })
-export class NewTareaPlanificacionComponent implements OnInit, OnDestroy {
-  public tareaPlanificacionForm: FormGroup;
+export class NewCapituloPlanificacionComponent implements OnInit, OnDestroy {
+  public capituloPlanificacionForm: FormGroup;
 
   private destroy$: Subject<any> = new Subject<any>();
   public capitulos: TareaPlanificacionProyecto[] = [];
@@ -28,14 +26,13 @@ export class NewTareaPlanificacionComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private toastrSvc: ToastrService,
-    private dialogRef: MatDialogRef<NewTareaPlanificacionComponent>,
+    private dialogRef: MatDialogRef<NewCapituloPlanificacionComponent>,
     private planificacionSvc: PlanificacionService,
     @Inject(MAT_DIALOG_DATA)
     public planificacionView: PlanificacionProyectoView
   ) {}
 
   ngOnInit(): void {
-    this.capitulos = this.planificacionView.capitulos;
     this.dependencias = this.planificacionView.tareas;
 
     this.initForm();
@@ -47,39 +44,34 @@ export class NewTareaPlanificacionComponent implements OnInit, OnDestroy {
   }
 
   private initForm(): void {
-    this.tareaPlanificacionForm = this.fb.group({
+    this.capituloPlanificacionForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.maxLength(200)]],
       fechaInicio: ['', Validators.required],
       fechaFinal: ['', Validators.required],
       avance: [0],
       dependencia: [''],
-      uuidCapitulo: ['', Validators.required],
-      hito: [false],
       color: ['#ffffff'],
+      uuidPlanificacionProyecto: this.planificacionView.uuid,
     });
   }
 
-  public newPlanificacionProyecto(tarea: TareaPlanificacionProyecto): void {
-    tarea.color = tarea.color == '#ffffff' ? '' : tarea.color;
-    tarea.uuidCapitulo = this.planificacionView.uuid;
+  public newPlanificacionProyecto(
+    capitulo: CapituloPlanificacionProyecto
+  ): void {
+    capitulo.color = capitulo.color == '#ffffff' ? '' : capitulo.color;
+    capitulo.uuidPlanificacionProyecto = this.planificacionView.uuid;
+
     this.planificacionSvc
-      .addTareaPlanificacionProyecto(tarea)
+      .addCapituloPlanificacionProyecto(capitulo)
       .subscribe((res) => {
         if (res) {
           this.dialogRef.close(true);
           this.toastrSvc.success(
             'Se ha creado correctamente! ',
-            'Planificación Creado 😀'
+            'Capítulo Creado 😀'
           );
         }
       });
-  }
-
-  checkStatus(): void {
-    this.tareaPlanificacionForm
-      .get('fechaFinal')
-      .setValidators(this.selectedOption !== 3 ? Validators.required : []);
-    console.log(this.tareaPlanificacionForm);
   }
 
   // ===========> isValidField
@@ -88,7 +80,7 @@ export class NewTareaPlanificacionComponent implements OnInit, OnDestroy {
     status?: boolean;
     icon?: string;
   } {
-    const validateFIeld = this.tareaPlanificacionForm.get(field);
+    const validateFIeld = this.capituloPlanificacionForm.get(field);
     return !validateFIeld.valid && validateFIeld.touched
       ? { color: 'warn', status: false, icon: 'close' }
       : validateFIeld.valid
