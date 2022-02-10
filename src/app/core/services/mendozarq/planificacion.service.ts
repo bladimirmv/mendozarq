@@ -82,6 +82,18 @@ export class PlanificacionService {
       .pipe(catchError((error) => this.handdleError(error)));
   }
 
+  public updateTareaPlanificacionProyecto(
+    uuid: string,
+    tareaPlanificacion: TareaPlanificacionProyecto
+  ): Observable<any> {
+    return this.http
+      .put(
+        `${this.API_URL}/api/planificacionproyecto/tarea/${uuid}`,
+        tareaPlanificacion
+      )
+      .pipe(catchError((error) => this.handdleError(error)));
+  }
+
   public deleteTareaPlanificacionProyecto(uuid: string): Observable<any> {
     return this.http
       .delete(`${this.API_URL}/api/planificacionProyecto/tarea/${uuid}`)

@@ -13,6 +13,7 @@ import { NewPlanificacionProyectoComponent } from './components/new-planificacio
 
 import { NewCapituloPlanificacionComponent } from './components/new-capitulo-planificacion/new-capitulo-planificacion.component';
 import { EditCapituloPlanificacionComponent } from './components/edit-capitulo-planificacion/edit-capitulo-planificacion.component';
+import { EditPlanificacionProyectoComponent } from './components/edit-planificacion-proyecto/edit-planificacion-proyecto.component';
 @NgModule({
   declarations: [
     PlanificacionComponent,
@@ -22,6 +23,7 @@ import { EditCapituloPlanificacionComponent } from './components/edit-capitulo-p
     NewPlanificacionProyectoComponent,
     NewCapituloPlanificacionComponent,
     EditCapituloPlanificacionComponent,
+    EditPlanificacionProyectoComponent,
   ],
   imports: [
     CommonModule,

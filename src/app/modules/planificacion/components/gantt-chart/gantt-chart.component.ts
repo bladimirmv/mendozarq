@@ -1,5 +1,7 @@
-import { BrightnessService } from './../../../../core/services/brightness.service';
-import { style } from '@angular/animations';
+import { EditPlanificacionProyectoComponent } from './../edit-planificacion-proyecto/edit-planificacion-proyecto.component';
+import { EditTareaPlanificacionComponent } from './../edit-tarea-planificacion/edit-tarea-planificacion.component';
+import { EditCapituloPlanificacionComponent } from './../edit-capitulo-planificacion/edit-capitulo-planificacion.component';
+import { BrightnessService } from '@services/brightness.service';
 import { NewCapituloPlanificacionComponent } from './../new-capitulo-planificacion/new-capitulo-planificacion.component';
 import { ToastrService } from 'ngx-toastr';
 import { DeleteModalComponent } from '@shared/components/delete-modal/delete-modal.component';
@@ -7,13 +9,13 @@ import {
   TareaPlanificacionProyecto,
   CapituloPlanificacionProyecto,
 } from '@models/charts/planificacion.interface';
-import { NewTareaPlanificacionComponent } from './../new-tarea-planificacion/new-tarea-planificacion.component';
-import { MatDialog } from '@angular/material/dialog';
-import { PlanificacionProyectoView } from '@models/charts/planificacion.interface';
-import { takeUntil } from 'rxjs/operators';
-import { PlanificacionService } from '@services/mendozarq/planificacion.service';
-import { Observable, Subject, forkJoin } from 'rxjs';
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { take, takeUntil } from 'rxjs/operators';
+import { Observable, Subject, forkJoin, pipe } from 'rxjs';
+import { NewTareaPlanificacionComponent } from './../new-tarea-planificacion/new-tarea-planificacion.component';
+import { PlanificacionProyectoView } from '@models/charts/planificacion.interface';
+import { PlanificacionService } from '@services/mendozarq/planificacion.service';
 import * as Highcharts from 'highcharts/highcharts-gantt';
 import HC_exporting from 'highcharts/modules/exporting';
 HC_exporting(Highcharts);
@@ -37,32 +39,28 @@ export class GanttChartComponent implements OnInit {
   public canAddTarea: boolean = false;
   public darkMode: boolean = false;
   public selectedPoints: number = 0;
+  public series: any;
 
   private destroy$: Subject<any> = new Subject<any>();
   private chart: any;
   private planificacionProyecto: PlanificacionProyectoView =
     {} as PlanificacionProyectoView;
 
-  series: any;
-
   constructor(
     private planificacionSvc: PlanificacionService,
     private matDialog: MatDialog,
     private toastrSvc: ToastrService,
     private brightnessSvc: BrightnessService
-  ) {}
-
-  ngAfterViewInit() {
-    this.brightnessSvc.theme$.subscribe((darkTheme: boolean) => {
+  ) {
+    this.brightnessSvc.theme$.pipe(take(1)).subscribe((darkTheme: boolean) => {
       this.darkMode = darkTheme;
     });
+  }
+
+  ngAfterViewInit() {
     this.initPlanificacionProyecto();
   }
-  ngOnInit(): void {
-    // this.series = this.chart.series;
-    // console.log(this.series);
-    // Activate the custom button
-  }
+  ngOnInit(): void {}
 
   public toggleMode(): void {
     this.darkMode = this.darkMode ? false : true;
@@ -150,6 +148,44 @@ export class GanttChartComponent implements OnInit {
           });
         }
       });
+  }
+
+  public onEditCapituloOrTarea(): void {
+    const points: any = this.chart.getSelectedPoints()[0];
+    let capitulo: CapituloPlanificacionProyecto;
+    let tarea: TareaPlanificacionProyecto;
+
+    if (!points.parent) {
+      capitulo = this.planificacionProyecto.capitulos.filter(
+        (tarea) => tarea.uuid === points.id
+      )[0];
+      this.matDialog.open(EditCapituloPlanificacionComponent, {
+        data: { capitulo, planificacion: this.planificacionProyecto },
+      });
+      return;
+    }
+
+    tarea = this.planificacionProyecto.tareas.filter(
+      (tarea) => tarea.uuid === points.id
+    )[0];
+    const tareaDialogRef = this.matDialog.open(
+      EditTareaPlanificacionComponent,
+      {
+        data: { tarea, planificacion: this.planificacionProyecto },
+      }
+    );
+
+    tareaDialogRef
+      .afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: boolean) => {
+        if (res) {
+          this.initPlanificacionProyecto();
+        }
+      });
+  }
+  public onEditPlanificacionProyecto(): void {
+    this.matDialog.open(EditPlanificacionProyectoComponent);
   }
 
   private initPlanificacionProyecto(): void {
