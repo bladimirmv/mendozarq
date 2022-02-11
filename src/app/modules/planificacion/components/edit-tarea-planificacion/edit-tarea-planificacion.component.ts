@@ -16,6 +16,7 @@ import { Subject } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
+import * as moment from 'moment';
 @Component({
   selector: 'app-edit-tarea-planificacion',
   templateUrl: './edit-tarea-planificacion.component.html',
@@ -66,7 +67,7 @@ export class EditTareaPlanificacionComponent implements OnInit {
       avance: [this.data.tarea.avance],
       dependencia: [this.data.tarea.dependencia],
       hito: [this.data.tarea.hito],
-      color: [this.data.tarea.color],
+      color: [this.data.tarea.color ? this.data.tarea.color : '#ffffff'],
       uuidCapitulo: [this.data.tarea.uuidCapitulo, Validators.required],
     });
   }

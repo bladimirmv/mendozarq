@@ -159,9 +159,21 @@ export class GanttChartComponent implements OnInit {
       capitulo = this.planificacionProyecto.capitulos.filter(
         (tarea) => tarea.uuid === points.id
       )[0];
-      this.matDialog.open(EditCapituloPlanificacionComponent, {
-        data: { capitulo, planificacion: this.planificacionProyecto },
-      });
+      const capituloDialogRef = this.matDialog.open(
+        EditCapituloPlanificacionComponent,
+        {
+          data: { capitulo, planificacion: this.planificacionProyecto },
+        }
+      );
+
+      capituloDialogRef
+        .afterClosed()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res: boolean) => {
+          if (res) {
+            this.initPlanificacionProyecto();
+          }
+        });
       return;
     }
 
@@ -184,6 +196,7 @@ export class GanttChartComponent implements OnInit {
         }
       });
   }
+
   public onEditPlanificacionProyecto(): void {
     this.matDialog.open(EditPlanificacionProyectoComponent);
   }
