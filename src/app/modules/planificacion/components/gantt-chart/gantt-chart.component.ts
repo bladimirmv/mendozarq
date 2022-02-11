@@ -131,6 +131,7 @@ export class GanttChartComponent implements OnInit {
             );
             this.canDelete = false;
             this.canEdit = false;
+            this.selectedPoints = 0;
             this.initPlanificacionProyecto();
           });
         }
@@ -144,6 +145,7 @@ export class GanttChartComponent implements OnInit {
             );
             this.canDelete = false;
             this.canEdit = false;
+            this.selectedPoints = 0;
             this.initPlanificacionProyecto();
           });
         }
@@ -171,9 +173,13 @@ export class GanttChartComponent implements OnInit {
         .pipe(takeUntil(this.destroy$))
         .subscribe((res: boolean) => {
           if (res) {
+            this.canDelete = false;
+            this.canEdit = false;
+            this.selectedPoints = 0;
             this.initPlanificacionProyecto();
           }
         });
+
       return;
     }
 
@@ -192,13 +198,29 @@ export class GanttChartComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: boolean) => {
         if (res) {
+          this.canDelete = false;
+          this.canEdit = false;
+          this.selectedPoints = 0;
           this.initPlanificacionProyecto();
         }
       });
   }
 
   public onEditPlanificacionProyecto(): void {
-    this.matDialog.open(EditPlanificacionProyectoComponent);
+    const dialogRef = this.matDialog.open(EditPlanificacionProyectoComponent, {
+      data: this.planificacionProyecto,
+    });
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: boolean) => {
+        if (res) {
+          this.initPlanificacionProyecto();
+          this.canDelete = false;
+          this.canEdit = false;
+          this.selectedPoints = 0;
+        }
+      });
   }
 
   private initPlanificacionProyecto(): void {

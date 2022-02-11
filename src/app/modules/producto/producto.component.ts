@@ -29,8 +29,6 @@ import {
 } from '@angular/animations';
 import { ImgPreviewComponent } from '@app/shared/components/img-preview/img-preview.component';
 
-import * as JsBarcode from 'jsbarcode';
-
 @Component({
   selector: 'app-producto',
   templateUrl: './producto.component.html',
@@ -134,16 +132,6 @@ export class ProductoComponent implements OnInit, OnDestroy {
     // a.click(); //Downloaded file
 
     this.generatePdf(producto.uuid);
-  }
-
-  private textToBase64Barcode(text) {
-    var canvas = document.createElement('canvas');
-    JsBarcode(canvas, text, {
-      lineColor: '#000000',
-
-      displayValue: true,
-    });
-    return canvas.toDataURL('image/png');
   }
 
   private getAllProducto(): void {

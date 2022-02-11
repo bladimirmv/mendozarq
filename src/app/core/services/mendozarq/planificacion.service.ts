@@ -52,17 +52,17 @@ export class PlanificacionService {
       .pipe(catchError((error) => this.handdleError(error)));
   }
 
-  // public updatePlanificacionProyecto(
-  //   uuid: string,
-  //   planificacionProyecto: PlanificacionProyecto
-  // ): Observable<any> {
-  //   return this.http
-  //     .put(
-  //       `${this.API_URL}/api/planificacionproyecto/${uuid}`,
-  //       planificacionProyecto
-  //     )
-  //     .pipe(catchError((error) => this.handdleError(error)));
-  // }
+  public updatePlanificacionProyecto(
+    uuid: string,
+    planificacionProyecto: PlanificacionProyecto
+  ): Observable<any> {
+    return this.http
+      .put(
+        `${this.API_URL}/api/planificacionproyecto/${uuid}`,
+        planificacionProyecto
+      )
+      .pipe(catchError((error) => this.handdleError(error)));
+  }
 
   public deletePlanificacionProyecto(uuid: string): Observable<any> {
     return this.http
