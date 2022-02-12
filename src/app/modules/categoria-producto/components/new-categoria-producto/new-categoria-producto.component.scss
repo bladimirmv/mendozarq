@@ -64,9 +64,9 @@ mat-dialog-actions {
   font-weight: 200;
   border: 2px dashed var(--secondary);
   border-radius: 5px;
-  background: white;
+  background: var(--sobreCard-bg);
+  color: var(--text-color);
   margin: 10px 0;
-  color: var(--secondary);
 
   .text-hovering {
     display: none;
@@ -159,6 +159,7 @@ img {
     overflow: hidden;
     text-overflow: ellipsis;
     outline: none;
+    max-width: 350px;
   }
 
   .size {

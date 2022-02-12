@@ -8,42 +8,53 @@ import { CategoriaProducto } from '@models/liraki/categoria.producto.interface';
 import { environment } from '@env/environment.prod';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CategoriaProductoService {
   private API_URL = environment.API_URL;
 
-  constructor(private http: HttpClient, private toastrSvc: ToastrService) {
-  }
+  constructor(private http: HttpClient, private toastrSvc: ToastrService) {}
 
-  public addCategoriaProducto(categoriaProducto: CategoriaProducto): Observable<any> {
-    return this.http
-      .post<CategoriaProducto>(`${this.API_URL}/api/categoriaProducto`, categoriaProducto)
-      .pipe(catchError(error => this.handdleError(error)));
+  public addCategoriaProducto(
+    categoriaProducto: CategoriaProducto,
+    file: File
+  ): Observable<any> {
+    const formdata: FormData = new FormData();
+
+    formdata.append('file', file);
+    formdata.append('categoriaProducto', JSON.stringify(categoriaProducto));
+
+    return this.http.post(`${this.API_URL}/api/categoriaProducto`, formdata, {
+      reportProgress: true,
+      observe: 'events',
+    });
   }
 
   public getOneCategoriaProducto(uuid: string): Observable<CategoriaProducto> {
     return this.http
       .get<CategoriaProducto>(`${this.API_URL}/api/categoriaProducto/${uuid}`)
-      .pipe(catchError(error => this.handdleError(error)));
+      .pipe(catchError((error) => this.handdleError(error)));
   }
 
   public getAllCategoriaProducto(): Observable<CategoriaProducto[]> {
     return this.http
       .get<CategoriaProducto[]>(`${this.API_URL}/api/categoriaProducto/`)
-      .pipe(catchError(error => this.handdleError(error)));
+      .pipe(catchError((error) => this.handdleError(error)));
   }
 
-  public updateCategoriaProducto(uuid: string, categoriaProducto: CategoriaProducto): Observable<any> {
+  public updateCategoriaProducto(
+    uuid: string,
+    categoriaProducto: CategoriaProducto
+  ): Observable<any> {
     return this.http
       .put(`${this.API_URL}/api/categoriaproducto/${uuid}`, categoriaProducto)
-      .pipe(catchError(error => this.handdleError(error)));
+      .pipe(catchError((error) => this.handdleError(error)));
   }
 
   public deleteCategoriaProducto(uuid: string): Observable<any> {
     return this.http
       .delete(`${this.API_URL}/api/categoriaProducto/${uuid}`)
-      .pipe(catchError(error => this.handdleError(error)));
+      .pipe(catchError((error) => this.handdleError(error)));
   }
 
   // ====================> handdleError
@@ -55,13 +66,16 @@ export class CategoriaProductoService {
       } else if (httpError.error.message.errno) {
         switch (httpError.error.message.errno) {
           case -111:
-            errorMessage = 'No se ha podido establecer una conexion con la base de datos. 🙁';
+            errorMessage =
+              'No se ha podido establecer una conexion con la base de datos. 🙁';
             break;
           case 1062:
-            errorMessage = 'Ya existe una categoria con ese nombre porfavor ingrese uno nuevo. 🙁';
+            errorMessage =
+              'Ya existe una categoria con ese nombre porfavor ingrese uno nuevo. 🙁';
             break;
           case 1451:
-            errorMessage = 'No se puede eliminar, por que uno o mas productos estan relacionados con esta categoria. 🙁';
+            errorMessage =
+              'No se puede eliminar, por que uno o mas productos estan relacionados con esta categoria. 🙁';
             break;
           default:
             errorMessage = `
@@ -74,7 +88,7 @@ export class CategoriaProductoService {
     console.log('this error', httpError);
     this.toastrSvc.error(errorMessage, 'Ocurrio un Error!', {
       timeOut: 7000,
-      enableHtml: true
+      enableHtml: true,
     });
     return throwError(httpError);
   }

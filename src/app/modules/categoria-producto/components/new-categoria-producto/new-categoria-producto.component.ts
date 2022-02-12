@@ -1,3 +1,5 @@
+import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { FotoProducto } from './../../../../shared/models/liraki/producto.interface';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -5,13 +7,22 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CategoriaProducto } from '@models/liraki/categoria.producto.interface';
 import { CategoriaProductoService } from '@services/liraki/categoria-producto.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { uploadFile } from '@app/modules/producto/components/new-producto/new-producto.component';
+import { Subject, of } from 'rxjs';
+import { takeUntil, tap, catchError } from 'rxjs/operators';
+
+export class uploadFile {
+  file?: File;
+  progress: number;
+  uploaded?: boolean;
+  error?: boolean;
+  src?: string;
+  // categoria?: CategoriaProducto;
+}
+
 @Component({
   selector: 'app-new-categoria-producto',
   templateUrl: './new-categoria-producto.component.html',
-  styleUrls: ['./new-categoria-producto.component.scss']
+  styleUrls: ['./new-categoria-producto.component.scss'],
 })
 export class NewCategoriaProductoComponent implements OnInit, OnDestroy {
   isHovering: boolean;
@@ -28,8 +39,7 @@ export class NewCategoriaProductoComponent implements OnInit, OnDestroy {
     private categoriaProductoSvc: CategoriaProductoService,
     private toastrSvc: ToastrService,
     private dialogRef: MatDialogRef<NewCategoriaProductoComponent>
-  ) { }
-
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -44,31 +54,66 @@ export class NewCategoriaProductoComponent implements OnInit, OnDestroy {
     this.categoriaForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.maxLength(50)]],
       descripcion: ['', Validators.maxLength(200)],
-      estado: [true, Validators.required]
+      estado: [true, Validators.required],
     });
   }
 
   public addCategoriaProducto(categoriaProducto: CategoriaProducto): void {
+    this.isClicked = true;
+
+    categoriaProducto.size = this.documentos[0].file.size;
+
     this.categoriaProductoSvc
-      .addCategoriaProducto(categoriaProducto)
-      .pipe(takeUntil(this.destroy$))
+      .addCategoriaProducto(categoriaProducto, this.documentos[0].file)
+      .pipe(
+        takeUntil(this.destroy$),
+        tap((event: HttpEvent<any>) => {
+          switch (event.type) {
+            case HttpEventType.UploadProgress:
+              this.documentos[0].progress = Math.round(
+                (event.loaded / event.total) * 100
+              );
+              break;
+            case HttpEventType.Response:
+              this.documentos[0].uploaded = true;
+              this.documentos[0].progress = 0;
+          }
+        }),
+        catchError((error) => {
+          this.documentos[0].error = true;
+          this.toastrSvc.error(
+            `La imagen ${this.documentos[0].file.name} no se pudo subir.`,
+            'Ocurrio un Error!',
+            {
+              timeOut: 7000,
+              enableHtml: true,
+            }
+          );
+          return of([]);
+        })
+      )
       .subscribe((res) => {
-        this.toastrSvc.success('La categoria se ha creado corectamente. 😀', 'Categoria Creado');
-        this.dialogRef.close(true);
+        this.continue = true;
+        this.toastrSvc.success(
+          'La categoria se ha creado corectamente. 😀',
+          'Categoria Creado'
+        );
       });
   }
 
   // ===========> isValidField
-  public isValidField(field: string): { color?: string; status?: boolean; icon?: string; } {
+  public isValidField(field: string): {
+    color?: string;
+    status?: boolean;
+    icon?: string;
+  } {
     const validateFIeld = this.categoriaForm.get(field);
-    return (!validateFIeld.valid && validateFIeld.touched)
+    return !validateFIeld.valid && validateFIeld.touched
       ? { color: 'warn', status: false, icon: 'close' }
       : validateFIeld.valid
-        ? { color: 'accent', status: true, icon: 'done' }
-        : {};
+      ? { color: 'accent', status: true, icon: 'done' }
+      : {};
   }
-
-
 
   checkStatusFile(): boolean {
     let status: boolean = true;
@@ -88,25 +133,28 @@ export class NewCategoriaProductoComponent implements OnInit, OnDestroy {
   // ====================> onDrop
   public onDrop(files: FileList): void {
     for (let i = 0; i < files.length; i++) {
-      if (files.item(i).type.includes('image/') && (this.documentos.length === 0)) {
+      if (
+        files.item(i).type.includes('image/') &&
+        this.documentos.length === 0
+      ) {
         const reader = new FileReader();
         reader.onload = () => {
           this.documentos.push({
             file: files.item(i),
             progress: 0,
-            src: reader.result as string
+            src: reader.result as string,
           });
-        }
-        reader.readAsDataURL(files.item(i))
-        return
+        };
+        reader.readAsDataURL(files.item(i));
+        return;
       }
     }
   }
 
-
-
   public onDelete(documento: uploadFile) {
-    this.documentos = this.documentos.filter((doc: uploadFile) => doc != documento);
+    this.documentos = this.documentos.filter(
+      (doc: uploadFile) => doc != documento
+    );
   }
 
   // ======================== formatBytes

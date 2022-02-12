@@ -4,6 +4,8 @@ export interface CategoriaProducto {
   nombre: string;
   descripcion?: string;
   keyName: string;
+  fileName: string;
   location: string;
+  size: number;
   estado?: boolean;
 }

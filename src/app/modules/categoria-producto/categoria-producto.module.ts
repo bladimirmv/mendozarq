@@ -10,9 +10,12 @@ import { NewCategoriaProductoComponent } from './components/new-categoria-produc
 import { EditCategoriaProductoComponent } from './components/edit-categoria-producto/edit-categoria-producto.component';
 import { DocumentosModule } from '../documentos/documentos.module';
 
-
 @NgModule({
-  declarations: [CategoriaProductoComponent, NewCategoriaProductoComponent, EditCategoriaProductoComponent],
+  declarations: [
+    CategoriaProductoComponent,
+    NewCategoriaProductoComponent,
+    EditCategoriaProductoComponent,
+  ],
   imports: [
     CommonModule,
     CategoriaProductoRoutingModule,
@@ -20,7 +23,7 @@ import { DocumentosModule } from '../documentos/documentos.module';
     ReactiveFormsModule,
     FormsModule,
     SharedModule,
-    DocumentosModule
-  ]
+    DocumentosModule,
+  ],
 })
-export class CategoriaProductoModule { }
+export class CategoriaProductoModule {}

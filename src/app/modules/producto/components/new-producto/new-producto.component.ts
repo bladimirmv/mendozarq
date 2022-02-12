@@ -1,8 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ProductoService } from '@app/core/services/liraki/producto.service';
-import { FotoProducto, Producto, ProductoView, ResponseProducto } from '@app/shared/models/liraki/producto.interface';
+import {
+  FotoProducto,
+  Producto,
+  ProductoView,
+  ResponseProducto,
+} from '@app/shared/models/liraki/producto.interface';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin, Observable, of, Subject, throwError } from 'rxjs';
 import { catchError, takeUntil, tap } from 'rxjs/operators';
@@ -18,7 +28,7 @@ export interface warningDialog {
   title: string;
   paragraph: string;
   btnPrimary: string;
-};
+}
 export class uploadFile {
   file?: File;
   progress: number;
@@ -28,12 +38,10 @@ export class uploadFile {
   foto?: FotoProducto;
 }
 
-
-
 @Component({
   selector: 'app-new-producto',
   templateUrl: './new-producto.component.html',
-  styleUrls: ['./new-producto.component.scss']
+  styleUrls: ['./new-producto.component.scss'],
 })
 export class NewProductoComponent implements OnInit, OnDestroy {
   private destroy$: Subject<any> = new Subject<any>();
@@ -41,7 +49,6 @@ export class NewProductoComponent implements OnInit, OnDestroy {
   public productoForm: FormGroup;
   private categorias: CategoriaProducto[] = [];
   public selectedCategorias: CategoriaProducto[] = [];
-
 
   isHovering: boolean;
   images: uploadFile[] = [];
@@ -61,13 +68,7 @@ export class NewProductoComponent implements OnInit, OnDestroy {
     private categoriaSvc: CategoriaProductoService,
     private matdialog: MatDialog,
     private router: Router
-  ) { }
-
-
-  drop(event: CdkDragDrop<uploadFile[]>) {
-    moveItemInArray(this.images, event.previousIndex, event.currentIndex);
-  }
-
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -79,24 +80,42 @@ export class NewProductoComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  drop(event: CdkDragDrop<uploadFile[]>) {
+    moveItemInArray(this.images, event.previousIndex, event.currentIndex);
+  }
+
   private initForm(): void {
     this.productoForm = this.fb.group({
       estado: [true, [Validators.required]],
       nombre: ['', [Validators.required, Validators.maxLength(100)]],
       categorias: ['', [Validators.required]],
-      precio: [0, [Validators.required, Validators.pattern(/^[+]?\d+([.]\d+)?$/)]],
+      precio: [
+        0,
+        [Validators.required, Validators.pattern(/^[+]?\d+([.]\d+)?$/)],
+      ],
       stock: [0, [Validators.required, Validators.pattern(/^(0|[1-9]\d*)$/)]],
       descripcion: ['', Validators.maxLength(1000)],
-      descuento: [0, [Validators.required, Validators.pattern(/(^100(\.0{1,2})?$)|(^([1-9]([0-9])?|0)(\.[0-9]{1,2})?$)/)]]
+      descuento: [
+        0,
+        [
+          Validators.required,
+          Validators.pattern(
+            /(^100(\.0{1,2})?$)|(^([1-9]([0-9])?|0)(\.[0-9]{1,2})?$)/
+          ),
+        ],
+      ],
     });
   }
 
   public getDescuento(): string {
     let result: number = 0;
-    this.productoForm.value.descuento > 100 || this.productoForm.value.descuento < 0
-      ? result = 0
-      : result = this.productoForm.value.precio -
-      (this.productoForm.value.precio * this.productoForm.value.descuento) / 100;
+    this.productoForm.value.descuento > 100 ||
+    this.productoForm.value.descuento < 0
+      ? (result = 0)
+      : (result =
+          this.productoForm.value.precio -
+          (this.productoForm.value.precio * this.productoForm.value.descuento) /
+            100);
     return result.toFixed(2);
   }
 
@@ -107,14 +126,16 @@ export class NewProductoComponent implements OnInit, OnDestroy {
       .subscribe((categorias: CategoriaProducto[]) => {
         const warningDialog: warningDialog = {
           title: 'Sin Categorias',
-          paragraph: 'No hay categorias disponibles para asignar a un nuevo producto.',
-          btnPrimary: 'Registrar'
+          paragraph:
+            'No hay categorias disponibles para asignar a un nuevo producto.',
+          btnPrimary: 'Registrar',
         };
         if (!categorias.length) {
           const dialogRef = this.matdialog.open(WarningModalComponent, {
-            data: warningDialog
+            data: warningDialog,
           });
-          dialogRef.afterClosed()
+          dialogRef
+            .afterClosed()
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: boolean) => {
               if (res) {
@@ -139,7 +160,6 @@ export class NewProductoComponent implements OnInit, OnDestroy {
       });
   }
 
-
   // ============> onKeySearch
   public onKey(value) {
     this.selectedCategorias = this._filter(value);
@@ -151,19 +171,22 @@ export class NewProductoComponent implements OnInit, OnDestroy {
 
     return this.categorias.filter((categoria: CategoriaProducto) => {
       return categoria.nombre.toLowerCase().indexOf(filterValue) === 0;
-    })
+    });
   }
 
   // ===========> isValidField
-  public isValidField(field: string): { color?: string; status?: boolean; icon?: string; } {
+  public isValidField(field: string): {
+    color?: string;
+    status?: boolean;
+    icon?: string;
+  } {
     const validateFIeld = this.productoForm.get(field);
-    return (!validateFIeld.valid && validateFIeld.touched)
+    return !validateFIeld.valid && validateFIeld.touched
       ? { color: 'warn', status: false, icon: 'close' }
       : validateFIeld.valid
-        ? { color: 'accent', status: true, icon: 'done' }
-        : {};
+      ? { color: 'accent', status: true, icon: 'done' }
+      : {};
   }
-
 
   // !upload files
   // ====================> uploadFiles
@@ -174,41 +197,51 @@ export class NewProductoComponent implements OnInit, OnDestroy {
     this.images.forEach((imageProducto: uploadFile, index) => {
       this.fotoProducto.uuidProducto = uuidProducto;
       this.fotoProducto.size = imageProducto.file.size;
-      this.fotoProducto.indice = index
+      this.fotoProducto.indice = index;
 
-      fjImages.push(this.productoSvc
-        .addFotoProyecto(this.fotoProducto, imageProducto.file)
-        .pipe(
-          takeUntil(this.destroy$),
-          tap((event: HttpEvent<any>) => {
-            switch (event.type) {
-              case HttpEventType.UploadProgress:
-                this.images[index].progress = Math.round(event.loaded / event.total * 100);
-                break;
-              case HttpEventType.Response:
-                this.images[index].uploaded = true;
-                this.images[index].progress = 0;
-            }
-          }),
-          catchError((error) => {
-            this.images[index].error = true;
-            this.toastrSvc.error(`La imagen ${imageProducto.file.name} no se pudo subir.`, 'Ocurrio un Error!', {
-              timeOut: 7000,
-              enableHtml: true
-            });
-            return of([]);
-          }))
+      fjImages.push(
+        this.productoSvc
+          .addFotoProyecto(this.fotoProducto, imageProducto.file)
+          .pipe(
+            takeUntil(this.destroy$),
+            tap((event: HttpEvent<any>) => {
+              switch (event.type) {
+                case HttpEventType.UploadProgress:
+                  this.images[index].progress = Math.round(
+                    (event.loaded / event.total) * 100
+                  );
+                  break;
+                case HttpEventType.Response:
+                  this.images[index].uploaded = true;
+                  this.images[index].progress = 0;
+              }
+            }),
+            catchError((error) => {
+              this.images[index].error = true;
+              this.toastrSvc.error(
+                `La imagen ${imageProducto.file.name} no se pudo subir.`,
+                'Ocurrio un Error!',
+                {
+                  timeOut: 7000,
+                  enableHtml: true,
+                }
+              );
+              return of([]);
+            })
+          )
       );
     });
 
-
-    forkJoin(fjImages)
-      .subscribe((events: HttpEvent<any>[]) => {
-        this.toastrSvc.success(`${this.uploadedCounter()}. 😀`, 'Cargado Correctamente', {
-          timeOut: 6000
-        });
-        this.continue = true;
-      });
+    forkJoin(fjImages).subscribe((events: HttpEvent<any>[]) => {
+      this.toastrSvc.success(
+        `${this.uploadedCounter()}. 😀`,
+        'Cargado Correctamente',
+        {
+          timeOut: 6000,
+        }
+      );
+      this.continue = true;
+    });
   }
 
   private uploadedCounter(): string {
@@ -218,7 +251,7 @@ export class NewProductoComponent implements OnInit, OnDestroy {
       if (documento.uploaded === true) counter++;
       if (documento.error === true) errors++;
     });
-    return (counter > 1 || counter === 0)
+    return counter > 1 || counter === 0
       ? `${counter} cargas completas, ${errors} errores.`
       : `${counter} carga completa, ${errors} errores.`;
   }
@@ -248,11 +281,10 @@ export class NewProductoComponent implements OnInit, OnDestroy {
           this.images.push({
             file: files.item(i),
             progress: 0,
-            src: reader.result as string
+            src: reader.result as string,
           });
-
-        }
-        reader.readAsDataURL(files.item(i))
+        };
+        reader.readAsDataURL(files.item(i));
       }
     }
   }
@@ -273,5 +305,4 @@ export class NewProductoComponent implements OnInit, OnDestroy {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
-
 }

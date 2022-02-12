@@ -33,6 +33,7 @@ export class CategoriaProductoComponent implements OnInit, OnDestroy {
     'estado',
     'nombre',
     'descripcion',
+    'keyName',
     'edit',
   ];
   public source: MatTableDataSource<CategoriaProducto> =
