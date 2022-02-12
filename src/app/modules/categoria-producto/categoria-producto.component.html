@@ -7,17 +7,17 @@
       </div>
     </app-status-card>
 
-    <app-status-card [icon]="'format_list_numbered'" color="accent">
-      <div slot="title">Categorias sin Uso</div>
+    <app-status-card [icon]="'visibility_off'" color="warn">
+      <div slot="title">Categorias Inactivos</div>
       <div slot="count">
-        {{ 0 }}
+        {{ inactivos }}
       </div>
     </app-status-card>
 
     <app-status-card [icon]="'playlist_add_check'" color="success">
-      <div slot="title">Categoria en Uso</div>
+      <div slot="title">Categoria Activos</div>
       <div slot="count">
-        {{ 0 }}
+        {{ activos }}
       </div>
     </app-status-card>
   </div>
@@ -102,6 +102,16 @@
               [aria-label]="checkboxLabel(row)"
             >
             </mat-checkbox>
+          </td>
+        </ng-container>
+
+        <!-- *estado -->
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            <span
+              [class]="row.estado ? 'categoria-activo' : 'categoria-no-activo'"
+            ></span>
           </td>
         </ng-container>
 

@@ -9,9 +9,10 @@
   font-weight: 200;
   border: 2px dashed var(--secondary);
   border-radius: 5px;
-  background: white;
+  background: var(--sobreCard-bg);
+
   margin: 10px 0;
-  color: var(--secondary);
+  color: var(--text-color);
 
   .text-hovering {
     display: none;

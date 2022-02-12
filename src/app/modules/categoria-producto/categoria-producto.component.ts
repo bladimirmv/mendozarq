@@ -16,26 +16,35 @@ import { takeUntil, map } from 'rxjs/operators';
 @Component({
   selector: 'app-categoria-producto',
   templateUrl: './categoria-producto.component.html',
-  styleUrls: ['./categoria-producto.component.scss']
+  styleUrls: ['./categoria-producto.component.scss'],
 })
 export class CategoriaProductoComponent implements OnInit, OnDestroy {
-
   private destroy$: Subject<any> = new Subject<any>();
 
   public categorias: Array<CategoriaProducto> = [];
+  public activos: number = 0;
+  public inactivos: number = 0;
+
   selected: CategoriaProducto[] = [];
   selection = new SelectionModel<CategoriaProducto>(true, []);
   filterValue: string;
-  public columns: Array<string> = ['seleccion', 'nombre', 'descripcion', 'edit'];
-  public source: MatTableDataSource<CategoriaProducto> = new MatTableDataSource();
+  public columns: Array<string> = [
+    'seleccion',
+    'estado',
+    'nombre',
+    'descripcion',
+    'edit',
+  ];
+  public source: MatTableDataSource<CategoriaProducto> =
+    new MatTableDataSource();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   constructor(
     private categoriaProductoSvc: CategoriaProductoService,
     private dialog: MatDialog,
-    private toastrSvc: ToastrService,
-  ) { }
+    private toastrSvc: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.getAllCategoriaProducto();
@@ -44,8 +53,8 @@ export class CategoriaProductoComponent implements OnInit, OnDestroy {
     this.source.sort = this.sort;
 
     this.selection.changed
-      .pipe(map(a => a.source))
-      .subscribe(data => this.selected = data.selected);
+      .pipe(map((a) => a.source))
+      .subscribe((data) => (this.selected = data.selected));
   }
 
   ngOnDestroy(): void {
@@ -60,6 +69,11 @@ export class CategoriaProductoComponent implements OnInit, OnDestroy {
       .subscribe((categorias: CategoriaProducto[]) => {
         this.source.data = categorias;
         this.categorias = categorias;
+
+        categorias.filter((cat) => {
+          this.activos += cat.estado ? 1 : 0;
+          this.inactivos += cat.estado ? 0 : 1;
+        });
       });
   }
 
@@ -77,7 +91,7 @@ export class CategoriaProductoComponent implements OnInit, OnDestroy {
 
   public editCategoriaProducto(categoriaProducto: CategoriaProducto): void {
     const dialogRef = this.dialog.open(EditCategoriaProductoComponent, {
-      data: categoriaProducto
+      data: categoriaProducto,
     });
 
     dialogRef
@@ -109,13 +123,17 @@ export class CategoriaProductoComponent implements OnInit, OnDestroy {
     this.categoriaProductoSvc
       .deleteCategoriaProducto(this.selected[0].uuid)
       .pipe(takeUntil(this.destroy$))
-      .subscribe(res => {
+      .subscribe((res) => {
         if (res) {
-          this.toastrSvc.success('Se ha eliminado correctamente', 'Categoria Eliminado', {
-            timeOut: 2000,
-            progressBar: true,
-            progressAnimation: 'increasing'
-          });
+          this.toastrSvc.success(
+            'Se ha eliminado correctamente',
+            'Categoria Eliminado',
+            {
+              timeOut: 2000,
+              progressBar: true,
+              progressAnimation: 'increasing',
+            }
+          );
           this.getAllCategoriaProducto();
           this.clearCheckbox();
         }
@@ -128,18 +146,21 @@ export class CategoriaProductoComponent implements OnInit, OnDestroy {
       this.categoriaProductoSvc
         .deleteCategoriaProducto(servicio.uuid)
         .pipe(takeUntil(this.destroy$))
-        .subscribe(res => {
+        .subscribe((res) => {
           if (res) {
-            this.toastrSvc.success('Se han eliminado correctamente', 'Categorias Eliminados', {
-              timeOut: 2000,
-              progressBar: true,
-              progressAnimation: 'increasing'
-            });
-            this.getAllCategoriaProducto()
+            this.toastrSvc.success(
+              'Se han eliminado correctamente',
+              'Categorias Eliminados',
+              {
+                timeOut: 2000,
+                progressBar: true,
+                progressAnimation: 'increasing',
+              }
+            );
+            this.getAllCategoriaProducto();
             this.clearCheckbox();
           }
         });
-
     });
   }
 
@@ -147,8 +168,8 @@ export class CategoriaProductoComponent implements OnInit, OnDestroy {
   // =====================> applyFilter
   applyFilter(event: Event | string): void {
     typeof event === 'string'
-      ? this.filterValue = event
-      : this.filterValue = (event.target as HTMLInputElement).value;
+      ? (this.filterValue = event)
+      : (this.filterValue = (event.target as HTMLInputElement).value);
 
     this.source.filter = this.filterValue.trim().toLowerCase();
     if (this.source.paginator) {
@@ -163,9 +184,9 @@ export class CategoriaProductoComponent implements OnInit, OnDestroy {
   }
   // =====================> masterToggle
   masterToggle(): void {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.source.data.forEach(row => this.selection.select(row));
+    this.isAllSelected()
+      ? this.selection.clear()
+      : this.source.data.forEach((row) => this.selection.select(row));
   }
   // =====================> clearCheckbox
   clearCheckbox(): void {
@@ -176,7 +197,8 @@ export class CategoriaProductoComponent implements OnInit, OnDestroy {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.uuid}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
+      row.uuid
+    }`;
   }
-
 }

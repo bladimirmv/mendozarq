@@ -1,23 +1,23 @@
 <div class="content">
   <div class="stats-container">
     <app-status-card [icon]="'list'" color="info">
-      <div slot="title">Catgorias Totales</div>
+      <div slot="title">Productos Totales</div>
       <div slot="count">
-        {{ 0 }}
+        {{ productos.length }}
       </div>
     </app-status-card>
 
-    <app-status-card [icon]="'format_list_numbered'" color="accent">
-      <div slot="title">Categorias sin Uso</div>
+    <app-status-card [icon]="'visibility_off'" color="warn">
+      <div slot="title">Producto Inactivos</div>
       <div slot="count">
-        {{ 0 }}
+        {{ inactivos }}
       </div>
     </app-status-card>
 
     <app-status-card [icon]="'playlist_add_check'" color="success">
-      <div slot="title">Categoria en Uso</div>
+      <div slot="title">Productos Activos</div>
       <div slot="count">
-        {{ 0 }}
+        {{ activos }}
       </div>
     </app-status-card>
   </div>

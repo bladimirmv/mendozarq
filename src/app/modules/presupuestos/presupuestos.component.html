@@ -3,21 +3,21 @@
     <app-status-card [icon]="'view_list'" color="info">
       <div slot="title">Presupuestos Totales</div>
       <div slot="count">
-        {{ 0 }}
+        {{ presupuestos.length }}
       </div>
     </app-status-card>
 
-    <app-status-card [icon]="'engineering'" color="accent">
-      <div slot="title">Servicios en Curso</div>
+    <app-status-card [icon]="'date_range'" color="accent">
+      <div slot="title">Agredados este Año</div>
       <div slot="count">
-        {{ 0 }}
+        {{ thisYear }}
       </div>
     </app-status-card>
 
-    <app-status-card [icon]="'done_all'" color="success">
-      <div slot="title">Servicios Finzalizados</div>
+    <app-status-card [icon]="'event'" color="purple">
+      <div slot="title">Agregados este Mes</div>
       <div slot="count">
-        {{ 0 }}
+        {{ thisMonth }}
       </div>
     </app-status-card>
   </div>

@@ -1,3 +1,5 @@
+import { ProyectoService } from './../../../../core/services/mendozarq/proyecto.service';
+import { Proyecto } from './../../../../shared/models/mendozarq/proyecto.interface';
 import { EditPlanificacionProyectoComponent } from './../edit-planificacion-proyecto/edit-planificacion-proyecto.component';
 import { EditTareaPlanificacionComponent } from './../edit-tarea-planificacion/edit-tarea-planificacion.component';
 import { EditCapituloPlanificacionComponent } from './../edit-capitulo-planificacion/edit-capitulo-planificacion.component';
@@ -19,6 +21,8 @@ import { PlanificacionService } from '@services/mendozarq/planificacion.service'
 import * as Highcharts from 'highcharts/highcharts-gantt';
 import HC_exporting from 'highcharts/modules/exporting';
 HC_exporting(Highcharts);
+
+import * as moment from 'moment';
 
 import {
   spanish,
@@ -45,11 +49,13 @@ export class GanttChartComponent implements OnInit {
   private chart: any;
   private planificacionProyecto: PlanificacionProyectoView =
     {} as PlanificacionProyectoView;
+  public proyecto: Proyecto = {} as Proyecto;
 
   constructor(
     private planificacionSvc: PlanificacionService,
     private matDialog: MatDialog,
     private toastrSvc: ToastrService,
+    private proyectoSvc: ProyectoService,
     private brightnessSvc: BrightnessService
   ) {
     this.brightnessSvc.theme$.pipe(take(1)).subscribe((darkTheme: boolean) => {
@@ -60,11 +66,45 @@ export class GanttChartComponent implements OnInit {
   ngAfterViewInit() {
     this.initPlanificacionProyecto();
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.proyectoSvc
+      .getOneProyecto(this.uuidProyecto)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((proy: Proyecto) => {
+        this.proyecto = proy;
+      });
+  }
 
   public toggleMode(): void {
     this.darkMode = this.darkMode ? false : true;
     this.ganttChartInit();
+  }
+
+  public getCountDown(): any {
+    // moment.locale('es');
+    // const countDownDate = this.proyecto.fechaFinal.getTime();
+    // const x = setInterval(() => {
+    //   const now = new Date().getTime();
+    //   const distance = countDownDate - now;
+    //   const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    //   const hours = Math.floor(
+    //     (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    //   );
+    //   const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    //   const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    //   let countDown = {
+    //     days,
+    //     hours,
+    //     minutes,
+    //     seconds,
+    //     expired: false,
+    //   };
+    //   if (distance < 0) {
+    //     clearInterval(x);
+    //     countDown = { ...countDown, expired: true };
+    //   }
+    //   return countDown;
+    // }, 1000);
   }
 
   public onAddTareaPlanificacion(): void {

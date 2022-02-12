@@ -1,6 +1,6 @@
 .content::after {
   content: "";
-  background-image: url('./../../../assets/bg.svg');
+  background-image: url("./../../../assets/bg.svg");
   background-position: bottom;
   background-repeat: no-repeat;
   background-size: 100%;
@@ -40,4 +40,21 @@
   app-status-card:last-child {
     grid-column: span 1;
   }
+}
+
+.categoria-activo {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  background-color: var(--success);
+  border-radius: 25px;
+}
+
+.categoria-no-activo {
+  display: inline-block;
+
+  width: 15px;
+  height: 15px;
+  background-color: var(--warn);
+  border-radius: 25px;
 }

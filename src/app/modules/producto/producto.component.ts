@@ -48,7 +48,8 @@ export class ProductoComponent implements OnInit, OnDestroy {
   private API_URL = environment.API_URL;
 
   private destroy$: Subject<any> = new Subject<any>();
-
+  public activos: number = 0;
+  public inactivos: number = 0;
   public productos: Array<Producto> = [];
   selected: Producto[] = [];
   selection = new SelectionModel<Producto>(true, []);
@@ -87,8 +88,6 @@ export class ProductoComponent implements OnInit, OnDestroy {
     this.selection.changed
       .pipe(map((a) => a.source))
       .subscribe((data) => (this.selected = data.selected));
-
-    // window.open("https://www.mywebsite.com", "_blank");
   }
 
   ngOnDestroy(): void {
@@ -141,6 +140,10 @@ export class ProductoComponent implements OnInit, OnDestroy {
       .subscribe((productos: Producto[]) => {
         this.source.data = productos;
         this.productos = productos;
+        productos.filter((prod) => {
+          this.activos += prod.estado ? 1 : 0;
+          this.inactivos += prod.estado ? 0 : 1;
+        });
       });
   }
 
