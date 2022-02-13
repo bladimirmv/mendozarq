@@ -99,9 +99,7 @@ export class CategoriaProductoComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: boolean) => {
-        if (res) {
-          this.getAllCategoriaProducto();
-        }
+        this.getAllCategoriaProducto();
       });
   }
 

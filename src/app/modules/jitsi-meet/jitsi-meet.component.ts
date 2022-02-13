@@ -90,36 +90,38 @@ export class JitsiMeetComponent implements OnInit, AfterViewInit {
   };
 
   handleVideoConferenceLeft = () => {
-    const container: HTMLDivElement =
-      document.querySelector('#jitsi-container');
-    const e: HTMLDivElement = document.querySelector('#jitsi-iframe');
-    const newDiv: HTMLDivElement = document.createElement('div');
-    newDiv.style.height = '100%';
+    // const container: HTMLDivElement =
+    //   document.querySelector('#jitsi-container');
+    // const e: HTMLDivElement = document.querySelector('#jitsi-iframe');
+    // const newDiv: HTMLDivElement = document.createElement('div');
+    // newDiv.style.height = '100%';
 
-    e.parentElement.removeChild(e);
+    // e.parentElement.removeChild(e);
 
-    newDiv.id = 'jitsi-iframe';
-    container.appendChild(newDiv);
+    // newDiv.id = 'jitsi-iframe';
+    // container.appendChild(newDiv);
 
-    this.options = {
-      roomName: this.room,
-      configOverwrite: {
-        startWithAudioMuted: true,
-        remoteVideoMenu: {
-          disableKick: true,
-        },
-        prejoinPageEnabled: true,
-      },
-      parentNode: document.querySelector('#jitsi-iframe'),
-      userInfo: {
-        displayName: this.titlecasePipe.transform(
-          `${this.user.nombre} ${this.user.apellidoPaterno} ${this.user.apellidoMaterno}`
-        ),
-        email: this.user.correo,
-      },
-    };
+    // this.options = {
+    //   roomName: this.room,
+    //   configOverwrite: {
+    //     startWithAudioMuted: true,
+    //     remoteVideoMenu: {
+    //       disableKick: true,
+    //     },
+    //     prejoinPageEnabled: true,
+    //   },
+    //   parentNode: document.querySelector('#jitsi-iframe'),
+    //   userInfo: {
+    //     displayName: this.titlecasePipe.transform(
+    //       `${this.user.nombre} ${this.user.apellidoPaterno} ${this.user.apellidoMaterno}`
+    //     ),
+    //     email: this.user.correo,
+    //   },
+    // };
 
-    this.api = new JitsiMeetExternalAPI(this.domain, this.options);
+    // this.api = new JitsiMeetExternalAPI(this.domain, this.options);
+
+    this.router.navigate(['admin/proyecto', this.room]);
   };
 
   handleMuteStatus = (audio) => {

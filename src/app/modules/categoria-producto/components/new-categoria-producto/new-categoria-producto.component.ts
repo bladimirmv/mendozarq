@@ -16,7 +16,8 @@ export class uploadFile {
   uploaded?: boolean;
   error?: boolean;
   src?: string;
-  // categoria?: CategoriaProducto;
+  categoria?: CategoriaProducto;
+  isNew?: boolean;
 }
 
 @Component({
@@ -60,7 +61,6 @@ export class NewCategoriaProductoComponent implements OnInit, OnDestroy {
 
   public addCategoriaProducto(categoriaProducto: CategoriaProducto): void {
     this.isClicked = true;
-
     categoriaProducto.size = this.documentos[0].file.size;
 
     this.categoriaProductoSvc

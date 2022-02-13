@@ -32,7 +32,9 @@ export class CategoriaProductoService {
 
   public getOneCategoriaProducto(uuid: string): Observable<CategoriaProducto> {
     return this.http
-      .get<CategoriaProducto>(`${this.API_URL}/api/categoriaProducto/${uuid}`)
+      .get<CategoriaProducto>(`${this.API_URL}/api/categoriaProducto/${uuid}`, {
+        params: {},
+      })
       .pipe(catchError((error) => this.handdleError(error)));
   }
 
@@ -44,11 +46,28 @@ export class CategoriaProductoService {
 
   public updateCategoriaProducto(
     uuid: string,
-    categoriaProducto: CategoriaProducto
+    categoriaProducto: CategoriaProducto,
+    file?: File
   ): Observable<any> {
-    return this.http
-      .put(`${this.API_URL}/api/categoriaproducto/${uuid}`, categoriaProducto)
-      .pipe(catchError((error) => this.handdleError(error)));
+    if (!file) {
+      return this.http
+        .put(`${this.API_URL}/api/categoriaproducto/${uuid}`, categoriaProducto)
+        .pipe(catchError((error) => this.handdleError(error)));
+    }
+    const formdata: FormData = new FormData();
+    formdata.append('file', file);
+    formdata.append('categoriaProducto', JSON.stringify(categoriaProducto));
+
+    console.log('nuevo');
+
+    return this.http.put(
+      `${this.API_URL}/api/categoriaProducto/multer/${uuid}`,
+      formdata,
+      {
+        reportProgress: true,
+        observe: 'events',
+      }
+    );
   }
 
   public deleteCategoriaProducto(uuid: string): Observable<any> {
