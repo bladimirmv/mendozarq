@@ -155,7 +155,10 @@
             matTooltipPosition="below"
           >
             <span>
-              <a [ngClass]="{ 'custom-a': row.fileName }">
+              <a
+                [ngClass]="{ 'custom-a': row.fileName }"
+                (click)="imgPreview(row.keyName)"
+              >
                 {{ row.fileName | titlecase }}
               </a>
             </span>

@@ -4,21 +4,16 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-img-preview',
   templateUrl: './img-preview.component.html',
-  styleUrls: ['./img-preview.component.scss']
+  styleUrls: ['./img-preview.component.scss'],
 })
 export class ImgPreviewComponent implements OnInit {
-
   public currentFoto: number = this.data.current || 0;
 
-
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { fotos: string[]; current: number; }
-  ) {
-  }
+    @Inject(MAT_DIALOG_DATA) public data: { fotos: string[]; current: number }
+  ) {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 
   onBack(): void {
     this.currentFoto--;
@@ -32,9 +27,7 @@ export class ImgPreviewComponent implements OnInit {
     if (this.currentFoto > this.data.fotos.length - 1) this.currentFoto = 0;
   }
 
-
   // getSafeUrl(): void {
   //   this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.src);
   // }
-
 }

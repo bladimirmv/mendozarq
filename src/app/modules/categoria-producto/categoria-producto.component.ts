@@ -1,3 +1,5 @@
+import { environment } from '@env/environment';
+import { ImgPreviewComponent } from '@app/shared/components/img-preview/img-preview.component';
 import { EditCategoriaProductoComponent } from './components/edit-categoria-producto/edit-categoria-producto.component';
 import { NewCategoriaProductoComponent } from './components/new-categoria-producto/new-categoria-producto.component';
 import { DeleteModalComponent } from '@app/shared/components/delete-modal/delete-modal.component';
@@ -20,6 +22,7 @@ import { takeUntil, map } from 'rxjs/operators';
 })
 export class CategoriaProductoComponent implements OnInit, OnDestroy {
   private destroy$: Subject<any> = new Subject<any>();
+  private API_URL = environment.API_URL;
 
   public categorias: Array<CategoriaProducto> = [];
   public activos: number = 0;
@@ -160,6 +163,17 @@ export class CategoriaProductoComponent implements OnInit, OnDestroy {
             this.clearCheckbox();
           }
         });
+    });
+  }
+
+  public imgPreview(keyName: string): void {
+    const urlImg: string = `${this.API_URL}/api/file/${keyName}`;
+    this.dialog.open(ImgPreviewComponent, {
+      data: {
+        fotos: [urlImg],
+        current: 0,
+      },
+      panelClass: 'custom-dialog-container',
     });
   }
 

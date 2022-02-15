@@ -142,6 +142,13 @@
         <mat-icon> close </mat-icon>
       </button>
     </div>
+
+    <picture
+      *ngIf="documentos.length"
+      class="full-width full-column img-preview"
+    >
+      <img [src]="documentos[0].src" alt="img categoria" />
+    </picture>
   </form>
 </mat-dialog-content>
 

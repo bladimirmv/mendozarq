@@ -1,3 +1,4 @@
+import { environment } from '@env/environment';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { CategoriaProducto } from '@models/liraki/categoria.producto.interface';
 import {
@@ -25,6 +26,7 @@ export class EditCategoriaProductoComponent implements OnInit, OnDestroy {
   public isClicked: boolean = false;
   public continue: boolean = false;
 
+  private API_URL = environment.API_URL;
   private destroy$: Subject<any> = new Subject<any>();
 
   constructor(
@@ -59,6 +61,7 @@ export class EditCategoriaProductoComponent implements OnInit, OnDestroy {
         progress: 100,
         uploaded: true,
         categoria: this.data,
+        src: `${this.API_URL}/api/file/${this.data.keyName}`,
       });
     }
   }
