@@ -1,5 +1,5 @@
 <div class="content">
-  <div *ngIf="isNewPlanificacion" class="no-data">
+  <div *ngIf="!planificacionProyecto && !showChart" class="no-data">
     <img src="./assets/chart.svg" alt="" />
 
     <button
@@ -11,7 +11,9 @@
     </button>
   </div>
 
-  <div *ngIf="showChart">
+  <div *ngIf="planificacionProyecto || showChart">
     <app-gantt-chart [uuidProyecto]="uuidProyecto"></app-gantt-chart>
   </div>
 </div>
+
+<!-- {{ planificacionProyecto | json }} -->

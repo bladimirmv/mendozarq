@@ -20,41 +20,25 @@ export class PlanificacionComponent
     {} as PlanificacionProyecto;
 
   public uuidProyecto: string;
-  public isNewPlanificacion: boolean = false;
   public showChart: boolean = false;
 
   constructor(
-    private planificacionSvc: PlanificacionService,
     private activatedRoute: ActivatedRoute,
     private matDialog: MatDialog
   ) {}
 
-  ngAfterViewInit(): void {
-    this.uuidProyecto = this.activatedRoute.snapshot.parent.parent.params.uuid;
-    this.initPlanificacionProyecto();
-  }
+  ngAfterViewInit(): void {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.uuidProyecto = this.activatedRoute.snapshot.parent.parent.params.uuid;
+
+    this.planificacionProyecto =
+      this.activatedRoute.snapshot.data['planificacion'];
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next({});
     this.destroy$.complete();
-  }
-
-  private initPlanificacionProyecto(): void {
-    this.planificacionSvc
-      .getOnePlanificacionProyecto(this.uuidProyecto)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((planificaion: PlanificacionProyecto) => {
-        this.planificacionProyecto = planificaion;
-        this.showChart = true;
-
-        if (!planificaion) {
-          this.showChart = false;
-          this.isNewPlanificacion = true;
-          return;
-        }
-      });
   }
 
   public newPlanificacionProyecto(): void {
@@ -64,7 +48,6 @@ export class PlanificacionComponent
 
     dialogRef.afterClosed().subscribe((res: boolean) => {
       if (res) {
-        this.isNewPlanificacion = false;
         this.showChart = true;
       }
     });

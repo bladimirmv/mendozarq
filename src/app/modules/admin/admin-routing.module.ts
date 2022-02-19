@@ -1,4 +1,4 @@
-import { PermissionsGuard } from './../../core/guards/permissions.guard';
+import { PlanificacionResolverService } from '@core/resolvers/planificacion.resolver.service';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -138,6 +138,9 @@ const routes: Routes = [
       },
       {
         path: 'planificacion',
+        resolve: {
+          planificacion: PlanificacionResolverService,
+        },
         loadChildren: () =>
           import('@modules/planificacion/planificacion.module').then(
             (m) => m.PlanificacionModule

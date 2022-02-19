@@ -1,5 +1,5 @@
 import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
   MatDialog,
@@ -28,7 +28,7 @@ export class uploadFile {
   templateUrl: './new-documento.component.html',
   styleUrls: ['./new-documento.component.scss'],
 })
-export class NewDocumentoComponent implements OnInit {
+export class NewDocumentoComponent implements OnInit, OnDestroy {
   isHovering: boolean;
   documentos: uploadFile[] = [];
   isClicked: boolean = false;
@@ -139,16 +139,18 @@ export class NewDocumentoComponent implements OnInit {
     });
 
     if (fjDocumentos.length) {
-      forkJoin(fjDocumentos).subscribe((events: HttpEvent<any>[]) => {
-        this.toastrSvc.success(
-          `${this.uploadedCounter()}. 😀`,
-          'Cargado Correctamente',
-          {
-            timeOut: 6000,
-          }
-        );
-        this.continue = true;
-      });
+      forkJoin(fjDocumentos)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((events: HttpEvent<any>[]) => {
+          this.toastrSvc.success(
+            `${this.uploadedCounter()}. 😀`,
+            'Cargado Correctamente',
+            {
+              timeOut: 6000,
+            }
+          );
+          this.continue = true;
+        });
     }
 
     if (fjCarpetaDocumento.length) {
