@@ -14,7 +14,7 @@ import { Usuario } from '@app/shared/models/usuario.interface';
 @Component({
   selector: 'app-new-user',
   templateUrl: './new-user.component.html',
-  styleUrls: ['./new-user.component.scss']
+  styleUrls: ['./new-user.component.scss'],
 })
 export class NewUserComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<any>();
@@ -26,10 +26,8 @@ export class NewUserComponent implements OnInit, OnDestroy {
     private toastrSvc: ToastrService,
     private usuarioSvc: UsuarioService,
     private matDialog: MatDialog,
-    private dialogRef: MatDialogRef<NewUserComponent>) {
-  }
-
-
+    private dialogRef: MatDialogRef<NewUserComponent>
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -41,15 +39,63 @@ export class NewUserComponent implements OnInit, OnDestroy {
   // ============> onInitForm
   private initForm(): void {
     this.usuarioForm = this.fb.group({
-      nombre: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/)]],
-      apellidoPaterno: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/)]],
-      apellidoMaterno: ['', [Validators.maxLength(50), Validators.pattern(/^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/)]],
-      celular: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(8), Validators.pattern(/^[0-9]*$/)]],
+      nombre: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(50),
+          Validators.pattern(
+            /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/
+          ),
+        ],
+      ],
+      apellidoPaterno: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(50),
+          Validators.pattern(
+            /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/
+          ),
+        ],
+      ],
+      apellidoMaterno: [
+        '',
+        [
+          Validators.maxLength(50),
+          Validators.pattern(
+            /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/
+          ),
+        ],
+      ],
+      celular: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(7),
+          Validators.maxLength(8),
+          Validators.pattern(/^[0-9]*$/),
+        ],
+      ],
       direccion: ['', [Validators.maxLength(200)]],
       correo: ['', [Validators.required, Validators.pattern(/\S+@\S+\.\S+/)]],
       rol: ['cliente', [Validators.required]],
-      username: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(10)]],
-      contrasenha: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
+      username: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(10),
+        ],
+      ],
+      contrasenha: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(20),
+        ],
+      ],
       autoUsuario: [false],
       autoContrasenha: [false],
       activo: [true, [Validators.required]],
@@ -57,13 +103,17 @@ export class NewUserComponent implements OnInit, OnDestroy {
   }
 
   // ===========> isValidField
-  public isValidField(field: string): { color?: string; status?: boolean; icon?: string; } {
+  public isValidField(field: string): {
+    color?: string;
+    status?: boolean;
+    icon?: string;
+  } {
     const validateFIeld = this.usuarioForm.get(field);
-    return (!validateFIeld.valid && validateFIeld.touched)
+    return !validateFIeld.valid && validateFIeld.touched
       ? { color: 'warn', status: false, icon: 'close' }
       : validateFIeld.valid
-        ? { color: 'accent', status: true, icon: 'done' }
-        : {};
+      ? { color: 'accent', status: true, icon: 'done' }
+      : {};
   }
 
   // ===========> onCheckBox
@@ -82,11 +132,15 @@ export class NewUserComponent implements OnInit, OnDestroy {
   // ===========> onAddUusario
   onAddUser(usr?: Usuario): void {
     const usuario = this.usuarioForm.value;
-    this.usuarioSvc.addUsuario(usuario)
+    this.usuarioSvc
+      .addUsuario(usuario)
       .pipe(takeUntil(this.destroy$))
-      .subscribe(usr => {
+      .subscribe((usr) => {
         if (usr) {
-          this.toastrSvc.success('El usuario se ha creado correctamente. 😀', 'Usuario Creado');
+          this.toastrSvc.success(
+            'El usuario se ha creado correctamente. 😀',
+            'Usuario Creado'
+          );
           this.matDialog.open(ShowContrasenhaComponent, { data: usr });
           this.dialogRef.close(this.usuarioForm.value);
         }
@@ -101,5 +155,4 @@ export class NewUserComponent implements OnInit, OnDestroy {
   getString(num: number): string {
     return String(num);
   }
-
 }

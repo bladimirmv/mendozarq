@@ -1,10 +1,8 @@
 import { NewPlanificacionProyectoComponent } from './components/new-planificacion-proyecto/new-planificacion-proyecto.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { PlanificacionProyecto } from '@app/shared/models/charts/planificacion.interface';
-import { PlanificacionService } from '@services/mendozarq/planificacion.service';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 
 @Component({

@@ -64,6 +64,17 @@
         <button
           mat-button
           class="btn-admin"
+          routerLink="proyectos"
+          routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false"
+        >
+          <mat-icon class="mat-18 mr-3">library_books</mat-icon>
+          Proyectos
+        </button>
+
+        <button
+          mat-button
+          class="btn-admin"
           routerLink="presupuestos"
           routerLinkActive="active mat-raised-button"
           (click)="breakpoint ? drawer.close() : false"
@@ -72,16 +83,16 @@
           Presupuesto de Obras
         </button>
 
-        <button
+        <!-- <button
           mat-button
+          routerLink="reporteMendozarq"
           class="btn-admin"
-          routerLink="proyectos"
-          routerLinkActive="active mat-raised-button"
+          routerLinkActive="active  mat-raised-button"
           (click)="breakpoint ? drawer.close() : false"
         >
-          <mat-icon class="mat-18 mr-3">library_books</mat-icon>
-          Proyectos
-        </button>
+          <mat-icon class="mat-18 mr-3">analytics</mat-icon>
+          Reportes Mendozarq
+        </button> -->
 
         <mat-divider></mat-divider>
 

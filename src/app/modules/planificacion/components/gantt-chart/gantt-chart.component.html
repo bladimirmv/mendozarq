@@ -1,9 +1,9 @@
 <div class="bar-options mat-elevation-z2">
   <button mat-icon-button (click)="toggleMode()" matTooltip="Apariencia">
     <mat-icon
-      [ngClass]="{ 'darkMode-color': darkMode, 'accent-color': !darkMode }"
+      [ngClass]="{ 'darkMode-color': !darkMode, 'accent-color': darkMode }"
     >
-      {{ darkMode ? "dark_mode" : "light_mode" }}
+      {{ !darkMode ? "dark_mode" : "light_mode" }}
     </mat-icon>
   </button>
 

@@ -19,6 +19,14 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
+        path: 'reporteMendozarq',
+        loadChildren: () =>
+          import('@modules/reporte-mendozarq/reporte-mendozarq.module').then(
+            (m) => m.ReporteMendozarqModule
+          ),
+      },
+
+      {
         path: 'dashboard',
         component: DashboardComponent,
       },

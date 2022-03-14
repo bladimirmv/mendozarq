@@ -14,7 +14,9 @@ import { ToastrService } from 'ngx-toastr';
 import { Usuario } from '@app/shared/models/usuario.interface';
 @Injectable()
 export class AdminInterceptor implements HttpInterceptor {
-  constructor(private authSvc: AuthService, private toastrSvc: ToastrService) {}
+  constructor(private authSvc: AuthService, private toastrSvc: ToastrService) {
+    this.authSvc.checkToken();
+  }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<any> {
     // const url: Array<string> = [
@@ -51,8 +53,7 @@ export class AdminInterceptor implements HttpInterceptor {
     //   '/api/recurso/'
     // ];
 
-    // if (url.some(path => req.url.includes(path))) {
-    this.authSvc.checkToken();
+    // if (url.some(path => req.url.includes(path)))
 
     const authToken = this.authSvc.userTokenValue;
     const authRequest = req.clone({
@@ -97,6 +98,5 @@ export class AdminInterceptor implements HttpInterceptor {
         return throwError(httpError);
       })
     );
-    // return next.handle(req);
   }
 }

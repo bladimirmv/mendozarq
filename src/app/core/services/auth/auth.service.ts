@@ -84,6 +84,8 @@ export class AuthService extends RoleValidator {
           timeOut: 7000,
         }
       );
+
+      return;
     }
     this.loggedIn.next(true);
     this.usuarioToken.next(usuarioToken);

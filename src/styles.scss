@@ -97,7 +97,9 @@ $mendozarq-dark-theme: mat-dark-theme(
   --gray0: #f8f8f8;
   --gray1: #dbe1e8;
   --gray2: #b2becd;
+  --gray3: #a5a5a5;
   --gray3: #6c7983;
+
   --gray4: #454e56;
   --gray5: #2a2e35;
   --gray6: #12181b;
@@ -249,7 +251,7 @@ body {
 .content {
   width: 98%;
   max-width: 1490px;
-  margin: auto;
+  margin: 0 auto;
 }
 
 // full width

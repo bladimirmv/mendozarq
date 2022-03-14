@@ -140,6 +140,8 @@ export class ProductoComponent implements OnInit, OnDestroy {
       .subscribe((productos: Producto[]) => {
         this.source.data = productos;
         this.productos = productos;
+        this.activos = 0;
+        this.inactivos = 0;
         productos.filter((prod) => {
           this.activos += prod.estado ? 1 : 0;
           this.inactivos += prod.estado ? 0 : 1;

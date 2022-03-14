@@ -1,27 +1,19 @@
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { PlanificacionProyecto } from '@models/charts/planificacion.interface';
 import { Injectable } from '@angular/core';
-import {
-  Resolve,
-  ActivatedRoute,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 
 import { PlanificacionService } from '@services/mendozarq/planificacion.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PlanificacionResolverService implements Resolve<any> {
-  public planificacion: PlanificacionProyecto;
-
+export class PlanificacionResolverService
+  implements Resolve<PlanificacionProyecto>
+{
   constructor(private planificacionSvc: PlanificacionService) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<any> {
+  resolve(route: ActivatedRouteSnapshot): Observable<PlanificacionProyecto> {
     return this.planificacionSvc.getOnePlanificacionProyecto(
       route.parent.paramMap.get('uuid')
     );

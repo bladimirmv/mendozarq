@@ -5,20 +5,27 @@ export interface warningDialog {
   title: string;
   paragraph: string;
   btnPrimary: string;
-};
+}
 
 @Component({
   selector: 'app-warning-modal',
   templateUrl: './warning-modal.component.html',
-  styleUrls: ['./warning-modal.component.scss']
+  styleUrls: ['./warning-modal.component.scss'],
 })
 export class WarningModalComponent implements OnInit {
+  constructor(@Inject(MAT_DIALOG_DATA) public dataDialog: warningDialog) {}
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public dataDialog: warningDialog
-  ) { }
+  ngOnInit(): void {}
+}
 
-  ngOnInit(): void {
-  }
+export interface propertysDto {
+  // properties ...
+}
 
+export class classejemplodos<T> {
+  // code ...
+}
+
+export class classejemplo extends classejemplodos<propertysDto> {
+  property: string;
 }

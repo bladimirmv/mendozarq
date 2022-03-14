@@ -14,15 +14,14 @@ import {
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { take, takeUntil } from 'rxjs/operators';
-import { Observable, Subject, forkJoin, pipe } from 'rxjs';
+import { Observable, Subject, forkJoin } from 'rxjs';
 import { NewTareaPlanificacionComponent } from './../new-tarea-planificacion/new-tarea-planificacion.component';
 import { PlanificacionProyectoView } from '@models/charts/planificacion.interface';
 import { PlanificacionService } from '@services/mendozarq/planificacion.service';
+
 import * as Highcharts from 'highcharts/highcharts-gantt';
 import HC_exporting from 'highcharts/modules/exporting';
 HC_exporting(Highcharts);
-
-import * as moment from 'moment';
 
 import {
   spanish,

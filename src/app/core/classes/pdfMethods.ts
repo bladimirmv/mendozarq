@@ -1,4 +1,5 @@
-import { DetalleCapitulo } from './../../shared/models/mendozarq/presupuestos.interface';
+import { Usuario } from './../../shared/models/usuario.interface';
+import { DetalleCapitulo } from '@shared/models/mendozarq/presupuestos.interface';
 import {
   CapituloPresupuestoView,
   PresupuestoObraView,
@@ -24,22 +25,24 @@ export interface BodyTable {
   fit?: string;
 }
 
+export type TypeReport = 'usuario';
+
 export class PdfMethods {
   constructor() {
     moment.locale('es');
   }
 
-  toTitleCase(str) {
+  private toTitleCase(str) {
     return str.replace(/\w\S*/g, (txt) => {
       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
   }
 
-  numberWithCommas(x) {
+  private numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 
-  capitalize(str) {
+  private capitalize(str) {
     if (typeof str !== 'string') return '';
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
@@ -50,6 +53,245 @@ export class PdfMethods {
       background: '#FFFFFF',
       fit: '70',
     };
+  }
+
+  private usuarioTable(pdf: Array<any>, usuario: Array<Usuario>): Array<any> {
+    const bodyInfo: Array<BodyTable[]> = [];
+
+    //   'seleccion',
+    //   'activo',
+    //   'nombre',
+    //   'apellidos',
+    //   'rol',
+    //   'celular',
+    //   'correo',
+    //   'username',
+    //   'direccion',
+    //   'edit',
+    // ];
+
+    bodyInfo.push([
+      {
+        text: 'Nombre',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Apellidos',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Rol',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Celular',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Correo',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+
+      {
+        text: 'Nombre de Usuario',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+
+      {
+        text: 'Direccion',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+    ]);
+
+    usuario.forEach((usuario) => {
+      bodyInfo.push([
+        {
+          text: `${usuario.nombre}`,
+          alignment: 'justify',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${usuario.apellidoPaterno} ${usuario.apellidoMaterno}`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${usuario.rol}`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${usuario.celular}`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${usuario.correo}`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${usuario.username}`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${usuario.direccion}`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+      ]);
+    });
+
+    pdf.push(
+      this.centerObject({
+        style: 'tableExample',
+        table: {
+          body: bodyInfo,
+          alignment: 'center',
+          // widths: ['*', 'auto', 50, 70, 50, 50, 50],
+        },
+        layout: {
+          hLineWidth: function (i, node) {
+            return i === 0 || i === node.table.body.length ? 1 : 1;
+          },
+          vLineWidth: function (i, node) {
+            return i === 0 || i === node.table.widths.length ? 0 : 1;
+          },
+          hLineColor: function (i, node) {
+            return '#425066';
+          },
+          vLineColor: function (i, node) {
+            return '#425066';
+          },
+        },
+      })
+    );
+    return pdf;
+  }
+
+  public async reporte<T>(
+    pdf: Array<any>,
+    data: Array<T>,
+    images: Array<string>,
+    typeReporte: TypeReport
+  ): Promise<Array<any>> {
+    pdf.push({
+      columns: [
+        {
+          image: await this.getBase64ImageFromURL('./assets/logo-wave.svg'),
+          width: 50,
+        },
+        {
+          text: 'MENDOZARQ',
+          margin: [0, 14, 0, 0],
+          fontSize: 14,
+          color: '#425066',
+        },
+        {
+          text: moment(new Date()).format('DD [de] MMM [de] YYYY'),
+          alignment: 'right',
+          margin: [0, 14, 0, 0],
+          fontSize: 14,
+          color: '#425066',
+        },
+      ],
+    });
+
+    images.forEach((image) => {
+      pdf.push({
+        image,
+        width: 400,
+        alignment: 'center',
+      });
+    });
+
+    pdf.push({
+      pageOrientation: 'landscape',
+      pageBreak: 'before',
+      columns: [
+        {
+          image: await this.getBase64ImageFromURL('./assets/logo-wave.svg'),
+          width: 50,
+        },
+        {
+          text: 'MENDOZARQ',
+          margin: [0, 14, 0, 0],
+          fontSize: 14,
+          color: '#425066',
+        },
+        {
+          text: moment(new Date()).format('DD [de] MMM [de] YYYY'),
+          alignment: 'right',
+          margin: [0, 14, 0, 0],
+          fontSize: 14,
+          color: '#425066',
+        },
+      ],
+    });
+
+    pdf.push({
+      text: 'Tabla de Reporte'.toUpperCase(),
+      fontSize: 16,
+      alignment: 'center',
+      bold: true,
+      margin: [0, 30, 0, 10],
+      tocItem: true,
+      tocMargin: [20, 0, 0, 0],
+    });
+
+    switch (typeReporte) {
+      case 'usuario':
+        pdf = this.usuarioTable(pdf, data);
+        break;
+
+      default:
+        break;
+    }
+
+    return pdf;
   }
 
   // ====================> presupuesto

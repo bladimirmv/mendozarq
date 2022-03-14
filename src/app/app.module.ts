@@ -22,6 +22,7 @@ import { FooterComponent } from './core/footer/footer.component';
 import { AdminInterceptor } from './core/interceptors/admin.interceptor';
 
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { ReporteMendozarqModule } from './modules/reporte-mendozarq/reporte-mendozarq.module';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     RouterModule,
     ReactiveFormsModule,
     HttpClientModule,
+    ReporteMendozarqModule,
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
