@@ -244,7 +244,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     }`;
   }
 
-  // !graficas y reportes
+  // **Graficas y reportes
   public onLoadTab(e: MatTabChangeEvent): void {
     switch (e.index) {
       case 1:
@@ -373,7 +373,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     await this.generatePdf();
   }
 
-  addDelay(s: number): Promise<any> {
+  private addDelay(s: number): Promise<any> {
     return new Promise((resolve) => setTimeout(resolve, s * 1000));
   }
 

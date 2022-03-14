@@ -1,3 +1,7 @@
+import {
+  Proyecto,
+  ProyectoView,
+} from './../../shared/models/mendozarq/proyecto.interface';
 import { Usuario } from './../../shared/models/usuario.interface';
 import { DetalleCapitulo } from '@shared/models/mendozarq/presupuestos.interface';
 import {
@@ -25,7 +29,7 @@ export interface BodyTable {
   fit?: string;
 }
 
-export type TypeReport = 'usuario';
+export type TypeReport = 'usuario' | 'proyecto';
 
 export class PdfMethods {
   constructor() {
@@ -59,6 +63,16 @@ export class PdfMethods {
     const bodyInfo: Array<BodyTable[]> = [];
 
     bodyInfo.push([
+      {
+        text: 'Estado',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
       {
         text: 'Nombre',
         style: 'tableHeader',
@@ -136,6 +150,11 @@ export class PdfMethods {
     usuario.forEach((usuario) => {
       bodyInfo.push([
         {
+          text: `${usuario.activo ? 'activo' : 'inactivo'}`,
+          alignment: 'justify',
+          border: [false, false, false, true],
+        },
+        {
           text: `${usuario.nombre}`,
           alignment: 'justify',
           border: [false, false, false, true],
@@ -179,7 +198,168 @@ export class PdfMethods {
         table: {
           body: bodyInfo,
           alignment: 'center',
-          // widths: ['*', 'auto', 50, 70, 50, 50, 50],
+        },
+        layout: {
+          hLineWidth: function (i, node) {
+            return i === 0 || i === node.table.body.length ? 1 : 1;
+          },
+          vLineWidth: function (i, node) {
+            return i === 0 || i === node.table.widths.length ? 0 : 1;
+          },
+          hLineColor: function (i, node) {
+            return '#425066';
+          },
+          vLineColor: function (i, node) {
+            return '#425066';
+          },
+        },
+      })
+    );
+    return pdf;
+  }
+
+  private proyectoTable(
+    pdf: Array<any>,
+    proyecto: Array<ProyectoView>
+  ): Array<any> {
+    const bodyInfo: Array<BodyTable[]> = [];
+
+    bodyInfo.push([
+      {
+        text: 'Estado',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Nombre',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Cliente',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Categoria',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Fecha Inicio',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Fecha Final',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+
+      {
+        text: 'Lugar del Proyecto',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+
+      {
+        text: 'Descripcion',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+    ]);
+
+    proyecto.forEach((data) => {
+      bodyInfo.push([
+        {
+          text: `${data.estado ? 'activo' : 'inactivo'}`,
+          alignment: 'justify',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${data.nombre}`,
+          alignment: 'justify',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${data.nombreCliente} ${data.apellidoPaterno} ${data.apellidoMaterno}`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${data.categoria}`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${moment(data.fechaInicio).format('DD/MM/YYYY')}`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${moment(data.fechaFinal).format('DD/MM/YYYY')}`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${data.lugarProyecto}`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${data.descripcion}`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+      ]);
+    });
+
+    pdf.push(
+      this.centerObject({
+        style: 'tableExample',
+        table: {
+          body: bodyInfo,
+          alignment: 'center',
         },
         layout: {
           hLineWidth: function (i, node) {
@@ -202,7 +382,7 @@ export class PdfMethods {
 
   public async reporte<T>(
     pdf: Array<any>,
-    data: Array<T>,
+    data: Array<any>,
     images: Array<string>,
     typeReporte: TypeReport,
     reporteTitle: string
@@ -275,7 +455,9 @@ export class PdfMethods {
       case 'usuario':
         pdf = this.usuarioTable(pdf, data);
         break;
-
+      case 'proyecto':
+        pdf = this.proyectoTable(pdf, data);
+        break;
       default:
         break;
     }

@@ -35,6 +35,8 @@
     color="primary"
     [selectedIndex]="tabIndex"
     animationDuration="0ms"
+    id="my-tab-group"
+    mat-stretch-tabs
   >
     <mat-tab>
       <ng-template mat-tab-label color="primary">
@@ -262,6 +264,7 @@
         ></mat-paginator>
       </div>
     </mat-tab>
+
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">analytics</mat-icon>

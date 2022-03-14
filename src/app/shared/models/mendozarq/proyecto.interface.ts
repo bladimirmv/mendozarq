@@ -11,3 +11,9 @@ export interface Proyecto {
   porcentaje?: number;
   uuidCliente: string;
 }
+
+export interface ProyectoView extends Proyecto {
+  apellidoPaterno: string;
+  apellidoMaterno: string;
+  nombreCliente: string;
+}
