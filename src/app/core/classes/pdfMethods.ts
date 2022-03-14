@@ -58,18 +58,6 @@ export class PdfMethods {
   private usuarioTable(pdf: Array<any>, usuario: Array<Usuario>): Array<any> {
     const bodyInfo: Array<BodyTable[]> = [];
 
-    //   'seleccion',
-    //   'activo',
-    //   'nombre',
-    //   'apellidos',
-    //   'rol',
-    //   'celular',
-    //   'correo',
-    //   'username',
-    //   'direccion',
-    //   'edit',
-    // ];
-
     bodyInfo.push([
       {
         text: 'Nombre',
@@ -216,7 +204,8 @@ export class PdfMethods {
     pdf: Array<any>,
     data: Array<T>,
     images: Array<string>,
-    typeReporte: TypeReport
+    typeReporte: TypeReport,
+    reporteTitle: string
   ): Promise<Array<any>> {
     pdf.push({
       columns: [
@@ -231,7 +220,7 @@ export class PdfMethods {
           color: '#425066',
         },
         {
-          text: moment(new Date()).format('DD [de] MMM [de] YYYY'),
+          text: moment(new Date()).format('MM/DD/YYYY[,] h:mm A'),
           alignment: 'right',
           margin: [0, 14, 0, 0],
           fontSize: 14,
@@ -263,7 +252,7 @@ export class PdfMethods {
           color: '#425066',
         },
         {
-          text: moment(new Date()).format('DD [de] MMM [de] YYYY'),
+          text: moment(new Date()).format('MM/DD/YYYY[,] h:mm A'),
           alignment: 'right',
           margin: [0, 14, 0, 0],
           fontSize: 14,
@@ -273,7 +262,7 @@ export class PdfMethods {
     });
 
     pdf.push({
-      text: 'Tabla de Reporte'.toUpperCase(),
+      text: `${reporteTitle}`.toUpperCase(),
       fontSize: 16,
       alignment: 'center',
       bold: true,

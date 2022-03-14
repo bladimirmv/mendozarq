@@ -316,10 +316,18 @@
             </mat-form-field>
             <ng-container *ngIf="reporteOption === 4">
               <mat-form-field align="center">
-                <mat-label>Enter a date range</mat-label>
+                <mat-label>Ingrese un rango de Fechas</mat-label>
                 <mat-date-range-input [rangePicker]="picker">
-                  <input matStartDate placeholder="Start date" />
-                  <input matEndDate placeholder="End date" />
+                  <input
+                    matStartDate
+                    placeholder="Start date"
+                    [(ngModel)]="rangeFirst"
+                  />
+                  <input
+                    matEndDate
+                    placeholder="End date"
+                    [(ngModel)]="rangeSecond"
+                  />
                 </mat-date-range-input>
                 <mat-datepicker-toggle
                   matSuffix
@@ -327,6 +335,10 @@
                 ></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>
               </mat-form-field>
+              <button mat-button (click)="filterRangeDate()">
+                <mat-icon> search </mat-icon>
+                Buscar
+              </button>
             </ng-container>
           </div>
 
@@ -347,8 +359,8 @@
             <div class="rect5"></div>
           </div>
 
+          <!-- *ngIf="loadIframe" -->
           <iframe
-            *ngIf="loadIframe"
             frameborder="0"
             id="pdf-iframe"
             onreset="true"

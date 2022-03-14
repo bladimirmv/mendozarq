@@ -21,6 +21,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Chart } from 'chart.js';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 
+import * as moment from 'moment';
+
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -44,9 +46,6 @@ export class UsersComponent implements OnInit, OnDestroy {
     'direccion',
     'edit',
   ];
-  private isTabSelected: boolean = false;
-  private darkMode: BehaviorSubject<any> = new BehaviorSubject<boolean>(false);
-
   public dataSource: MatTableDataSource<Usuario> =
     new MatTableDataSource<Usuario>();
 
@@ -56,6 +55,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   public usuarios$: Observable<Usuario[]>;
   public usuario: Usuario[];
 
+  // **Graficas y Reportes
   public analiticas: Usuario[];
   public reporteOption: number = 0;
   public bar_chart: Chart;
@@ -63,6 +63,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   public pdfResult: any;
   public tabIndex: number = 0;
   public loadIframe = false;
+  public rangeFirst: Date = new Date();
+  public rangeSecond: Date = new Date();
+  private fechaReporte: string = 'Todos';
 
   constructor(
     private toastSvc: ToastrService,
@@ -70,16 +73,12 @@ export class UsersComponent implements OnInit, OnDestroy {
     private usuarioSvc: UsuarioService,
     private _route: Router,
     private _actRoute: ActivatedRoute,
-    private _brightnessSvc: BrightnessService,
     private _pdfSvc: PdfService
-  ) {
-    this._brightnessSvc.theme$.pipe(take(1)).subscribe((darkTheme: boolean) => {
-      this.darkMode.next(darkTheme);
-    });
-  }
+  ) {}
 
   // =====================> onInit
   ngOnInit(): void {
+    moment().locale('es');
     this.getAllUsuarios();
 
     this.dataSource.paginator = this.paginator;
@@ -270,8 +269,6 @@ export class UsersComponent implements OnInit, OnDestroy {
       default:
         break;
     }
-
-    this.isTabSelected = true;
   }
 
   public async initChart(): Promise<void> {
@@ -334,7 +331,6 @@ export class UsersComponent implements OnInit, OnDestroy {
 
     this.bar_chart = new Chart('bar', {
       type: 'bar',
-
       data,
       options: {
         ...options,
@@ -342,7 +338,7 @@ export class UsersComponent implements OnInit, OnDestroy {
           title: {
             color: '#ff6e00',
             display: true,
-            text: 'Grafica de Barras de Roles de Usuarios',
+            text: `Grafica de Barras de Usuarios (${this.fechaReporte.toUpperCase()})`,
             font: {
               size: 16,
               family: 'Montserrat',
@@ -362,7 +358,7 @@ export class UsersComponent implements OnInit, OnDestroy {
           title: {
             color: '#ff6e00',
             display: true,
-            text: 'Grafica de Rosquilla de Roles de Usuarios',
+            text: `Grafica de Rosquilla de Usuarios (${this.fechaReporte.toUpperCase()})`,
             font: {
               size: 16,
               family: 'Montserrat',
@@ -381,10 +377,23 @@ export class UsersComponent implements OnInit, OnDestroy {
     return new Promise((resolve) => setTimeout(resolve, s * 1000));
   }
 
+  public filterRangeDate(): void {
+    this.analiticas = this.usuario;
+    this.analiticas = this.analiticas.filter((usr) =>
+      moment(usr.creadoEn).isBetween(this.rangeFirst, this.rangeSecond)
+    );
+
+    this.fechaReporte = `${moment(this.rangeFirst).format(
+      'DD/MM/YYYY'
+    )}  - ${moment(this.rangeSecond).format('DD/MM/YYYY')}`;
+    this.initChart();
+  }
+
   public filterGraficasReportes(): void {
     switch (this.reporteOption) {
       case 0:
         this.analiticas = this.usuario;
+        this.fechaReporte = 'Todos';
         break;
       case 1:
         this.analiticas = this.usuario;
@@ -392,18 +401,23 @@ export class UsersComponent implements OnInit, OnDestroy {
           (usr) =>
             new Date(usr.creadoEn).getFullYear() === new Date().getFullYear()
         );
+        this.fechaReporte = `Año ${new Date().getFullYear().toString()}`;
         break;
       case 2:
         this.analiticas = this.usuario;
         this.analiticas = this.analiticas.filter(
           (usr) => new Date(usr.creadoEn).getMonth() === new Date().getMonth()
         );
+        this.fechaReporte = `${moment(new Date()).format('MMMM [de] YYYY')}`;
         break;
       case 3:
         this.analiticas = this.usuario;
         this.analiticas = this.analiticas.filter(
           (usr) => new Date(usr.creadoEn).getDay() === new Date().getDay()
         );
+        this.fechaReporte = `${moment(new Date()).format(
+          'DD [de] MMMM [del] YYYY'
+        )}`;
         break;
 
       case 4:
@@ -455,7 +469,8 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.bar_chart.toBase64Image('image/png', 1.0),
         this.doughnut_chart.toBase64Image('image/png', 1.0),
       ],
-      'usuario'
+      'usuario',
+      `Reporte de Usuarios (${this.fechaReporte})`
     );
 
     const docDefinition = {
