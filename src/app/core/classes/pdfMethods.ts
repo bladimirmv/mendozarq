@@ -465,6 +465,17 @@ export class PdfMethods {
         bold: true,
         border: [false, false, false, false],
       },
+
+      {
+        text: 'QR',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
     ]);
 
     producto.forEach((data) => {
@@ -510,6 +521,13 @@ export class PdfMethods {
         {
           text: `${data.descripcion}`,
           alignment: 'center',
+          border: [false, false, false, true],
+        },
+
+        {
+          qr: data.uuid ? data.uuid : 'sin uuid',
+          background: '#FFFFFF',
+          fit: '70',
           border: [false, false, false, true],
         },
       ]);
