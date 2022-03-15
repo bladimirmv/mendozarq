@@ -468,6 +468,10 @@ export class PdfMethods {
     ]);
 
     producto.forEach((data) => {
+      const categories: Array<string> = data.categorias.map(
+        (cat) => cat.nombre
+      );
+
       bodyInfo.push([
         {
           text: `${data.estado ? 'activo' : 'inactivo'}`,
@@ -495,7 +499,10 @@ export class PdfMethods {
           border: [false, false, false, true],
         },
         {
-          text: `${data.categorias}`,
+          text: categories
+            .slice(0, -1)
+            .join(', \n')
+            .concat(' y ' + categories.slice(-1)),
           alignment: 'center',
           border: [false, false, false, true],
         },
