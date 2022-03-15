@@ -22,265 +22,407 @@
     </app-status-card>
   </div>
 
-  <a href=""></a>
+  <mat-tab-group
+    mat-align-tabs="center"
+    (selectedTabChange)="onLoadTab($event)"
+    color="primary"
+    [selectedIndex]="tabIndex"
+    animationDuration="0ms"
+  >
+    <mat-tab>
+      <ng-template mat-tab-label color="primary">
+        <mat-icon class="example-tab-icon">table_rows</mat-icon>
+        &nbsp; Tabla
+      </ng-template>
 
-  <div class="table-container mat-elevation-z2">
-    <div
-      class="header-table"
-      [style.display]="selected.length ? 'none' : 'grid'"
-    >
-      <mat-form-field>
-        <mat-label>Buscar</mat-label>
-        <input
-          matInput
-          autocomplete="off"
-          (keyup)="applyFilter($event)"
-          placeholder="Ex. bladimir"
-          [(ngModel)]="filterValue"
-          #input
-        />
-
-        <button
-          mat-button
-          *ngIf="filterValue"
-          matSuffix
-          mat-icon-button
-          aria-label="Clear"
-          (click)="applyFilter('')"
-          (click)="input.value = ''"
+      <div class="table-container mat-elevation-z2">
+        <div
+          class="header-table"
+          [style.display]="selected.length ? 'none' : 'grid'"
         >
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
-      <button
-        mat-icon-button
-        matTooltip="Nuevo producto"
-        matTooltipPosition="below"
-        class="btn-add"
-        (click)="addProducto()"
-      >
-        <mat-icon class="mat-18"> add </mat-icon>
-      </button>
-    </div>
+          <mat-form-field>
+            <mat-label>Buscar</mat-label>
+            <input
+              matInput
+              autocomplete="off"
+              (keyup)="applyFilter($event)"
+              placeholder="Ex. bladimir"
+              [(ngModel)]="filterValue"
+              #input
+            />
 
-    <div *ngIf="selected.length">
-      <div class="delete-table">
-        <button mat-icon-button (click)="clearCheckbox()" class="btn-clear">
-          <mat-icon>clear</mat-icon>
-        </button>
-        <span> Seleccionados {{ selected.length }} </span>
-        <button class="btn-delete" (click)="deleteProducto()">Elminar</button>
-      </div>
-    </div>
-
-    <div class="table-content">
-      <table
-        mat-table
-        [dataSource]="source"
-        class="mat-elevation-z2"
-        multiTemplateDataRows
-        matSort
-      >
-        <ng-container matColumnDef="seleccion" sticky>
-          <th *matHeaderCellDef class="actions-table">
-            <mat-checkbox
-              color="warn"
-              (change)="$event ? masterToggle() : null"
-              [checked]="selection.hasValue() && isAllSelected()"
-              [indeterminate]="selection.hasValue() && !isAllSelected()"
-              [aria-label]="checkboxLabel()"
-            >
-            </mat-checkbox>
-          </th>
-
-          <td *matCellDef="let row" class="actions-table">
-            <mat-checkbox
-              color="warn"
-              (click)="$event.stopPropagation()"
-              (change)="$event ? selection.toggle(row) : null"
-              [checked]="selection.isSelected(row)"
-              [aria-label]="checkboxLabel(row)"
-            >
-            </mat-checkbox>
-          </td>
-        </ng-container>
-        <!-- *estado -->
-        <ng-container matColumnDef="estado">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
-          <td mat-cell *matCellDef="let row">
-            <div
-              [class]="row.estado ? 'producto-activo' : 'producto-no-activo'"
-            ></div>
-          </td>
-        </ng-container>
-
-        <!-- *nombre -->
-        <ng-container matColumnDef="nombre">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
-          <td mat-cell *matCellDef="let row" class="td-longtext text-center">
-            <span>
-              {{ row.nombre | titlecase }}
-            </span>
-          </td>
-        </ng-container>
-
-        <!-- *precio -->
-        <ng-container matColumnDef="precio"
-          >fil
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Precio</th>
-          <td mat-cell *matCellDef="let row" class="text-center">
-            {{ row.precio }} BS.
-          </td>
-        </ng-container>
-
-        <!-- *stock-->
-        <ng-container matColumnDef="stock">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Stock</th>
-          <td mat-cell *matCellDef="let row" class="text-center">
-            {{ row.stock }}
-          </td>
-        </ng-container>
-
-        <!-- *categorias-->
-        <ng-container matColumnDef="categorias">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Categorias</th>
-          <td
-            mat-cell
-            *matCellDef="let row"
-            class="td-longtext text-center"
-            [matTooltip]="commaText(row.categorias)"
-            matTooltipPosition="below"
-          >
-            <span>
-              {{ commaText(row.categorias) }}
-            </span>
-          </td>
-        </ng-container>
-
-        <!-- *descripcion-->
-        <ng-container matColumnDef="descripcion">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripcion</th>
-          <td
-            mat-cell
-            *matCellDef="let row"
-            class="td-longtext text-center"
-            [matTooltip]="row.descripcion"
-            matTooltipPosition="below"
-          >
-            <span>
-              {{ row.descripcion ? row.descripcion : "Sin descripcion" }}
-            </span>
-          </td>
-        </ng-container>
-
-        <!-- *barcode -->
-        <ng-container matColumnDef="barcode" stickyEnd>
-          <th *matHeaderCellDef mat-sort-header></th>
-          <td *matCellDef="let row" class="text-center">
             <button
+              mat-button
+              *ngIf="filterValue"
+              matSuffix
               mat-icon-button
-              (click)="dowloadBarcode(row)"
-              matTooltip="Codigo de barras"
-              matTooltipPosition="below"
-              (click)="expandedElement = expandedElement === row ? null : row"
+              aria-label="Clear"
+              (click)="applyFilter('')"
+              (click)="input.value = ''"
             >
-              <mat-icon class="edit-icon"> qr_code</mat-icon>
+              <mat-icon>close</mat-icon>
             </button>
-          </td>
-        </ng-container>
-
-        <!-- *edit -->
-        <ng-container matColumnDef="edit" stickyEnd>
-          <th *matHeaderCellDef mat-sort-header></th>
-          <td *matCellDef="let row" class="text-center">
-            <button
-              mat-icon-button
-              (click)="editProducto(row)"
-              (click)="expandedElement = expandedElement === row ? null : row"
-            >
-              <mat-icon class="edit-icon"> edit </mat-icon>
-            </button>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="expandedDetail">
-          <td
-            mat-cell
-            *matCellDef="let element"
-            [attr.colspan]="columns.length"
-            style="white-space: normal"
+          </mat-form-field>
+          <button
+            mat-icon-button
+            matTooltip="Nuevo producto"
+            matTooltipPosition="below"
+            class="btn-add"
+            (click)="addProducto()"
           >
-            <div
-              class="expanded-container"
-              [@detailExpand]="
-                element == expandedElement ? 'expanded' : 'collapsed'
-              "
-            >
-              <picture
-                *ngFor="let foto of element.fotos"
-                style="position: relative"
-              >
-                <button
-                  class="button-img"
-                  mat-icon-button
-                  matTooltip="descargar"
-                  matTooltipPosition="below"
-                  style="background-color: rgba(0, 0, 0, 0.158); color: white"
-                  (click)="downloadFile(foto)"
+            <mat-icon class="mat-18"> add </mat-icon>
+          </button>
+        </div>
+
+        <div *ngIf="selected.length">
+          <div class="delete-table">
+            <button mat-icon-button (click)="clearCheckbox()" class="btn-clear">
+              <mat-icon>clear</mat-icon>
+            </button>
+            <span> Seleccionados {{ selected.length }} </span>
+            <button class="btn-delete" (click)="deleteProducto()">
+              Elminar
+            </button>
+          </div>
+        </div>
+
+        <div class="table-content">
+          <table
+            mat-table
+            [dataSource]="source"
+            class="mat-elevation-z2"
+            multiTemplateDataRows
+            matSort
+          >
+            <ng-container matColumnDef="seleccion" sticky>
+              <th *matHeaderCellDef class="actions-table">
+                <mat-checkbox
+                  color="warn"
+                  (change)="$event ? masterToggle() : null"
+                  [checked]="selection.hasValue() && isAllSelected()"
+                  [indeterminate]="selection.hasValue() && !isAllSelected()"
+                  [aria-label]="checkboxLabel()"
                 >
-                  <mat-icon class="mat-18"> cloud_download </mat-icon>
+                </mat-checkbox>
+              </th>
+
+              <td *matCellDef="let row" class="actions-table">
+                <mat-checkbox
+                  color="warn"
+                  (click)="$event.stopPropagation()"
+                  (change)="$event ? selection.toggle(row) : null"
+                  [checked]="selection.isSelected(row)"
+                  [aria-label]="checkboxLabel(row)"
+                >
+                </mat-checkbox>
+              </td>
+            </ng-container>
+            <!-- *estado -->
+            <ng-container matColumnDef="estado">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+              <td mat-cell *matCellDef="let row">
+                <div
+                  [class]="
+                    row.estado ? 'producto-activo' : 'producto-no-activo'
+                  "
+                ></div>
+              </td>
+            </ng-container>
+
+            <!-- *nombre -->
+            <ng-container matColumnDef="nombre">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                class="td-longtext text-center"
+              >
+                <span>
+                  {{ row.nombre | titlecase }}
+                </span>
+              </td>
+            </ng-container>
+
+            <!-- *precio -->
+            <ng-container matColumnDef="precio"
+              >fil
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Precio</th>
+              <td mat-cell *matCellDef="let row" class="text-center">
+                {{ row.precio }} BS.
+              </td>
+            </ng-container>
+
+            <!-- *stock-->
+            <ng-container matColumnDef="stock">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Stock</th>
+              <td mat-cell *matCellDef="let row" class="text-center">
+                {{ row.stock }}
+              </td>
+            </ng-container>
+
+            <!-- *categorias-->
+            <ng-container matColumnDef="categorias">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Categorias
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                class="td-longtext text-center"
+                [matTooltip]="commaText(row.categorias)"
+                matTooltipPosition="below"
+              >
+                <span>
+                  {{ commaText(row.categorias) }}
+                </span>
+              </td>
+            </ng-container>
+
+            <!-- *descripcion-->
+            <ng-container matColumnDef="descripcion">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Descripcion
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                class="td-longtext text-center"
+                [matTooltip]="row.descripcion"
+                matTooltipPosition="below"
+              >
+                <span>
+                  {{ row.descripcion ? row.descripcion : "Sin descripcion" }}
+                </span>
+              </td>
+            </ng-container>
+
+            <!-- *barcode -->
+            <ng-container matColumnDef="barcode" stickyEnd>
+              <th *matHeaderCellDef mat-sort-header></th>
+              <td *matCellDef="let row" class="text-center">
+                <button
+                  mat-icon-button
+                  (click)="dowloadBarcode(row)"
+                  matTooltip="Codigo de barras"
+                  matTooltipPosition="below"
+                  (click)="
+                    expandedElement = expandedElement === row ? null : row
+                  "
+                >
+                  <mat-icon class="edit-icon"> qr_code</mat-icon>
                 </button>
-                <img
-                  loading="lazy"
-                  [src]="getImage(foto.keyName)"
-                  alt=""
-                  class="foto-producto"
-                  (click)="modalPreview(element.fotos, foto)"
-                />
-              </picture>
-            </div>
-          </td>
-        </ng-container>
+              </td>
+            </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="columns"></tr>
-        <!-- <tr mat-row *matRowDef="let row; columns: columns"></tr> -->
-        <tr
-          mat-row
-          *matRowDef="let element; columns: columns"
-          class="example-element-row"
-          [class.example-expanded-row]="expandedElement === element"
-          (click)="
-            expandedElement = expandedElement === element ? null : element
-          "
-        ></tr>
-        <tr
-          mat-row
-          *matRowDef="let row; columns: ['expandedDetail']"
-          class="example-detail-row"
-        ></tr>
+            <!-- *edit -->
+            <ng-container matColumnDef="edit" stickyEnd>
+              <th *matHeaderCellDef mat-sort-header></th>
+              <td *matCellDef="let row" class="text-center">
+                <button
+                  mat-icon-button
+                  (click)="editProducto(row)"
+                  (click)="
+                    expandedElement = expandedElement === row ? null : row
+                  "
+                >
+                  <mat-icon class="edit-icon"> edit </mat-icon>
+                </button>
+              </td>
+            </ng-container>
 
-        <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" colspan="10" align="center">
-            <div *ngIf="input.value; else noData">
-              No hay datos que coincidan con el filtro: "{{ input.value }}"
-            </div>
-            <ng-template #noData align="center">
-              <img
-                src="./assets/no_data.svg"
-                alt=""
-                width="100"
-                style="margin: 5px"
-                class="no-select"
-              />
-              <p>Tabla vacía, aún no agregaste un producto.</p>
-            </ng-template>
-          </td>
-        </tr>
-      </table>
-    </div>
-    <mat-paginator
-      [pageSizeOptions]="[5, 10, 20]"
-      showFirstLastButtons
-    ></mat-paginator>
-  </div>
+            <ng-container matColumnDef="expandedDetail">
+              <td
+                mat-cell
+                *matCellDef="let element"
+                [attr.colspan]="columns.length"
+                style="white-space: normal"
+              >
+                <div
+                  class="expanded-container"
+                  [@detailExpand]="
+                    element == expandedElement ? 'expanded' : 'collapsed'
+                  "
+                >
+                  <picture
+                    *ngFor="let foto of element.fotos"
+                    style="position: relative"
+                  >
+                    <button
+                      class="button-img"
+                      mat-icon-button
+                      matTooltip="descargar"
+                      matTooltipPosition="below"
+                      style="
+                        background-color: rgba(0, 0, 0, 0.158);
+                        color: white;
+                      "
+                      (click)="downloadFile(foto)"
+                    >
+                      <mat-icon class="mat-18"> cloud_download </mat-icon>
+                    </button>
+                    <img
+                      loading="lazy"
+                      [src]="getImage(foto.keyName)"
+                      alt=""
+                      class="foto-producto"
+                      (click)="modalPreview(element.fotos, foto)"
+                    />
+                  </picture>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columns"></tr>
+            <!-- <tr mat-row *matRowDef="let row; columns: columns"></tr> -->
+            <tr
+              mat-row
+              *matRowDef="let element; columns: columns"
+              class="example-element-row"
+              [class.example-expanded-row]="expandedElement === element"
+              (click)="
+                expandedElement = expandedElement === element ? null : element
+              "
+            ></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: ['expandedDetail']"
+              class="example-detail-row"
+            ></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="10" align="center">
+                <div *ngIf="input.value; else noData">
+                  No hay datos que coincidan con el filtro: "{{ input.value }}"
+                </div>
+                <ng-template #noData align="center">
+                  <img
+                    src="./assets/no_data.svg"
+                    alt=""
+                    width="100"
+                    style="margin: 5px"
+                    class="no-select"
+                  />
+                  <p>Tabla vacía, aún no agregaste un producto.</p>
+                </ng-template>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <mat-paginator
+          [pageSizeOptions]="[5, 10, 20]"
+          showFirstLastButtons
+        ></mat-paginator>
+      </div>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">analytics</mat-icon>
+        &nbsp;Graficas y Reporte
+      </ng-template>
+
+      <main class="main-analiticas">
+        <section class="main-graficas">
+          <div class="bar-actions mat-elevation-z2">
+            <button
+              mat-icon-button
+              matTooltip="Descargar"
+              matTooltipPosition="below"
+              (click)="downloadPdf()"
+            >
+              <mat-icon> download </mat-icon>
+            </button>
+
+            <button
+              mat-icon-button
+              matTooltip="Imprimir"
+              matTooltipPosition="below"
+              (click)="printPdf()"
+            >
+              <mat-icon> print </mat-icon>
+            </button>
+
+            <a
+              mat-icon-button
+              matTooltip="Abrir"
+              matTooltipPosition="below"
+              (click)="openPdf()"
+            >
+              <mat-icon> open_in_new </mat-icon>
+            </a>
+          </div>
+          <br />
+          <div class="form-container">
+            <mat-form-field>
+              <mat-label>Filtrar</mat-label>
+              <mat-select
+                [value]="0"
+                [(ngModel)]="reporteOption"
+                (selectionChange)="filterGraficasReportes()"
+              >
+                <mat-option [value]="0"> Todos </mat-option>
+                <mat-option [value]="1"> Ultimo Año </mat-option>
+                <mat-option [value]="2"> Ultimo Mes </mat-option>
+                <mat-option [value]="3"> Hoy en Día </mat-option>
+                <mat-option [value]="4"> Rango de Fechas </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <ng-container *ngIf="reporteOption === 4">
+              <mat-form-field align="center">
+                <mat-label>Ingrese un rango de Fechas</mat-label>
+                <mat-date-range-input [rangePicker]="picker">
+                  <input
+                    matStartDate
+                    placeholder="Start date"
+                    [(ngModel)]="rangeFirst"
+                  />
+                  <input
+                    matEndDate
+                    placeholder="End date"
+                    [(ngModel)]="rangeSecond"
+                  />
+                </mat-date-range-input>
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+              </mat-form-field>
+              <button mat-button (click)="filterRangeDate()">
+                <mat-icon> search </mat-icon>
+                Buscar
+              </button>
+            </ng-container>
+          </div>
+
+          <div class="bar-container">
+            <canvas id="bar"> </canvas>
+          </div>
+          <div class="doughnut-container">
+            <canvas id="doughnut"> </canvas>
+          </div>
+        </section>
+
+        <section class="reportes">
+          <div class="spinner" *ngIf="!loadIframe">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+          </div>
+
+          <!-- *ngIf="loadIframe" -->
+          <iframe
+            frameborder="0"
+            id="pdf-iframe"
+            onreset="true"
+            width="100%"
+            height="100%"
+            >Cargando</iframe
+          >
+        </section>
+      </main>
+    </mat-tab>
+  </mat-tab-group>
 </div>

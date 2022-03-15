@@ -1,3 +1,5 @@
+import { ProductoView } from '@app/shared/models/liraki/producto.interface';
+import { Producto } from '@models/liraki/producto.interface';
 import {
   Proyecto,
   ProyectoView,
@@ -29,7 +31,12 @@ export interface BodyTable {
   fit?: string;
 }
 
-export type TypeReport = 'usuario' | 'proyecto';
+export type TypeReport =
+  | 'usuario'
+  | 'proyecto'
+  | 'producto'
+  | 'pedidos'
+  | 'venta';
 
 export class PdfMethods {
   constructor() {
@@ -380,9 +387,156 @@ export class PdfMethods {
     return pdf;
   }
 
-  public async reporte<T>(
+  private productoTable(
     pdf: Array<any>,
-    data: Array<any>,
+    producto: Array<ProductoView>
+  ): Array<any> {
+    const bodyInfo: Array<BodyTable[]> = [];
+
+    bodyInfo.push([
+      {
+        text: 'Estado',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Nombre',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Precio',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Descuento',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Stock',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Categorias',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+
+      {
+        text: 'Descripcion',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+    ]);
+
+    producto.forEach((data) => {
+      bodyInfo.push([
+        {
+          text: `${data.estado ? 'activo' : 'inactivo'}`,
+          alignment: 'justify',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${data.nombre}`,
+          alignment: 'justify',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${data.precio}`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${data.descuento}%`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${data.stock}`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${data.categorias}`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+
+        {
+          text: `${data.descripcion}`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+      ]);
+    });
+
+    pdf.push(
+      this.centerObject({
+        style: 'tableExample',
+        table: {
+          body: bodyInfo,
+          alignment: 'center',
+        },
+        layout: {
+          hLineWidth: function (i, node) {
+            return i === 0 || i === node.table.body.length ? 1 : 1;
+          },
+          vLineWidth: function (i, node) {
+            return i === 0 || i === node.table.widths.length ? 0 : 1;
+          },
+          hLineColor: function (i, node) {
+            return '#425066';
+          },
+          vLineColor: function (i, node) {
+            return '#425066';
+          },
+        },
+      })
+    );
+    return pdf;
+  }
+
+  public async reporte<T extends object>(
+    pdf: Array<any>,
+    data: Array<T>,
     images: Array<string>,
     typeReporte: TypeReport,
     reporteTitle: string
@@ -457,6 +611,9 @@ export class PdfMethods {
         break;
       case 'proyecto':
         pdf = this.proyectoTable(pdf, data);
+        break;
+      case 'producto':
+        pdf = this.productoTable(pdf, data);
         break;
       default:
         break;

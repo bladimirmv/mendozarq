@@ -3,13 +3,13 @@ import { CategoriaProducto } from './categoria.producto.interface';
 export interface Producto {
   uuid?: string;
   creadoEn?: Date;
-  nombre: string;
+  nombre?: string;
   descripcion?: string;
   precio?: number;
   moneda?: string;
-  stock: number;
-  descuento: number;
-  estado: boolean;
+  stock?: number;
+  descuento?: number;
+  estado?: boolean;
 }
 
 export interface FotoProducto {
@@ -30,15 +30,14 @@ export interface DetalleCategoriaProducto {
 }
 
 export interface ProductoView extends Producto {
-  categorias: Array<CategoriaProducto>;
-  fotos: Array<FotoProducto>;
+  categorias?: Array<CategoriaProducto>;
+  fotos?: Array<FotoProducto>;
 }
 
 export interface ResponseProducto {
   message: string;
   data: Producto;
 }
-
 
 export interface ProductoResponse {
   message: string;

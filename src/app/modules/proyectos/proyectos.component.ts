@@ -23,7 +23,6 @@ import { Proyecto } from '@models/mendozarq/proyecto.interface';
 import { Usuario } from '@models/usuario.interface';
 
 import * as moment from 'moment';
-import { threadId } from 'worker_threads';
 
 @Component({
   selector: 'app-proyectos',
@@ -113,8 +112,6 @@ export class ProyectosComponent implements OnInit {
         this.proyecto = res;
         this.proyectos = res;
         this.analiticas = res;
-
-        console.log(this.analiticas);
 
         if (this.tabIndex === 1) {
           this.initChart();
@@ -288,13 +285,13 @@ export class ProyectosComponent implements OnInit {
       labels: ['Completados', 'En Curso'],
       datasets: [
         {
-          label: 'Roles',
+          label: 'Proyectos',
           data: [...this.getDataGraficas()],
           backgroundColor: [
-            '#ff6058',
-            '#ffbd2d',
-            '#33b5e5',
             '#2ac940',
+            '#ffbd2d',
+            '#ff6058',
+            '#33b5e5',
             '#a481d5',
           ],
         },

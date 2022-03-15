@@ -1,3 +1,6 @@
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Chart } from 'chart.js';
 import { PdfService } from '@services/pdf/pdf.service';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -28,6 +31,8 @@ import {
   trigger,
 } from '@angular/animations';
 import { ImgPreviewComponent } from '@app/shared/components/img-preview/img-preview.component';
+
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-producto',
@@ -70,16 +75,32 @@ export class ProductoComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  pdfResult: any;
+  // pdfResult: any;
 
+  // **Graficas y Reportes
+  public pdfResultQR: any;
+  public analiticas: Array<Producto>;
+  public reporteOption: number = 0;
+  public bar_chart: Chart;
+  public doughnut_chart: Chart;
+  public pdfResult: any;
+  public tabIndex: number = 0;
+  public loadIframe = false;
+  public rangeFirst: Date = new Date();
+  public rangeSecond: Date = new Date();
+  private fechaReporte: string = 'Todos';
   constructor(
     private productoSvc: ProductoService,
     private dialog: MatDialog,
     private toastrSvc: ToastrService,
-    private pdfSvc: PdfService
+    private _route: Router,
+    private _actRoute: ActivatedRoute,
+    private _pdfSvc: PdfService
   ) {}
 
   ngOnInit(): void {
+    moment().locale('es');
+
     this.getAllProducto();
 
     this.source.paginator = this.paginator;
@@ -95,7 +116,7 @@ export class ProductoComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  private async generatePdf(uuid: string): Promise<void> {
+  private async generatePdfQr(uuid: string): Promise<void> {
     const docDefinition = {
       pageSize: {
         width: 68,
@@ -111,26 +132,12 @@ export class ProductoComponent implements OnInit, OnDestroy {
       ],
     };
 
-    this.pdfResult = this.pdfSvc.createPdf(docDefinition);
-    this.pdfSvc.open(this.pdfResult);
-
-    // this.pdfSvc.dowload(this.pdfSvc.createPdf(docDefinition), `qr_(${uuid})`);
-
-    // console.log(await this.pdfSvc.getPdfDataUrl(this.pdfResult));
-
-    // const a = document.createElement('a');
-    // a.href = await this.pdfSvc.getPdfDataUrl(this.pdfResult);
-    // a.download = '';
-    // a.click();
+    this.pdfResultQR = this._pdfSvc.createPdf(docDefinition);
+    this._pdfSvc.open(this.pdfResultQR);
   }
 
   dowloadBarcode(producto: Producto): void {
-    // var a = document.createElement('a'); //Create <a>
-    // a.href = this.textToBase64Barcode(producto.uuid); //Image Base64 Goes here
-    // a.download = producto.nombre + '.png';
-    // a.click(); //Downloaded file
-
-    this.generatePdf(producto.uuid);
+    this.generatePdfQr(producto.uuid);
   }
 
   private getAllProducto(): void {
@@ -146,6 +153,17 @@ export class ProductoComponent implements OnInit, OnDestroy {
           this.activos += prod.estado ? 1 : 0;
           this.inactivos += prod.estado ? 0 : 1;
         });
+
+        this.analiticas = productos;
+
+        if (this.tabIndex === 1) {
+          this.initChart();
+        }
+
+        this._actRoute.queryParams.subscribe(
+          (params) =>
+            (this.tabIndex = params.tab === 'graficas_reportes' ? 1 : 0)
+        );
       });
   }
 
@@ -305,5 +323,279 @@ export class ProductoComponent implements OnInit, OnDestroy {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
       row.uuid
     }`;
+  }
+
+  // **Graficas y reportes
+  public onLoadTab(e: MatTabChangeEvent): void {
+    switch (e.index) {
+      case 1:
+        this.initChart();
+        this._route.navigate([], {
+          queryParams: {
+            tab: 'graficas_reportes',
+          },
+          queryParamsHandling: 'merge',
+        });
+        break;
+
+      case 0:
+        this._route.navigate([], {
+          queryParams: {
+            tab: 'tabla',
+          },
+          queryParamsHandling: 'merge',
+        });
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  public async initChart(): Promise<void> {
+    const data = {
+      labels: ['En Stock', 'Agotado'],
+      datasets: [
+        {
+          label: 'Roles',
+          data: [...this.getDataGraficas()],
+          backgroundColor: [
+            '#2ac940',
+            '#ff6058',
+            '#ffbd2d',
+            '#33b5e5',
+            '#a481d5',
+          ],
+        },
+      ],
+    };
+
+    const options = {
+      color: '#a5a5a5',
+      plugins: {
+        legend: {
+          labels: {
+            color: '#a5a5a5',
+          },
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: {
+            color: '#a5a5a5',
+            borderColor: '#a5a5a5',
+          },
+          ticks: {
+            color: '#a5a5a5',
+          },
+        },
+        x: {
+          grid: {
+            color: '#a5a5a5',
+            borderColor: '#a5a5a5',
+          },
+          ticks: {
+            color: '#a5a5a5',
+          },
+        },
+      },
+      responsive: true,
+    };
+
+    if (this.bar_chart) {
+      this.bar_chart.destroy();
+    }
+    if (this.doughnut_chart) {
+      this.doughnut_chart.destroy();
+    }
+
+    this.bar_chart = new Chart('bar', {
+      type: 'bar',
+      data,
+      options: {
+        ...options,
+        plugins: {
+          title: {
+            color: '#ff6e00',
+            display: true,
+            text: `Grafica de Barras de Proyectos (${this.fechaReporte.toUpperCase()})`,
+            font: {
+              size: 16,
+              family: 'Montserrat',
+            },
+          },
+        },
+      },
+    });
+
+    this.doughnut_chart = new Chart('doughnut', {
+      type: 'doughnut',
+
+      data,
+      options: {
+        ...options,
+        plugins: {
+          title: {
+            color: '#ff6e00',
+            display: true,
+            text: `Grafica de Rosquilla de Proyectos (${this.fechaReporte.toUpperCase()})`,
+            font: {
+              size: 16,
+              family: 'Montserrat',
+            },
+          },
+        },
+      },
+    });
+    this.loadIframe = false;
+    await this.addDelay(1);
+    this.loadIframe = true;
+    await this.generatePdf();
+  }
+
+  private addDelay(s: number): Promise<any> {
+    return new Promise((resolve) => setTimeout(resolve, s * 1000));
+  }
+
+  public filterRangeDate(): void {
+    this.analiticas = this.productos;
+    this.analiticas = this.analiticas.filter((usr) =>
+      moment(usr.creadoEn).isBetween(this.rangeFirst, this.rangeSecond)
+    );
+
+    this.fechaReporte = `${moment(this.rangeFirst).format(
+      'DD/MM/YYYY'
+    )}  - ${moment(this.rangeSecond).format('DD/MM/YYYY')}`;
+    this.initChart();
+  }
+
+  public filterGraficasReportes(): void {
+    switch (this.reporteOption) {
+      case 0:
+        this.analiticas = this.productos;
+        this.fechaReporte = 'Todos';
+        break;
+      case 1:
+        this.analiticas = this.productos;
+        this.analiticas = this.analiticas.filter(
+          (usr) =>
+            new Date(usr.creadoEn).getFullYear() === new Date().getFullYear()
+        );
+        this.fechaReporte = `Año ${new Date().getFullYear().toString()}`;
+        break;
+      case 2:
+        this.analiticas = this.productos;
+        this.analiticas = this.analiticas.filter(
+          (usr) => new Date(usr.creadoEn).getMonth() === new Date().getMonth()
+        );
+        this.fechaReporte = `${moment(new Date()).format('MMMM [de] YYYY')}`;
+        break;
+      case 3:
+        this.analiticas = this.productos;
+        this.analiticas = this.analiticas.filter(
+          (usr) => new Date(usr.creadoEn).getDay() === new Date().getDay()
+        );
+        this.fechaReporte = `${moment(new Date()).format(
+          'DD [de] MMMM [del] YYYY'
+        )}`;
+        break;
+
+      case 4:
+        this.analiticas = this.productos;
+        break;
+
+      default:
+        break;
+    }
+
+    this.initChart();
+  }
+
+  private getDataGraficas(): Array<number> {
+    let activos: number = 0;
+    let inactivos: number = 0;
+    let stock: number = 0;
+    let sinStock: number = 0;
+
+    this.analiticas.forEach((data) => {
+      data.stock > 0 ? stock++ : sinStock++;
+    });
+
+    return [stock, sinStock];
+  }
+
+  // ====================> generatePdf
+  public async generatePdf(): Promise<void> {
+    let pdf: Array<any> = [];
+    pdf = await this._pdfSvc.reporte<Producto>(
+      pdf,
+      this.analiticas,
+      [
+        this.bar_chart.toBase64Image('image/png', 1.0),
+        this.doughnut_chart.toBase64Image('image/png', 1.0),
+      ],
+      'producto',
+      `Reporte de Productos (${this.fechaReporte})`
+    );
+
+    const docDefinition = {
+      content: pdf,
+      watermark: {
+        text: '©MENDOZARQ',
+        color: '#FF6E00',
+        opacity: 0.06,
+        bold: true,
+        italics: false,
+      },
+      info: {
+        title: 'Reporte-Usuarios',
+        author: '©MENDOZARQ',
+      },
+      pageMargins: [60, 40, 40, 60],
+      pageSize: 'letter',
+      defaultStyle: {
+        font: 'Roboto',
+      },
+      footer: (currentPage, pageCount) => {
+        if (currentPage) {
+          return {
+            fontSize: 10,
+            text: `Pagina ${currentPage} de ${pageCount}`,
+            alignment: 'center',
+            margin: [0, 20, 0, 0],
+            color: '#425066',
+          };
+        }
+      },
+    };
+
+    this.pdfResult = this._pdfSvc.createPdf(docDefinition);
+
+    const pdfIframe = document.querySelector(
+      '#pdf-iframe'
+    ) as HTMLIFrameElement;
+    pdfIframe.src = await this._pdfSvc.getPdfDataUrl(this.pdfResult);
+  }
+
+  // ====================> downloadPdf
+  public downloadPdf(): void {
+    if (this.pdfResult) {
+      this._pdfSvc.dowload(this.pdfResult, 'Reporte-Usuarios');
+    }
+  }
+
+  // ====================> openPdf
+  public openPdf(): void {
+    if (this.pdfResult) {
+      this._pdfSvc.open(this.pdfResult);
+    }
+  }
+
+  // ====================> printPdf
+  public printPdf(): void {
+    if (this.pdfResult) {
+      this._pdfSvc.print(this.pdfResult);
+    }
   }
 }

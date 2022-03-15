@@ -2,7 +2,7 @@
 .table-container {
   max-width: 100%;
   width: 100%;
-  margin: 10px 0;
+  margin-top: 10px;
 
   .header-table {
     max-width: 100%;
@@ -21,7 +21,6 @@
     scrollbar-width: thin;
     overflow: auto;
     scrollbar-width: 100px;
-
     font-family: var(--font-body);
   }
 
