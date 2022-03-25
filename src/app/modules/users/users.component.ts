@@ -54,6 +54,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   public usuarios$: Observable<Usuario[]>;
   public usuario: Usuario[];
+  private queryParams: string = '';
 
   // **Graficas y Reportes
   public analiticas: Usuario[];
@@ -80,6 +81,11 @@ export class UsersComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     moment().locale('es');
     this.getAllUsuarios();
+
+    this.queryParams = this._actRoute.snapshot.queryParams?.s
+      ? this._actRoute.snapshot.queryParams?.s
+      : '';
+    this.applyFilter(this.queryParams);
 
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -205,6 +211,17 @@ export class UsersComponent implements OnInit, OnDestroy {
   // !important, this part is for table
   // =====================> applyFilter
   applyFilter(event: Event | string): void {
+    if (event) {
+      this._route.navigate([], {
+        queryParams: {
+          s:
+            typeof event === 'string'
+              ? event
+              : (event.target as HTMLInputElement).value,
+        },
+        queryParamsHandling: 'merge',
+      });
+    }
     typeof event === 'string'
       ? (this.filterValue = event)
       : (this.filterValue = (event.target as HTMLInputElement).value);

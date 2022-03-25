@@ -52,6 +52,7 @@ const routes: Routes = [
         (m) => m.PlanificacionModule
       ),
   },
+  { path: 'pedidos', loadChildren: () => import('./modules/pedidos/pedidos.module').then(m => m.PedidosModule) },
 
   {
     path: '**',

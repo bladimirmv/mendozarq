@@ -214,6 +214,17 @@ export class ProyectosComponent implements OnInit {
   // !important, this part is for table.
   // =====================> applyFilter
   applyFilter(event: Event | string): void {
+    if (event) {
+      this._route.navigate([], {
+        queryParams: {
+          s:
+            typeof event === 'string'
+              ? event
+              : (event.target as HTMLInputElement).value,
+        },
+        queryParamsHandling: 'merge',
+      });
+    }
     typeof event === 'string'
       ? (this.filterValue = event)
       : (this.filterValue = (event.target as HTMLInputElement).value);

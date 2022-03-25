@@ -157,6 +157,8 @@ $mendozarq-dark-theme: mat-dark-theme(
   --footer-bg: var(--secondary);
   --sobreCard-bg: whitesmoke;
 
+  --bar-bg: var(--gray0);
+
   transition: all 0.3s ease;
 }
 
@@ -181,6 +183,7 @@ $mendozarq-dark-theme: mat-dark-theme(
 
 .dark-theme {
   @include angular-material-theme($mendozarq-dark-theme);
+  --bar-bg: var(--gray4);
 
   --text-hover: var(--gray4);
   --background: var(--gray6);

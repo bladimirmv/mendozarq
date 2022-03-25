@@ -1,19 +1,11 @@
-import {
-  AfterViewInit,
-  Component,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { VentaService } from '@services/liraki/venta.service';
+import { VentaView } from '@models/liraki/venta.interface';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import {
-  VentaProducto,
-  VentaProductoView,
-} from '@models/liraki/venta.producto.interface';
+
 import { SelectionModel } from '@angular/cdk/collections';
 import {
   animate,
@@ -41,98 +33,101 @@ import { map, takeUntil } from 'rxjs/operators';
 })
 export class VentaProductoComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<any>();
-  expandedElement: VentaProductoView | null;
+  private ventas: VentaView[] = [];
 
-  private ventaProducto: VentaProductoView[] = [];
-  public filterValueVentaProducto: string;
-  public dataSourceVentaProducto: MatTableDataSource<VentaProductoView> =
+  public expandedElement: VentaView | null;
+  public filterValueVenta: string;
+  public dataSourceVenta: MatTableDataSource<VentaView> =
     new MatTableDataSource();
-
-  selectedVentaProducto: VentaProductoView[] = [];
-  selectionVentaProducto = new SelectionModel<VentaProductoView>(true, []);
-
-  columnsToDisplay: Array<string> = [
+  public selectedVenta: VentaView[] = [] as VentaView[];
+  public selectionVenta = new SelectionModel<VentaView>(true, []);
+  public columnsToDisplay: Array<string> = [
+    'seleccion',
     'creadoEn',
+    'numeroVenta',
+    'estado',
     'cliente',
-    'vendedor',
-    'tipoVenta',
-    'metodoPago',
+    // 'nombreFactura',
+    'nitCiCex',
+    'departamento',
+    'tipoEnvio',
+    'metodoDePago',
+    // 'direccion',
+    // 'descripcion',
     'total',
-    'edit',
+    'options',
   ];
-
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   panelOpenState = false;
-  constructor() {}
+  constructor(private _ventaSvc: VentaService) {}
 
   ngOnInit(): void {
     this.initData();
 
-    this.dataSourceVentaProducto.paginator = this.paginator;
-    this.dataSourceVentaProducto.sort = this.sort;
-
-    this.selectionVentaProducto.changed
+    this.dataSourceVenta.paginator = this.paginator;
+    this.dataSourceVenta.sort = this.sort;
+    this.selectionVenta.changed
       .pipe(
         takeUntil(this.destroy$),
         map((a) => a.source)
       )
-      .subscribe((data) => (this.selectedVentaProducto = data.selected));
+      .subscribe((data) => (this.selectedVenta = data.selected));
   }
 
-  private initData(): void {}
+  private initData(): void {
+    this._ventaSvc.getAllVentaFisica().subscribe((ventas) => {
+      this.dataSourceVenta.data = ventas;
+    });
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next({});
     this.destroy$.complete();
   }
 
-  addVentaProducto(): void {}
+  addVenta(): void {}
 
-  updateVentaProducto(): void {}
+  updateVenta(): void {}
 
-  deleteVentaProducto(): void {}
+  deleteVenta(): void {}
 
   // !important, this part is for table.
   // =====================> applyFilter
-  applyFilterVentaProducto(event: Event | string): void {
+  applyFilterVenta(event: Event | string): void {
     typeof event === 'string'
-      ? (this.filterValueVentaProducto = event)
-      : (this.filterValueVentaProducto = (
-          event.target as HTMLInputElement
-        ).value);
-    this.dataSourceVentaProducto.filter = this.filterValueVentaProducto
-      .trim()
-      .toLowerCase();
-    if (this.dataSourceVentaProducto.paginator) {
-      this.dataSourceVentaProducto.paginator.firstPage();
+      ? (this.filterValueVenta = event)
+      : (this.filterValueVenta = (event.target as HTMLInputElement).value);
+    this.dataSourceVenta.filter = this.filterValueVenta.trim().toLowerCase();
+    if (this.dataSourceVenta.paginator) {
+      this.dataSourceVenta.paginator.firstPage();
     }
   }
   // =====================>
-  isAllSelectedVentaProducto(): any {
-    const numSelected = this.selectionVentaProducto.selected.length;
-    const numRows = this.dataSourceVentaProducto.data.length;
+  isAllSelectedVenta(): any {
+    const numSelected = this.selectionVenta.selected.length;
+    const numRows = this.dataSourceVenta.data.length;
     return numSelected === numRows;
   }
   // =====================>
   masterToggle(): void {
-    this.isAllSelectedVentaProducto()
-      ? this.selectionVentaProducto.clear()
-      : this.dataSourceVentaProducto.data.forEach((row) =>
-          this.selectionVentaProducto.select(row)
+    this.isAllSelectedVenta()
+      ? this.selectionVenta.clear()
+      : this.dataSourceVenta.data.forEach((row) =>
+          this.selectionVenta.select(row)
         );
   }
   // =====================>
   clearCheckbox(): void {
-    this.selectionVentaProducto.clear();
+    this.selectionVenta.clear();
   }
   // =====================>
-  checkboxLabel(row?: VentaProductoView): string {
+  checkboxLabel(row?: VentaView): string {
     if (!row) {
-      return `${this.isAllSelectedVentaProducto() ? 'select' : 'deselect'} all`;
+      return `${this.isAllSelectedVenta() ? 'select' : 'deselect'} all`;
     }
     return `${
-      this.selectionVentaProducto.isSelected(row) ? 'deselect' : 'select'
+      this.selectionVenta.isSelected(row) ? 'deselect' : 'select'
     } row ${row.uuid}`;
   }
 }

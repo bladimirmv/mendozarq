@@ -89,6 +89,8 @@ export class ProductoComponent implements OnInit, OnDestroy {
   public rangeFirst: Date = new Date();
   public rangeSecond: Date = new Date();
   private fechaReporte: string = 'Todos';
+  private queryParams: string = '';
+
   constructor(
     private productoSvc: ProductoService,
     private dialog: MatDialog,
@@ -100,6 +102,10 @@ export class ProductoComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     moment().locale('es');
+    this.queryParams = this._actRoute.snapshot.queryParams?.s
+      ? this._actRoute.snapshot.queryParams?.s
+      : '';
+    this.applyFilter(this.queryParams);
 
     this.getAllProducto();
 
@@ -290,6 +296,17 @@ export class ProductoComponent implements OnInit, OnDestroy {
   // !important, this part is for producto table.
   // =====================> applyFilter
   applyFilter(event: Event | string): void {
+    if (event) {
+      this._route.navigate([], {
+        queryParams: {
+          s:
+            typeof event === 'string'
+              ? event
+              : (event.target as HTMLInputElement).value,
+        },
+        queryParamsHandling: 'merge',
+      });
+    }
     typeof event === 'string'
       ? (this.filterValue = event)
       : (this.filterValue = (event.target as HTMLInputElement).value);

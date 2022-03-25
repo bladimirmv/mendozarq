@@ -172,7 +172,10 @@
               >
                 <span>
                   <a
-                    [routerLink]="['/admin/usuario/', row.nombreCliente]"
+                    [routerLink]="['/admin/usuarios/']"
+                    [queryParams]="{
+                      s: row.uuidCliente
+                    }"
                     class="custom-a"
                   >
                     {{

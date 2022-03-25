@@ -139,8 +139,11 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Cliente</th>
           <td mat-cell *matCellDef="let row" class="text-center">
             <a
-              [routerLink]="['/admin/usuario/', row.uuidCliente]"
+              [routerLink]="['/admin/usuarios/']"
               class="custom-a"
+              [queryParams]="{
+                s: row.uuidCliente
+              }"
             >
               {{ row.cliente | titlecase }}
             </a>
@@ -161,8 +164,11 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header>CreadoPor</th>
           <td mat-cell *matCellDef="let row" class="text-center">
             <a
-              [routerLink]="['/admin/usuario/', row.uuidUsuario]"
               class="custom-a"
+              [routerLink]="['/admin/usuarios/']"
+              [queryParams]="{
+                s: row.uuidUsuario
+              }"
             >
               {{ row.usuario | titlecase }}
             </a>

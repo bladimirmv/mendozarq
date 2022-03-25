@@ -95,10 +95,10 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'reservas-producto',
+        path: 'pedidos',
         loadChildren: () =>
-          import('@modules/reserva-producto/reserva-producto.module').then(
-            (m) => m.ReservaProductoModule
+          import('@modules/pedidos/pedidos.module').then(
+            (m) => m.PedidosModule
           ),
       },
       {
