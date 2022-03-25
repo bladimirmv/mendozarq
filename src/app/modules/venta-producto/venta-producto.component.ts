@@ -1,3 +1,6 @@
+import { ActivatedRoute } from '@angular/router';
+import { NewVentaComponent } from './components/new-venta/new-venta.component';
+import { MatDialog } from '@angular/material/dialog';
 import { VentaService } from '@services/liraki/venta.service';
 import { VentaView } from '@models/liraki/venta.interface';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
@@ -47,20 +50,21 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
     'numeroVenta',
     'estado',
     'cliente',
-    // 'nombreFactura',
     'nitCiCex',
     'departamento',
     'tipoEnvio',
     'metodoDePago',
-    // 'direccion',
-    // 'descripcion',
     'total',
     'options',
   ];
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   panelOpenState = false;
-  constructor(private _ventaSvc: VentaService) {}
+  constructor(
+    private _ventaSvc: VentaService,
+    private dialog: MatDialog,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.initData();
@@ -78,6 +82,7 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
   private initData(): void {
     this._ventaSvc.getAllVentaFisica().subscribe((ventas) => {
       this.dataSourceVenta.data = ventas;
+      this.ventas = ventas;
     });
   }
 
@@ -86,7 +91,11 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  addVenta(): void {}
+  public addVenta(): void {
+    this.dialog.open(NewVentaComponent, {
+      data: this.route.snapshot.data['usuario']?.uuid,
+    });
+  }
 
   updateVenta(): void {}
 

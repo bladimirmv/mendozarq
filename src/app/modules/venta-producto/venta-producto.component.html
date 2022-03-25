@@ -140,21 +140,20 @@
                 'pendiente-td': row.estado === 'pendiente' ? true : false,
                 'confirmado-td': row.estado === 'confirmado' ? true : false,
                 'envio-td':
-                  row.estado === 'envio_entrega' && row.tipoEnvio === 'delivery'
+                  row.estado === 'en_envio' && row.tipoEnvio === 'delivery'
                     ? true
                     : false,
                 'entrega-td':
-                  row.estado === 'envio_entrega' && row.tipoEnvio === 'personal'
+                  row.estado === 'para_recoger' && row.tipoEnvio === 'personal'
                     ? true
                     : false,
                 'completado-td': row.estado === 'completado' ? true : false
               }"
             >
               {{
-                row.estado === "envio_entrega" && row.tipoEnvio === "personal"
+                row.estado === "para_recoger"
                   ? "Para recoger"
-                  : row.estado === "envio_entrega" &&
-                    row.tipoEnvio === "delivery"
+                  : row.estado === "en_envio"
                   ? "En envío"
                   : row.estado
               }}

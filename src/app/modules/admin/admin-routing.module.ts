@@ -1,3 +1,4 @@
+import { UsuarioResolverService } from './../../core/resolvers/usuario-resolver.service';
 import { PlanificacionResolverService } from '@core/resolvers/planificacion.resolver.service';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -75,6 +76,9 @@ const routes: Routes = [
       },
       {
         path: 'venta-producto',
+        resolve: {
+          usuario: UsuarioResolverService,
+        },
         loadChildren: () =>
           import('@modules/venta-producto/venta-producto.module').then(
             (m) => m.VentaProductoModule

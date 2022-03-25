@@ -1,3 +1,4 @@
+import { ProyectosModule } from './../proyectos/proyectos.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -6,9 +7,10 @@ import { VentaProductoComponent } from './venta-producto.component';
 import { SharedModule } from '@app/shared/shared.module';
 import { MaterialModule } from '@app/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NewVentaComponent } from './components/new-venta/new-venta.component';
 
 @NgModule({
-  declarations: [VentaProductoComponent],
+  declarations: [VentaProductoComponent, NewVentaComponent],
   imports: [
     CommonModule,
     VentaProductoRoutingModule,
@@ -16,6 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    ProyectosModule,
   ],
 })
 export class VentaProductoModule {}

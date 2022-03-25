@@ -10,7 +10,8 @@ export type estado =
   | 'pagando'
   | 'pendiente'
   | 'confirmado'
-  | 'envio_entrega'
+  | 'en_envio'
+  | 'para_recoger'
   | 'completado';
 
 export interface Venta {

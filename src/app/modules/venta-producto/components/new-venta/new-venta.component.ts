@@ -1,25 +1,29 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 
 import { ToastrService } from 'ngx-toastr';
 import { ProyectoService } from '@services/mendozarq/proyecto.service';
 import { UsuarioService } from '@services/auth/usuario.service';
 
-import { ClienteModalComponent } from './../cliente-modal/cliente-modal.component';
 import { Proyecto } from '@app/shared/models/mendozarq/proyecto.interface';
 import { Usuario } from '@app/shared/models/usuario.interface';
+import { ClienteModalComponent } from '@app/modules/proyectos/components/cliente-modal/cliente-modal.component';
 
 @Component({
-  selector: 'app-new-proyecto',
-  templateUrl: './new-proyecto.component.html',
-  styleUrls: ['./new-proyecto.component.scss'],
+  selector: 'app-new-venta',
+  templateUrl: './new-venta.component.html',
+  styleUrls: ['./new-venta.component.scss'],
 })
-export class NewProyectoComponent implements OnInit, OnDestroy {
+export class NewVentaComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<any>();
 
   public proyectoForm: FormGroup;
@@ -33,7 +37,8 @@ export class NewProyectoComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     public dialog: MatDialog,
     private router: Router,
-    private dialogRef: MatDialogRef<NewProyectoComponent>
+    private dialogRef: MatDialogRef<NewVentaComponent>,
+    @Inject(MAT_DIALOG_DATA) private uuidVendedor
   ) {}
 
   ngOnInit(): void {
@@ -49,14 +54,17 @@ export class NewProyectoComponent implements OnInit, OnDestroy {
   // =====================> onInitForm
   private initForm(): void {
     this.proyectoForm = this.fb.group({
-      nombre: ['', [Validators.required, Validators.maxLength(50)]],
-      descripcion: ['', Validators.maxLength(200)],
-      estado: [true, Validators.required],
-      fechaInicio: [Validators.required],
-      fechaFinal: [Validators.required],
-      lugarProyecto: ['', Validators.maxLength(200)],
       uuidCliente: ['', Validators.required],
-      categoria: ['construccion', Validators.required],
+      nombreFactura: ['', [Validators.required, Validators.maxLength(100)]],
+      nitCiCex: ['', Validators.required],
+      departamento: ['cbba', Validators.required],
+      tipoVenta: ['fisica'],
+      tipoEnvio: ['personal', Validators.maxLength(200)],
+      direccion: ['', [Validators.required, Validators.maxLength(200)]],
+      descripcion: ['', Validators.maxLength(200)],
+      metodoDePago: ['efectivo', Validators.required],
+      estado: ['confirmado'],
+      uuidVendedor: [this.uuidVendedor],
     });
   }
 

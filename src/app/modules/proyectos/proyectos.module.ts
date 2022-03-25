@@ -14,7 +14,6 @@ import { ClienteModalComponent } from './components/cliente-modal/cliente-modal.
 import { DescripcionProyectoComponent } from './components/descripcion-proyecto/descripcion-proyecto.component';
 import { CountProyectoPipe } from './pipes/count-proyecto.pipe';
 
-
 @NgModule({
   declarations: [
     ProyectosComponent,
@@ -23,14 +22,16 @@ import { CountProyectoPipe } from './pipes/count-proyecto.pipe';
     GetCategoriesPipe,
     ClienteModalComponent,
     DescripcionProyectoComponent,
-    CountProyectoPipe],
+    CountProyectoPipe,
+  ],
   imports: [
     CommonModule,
     ProyectosRoutingModule,
     MaterialModule,
     SharedModule,
     FormsModule,
-    ReactiveFormsModule
-  ]
+    ReactiveFormsModule,
+  ],
+  exports: [ClienteModalComponent],
 })
-export class ProyectosModule { }
+export class ProyectosModule {}
