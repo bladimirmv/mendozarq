@@ -1,179 +1,352 @@
 <h2 align="center" mat-dialog-title>Nueva Venta</h2>
 <mat-dialog-content>
-  <form class="new-form" [formGroup]="proyectoForm">
-    <!-- *cliente -->
-    <mat-form-field class="full-width full-column">
-      <mat-label>Cliente</mat-label>
-      <mat-select style="position: relative" formControlName="uuidCliente">
-        <div
-          style="
-            padding: 5px 5px 0 5px;
-            position: -webkit-sticky;
-            position: sticky;
-            top: 0;
-            background-color: white;
-            z-index: 1;
-          "
-        >
-          <mat-form-field style="width: 100%">
-            <mat-label>Buscar</mat-label>
-            <input
-              matInput
-              (keyup)="onKey($event.target.value)"
-              autocomplete="off"
-              #search
-            />
-            <button
-              mat-icon-button
-              matSuffix
-              *ngIf="search.value"
-              (click)="onKey('')"
-              (click)="search.value = ''"
+  <mat-horizontal-stepper linear #stepper>
+    <mat-step [stepControl]="conceptoVentaForm" [editable]="true">
+      <ng-template matStepLabel>Concepto</ng-template>
+      <form [formGroup]="conceptoVentaForm">
+        <mat-form-field class="full-width full-column">
+          <mat-label>Producto</mat-label>
+          <mat-select style="position: relative" formControlName="uuidProducto">
+            <div
+              style="
+                padding: 5px 5px 0 5px;
+                position: -webkit-sticky;
+                position: sticky;
+                top: 0;
+                z-index: 1;
+                background-color: var(--card-bg);
+                color: var(--text-color);
+              "
             >
-              <mat-icon style="font-size: 20px"> clear </mat-icon>
-            </button>
-          </mat-form-field>
-        </div>
-        <mat-option
-          *ngFor="let cliente of selectedClientes"
-          [value]="cliente.uuid"
+              <mat-form-field style="width: 100%">
+                <mat-label>Buscar</mat-label>
+                <input
+                  matInput
+                  (keyup)="onKeyProducto($event.target.value)"
+                  autocomplete="off"
+                  #searchProducto
+                />
+                <button
+                  mat-icon-button
+                  matSuffix
+                  *ngIf="searchProducto.value"
+                  (click)="onKeyProducto('')"
+                  (click)="searchProducto.value = ''"
+                >
+                  <mat-icon style="font-size: 20px"> clear </mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+            <mat-option
+              *ngFor="let producto of selectedProductos"
+              [value]="producto"
+              [disabled]="producto.stock < 1"
+              [ngClass]="{ 'warn-text': producto.stock < 1 }"
+            >
+              {{ producto.nombre }}
+            </mat-option>
+          </mat-select>
+          <mat-icon
+            matSuffix
+            [color]="isValidFieldConcepto('uuidProducto').color"
+          >
+            {{ isValidFieldConcepto("uuidProducto").icon }}
+          </mat-icon>
+          <mat-error
+            *ngIf="conceptoVentaForm.get('uuidProducto').errors?.required"
+          >
+            Seleccione un producto.
+          </mat-error>
+        </mat-form-field>
+
+        <!-- <mat-form-field class="full-width full-column">
+          <input
+            matInput
+            placeholder="State"
+            aria-label="State"
+            [matAutocomplete]="auto"
+            formControlName="uuidProducto"
+          />
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option
+              *ngFor="let producto of selectedProductos | async"
+              [value]="producto.uuid"
+            >
+              <img
+                class="example-option-img"
+                aria-hidden
+                [src]="getImage(producto.fotos[0].keyName)"
+                height="25"
+              />
+              <span>{{ producto.nombre }}</span> |
+              <small>Stock: {{ producto.stock }}</small>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field> -->
+
+        <!-- <mat-form-field
+          class="full-width"
+          [color]="isValidFieldConcepto('cantidad').color"
         >
-          {{
-            cliente.nombre +
-              " " +
-              cliente.apellidoPaterno +
-              " " +
-              cliente.apellidoMaterno
-          }}
-        </mat-option>
-      </mat-select>
-      <mat-icon matSuffix [color]="isValidField('uuidCliente').color">
-        {{ isValidField("uuidCliente").icon }}
-      </mat-icon>
-      <mat-error *ngIf="proyectoForm.get('uuidCliente').errors?.required">
-        Seleccione un cliente.
-      </mat-error>
-    </mat-form-field>
+          <mat-label>Cantidad</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="cantidad"
+            autocomplete="off"
+          />
+          <mat-icon matSuffix [color]="isValidFieldConcepto('cantidad').color">
+            {{ isValidFieldConcepto("cantidad").icon }}
+          </mat-icon>
+          <mat-error *ngIf="conceptoVentaForm.get('cantidad').errors?.required">
+            Ingrese un nombre.
+          </mat-error>
+        </mat-form-field>
 
-    <!-- {{ proyectoForm.value }} -->
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div> -->
 
-    <mat-form-field
-      class="full-width full-column"
-      [color]="isValidField('nombreFactura').color"
-    >
-      <mat-label>Nombre Factura</mat-label>
-      <input matInput formControlName="nombreFactura" autocomplete="off" />
-      <mat-icon matSuffix [color]="isValidField('nombreFactura').color">
-        {{ isValidField("nombreFactura").icon }}
-      </mat-icon>
-      <mat-error *ngIf="proyectoForm.get('nombreFactura').errors?.required">
-        Ingrese un nombre.
-      </mat-error>
-    </mat-form-field>
+        <div class="example-table-container">
+          <table
+            mat-table
+            [dataSource]="transactions"
+            class="mat-elevation-z8 full-width full-column"
+            style="overflow: auto"
+          >
+            <ng-container matColumnDef="producto">
+              <th mat-header-cell *matHeaderCellDef>Producto</th>
+              <td mat-cell *matCellDef="let transaction">
+                {{ transaction.item }}
+              </td>
+              <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
 
-    <mat-form-field class="full-width" [color]="isValidField('nitCiCex').color">
-      <mat-label>NIT/CI/CEX</mat-label>
-      <input matInput formControlName="nitCiCex" autocomplete="off" />
-      <mat-icon matSuffix [color]="isValidField('nitCiCex').color">
-        {{ isValidField("nitCiCex").icon }}
-      </mat-icon>
-      <mat-error *ngIf="proyectoForm.get('nitCiCex').errors?.required">
-        Ingrese un nombre.
-      </mat-error>
-    </mat-form-field>
+            <ng-container matColumnDef="cantidad">
+              <th mat-header-cell *matHeaderCellDef>Cantidad</th>
+              <td mat-cell *matCellDef="let transaction">
+                {{ transaction.item }}
+              </td>
+              <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
 
-    <mat-form-field class="full-width">
-      <mat-label>Departamento</mat-label>
-      <mat-select formControlName="departamento">
-        <mat-option value="cbba"> COCHABAMBA </mat-option>
-        <mat-option value="lp"> LA PAZ </mat-option>
-        <mat-option value="scz"> SANTA CRUZ </mat-option>
-      </mat-select>
-    </mat-form-field>
+            <ng-container matColumnDef="precio">
+              <th mat-header-cell *matHeaderCellDef>Precio</th>
+              <td mat-cell *matCellDef="let transaction">
+                {{ transaction.item }}
+              </td>
+              <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+            <ng-container matColumnDef="descuento">
+              <th mat-header-cell *matHeaderCellDef>Descuento</th>
+              <td mat-cell *matCellDef="let transaction">
+                {{ transaction.item }}
+              </td>
+              <td mat-footer-cell *matFooterCellDef>Total</td>
+            </ng-container>
 
-    <mat-form-field class="full-width">
-      <mat-label>Tipo Envio</mat-label>
-      <mat-select formControlName="tipoEnvio">
-        <mat-option value="delivery"> Personal </mat-option>
-        <mat-option value="personal"> Delivery </mat-option>
-      </mat-select>
-    </mat-form-field>
+            <ng-container matColumnDef="importe">
+              <th mat-header-cell *matHeaderCellDef>Importe</th>
+              <td mat-cell *matCellDef="let transaction">
+                {{ transaction.cost | currency }}
+              </td>
+              <td mat-footer-cell *matFooterCellDef>
+                {{ 0 }}
+              </td>
+            </ng-container>
 
-    <mat-form-field class="full-width">
-      <mat-label>Metodo de Pago</mat-label>
-      <mat-select formControlName="metodoDePago">
-        <mat-option value="efectivo"> Efectivo </mat-option>
-        <mat-option value="tarjeta"> Tarjeta </mat-option>
-        <mat-option value="deposito_transferencia_qr">
-          Deposito/Transferencia/QR
-        </mat-option>
-        <mat-option value="paypal"> Paypal (Beta)</mat-option>
-      </mat-select>
-    </mat-form-field>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+          </table>
+        </div>
+      </form>
+    </mat-step>
 
-    <mat-form-field
-      class="full-width full-column"
-      [color]="isValidField('direccion').color"
-    >
-      <mat-label>Direccion</mat-label>
-      <textarea
-        matInput
-        placeholder="Ex. Avenida Segunda"
-        formControlName="direccion"
-      ></textarea>
-      <mat-hint align="end">
-        {{
-          proyectoForm.value.direccion
-            ? proyectoForm.value.direccion.length
-            : 0
-        }}/200
-      </mat-hint>
-      <mat-icon
-        matSuffix
-        [color]="isValidField('direccion').color"
-        *ngIf="proyectoForm.value.direccion"
-      >
-        {{ isValidField("direccion").icon }}
-      </mat-icon>
-      <mat-error *ngIf="proyectoForm.get('direccion').errors?.maxlength">
-        Debe contener
-        {{ proyectoForm.get("direccion").errors?.maxlength?.requiredLength }}
-        digitos como maximo.
-      </mat-error>
-    </mat-form-field>
+    <mat-step [stepControl]="proyectoForm" [editable]="true">
+      <ng-template matStepLabel>Venta</ng-template>
+      <form class="new-form" [formGroup]="proyectoForm">
+        <mat-form-field class="full-width full-column">
+          <mat-label>Cliente</mat-label>
+          <mat-select style="position: relative" formControlName="uuidCliente">
+            <div
+              style="
+                padding: 5px 5px 0 5px;
+                position: -webkit-sticky;
+                position: sticky;
+                top: 0;
+                z-index: 1;
+                background-color: var(--card-bg);
+                color: var(--text-color);
+              "
+            >
+              <mat-form-field style="width: 100%">
+                <mat-label>Buscar</mat-label>
+                <input
+                  matInput
+                  (keyup)="onKey($event.target.value)"
+                  autocomplete="off"
+                  #search
+                />
+                <button
+                  mat-icon-button
+                  matSuffix
+                  *ngIf="search.value"
+                  (click)="onKey('')"
+                  (click)="search.value = ''"
+                >
+                  <mat-icon style="font-size: 20px"> clear </mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+            <mat-option
+              *ngFor="let cliente of selectedClientes"
+              [value]="cliente.uuid"
+            >
+              {{
+                cliente.nombre +
+                  " " +
+                  cliente.apellidoPaterno +
+                  " " +
+                  cliente.apellidoMaterno
+              }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matSuffix [color]="isValidField('uuidCliente').color">
+            {{ isValidField("uuidCliente").icon }}
+          </mat-icon>
+          <mat-error *ngIf="proyectoForm.get('uuidCliente').errors?.required">
+            Seleccione un cliente.
+          </mat-error>
+        </mat-form-field>
 
-    <!-- *Descripcion -->
-    <mat-form-field
-      class="full-width full-column"
-      [color]="isValidField('descripcion').color"
-    >
-      <mat-label>Descripcion</mat-label>
-      <textarea
-        matInput
-        placeholder="Ex. Avenida Segunda"
-        formControlName="descripcion"
-      ></textarea>
-      <mat-hint align="end">
-        {{
-          proyectoForm.value.descripcion
-            ? proyectoForm.value.descripcion.length
-            : 0
-        }}/200
-      </mat-hint>
-      <mat-icon
-        matSuffix
-        [color]="isValidField('descripcion').color"
-        *ngIf="proyectoForm.value.descripcion"
-      >
-        {{ isValidField("descripcion").icon }}
-      </mat-icon>
-      <mat-error *ngIf="proyectoForm.get('descripcion').errors?.maxlength">
-        Debe contener
-        {{ proyectoForm.get("descripcion").errors?.maxlength?.requiredLength }}
-        digitos como maximo.
-      </mat-error>
-    </mat-form-field>
-  </form>
+        <mat-form-field
+          class="full-width full-column"
+          [color]="isValidField('nombreFactura').color"
+        >
+          <mat-label>Nombre Factura</mat-label>
+          <input matInput formControlName="nombreFactura" autocomplete="off" />
+          <mat-icon matSuffix [color]="isValidField('nombreFactura').color">
+            {{ isValidField("nombreFactura").icon }}
+          </mat-icon>
+          <mat-error *ngIf="proyectoForm.get('nombreFactura').errors?.required">
+            Ingrese un nombre.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field
+          class="full-width"
+          [color]="isValidField('nitCiCex').color"
+        >
+          <mat-label>NIT/CI/CEX</mat-label>
+          <input matInput formControlName="nitCiCex" autocomplete="off" />
+          <mat-icon matSuffix [color]="isValidField('nitCiCex').color">
+            {{ isValidField("nitCiCex").icon }}
+          </mat-icon>
+          <mat-error *ngIf="proyectoForm.get('nitCiCex').errors?.required">
+            Ingrese un nombre.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Departamento</mat-label>
+          <mat-select formControlName="departamento">
+            <mat-option value="cbba"> COCHABAMBA </mat-option>
+            <mat-option value="lp"> LA PAZ </mat-option>
+            <mat-option value="scz"> SANTA CRUZ </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Tipo Envio</mat-label>
+          <mat-select formControlName="tipoEnvio">
+            <mat-option value="delivery"> Personal </mat-option>
+            <mat-option value="personal"> Delivery </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Metodo de Pago</mat-label>
+          <mat-select formControlName="metodoDePago">
+            <mat-option value="efectivo"> Efectivo </mat-option>
+            <mat-option value="tarjeta"> Tarjeta </mat-option>
+            <mat-option value="deposito_transferencia_qr">
+              Deposito/Transferencia/QR
+            </mat-option>
+            <mat-option value="paypal"> Paypal (Beta)</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field
+          class="full-width full-column"
+          [color]="isValidField('direccion').color"
+        >
+          <mat-label>Direccion</mat-label>
+          <textarea
+            matInput
+            placeholder="Ex. Avenida Segunda"
+            formControlName="direccion"
+          ></textarea>
+          <mat-hint align="end">
+            {{
+              proyectoForm.value.direccion
+                ? proyectoForm.value.direccion.length
+                : 0
+            }}/200
+          </mat-hint>
+          <mat-icon
+            matSuffix
+            [color]="isValidField('direccion').color"
+            *ngIf="proyectoForm.value.direccion"
+          >
+            {{ isValidField("direccion").icon }}
+          </mat-icon>
+          <mat-error *ngIf="proyectoForm.get('direccion').errors?.maxlength">
+            Debe contener
+            {{
+              proyectoForm.get("direccion").errors?.maxlength?.requiredLength
+            }}
+            digitos como maximo.
+          </mat-error>
+        </mat-form-field>
+
+        <!-- *Descripcion -->
+        <mat-form-field
+          class="full-width full-column"
+          [color]="isValidField('descripcion').color"
+        >
+          <mat-label>Descripcion</mat-label>
+          <textarea
+            matInput
+            placeholder="Ex. Avenida Segunda"
+            formControlName="descripcion"
+          ></textarea>
+          <mat-hint align="end">
+            {{
+              proyectoForm.value.descripcion
+                ? proyectoForm.value.descripcion.length
+                : 0
+            }}/200
+          </mat-hint>
+          <mat-icon
+            matSuffix
+            [color]="isValidField('descripcion').color"
+            *ngIf="proyectoForm.value.descripcion"
+          >
+            {{ isValidField("descripcion").icon }}
+          </mat-icon>
+          <mat-error *ngIf="proyectoForm.get('descripcion').errors?.maxlength">
+            Debe contener
+            {{
+              proyectoForm.get("descripcion").errors?.maxlength?.requiredLength
+            }}
+            digitos como maximo.
+          </mat-error>
+        </mat-form-field>
+      </form>
+    </mat-step>
+  </mat-horizontal-stepper>
 </mat-dialog-content>
 
 <mat-dialog-actions>
@@ -184,12 +357,7 @@
   >
     Cancelar
   </button>
-  <button
-    mat-button
-    class="mat-btn-success"
-    (click)="onAddProyecto(proyectoForm.value)"
-    [disabled]="!proyectoForm.valid"
-  >
-    Guardar
+  <button mat-button class="mat-btn-success" (click)="goForward(stepper)">
+    Continuar
   </button>
 </mat-dialog-actions>

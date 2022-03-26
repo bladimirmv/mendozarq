@@ -1,4 +1,4 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NewVentaComponent } from './components/new-venta/new-venta.component';
 import { MatDialog } from '@angular/material/dialog';
 import { VentaService } from '@services/liraki/venta.service';
@@ -63,7 +63,8 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
   constructor(
     private _ventaSvc: VentaService,
     private dialog: MatDialog,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -94,6 +95,12 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
   public addVenta(): void {
     this.dialog.open(NewVentaComponent, {
       data: this.route.snapshot.data['usuario']?.uuid,
+      disableClose: true,
+      width: '100%',
+      maxWidth: '600px',
+
+      // minWidth: '100%',
+      // panelClass: 'custom-dialog-container',
     });
   }
 

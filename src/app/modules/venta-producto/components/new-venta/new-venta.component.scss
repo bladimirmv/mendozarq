@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 10px;
-  padding: 10px;
+  // padding: 10px;
 }
 
 .full-column {
@@ -22,6 +22,9 @@ mat-dialog-actions {
   .mat-btn-secondary {
     grid-area: secondary;
   }
+}
+.mat-horizontal-content-container {
+  padding: 0px !important;
 }
 
 @media screen and (max-width: 400px) {
@@ -51,4 +54,27 @@ mat-dialog-actions {
   .full-column {
     grid-column: 1;
   }
+}
+
+::ng-deep .mat-horizontal-content-container {
+  // padding: 0px !important;
+}
+
+::ng-deep .mat-dialog-container {
+  // padding: 10px !important;
+  box-sizing: border-box;
+}
+
+.warn-text {
+  color: var(--error) !important;
+}
+
+.example-table-container {
+  position: relative;
+  max-height: 400px;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
 }

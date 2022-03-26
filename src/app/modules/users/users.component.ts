@@ -125,7 +125,9 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   // =====================> onAddUser
   onAddUser(): void {
-    const dialogRef = this.dialog.open(NewUserComponent);
+    const dialogRef = this.dialog.open(NewUserComponent, {
+      disableClose: true,
+    });
     dialogRef
       .afterClosed()
       .pipe(takeUntil(this.destroy$))
