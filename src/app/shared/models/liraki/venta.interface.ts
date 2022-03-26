@@ -48,9 +48,9 @@ export interface ConceptoVentaView extends ConceptoVenta {
   producto?: ProductoView;
 }
 
-// export interface ConceptoVentaView extends ConceptoVenta {
-//   nombre: string;
-// }
+export interface VentaProducto extends Venta {
+  conceptos: ConceptoVentaView[];
+}
 
 export interface VentaView extends Venta {
   vendedor?: string;

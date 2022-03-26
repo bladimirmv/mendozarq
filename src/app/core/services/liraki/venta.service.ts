@@ -1,4 +1,7 @@
-import { VentaView } from './../../../shared/models/liraki/venta.interface';
+import {
+  VentaView,
+  VentaProducto,
+} from './../../../shared/models/liraki/venta.interface';
 import { PedidoProductoView } from './../../../shared/models/liraki/pedido.interface';
 import { catchError } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
@@ -16,19 +19,16 @@ export class VentaService {
 
   constructor(private http: HttpClient, private toastrSvc: ToastrService) {}
 
-  // public addPedidoProducto(pedidoProducto: PedidoProducto): Observable<any> {
-  //   return this.http
-  //     .post<PedidoProducto>(
-  //       `${this.API_URL}/api/pedidoProducto`,
-  //       pedidoProducto
-  //     )
-  //     .pipe(catchError((err) => this.handdleError(err)));
-  // }
-  // public getPedidoProductoByUuid(uuid: string): Observable<any> {
-  //   return this.http
-  //     .get<PedidoProducto>(`${this.API_URL}/api/pedidoProducto/${uuid}`)
-  //     .pipe(catchError((err) => this.handdleError(err)));
-  // }
+  public addVentaFisica(venta: VentaProducto): Observable<any> {
+    return this.http
+      .post<PedidoProducto>(`${this.API_URL}/api/venta/fisica`, venta)
+      .pipe(catchError((err) => this.handdleError(err)));
+  }
+  public getPedidoProductoByUuid(uuid: string): Observable<any> {
+    return this.http
+      .get<PedidoProducto>(`${this.API_URL}/api/pedidoProducto/${uuid}`)
+      .pipe(catchError((err) => this.handdleError(err)));
+  }
 
   public getAllVentaFisica(): Observable<VentaView[]> {
     return this.http

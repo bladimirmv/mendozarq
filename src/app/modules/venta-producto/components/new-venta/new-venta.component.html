@@ -1,9 +1,9 @@
 <h2 align="center" mat-dialog-title>Nueva Venta</h2>
 <mat-dialog-content>
   <mat-horizontal-stepper linear #stepper (selectionChange)="onLoadTab($event)">
-    <mat-step [stepControl]="proyectoForm" [editable]="true">
+    <mat-step [stepControl]="ventaForm" [editable]="true">
       <ng-template matStepLabel>Venta</ng-template>
-      <form class="new-form" [formGroup]="proyectoForm">
+      <form class="new-form" [formGroup]="ventaForm">
         <mat-form-field class="full-width full-column">
           <mat-label>Cliente</mat-label>
           <mat-select style="position: relative" formControlName="uuidCliente">
@@ -53,7 +53,7 @@
           <mat-icon matSuffix [color]="isValidField('uuidCliente').color">
             {{ isValidField("uuidCliente").icon }}
           </mat-icon>
-          <mat-error *ngIf="proyectoForm.get('uuidCliente').errors?.required">
+          <mat-error *ngIf="ventaForm.get('uuidCliente').errors?.required">
             Seleccione un cliente.
           </mat-error>
         </mat-form-field>
@@ -67,7 +67,7 @@
           <mat-icon matSuffix [color]="isValidField('nombreFactura').color">
             {{ isValidField("nombreFactura").icon }}
           </mat-icon>
-          <mat-error *ngIf="proyectoForm.get('nombreFactura').errors?.required">
+          <mat-error *ngIf="ventaForm.get('nombreFactura').errors?.required">
             Ingrese un nombre.
           </mat-error>
         </mat-form-field>
@@ -81,7 +81,7 @@
           <mat-icon matSuffix [color]="isValidField('nitCiCex').color">
             {{ isValidField("nitCiCex").icon }}
           </mat-icon>
-          <mat-error *ngIf="proyectoForm.get('nitCiCex').errors?.required">
+          <mat-error *ngIf="ventaForm.get('nitCiCex').errors?.required">
             Ingrese un nombre.
           </mat-error>
         </mat-form-field>
@@ -98,8 +98,8 @@
         <mat-form-field class="full-width">
           <mat-label>Tipo Envio</mat-label>
           <mat-select formControlName="tipoEnvio">
-            <mat-option value="delivery"> Personal </mat-option>
-            <mat-option value="personal"> Delivery </mat-option>
+            <mat-option value="personal"> Personal </mat-option>
+            <mat-option value="delivery"> Delivery </mat-option>
           </mat-select>
         </mat-form-field>
 
@@ -127,23 +127,19 @@
           ></textarea>
           <mat-hint align="end">
             {{
-              proyectoForm.value.direccion
-                ? proyectoForm.value.direccion.length
-                : 0
+              ventaForm.value.direccion ? ventaForm.value.direccion.length : 0
             }}/200
           </mat-hint>
           <mat-icon
             matSuffix
             [color]="isValidField('direccion').color"
-            *ngIf="proyectoForm.value.direccion"
+            *ngIf="ventaForm.value.direccion"
           >
             {{ isValidField("direccion").icon }}
           </mat-icon>
-          <mat-error *ngIf="proyectoForm.get('direccion').errors?.maxlength">
+          <mat-error *ngIf="ventaForm.get('direccion').errors?.maxlength">
             Debe contener
-            {{
-              proyectoForm.get("direccion").errors?.maxlength?.requiredLength
-            }}
+            {{ ventaForm.get("direccion").errors?.maxlength?.requiredLength }}
             digitos como maximo.
           </mat-error>
         </mat-form-field>
@@ -161,23 +157,21 @@
           ></textarea>
           <mat-hint align="end">
             {{
-              proyectoForm.value.descripcion
-                ? proyectoForm.value.descripcion.length
+              ventaForm.value.descripcion
+                ? ventaForm.value.descripcion.length
                 : 0
             }}/200
           </mat-hint>
           <mat-icon
             matSuffix
             [color]="isValidField('descripcion').color"
-            *ngIf="proyectoForm.value.descripcion"
+            *ngIf="ventaForm.value.descripcion"
           >
             {{ isValidField("descripcion").icon }}
           </mat-icon>
-          <mat-error *ngIf="proyectoForm.get('descripcion').errors?.maxlength">
+          <mat-error *ngIf="ventaForm.get('descripcion').errors?.maxlength">
             Debe contener
-            {{
-              proyectoForm.get("descripcion").errors?.maxlength?.requiredLength
-            }}
+            {{ ventaForm.get("descripcion").errors?.maxlength?.requiredLength }}
             digitos como maximo.
           </mat-error>
         </mat-form-field>
@@ -375,6 +369,7 @@
     class="mat-btn-success"
     *ngIf="!continuar"
     [disabled]="!conceptoSource.data.length"
+    (click)="addVenta()"
   >
     Guardar
   </button>

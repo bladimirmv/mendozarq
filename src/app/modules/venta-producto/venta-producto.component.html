@@ -341,8 +341,8 @@
                 </div>
               </div>
 
+              <!-- *ngIf="venta.conceptos.length" -->
               <table
-                *ngIf="venta.conceptos.length"
                 mat-table
                 [dataSource]="venta.conceptos"
                 class="mat-elevation-z2"
@@ -417,7 +417,7 @@
                     {{ concepto.importe | number: "1.2-2" }} Bs.
                   </td>
                   <td mat-footer-cell *matFooterCellDef class="text-center">
-                    {{ 100000 | number: "1.2-2" }} Bs.
+                    {{ venta.total | number: "1.2-2" }} Bs.
                   </td>
                 </ng-container>
 

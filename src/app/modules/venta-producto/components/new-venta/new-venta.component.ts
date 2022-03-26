@@ -1,5 +1,9 @@
+import { VentaService } from '@services/liraki/venta.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { ConceptoVentaView } from './../../../../shared/models/liraki/venta.interface';
+import {
+  ConceptoVentaView,
+  VentaProducto,
+} from './../../../../shared/models/liraki/venta.interface';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { environment } from '@env/environment.prod';
@@ -50,7 +54,7 @@ export class NewVentaComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<any>();
   public continuar: boolean = true;
 
-  public proyectoForm: FormGroup;
+  public ventaForm: FormGroup;
   private clientes: Usuario[] = [];
   public selectedClientes: Usuario[] = [];
 
@@ -79,6 +83,7 @@ export class NewVentaComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private router: Router,
     private dialogRef: MatDialogRef<NewVentaComponent>,
+    private _ventaSvc: VentaService,
     @Inject(MAT_DIALOG_DATA) private uuidVendedor
   ) {}
 
@@ -98,18 +103,33 @@ export class NewVentaComponent implements OnInit, OnDestroy {
     this.destroy$.next({});
     this.destroy$.complete();
   }
+  public addVenta(): void {
+    const venta: VentaProducto = {
+      ...this.ventaForm.value,
+      conceptos: [...this.conceptoSource.data],
+      total: this.getImporteVenta(),
+    };
 
-  goBack(stepper: MatStepper) {
+    this._ventaSvc.addVentaFisica(venta).subscribe(() => {
+      this.toastrSvc.success(
+        '😀 Se ha agregado correctamente',
+        'Venta Realizado'
+      );
+      this.dialogRef.close(true);
+    });
+  }
+
+  public goBack(stepper: MatStepper) {
     stepper.previous();
   }
 
-  goForward(stepper: MatStepper) {
+  public goForward(stepper: MatStepper) {
     stepper.next();
   }
 
   // =====================> onInitForm
   private initForm(): void {
-    this.proyectoForm = this.fb.group({
+    this.ventaForm = this.fb.group({
       uuidCliente: ['', Validators.required],
       nombreFactura: ['', [Validators.required, Validators.maxLength(100)]],
       nitCiCex: ['', Validators.required],
@@ -151,11 +171,11 @@ export class NewVentaComponent implements OnInit, OnDestroy {
             .subscribe((res: boolean) => {
               if (res) {
                 dialogRef.close();
-                this.dialogRef.close(this.proyectoForm);
+                this.dialogRef.close(this.ventaForm);
                 this.router.navigate(['admin/usuarios']);
               } else {
                 dialogRef.close();
-                this.dialogRef.close(this.proyectoForm);
+                this.dialogRef.close(this.ventaForm);
               }
             });
         }
@@ -286,7 +306,7 @@ export class NewVentaComponent implements OnInit, OnDestroy {
     status?: boolean;
     icon?: string;
   } {
-    const validateFIeld = this.proyectoForm.get(field);
+    const validateFIeld = this.ventaForm.get(field);
     return !validateFIeld.valid && validateFIeld.touched
       ? { color: 'warn', status: false, icon: 'close' }
       : validateFIeld.valid
