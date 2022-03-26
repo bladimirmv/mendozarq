@@ -1,3 +1,4 @@
+import { ProductoView } from './producto.interface';
 export type departamento = 'cbba' | 'lp' | 'scz';
 export type tipoEnvio = 'delivery' | 'personal';
 export type tipoVenta = 'fisica' | 'online';
@@ -38,14 +39,18 @@ export interface ConceptoVenta {
   cantidad: number;
   precioUnitario: number;
   descuento: number;
-  importe: number;
+  importe?: number;
   uuidProducto: string;
-  uuidVenta: string;
+  uuidVenta?: string;
 }
 
 export interface ConceptoVentaView extends ConceptoVenta {
-  nombre: string;
+  producto?: ProductoView;
 }
+
+// export interface ConceptoVentaView extends ConceptoVenta {
+//   nombre: string;
+// }
 
 export interface VentaView extends Venta {
   vendedor?: string;

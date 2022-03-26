@@ -1,14 +1,27 @@
-import { environment } from './../../../../../environments/environment.prod';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { ConceptoVentaView } from './../../../../shared/models/liraki/venta.interface';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+import { environment } from '@env/environment.prod';
+import { Producto, ProductoView } from '@models/liraki/producto.interface';
+import { ProductoService } from '@services/liraki/producto.service';
 import {
-  Producto,
-  ProductoView,
-} from './../../../../shared/models/liraki/producto.interface';
-import { ProductoService } from './../../../../core/services/liraki/producto.service';
-import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+  Component,
+  OnInit,
+  OnDestroy,
+  Inject,
+  ViewChild,
+  AfterViewInit,
+} from '@angular/core';
+import { Router } from '@angular/router';
 import { Subject, Observable } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { map, takeUntil, startWith } from 'rxjs/operators';
+import {
+  FormGroup,
+  Validators,
+  FormBuilder,
+  FormControl,
+} from '@angular/forms';
 
 import {
   MatDialog,
@@ -17,14 +30,15 @@ import {
 } from '@angular/material/dialog';
 
 import { ToastrService } from 'ngx-toastr';
-import { ProyectoService } from '@services/mendozarq/proyecto.service';
 import { UsuarioService } from '@services/auth/usuario.service';
 
 import { Proyecto } from '@app/shared/models/mendozarq/proyecto.interface';
 import { Usuario } from '@app/shared/models/usuario.interface';
 import { ClienteModalComponent } from '@app/modules/proyectos/components/cliente-modal/cliente-modal.component';
-import { CdkStepper } from '@angular/cdk/stepper';
 import { MatStepper } from '@angular/material/stepper';
+import { TouchBarOtherItemsProxy } from 'electron';
+import { MatSelect } from '@angular/material/select';
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-new-venta',
@@ -34,6 +48,7 @@ import { MatStepper } from '@angular/material/stepper';
 export class NewVentaComponent implements OnInit, OnDestroy {
   private API_URL = environment.API_URL;
   private destroy$ = new Subject<any>();
+  public continuar: boolean = true;
 
   public proyectoForm: FormGroup;
   private clientes: Usuario[] = [];
@@ -41,23 +56,20 @@ export class NewVentaComponent implements OnInit, OnDestroy {
 
   public conceptoVentaForm: FormGroup;
   public productos: ProductoView[] = [];
-  public selectedProductos: ProductoView[] = [];
+  public selectedProductos: ProductoView[];
+  public searchProducto: FormControl = new FormControl();
+  public conceptoSource: MatTableDataSource<ConceptoVentaView> =
+    new MatTableDataSource([]);
 
-  displayedColumns: string[] = [
+  public displayedColumns: string[] = [
     'producto',
     'cantidad',
     'precio',
     'descuento',
     'importe',
+    'options',
   ];
-  transactions = [
-    { item: 'Beach ball', cost: 4 },
-    { item: 'Towel', cost: 5 },
-    { item: 'Frisbee', cost: 2 },
-    { item: 'Sunscreen', cost: 4 },
-    { item: 'Cooler', cost: 25 },
-    { item: 'Swim suit', cost: 15 },
-  ];
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(
     private _productoSvc: ProductoService,
@@ -74,6 +86,12 @@ export class NewVentaComponent implements OnInit, OnDestroy {
     this.initForm();
     this.initDataClientes();
     this.initDataProductos();
+    this.conceptoSource.sort = this.sort;
+    this.conceptoSource.data = [];
+
+    this.searchProducto.valueChanges.pipe(startWith('')).subscribe((value) => {
+      this.selectedProductos = this._filterProducto(value);
+    });
   }
 
   ngOnDestroy(): void {
@@ -105,6 +123,7 @@ export class NewVentaComponent implements OnInit, OnDestroy {
       uuidVendedor: [this.uuidVendedor],
     });
     this.conceptoVentaForm = this.fb.group({
+      producto: ['', Validators.required],
       uuidProducto: ['', Validators.required],
       cantidad: [0],
       precioUnitario: [0],
@@ -155,26 +174,111 @@ export class NewVentaComponent implements OnInit, OnDestroy {
       });
   }
 
+  public addProductoTable(producto: ProductoView): void {
+    if (
+      !this.conceptoSource.data.find(
+        (concepto) => concepto.producto.uuid === producto.uuid
+      ) &&
+      producto
+    ) {
+      let newConcepto: ConceptoVentaView = {
+        cantidad: 1,
+        precioUnitario: producto.precio,
+        descuento: producto.descuento,
+        uuidProducto: producto.uuid,
+        producto,
+      };
+
+      newConcepto.importe = this.getImporteConcepto(newConcepto);
+
+      this.conceptoSource.data = [newConcepto, ...this.conceptoSource.data];
+    }
+  }
+
+  public getImporteConcepto(concepto: ConceptoVentaView): number {
+    return (
+      (concepto.precioUnitario -
+        (concepto.precioUnitario * concepto.descuento) / 100) *
+      concepto.cantidad
+    );
+  }
+
+  public upCantidad(concepto: ConceptoVentaView): void {
+    this.conceptoSource.data = this.conceptoSource.data.map((ct) => {
+      if (
+        ct.uuidProducto === concepto.producto.uuid &&
+        ct.cantidad < ct.producto.stock
+      ) {
+        ct.cantidad++;
+        ct.importe = this.getImporteConcepto(ct);
+      }
+      return ct;
+    });
+  }
+
+  public downCantidad(concepto: ConceptoVentaView): void {
+    this.conceptoSource.data = this.conceptoSource.data.map((ct) => {
+      if (ct.uuidProducto === concepto.producto.uuid && ct.cantidad > 1) {
+        ct.cantidad--;
+        ct.importe = this.getImporteConcepto(ct);
+      }
+      return ct;
+    });
+  }
+
+  public deleteConcepto(concepto: ConceptoVentaView): void {
+    this.conceptoSource.data = this.conceptoSource.data.filter(
+      (ct) => ct.uuidProducto !== concepto.uuidProducto
+    );
+  }
+
+  public getImporteVenta(): string {
+    return this.conceptoSource.data
+      .map((ct) => ct.importe)
+      .reduce((acc, value) => acc + value, 0)
+      .toFixed(2);
+  }
+
+  public loadSelectProductos(): void {
+    this.selectedProductos = this.productos;
+    this.searchProducto.setValue('');
+  }
+
+  private _filterProducto(value: string): ProductoView[] {
+    const filterValue = this._normalizeValue(value);
+
+    return this.productos.filter(
+      (product: ProductoView) =>
+        this._normalizeValue(product.nombre).includes(filterValue) ||
+        product.categorias
+          .map((cat) => this._normalizeValue(cat.nombre))
+          .includes(filterValue)
+    );
+  }
+  private _normalizeValue(value: string): string {
+    return value.toLowerCase();
+  }
+
   public getImage(keyName: string): string {
     return `${this.API_URL}/api/file/${keyName}`;
   }
 
-  // ===================> onAddProyecto
-  public onAddProyecto(proyecto: Proyecto): void {
-    // proyecto.porcentaje = 0;
-    // this.proyectoSvc
-    //   .addProyecto(proyecto)
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((proy) => {
-    //     if (proy) {
-    //       this.toastrSvc.success(
-    //         'El proyecto se ha creado correctamente. 😀',
-    //         'Proyecto Creado'
-    //       );
-    //       this.dialogRef.close();
-    //     }
-    //   });
+  public onLoadTab(e: StepperSelectionEvent): void {
+    switch (e.selectedIndex) {
+      case 0:
+        this.continuar = true;
+        break;
+
+      case 1:
+        this.continuar = false;
+        break;
+      default:
+        break;
+    }
   }
+
+  // ===================> onAddProyecto
+  public onAddProyecto(proyecto: Proyecto): void {}
 
   // ===========> isValidField
   public isValidField(field: string): {
@@ -208,21 +312,6 @@ export class NewVentaComponent implements OnInit, OnDestroy {
     this.selectedClientes = this._filter(value);
   }
 
-  public onKeyProducto(value) {
-    const filterValue = this._normalizeValue(value);
-
-    this.selectedProductos = this.productos.filter(
-      (product: ProductoView) =>
-        this._normalizeValue(product.nombre).includes(filterValue) ||
-        product.categorias
-          .map((cat) => this._normalizeValue(cat.nombre))
-          .includes(filterValue)
-    );
-  }
-
-  private _normalizeValue(value: string): string {
-    return value.toLowerCase();
-  }
   // ============> filterCliente
   private _filter(value: string): Usuario[] {
     const filterValue = value.toLowerCase();

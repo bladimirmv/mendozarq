@@ -97,7 +97,7 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
       data: this.route.snapshot.data['usuario']?.uuid,
       disableClose: true,
       width: '100%',
-      maxWidth: '600px',
+      maxWidth: '800px',
 
       // minWidth: '100%',
       // panelClass: 'custom-dialog-container',

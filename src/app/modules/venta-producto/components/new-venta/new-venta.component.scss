@@ -69,12 +69,32 @@ mat-dialog-actions {
   color: var(--error) !important;
 }
 
-.example-table-container {
-  position: relative;
-  max-height: 400px;
-  overflow: auto;
-}
+// .table-content {
+//   max-height: 100%;
+//   overflow: auto;
+// }
 
 table {
   width: 100%;
+}
+
+.search-container {
+  padding: 5px 5px 0 5px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  mat-form-field {
+    width: 100% !important;
+  }
+
+  .btn-clear-input {
+    color: var(--warn);
+  }
+}
+
+.search-header {
+  display: flex;
 }
