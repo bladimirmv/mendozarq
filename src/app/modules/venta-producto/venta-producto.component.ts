@@ -96,8 +96,7 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
     const dialog = this.dialog.open(NewVentaComponent, {
       data: this.route.snapshot.data['usuario']?.uuid,
       disableClose: true,
-      width: '100%',
-      maxWidth: '800px',
+      minWidth: '400px',
     });
 
     dialog

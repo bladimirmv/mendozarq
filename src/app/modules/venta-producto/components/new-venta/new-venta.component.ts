@@ -106,6 +106,7 @@ export class NewVentaComponent implements OnInit, OnDestroy {
   public addVenta(): void {
     const venta: VentaProducto = {
       ...this.ventaForm.value,
+      uuidCliente: this.ventaForm.value.uuidCliente.uuid,
       conceptos: [...this.conceptoSource.data],
       total: this.getImporteVenta(),
     };
@@ -116,6 +117,13 @@ export class NewVentaComponent implements OnInit, OnDestroy {
         'Venta Realizado'
       );
       this.dialogRef.close(true);
+    });
+  }
+
+  public onSelectCliente(usuario: Usuario): void {
+    this.ventaForm.patchValue({
+      direccion: usuario.direccion,
+      nombreFactura: usuario.apellidoPaterno,
     });
   }
 

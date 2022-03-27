@@ -6,7 +6,11 @@
       <form class="new-form" [formGroup]="ventaForm">
         <mat-form-field class="full-width full-column">
           <mat-label>Cliente</mat-label>
-          <mat-select style="position: relative" formControlName="uuidCliente">
+          <mat-select
+            style="position: relative"
+            formControlName="uuidCliente"
+            (selectionChange)="onSelectCliente($event.value)"
+          >
             <div
               style="
                 padding: 5px 5px 0 5px;
@@ -39,7 +43,7 @@
             </div>
             <mat-option
               *ngFor="let cliente of selectedClientes"
-              [value]="cliente.uuid"
+              [value]="cliente"
             >
               {{
                 cliente.nombre +
@@ -111,7 +115,7 @@
             <mat-option value="deposito_transferencia_qr">
               Deposito/Transferencia/QR
             </mat-option>
-            <mat-option value="paypal"> Paypal (Beta)</mat-option>
+            <!-- <mat-option value="paypal"> Paypal (Beta)</mat-option> -->
           </mat-select>
         </mat-form-field>
 
