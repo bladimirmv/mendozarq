@@ -1,7 +1,8 @@
 import {
   VentaView,
   VentaProducto,
-} from './../../../shared/models/liraki/venta.interface';
+  estado,
+} from '@models/liraki/venta.interface';
 import { PedidoProductoView } from './../../../shared/models/liraki/pedido.interface';
 import { catchError } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
@@ -39,6 +40,12 @@ export class VentaService {
   public updateVentaFisica(venta: VentaProducto): Observable<any> {
     return this.http
       .put<VentaView>(`${this.API_URL}/api/venta/fisica/${venta.uuid}`, venta)
+      .pipe(catchError((err) => this.handdleError(err)));
+  }
+
+  public updateEstadoVenta(uuid: string, estado: estado): Observable<any> {
+    return this.http
+      .put<VentaView>(`${this.API_URL}/api/venta/estado/${uuid}`, { estado })
       .pipe(catchError((err) => this.handdleError(err)));
   }
 

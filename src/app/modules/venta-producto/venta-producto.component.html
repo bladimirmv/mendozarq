@@ -254,15 +254,6 @@
           <th *matHeaderCellDef></th>
           <td *matCellDef="let row" class="text-center">
             <div style="white-space: nowrap">
-              <!-- <button
-                mat-icon-button
-                matTooltip="Nuevo detalle"
-                (click)="expandedElement = expandedElement === row ? null : row"
-                matTooltipPosition="below"
-              >
-                <mat-icon> post_add </mat-icon>
-              </button> -->
-
               <button
                 mat-icon-button
                 matTooltip="Editar"
@@ -326,15 +317,20 @@
 
               <div class="pedido">
                 <div [class]="'estado ' + venta.estado">
-                  <button mat-icon-button>
+                  <button mat-icon-button (click)="updateEstado(venta, 1)">
                     <mat-icon> support_agent</mat-icon>
                   </button>
 
-                  <button mat-icon-button>
+                  <button mat-icon-button (click)="updateEstado(venta, 2)">
                     <mat-icon> verified</mat-icon>
                   </button>
 
-                  <button mat-icon-button>
+                  <button
+                    mat-icon-button
+                    (click)="
+                      updateEstado(venta, venta.tipoEnvio == 'personal' ? 3 : 4)
+                    "
+                  >
                     <mat-icon>
                       {{
                         venta.tipoEnvio === "delivery"
@@ -344,7 +340,7 @@
                     >
                   </button>
 
-                  <button mat-icon-button>
+                  <button mat-icon-button (click)="updateEstado(venta, 5)">
                     <mat-icon> done_all</mat-icon>
                   </button>
                 </div>

@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, Resolve } from '@angular/router';
 import { NewVentaComponent } from './components/new-venta/new-venta.component';
 import { MatDialog } from '@angular/material/dialog';
 import { VentaService } from '@services/liraki/venta.service';
-import { VentaView } from '@models/liraki/venta.interface';
+import { estado, VentaView } from '@models/liraki/venta.interface';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -133,6 +133,37 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
           this.initData();
         }
       });
+  }
+
+  public updateEstado(venta: VentaView, option: number): void {
+    let estado: estado;
+    switch (option) {
+      case 1:
+        estado = 'pendiente';
+        break;
+      case 2:
+        estado = 'confirmado';
+        break;
+      case 3:
+        estado = 'para_recoger';
+        break;
+      case 4:
+        estado = 'en_envio';
+        break;
+      case 5:
+        estado = 'completado';
+        break;
+      default:
+        break;
+    }
+
+    this._ventaSvc.updateEstadoVenta(venta.uuid, estado).subscribe(() => {
+      this.toastrSvc.success(
+        '😀 Se ha actualizado correctamente',
+        'Estado Actualizado'
+      );
+      this.initData();
+    });
   }
 
   deleteVenta(): void {}
