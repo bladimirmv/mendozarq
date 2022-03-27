@@ -1,3 +1,4 @@
+import { VentaView } from './../../../../shared/models/liraki/venta.interface';
 import { VentaService } from '@services/liraki/venta.service';
 import {
   ConceptoVentaView,
@@ -32,11 +33,11 @@ import { Usuario } from '@app/shared/models/usuario.interface';
 import { ClienteModalComponent } from '@app/modules/proyectos/components/cliente-modal/cliente-modal.component';
 
 @Component({
-  selector: 'app-new-venta',
-  templateUrl: './new-venta.component.html',
-  styleUrls: ['./new-venta.component.scss'],
+  selector: 'app-edit-venta',
+  templateUrl: './edit-venta.component.html',
+  styleUrls: ['./edit-venta.component.scss'],
 })
-export class NewVentaComponent implements OnInit, OnDestroy {
+export class EditVentaComponent implements OnInit, OnDestroy {
   private API_URL = environment.API_URL;
   private destroy$ = new Subject<any>();
   public continuar: boolean = true;
@@ -69,17 +70,29 @@ export class NewVentaComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     public dialog: MatDialog,
     private router: Router,
-    private dialogRef: MatDialogRef<NewVentaComponent>,
+    private dialogRef: MatDialogRef<EditVentaComponent>,
     private _ventaSvc: VentaService,
-    @Inject(MAT_DIALOG_DATA) private uuidVendedor
+    @Inject(MAT_DIALOG_DATA) private currentVenta: VentaView
   ) {}
 
   ngOnInit(): void {
     this.initForm();
     this.initDataClientes();
     this.initDataProductos();
-    this.conceptoSource.sort = this.sort;
     this.conceptoSource.data = [];
+
+    this.conceptoSource.data = this.currentVenta.conceptos.map((ct) => {
+      return {
+        ...ct,
+        producto: {
+          nombre: ct.nombre,
+          uuid: ct.uuidProducto,
+          stock: Number(ct.stock),
+        },
+      };
+    });
+
+    this.conceptoSource.sort = this.sort;
 
     this.searchProducto.valueChanges.pipe(startWith('')).subscribe((value) => {
       this.selectedProductos = this._filterProducto(value);
@@ -97,14 +110,16 @@ export class NewVentaComponent implements OnInit, OnDestroy {
   public addVenta(): void {
     const venta: VentaProducto = {
       ...this.ventaForm.value,
-      uuidCliente: this.ventaForm.value.uuidCliente.uuid,
+      uuidCliente: this.currentVenta.uuidCliente,
       conceptos: [...this.conceptoSource.data],
       total: this.getImporteVenta(),
     };
 
-    this._ventaSvc.addVentaFisica(venta).subscribe(() => {
-      this.dialogRef.close(true);
-    });
+    console.log(venta);
+
+    // this._ventaSvc.addVentaFisica(venta).subscribe(() => {
+    //   this.dialogRef.close(true);
+    // });
   }
 
   public onSelectCliente(usuario: Usuario): void {
@@ -125,17 +140,26 @@ export class NewVentaComponent implements OnInit, OnDestroy {
   // =====================> onInitForm
   private initForm(): void {
     this.ventaForm = this.fb.group({
-      uuidCliente: ['', Validators.required],
-      nombreFactura: ['', [Validators.required, Validators.maxLength(100)]],
-      nitCiCex: ['', Validators.required],
-      departamento: ['cbba', Validators.required],
-      tipoVenta: ['fisica'],
-      tipoEnvio: ['personal', Validators.maxLength(200)],
-      direccion: ['', [Validators.required, Validators.maxLength(200)]],
-      descripcion: ['', Validators.maxLength(200)],
-      metodoDePago: ['efectivo', Validators.required],
-      estado: ['confirmado'],
-      uuidVendedor: [this.uuidVendedor],
+      uuidCliente: [
+        { value: this.currentVenta?.uuidCliente, disabled: true },
+        Validators.required,
+      ],
+      nombreFactura: [
+        this.currentVenta?.nombreFactura,
+        [Validators.required, Validators.maxLength(100)],
+      ],
+      nitCiCex: [this.currentVenta?.nitCiCex, Validators.required],
+      departamento: [this.currentVenta?.departamento, Validators.required],
+      tipoVenta: [this.currentVenta?.tipoVenta],
+      tipoEnvio: [this.currentVenta?.tipoEnvio, Validators.maxLength(200)],
+      direccion: [
+        this.currentVenta?.direccion,
+        [Validators.required, Validators.maxLength(200)],
+      ],
+      descripcion: [this.currentVenta?.descripcion, Validators.maxLength(200)],
+      metodoDePago: [this.currentVenta?.metodoDePago, Validators.required],
+      estado: [this.currentVenta?.estado],
+      uuidVendedor: [this.currentVenta?.uuidVendedor],
     });
 
     this.conceptoVentaForm = this.fb.group({
@@ -256,7 +280,7 @@ export class NewVentaComponent implements OnInit, OnDestroy {
 
   public getImporteVenta(): string {
     return this.conceptoSource.data
-      .map((ct) => ct.importe)
+      .map((ct) => Number(ct.importe))
       .reduce((acc, value) => acc + value, 0)
       .toFixed(2);
   }

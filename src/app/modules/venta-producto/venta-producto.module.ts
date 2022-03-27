@@ -8,9 +8,10 @@ import { SharedModule } from '@app/shared/shared.module';
 import { MaterialModule } from '@app/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewVentaComponent } from './components/new-venta/new-venta.component';
+import { EditVentaComponent } from './components/edit-venta/edit-venta.component';
 
 @NgModule({
-  declarations: [VentaProductoComponent, NewVentaComponent],
+  declarations: [VentaProductoComponent, NewVentaComponent, EditVentaComponent],
   imports: [
     CommonModule,
     VentaProductoRoutingModule,

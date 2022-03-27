@@ -216,7 +216,15 @@
         </ng-container>
         <ng-container matColumnDef="tipoEnvio">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>TipoEnvio</th>
-          <td mat-cell *matCellDef="let row" class="text-center">
+          <td
+            mat-cell
+            *matCellDef="let row"
+            class="text-center"
+            [ngClass]="{
+              'delivery-color': row.tipoEnvio === 'delivery',
+              'personal-color': row.tipoEnvio === 'personal'
+            }"
+          >
             {{ row.tipoEnvio }}
           </td>
         </ng-container>
@@ -246,19 +254,20 @@
           <th *matHeaderCellDef></th>
           <td *matCellDef="let row" class="text-center">
             <div style="white-space: nowrap">
-              <button
+              <!-- <button
                 mat-icon-button
                 matTooltip="Nuevo detalle"
                 (click)="expandedElement = expandedElement === row ? null : row"
                 matTooltipPosition="below"
               >
                 <mat-icon> post_add </mat-icon>
-              </button>
+              </button> -->
 
               <button
                 mat-icon-button
-                matTooltip="Eliminar"
+                matTooltip="Editar"
                 (click)="expandedElement = expandedElement === row ? null : row"
+                (click)="updateVenta(row)"
                 matTooltipPosition="below"
               >
                 <mat-icon> edit </mat-icon>
@@ -392,12 +401,15 @@
                   </td>
                   <td mat-footer-cell *matFooterCellDef></td>
                 </ng-container>
+
                 <ng-container matColumnDef="descuento">
-                  <th mat-header-cell *matHeaderCellDef>Descuento</th>
+                  <th mat-header-cell *matHeaderCellDef class="text-center">
+                    Descuento
+                  </th>
                   <td
                     mat-cell
                     *matCellDef="let row"
-                    class="td-longtext text-center"
+                    class="text-center"
                     [matTooltip]="row.nombre"
                     matTooltipPosition="below"
                   >
@@ -406,7 +418,6 @@
                   <td mat-footer-cell *matFooterCellDef align="end">TOTAL:</td>
                 </ng-container>
 
-                <!-- *precioUnitario-->
                 <ng-container matColumnDef="importe">
                   <th mat-header-cell *matHeaderCellDef class="text-center">
                     Importe
@@ -418,7 +429,7 @@
                     {{ venta.total | number: "1.2-2" }} Bs.
                   </td>
                 </ng-container>
-
+                <!--
                 <ng-container matColumnDef="options" stickyEnd>
                   <th *matHeaderCellDef></th>
                   <td class="text-center" *matCellDef="let concepto">
@@ -441,7 +452,7 @@
                     *matFooterCellDef
                     class="text-center"
                   ></td>
-                </ng-container>
+                </ng-container> -->
 
                 <tr
                   mat-header-row
@@ -450,8 +461,7 @@
                     'cantidad',
                     'precioUnitario',
                     'descuento',
-                    'importe',
-                    'options'
+                    'importe'
                   ]"
                 ></tr>
                 <tr
@@ -463,8 +473,7 @@
                       'cantidad',
                       'precioUnitario',
                       'descuento',
-                      'importe',
-                      'options'
+                      'importe'
                     ]
                   "
                 ></tr>
@@ -477,8 +486,7 @@
                       'cantidad',
                       'precioUnitario',
                       'descuento',
-                      'importe',
-                      'options'
+                      'importe'
                     ];
                     sticky: true
                   "

@@ -1,3 +1,5 @@
+import { ToastrService } from 'ngx-toastr';
+import { EditVentaComponent } from './components/edit-venta/edit-venta.component';
 import { ActivatedRoute, Router, Resolve } from '@angular/router';
 import { NewVentaComponent } from './components/new-venta/new-venta.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -64,7 +66,7 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
     private _ventaSvc: VentaService,
     private dialog: MatDialog,
     private route: ActivatedRoute,
-    private router: Router
+    private toastrSvc: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -79,17 +81,16 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
       )
       .subscribe((data) => (this.selectedVenta = data.selected));
   }
+  ngOnDestroy(): void {
+    this.destroy$.next({});
+    this.destroy$.complete();
+  }
 
   private initData(): void {
     this._ventaSvc.getAllVentaFisica().subscribe((ventas) => {
       this.dataSourceVenta.data = ventas;
       this.ventas = ventas;
     });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next({});
-    this.destroy$.complete();
   }
 
   public addVenta(): void {
@@ -104,12 +105,35 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         if (res) {
+          this.toastrSvc.success(
+            '😀 Se ha agregado correctamente',
+            'Venta Realizado'
+          );
           this.initData();
         }
       });
   }
 
-  updateVenta(): void {}
+  public updateVenta(currentVenta: VentaView): void {
+    const dialog = this.dialog.open(EditVentaComponent, {
+      data: currentVenta,
+      disableClose: true,
+      minWidth: '400px',
+    });
+
+    dialog
+      .afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        if (res) {
+          this.toastrSvc.success(
+            '😀 Se ha actualizado correctamente',
+            'Venta Actualizado'
+          );
+          this.initData();
+        }
+      });
+  }
 
   deleteVenta(): void {}
 

@@ -36,18 +36,6 @@ export class VentaService {
       .pipe(catchError((err) => this.handdleError(err)));
   }
 
-  // public paypal(pedidoProducto: PedidoProducto): Observable<any> {
-  //   return this.http
-  //     .post<any>(`${this.API_URL}/api/paypal/create-order`, pedidoProducto)
-  //     .pipe(catchError((error) => this.handdleError(error)));
-  // }
-
-  // public paypalPeido(pedidoProducto: PedidoProducto): Observable<any> {
-  //   return this.http
-  //     .post<any>(`${this.API_URL}/api/paypal/create-order`, pedidoProducto)
-  //     .pipe(catchError((error) => this.handdleError(error)));
-  // }
-
   public handdleError(httpError: HttpErrorResponse | any): Observable<never> {
     let errorMessage = '';
 

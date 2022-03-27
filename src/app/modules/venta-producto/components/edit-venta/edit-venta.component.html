@@ -1,4 +1,4 @@
-<h2 align="center" mat-dialog-title>Nueva Venta</h2>
+<h2 align="center" mat-dialog-title>Editar Venta</h2>
 <mat-dialog-content>
   <mat-horizontal-stepper linear #stepper (selectionChange)="onLoadTab($event)">
     <mat-step [stepControl]="ventaForm" [editable]="true">
@@ -34,7 +34,7 @@
             </div>
             <mat-option
               *ngFor="let cliente of selectedClientes"
-              [value]="cliente"
+              [value]="cliente.uuid"
             >
               {{
                 cliente.nombre +

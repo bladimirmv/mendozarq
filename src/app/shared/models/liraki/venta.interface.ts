@@ -46,6 +46,8 @@ export interface ConceptoVenta {
 
 export interface ConceptoVentaView extends ConceptoVenta {
   producto?: ProductoView;
+  nombre?: string;
+  stock?: number;
 }
 
 export interface VentaProducto extends Venta {

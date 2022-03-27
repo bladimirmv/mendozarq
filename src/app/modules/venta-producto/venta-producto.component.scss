@@ -194,3 +194,15 @@ tr.example-element-row:not(.example-expanded-row):active {
 .completado-td {
   background-color: var(--success);
 }
+
+.delivery-color {
+  color: var(--accent) !important;
+  font-weight: bolder;
+  text-transform: uppercase;
+}
+
+.personal-color {
+  color: var(--purple-light) !important;
+  font-weight: bolder;
+  text-transform: uppercase;
+}

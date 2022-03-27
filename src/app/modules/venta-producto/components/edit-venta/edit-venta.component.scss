@@ -1,0 +1,89 @@
+.new-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.full-column {
+  grid-column: span 2;
+}
+
+mat-dialog-actions {
+  display: grid;
+  grid-template-areas: "secondary success";
+  grid-template-columns: repeat(2, 1fr);
+  place-items: 🇨enter;
+
+  .mat-btn-success {
+    grid-area: success;
+  }
+
+  .mat-btn-secondary {
+    grid-area: secondary;
+  }
+}
+.mat-horizontal-content-container {
+  padding: 0px !important;
+}
+
+@media screen and (max-width: 400px) {
+  mat-dialog-actions {
+    margin: 0;
+    padding: 0;
+    grid-template-columns: auto;
+    grid-gap: 10px;
+    grid-template-areas:
+      "success"
+      "secondary";
+
+    .mat-btn-success {
+      margin: 0;
+    }
+  }
+}
+
+@media screen and (max-width: 625px) {
+  .new-form {
+    display: grid;
+    grid-template-columns: minmax(100%, 1fr);
+    grid-gap: 0;
+    padding: 0;
+  }
+
+  .full-column {
+    grid-column: 1;
+  }
+}
+
+::ng-deep .mat-dialog-container {
+  box-sizing: border-box;
+}
+
+.warn-text {
+  color: var(--error) !important;
+}
+
+table {
+  width: 100%;
+}
+
+.search-container {
+  padding: 5px 5px 0 5px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  mat-form-field {
+    width: 100% !important;
+  }
+
+  .btn-clear-input {
+    color: var(--warn);
+  }
+}
+
+.search-header {
+  display: flex;
+}
