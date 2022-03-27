@@ -110,6 +110,7 @@ export class EditVentaComponent implements OnInit, OnDestroy {
   public addVenta(): void {
     const venta: VentaProducto = {
       ...this.ventaForm.value,
+      uuid: this.currentVenta.uuid,
       uuidCliente: this.currentVenta.uuidCliente,
       conceptos: [...this.conceptoSource.data],
       total: this.getImporteVenta(),
@@ -117,9 +118,9 @@ export class EditVentaComponent implements OnInit, OnDestroy {
 
     console.log(venta);
 
-    // this._ventaSvc.addVentaFisica(venta).subscribe(() => {
-    //   this.dialogRef.close(true);
-    // });
+    this._ventaSvc.updateVentaFisica(venta).subscribe(() => {
+      this.dialogRef.close(true);
+    });
   }
 
   public onSelectCliente(usuario: Usuario): void {

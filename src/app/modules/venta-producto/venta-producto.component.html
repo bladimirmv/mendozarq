@@ -429,30 +429,6 @@
                     {{ venta.total | number: "1.2-2" }} Bs.
                   </td>
                 </ng-container>
-                <!--
-                <ng-container matColumnDef="options" stickyEnd>
-                  <th *matHeaderCellDef></th>
-                  <td class="text-center" *matCellDef="let concepto">
-                    <button mat-icon-button [matMenuTriggerFor]="menu">
-                      <mat-icon> more_horiz </mat-icon>
-                      <mat-menu #menu="matMenu">
-                        <button mat-menu-item>
-                          <mat-icon>edit</mat-icon>
-                          <span>Editar</span>
-                        </button>
-                        <button mat-menu-item>
-                          <mat-icon>delete</mat-icon>
-                          <span>Eliminar</span>
-                        </button>
-                      </mat-menu>
-                    </button>
-                  </td>
-                  <td
-                    mat-footer-cell
-                    *matFooterCellDef
-                    class="text-center"
-                  ></td>
-                </ng-container> -->
 
                 <tr
                   mat-header-row
@@ -511,10 +487,7 @@
           *matRowDef="let row; columns: ['expandedDetail']"
           class="example-detail-row"
         ></tr>
-        <!-- <tr
-          mat-footer-row
-          *matFooterRowDef="columnsToDisplay; sticky: true"
-        ></tr> -->
+
         <tr class="mat-row" *matNoDataRow>
           <td class="mat-cell" colspan="10" align="center">
             <div *ngIf="inputSearch.value; else noData">
