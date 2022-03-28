@@ -1,3 +1,4 @@
+import { WebsocketService } from './../../core/services/sockets/websocket.service';
 import { ToastrService } from 'ngx-toastr';
 import { EditVentaComponent } from './components/edit-venta/edit-venta.component';
 import { ActivatedRoute, Router, Resolve } from '@angular/router';
@@ -66,10 +67,13 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
     private _ventaSvc: VentaService,
     private dialog: MatDialog,
     private route: ActivatedRoute,
-    private toastrSvc: ToastrService
+    private toastrSvc: ToastrService,
+    private _wsService: WebsocketService
   ) {}
 
   ngOnInit(): void {
+    this._wsService.emit('ws:ventas');
+
     this.initData();
 
     this.dataSourceVenta.paginator = this.paginator;
@@ -87,10 +91,18 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
   }
 
   private initData(): void {
-    this._ventaSvc.getAllVentaFisica().subscribe((ventas) => {
-      this.dataSourceVenta.data = ventas;
-      this.ventas = ventas;
-    });
+    this._wsService
+      .listen('ws:ventas')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((ventas: VentaView[]) => {
+        this.dataSourceVenta.data = ventas;
+        this.ventas = ventas;
+      });
+
+    // this._ventaSvc.getAllVentaFisica().subscribe((ventas) => {
+    //   this.dataSourceVenta.data = ventas;
+    //   this.ventas = ventas;
+    // });
   }
 
   public addVenta(): void {
@@ -130,34 +142,33 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
             '😀 Se ha actualizado correctamente',
             'Venta Actualizado'
           );
-          this.initData();
+          // this.initData();
         }
       });
   }
 
   public updateEstado(venta: VentaView, option: number): void {
-    let estado: estado;
     switch (option) {
       case 1:
-        estado = 'pendiente';
+        venta.estado = 'pendiente';
         break;
       case 2:
-        estado = 'confirmado';
+        venta.estado = 'confirmado';
         break;
       case 3:
-        estado = 'para_recoger';
+        venta.estado = 'para_recoger';
         break;
       case 4:
-        estado = 'en_envio';
+        venta.estado = 'en_envio';
         break;
       case 5:
-        estado = 'completado';
+        venta.estado = 'completado';
         break;
       default:
         break;
     }
 
-    this._ventaSvc.updateEstadoVenta(venta.uuid, estado).subscribe(() => {
+    this._ventaSvc.updateEstadoVenta(venta.uuid, venta).subscribe(() => {
       this.toastrSvc.success(
         '😀 Se ha actualizado correctamente',
         'Estado Actualizado'

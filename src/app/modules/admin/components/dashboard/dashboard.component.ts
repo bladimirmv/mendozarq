@@ -26,12 +26,11 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.getDataSocket();
     this.wsService.emit('ws:getLogs');
+    this.getDataSocket();
   }
 
   getDataSocket(): void {
-    this.wsService.emit('ws:getLogs');
     this.wsService
       .listen('ws:getLogs')
       .pipe(takeUntil(this.destroy$))

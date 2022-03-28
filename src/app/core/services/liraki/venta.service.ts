@@ -43,9 +43,9 @@ export class VentaService {
       .pipe(catchError((err) => this.handdleError(err)));
   }
 
-  public updateEstadoVenta(uuid: string, estado: estado): Observable<any> {
+  public updateEstadoVenta(uuid: string, venta: VentaView): Observable<any> {
     return this.http
-      .put<VentaView>(`${this.API_URL}/api/venta/estado/${uuid}`, { estado })
+      .put<VentaView>(`${this.API_URL}/api/venta/estado/${uuid}`, venta)
       .pipe(catchError((err) => this.handdleError(err)));
   }
 

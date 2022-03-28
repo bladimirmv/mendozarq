@@ -1,3 +1,4 @@
+import { UsuarioSocket } from './../../../shared/models/usuario.interface';
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { environment } from '@env/environment';
@@ -18,12 +19,16 @@ export class WebsocketService {
   // ==========> server status
   public checkStatus() {
     const usuarioToken = localStorage.getItem('token') || null;
+    const usuarioSocket: UsuarioSocket = {
+      usuarioToken,
+      from: 'mendozarq',
+    };
 
     this.socket.on('connect', () => {
       console.log('Socket connected');
       this.socketStatus = true;
 
-      this.socket.emit('ws:logIn', usuarioToken, () => {
+      this.socket.emit('ws:logIn', usuarioSocket, () => {
         console.log('login successfuly');
       });
     });
