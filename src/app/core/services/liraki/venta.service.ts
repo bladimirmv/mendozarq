@@ -49,6 +49,12 @@ export class VentaService {
       .pipe(catchError((err) => this.handdleError(err)));
   }
 
+  public deleteVenta(uuid: string): Observable<any> {
+    return this.http
+      .delete<VentaView>(`${this.API_URL}/api/venta/${uuid}`)
+      .pipe(catchError((err) => this.handdleError(err)));
+  }
+
   public handdleError(httpError: HttpErrorResponse | any): Observable<never> {
     let errorMessage = '';
 

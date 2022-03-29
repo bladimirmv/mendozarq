@@ -1,4 +1,6 @@
-import { WebsocketService } from './../../core/services/sockets/websocket.service';
+import { warningDialog } from '@shared/components/warning-modal/warning-modal.component';
+import { DeleteModalComponent } from '@shared/components/delete-modal/delete-modal.component';
+import { WebsocketService } from '@services/sockets/websocket.service';
 import { ToastrService } from 'ngx-toastr';
 import { EditVentaComponent } from './components/edit-venta/edit-venta.component';
 import { ActivatedRoute, Router, Resolve } from '@angular/router';
@@ -21,6 +23,7 @@ import {
   trigger,
 } from '@angular/animations';
 import { map, takeUntil } from 'rxjs/operators';
+import { WarningModalComponent } from '@app/shared/components/warning-modal/warning-modal.component';
 
 @Component({
   selector: 'app-venta-producto',
@@ -98,11 +101,6 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
         this.dataSourceVenta.data = ventas;
         this.ventas = ventas;
       });
-
-    // this._ventaSvc.getAllVentaFisica().subscribe((ventas) => {
-    //   this.dataSourceVenta.data = ventas;
-    //   this.ventas = ventas;
-    // });
   }
 
   public addVenta(): void {
@@ -142,42 +140,112 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
             '😀 Se ha actualizado correctamente',
             'Venta Actualizado'
           );
-          // this.initData();
         }
       });
   }
 
   public updateEstado(venta: VentaView, option: number): void {
+    let estado: estado;
     switch (option) {
       case 1:
-        venta.estado = 'pendiente';
+        estado = 'pendiente';
         break;
       case 2:
-        venta.estado = 'confirmado';
+        estado = 'confirmado';
         break;
       case 3:
-        venta.estado = 'para_recoger';
+        estado = 'para_recoger';
         break;
       case 4:
-        venta.estado = 'en_envio';
+        estado = 'en_envio';
         break;
       case 5:
-        venta.estado = 'completado';
+        estado = 'completado';
         break;
       default:
         break;
     }
-
-    this._ventaSvc.updateEstadoVenta(venta.uuid, venta).subscribe(() => {
-      this.toastrSvc.success(
-        '😀 Se ha actualizado correctamente',
-        'Estado Actualizado'
-      );
-      this.initData();
+    const dialogRef = this.dialog.open(WarningModalComponent, {
+      data: {
+        btnPrimary: 'Continuar',
+        title: 'Cambio de Estado',
+        paragraph: 'Estas segur@ de continuar con el cambio de estado?',
+      } as warningDialog,
     });
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: boolean) => {
+        if (res) {
+          venta.estado = estado;
+          this._ventaSvc.updateEstadoVenta(venta.uuid, venta).subscribe(() => {
+            this.toastrSvc.success(
+              '😀 Se ha actualizado correctamente',
+              'Estado Actualizado'
+            );
+            this.initData();
+          });
+        }
+      });
   }
 
-  deleteVenta(): void {}
+  public deleteVenta(): void {
+    const dialogRef = this.dialog.open(DeleteModalComponent);
+
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: boolean) => {
+        if (res) {
+          this.selectedVenta.length === 1
+            ? this.deleteOneVenta()
+            : this.deleteMoreThanOneProducto();
+        }
+      });
+  }
+
+  private deleteOneVenta(): void {
+    this._ventaSvc
+      .deleteVenta(this.selectedVenta[0].uuid)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        if (res) {
+          this.toastrSvc.success(
+            'Se ha eliminado correctamente',
+            'Venta Eliminado',
+            {
+              timeOut: 2000,
+              progressBar: true,
+              progressAnimation: 'increasing',
+            }
+          );
+          this.clearCheckbox();
+        }
+      });
+  }
+
+  private deleteMoreThanOneProducto(): void {
+    this.selectedVenta.forEach((servicio, index) => {
+      const isLast: boolean = index + 1 === this.selectedVenta.length;
+      this._ventaSvc
+        .deleteVenta(servicio.uuid)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          if (res && isLast) {
+            this.toastrSvc.success(
+              'Se han eliminado correctamente',
+              'Ventas Eliminados',
+              {
+                timeOut: 2000,
+                progressBar: true,
+                progressAnimation: 'increasing',
+              }
+            );
+            this.clearCheckbox();
+          }
+        });
+    });
+  }
 
   // !important, this part is for table.
   // =====================> applyFilter

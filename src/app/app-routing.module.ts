@@ -53,6 +53,7 @@ const routes: Routes = [
       ),
   },
   { path: 'pedidos', loadChildren: () => import('./modules/pedidos/pedidos.module').then(m => m.PedidosModule) },
+  { path: 'opinionProducto', loadChildren: () => import('./modules/opinion-producto/opinion-producto.module').then(m => m.OpinionProductoModule) },
 
   {
     path: '**',

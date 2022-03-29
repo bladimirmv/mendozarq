@@ -1,0 +1,237 @@
+<div class="content">
+  <div class="stats-container">
+    <app-status-card [icon]="'people'" color="info">
+      <div slot="title">Totales</div>
+      <div slot="count">
+        {{ personal ? personal.length : 0 }}
+      </div>
+    </app-status-card>
+
+    <app-status-card [icon]="'how_to_reg'" color="success">
+      <div slot="title">Activos</div>
+      <div slot="count">
+        {{ 0 }}
+      </div>
+    </app-status-card>
+
+    <app-status-card [icon]="'block'" color="warn">
+      <div slot="title">Inactivos</div>
+      <div slot="count">
+        {{ 0 }}
+      </div>
+    </app-status-card>
+  </div>
+
+  <!-- table -->
+  <div class="table-container mat-elevation-z2">
+    <div
+      class="header-table"
+      [style.display]="selected.length ? 'none' : 'grid'"
+    >
+      <mat-form-field>
+        <mat-label>Buscar</mat-label>
+        <input
+          matInput
+          autocomplete="off"
+          (keyup)="applyFilter($event)"
+          placeholder="Ex. bladimir"
+          [(ngModel)]="filterValue"
+          #input
+        />
+        <button
+          mat-button
+          *ngIf="filterValue"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="applyFilter('')"
+          (click)="input.value = ''"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <button
+        mat-icon-button
+        (click)="onAddPersonal()"
+        matTooltip="Nuevo Personal"
+        matTooltipPosition="below"
+        class="btn-add"
+      >
+        <mat-icon class="mat-18"> add </mat-icon>
+      </button>
+    </div>
+
+    <div *ngIf="selected.length">
+      <div class="delete-table">
+        <button mat-icon-button (click)="clearCheckbox()" class="btn-clear">
+          <mat-icon>clear</mat-icon>
+        </button>
+        <span> Seleccionados {{ selected.length }} </span>
+        <button class="btn-delete" (click)="onDeletePersonal()">Elminar</button>
+      </div>
+    </div>
+
+    <div class="table-content">
+      <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
+        <ng-container matColumnDef="seleccion" sticky>
+          <th *matHeaderCellDef class="actions-table">
+            <mat-checkbox
+              color="warn"
+              (change)="$event ? masterToggle() : null"
+              [checked]="selection.hasValue() && isAllSelected()"
+              [indeterminate]="selection.hasValue() && !isAllSelected()"
+              [aria-label]="checkboxLabel()"
+            >
+            </mat-checkbox>
+          </th>
+          <td *matCellDef="let row" class="actions-table">
+            <mat-checkbox
+              color="warn"
+              (click)="$event.stopPropagation()"
+              (change)="$event ? selection.toggle(row) : null"
+              [checked]="selection.isSelected(row)"
+              [aria-label]="checkboxLabel(row)"
+            >
+            </mat-checkbox>
+          </td>
+        </ng-container>
+
+        <!-- *Estado -->
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            <div
+              [class]="row.estado ? 'personal-activo' : 'personal-no-activo'"
+            ></div>
+          </td>
+        </ng-container>
+
+        <!-- *nombre -->
+        <ng-container matColumnDef="creadoEn">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            {{ row.creadoEn | date: "d/M/yy, h:mm a" }}
+          </td>
+        </ng-container>
+
+        <!-- *apellidos -->
+        <ng-container matColumnDef="cliente">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Cliente</th>
+          <td
+            mat-cell
+            *matCellDef="let row"
+            class="td-longtext text-center"
+            [matTooltip]="row.descripcion"
+            matTooltipPosition="below"
+          >
+            <span>
+              {{ row.cliente | titlecase }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- *celular -->
+        <ng-container matColumnDef="titulo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Titulo</th>
+          <td
+            mat-cell
+            *matCellDef="let row"
+            class="td-longtext text-center"
+            [matTooltip]="row.descripcion"
+            matTooltipPosition="below"
+          >
+            <span>
+              {{ row.titulo }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- *direccion -->
+        <ng-container matColumnDef="descripcion">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripcion</th>
+          <td
+            mat-cell
+            *matCellDef="let row"
+            class="td-longtext text-center"
+            [matTooltip]="row.direccion"
+            matTooltipPosition="below"
+          >
+            <span>
+              {{ row.descripcion }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- *correo -->
+        <ng-container matColumnDef="verificado">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Verificado</th>
+          <td mat-cell *matCellDef="let row" class="text-center">
+            {{ row.verificado }}
+          </td>
+        </ng-container>
+
+        <!-- *cargo -->
+        <ng-container matColumnDef="puntuacion">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Puntuacion</th>
+          <td
+            mat-cell
+            *matCellDef="let row"
+            class="td-longtext text-center"
+            [matTooltip]="row.descripcion"
+            matTooltipPosition="below"
+          >
+            {{ row.puntuacion }}
+          </td>
+        </ng-container>
+
+        <!-- *sueldo -->
+        <ng-container matColumnDef="producto">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Producto</th>
+          <td
+            mat-cell
+            *matCellDef="let row"
+            class="td-longtext text-center"
+            [matTooltip]="row.descripcion"
+            matTooltipPosition="below"
+          >
+            <span> {{ row.nombreProducto | titlecase }}. </span>
+          </td>
+        </ng-container>
+
+        <!-- *edit -->
+        <ng-container matColumnDef="edit" stickyEnd>
+          <th *matHeaderCellDef mat-sort-header>
+            <!-- Editar -->
+          </th>
+          <td *matCellDef="let row" class="text-center">
+            <button mat-icon-button (click)="onUpdatePersonal(row)">
+              <mat-icon class="edit-icon"> edit </mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="10" align="center">
+            <div *ngIf="input.value; else noData">
+              No hay datos que coincidan con el filtro: "{{ input.value }}"
+            </div>
+            <ng-template #noData align="center">
+              <img
+                src="./assets/no_data.svg"
+                alt=""
+                width="100"
+                style="margin: 5px"
+                class="no-select"
+              />
+              <p>Tabla vacía, aún no creaste un personal.</p>
+            </ng-template>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <mat-paginator [pageSizeOptions]="[5, 10, 100]"></mat-paginator>
+  </div>
+</div>

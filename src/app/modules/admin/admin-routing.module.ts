@@ -70,9 +70,9 @@ const routes: Routes = [
       {
         path: 'opiniones-producto',
         loadChildren: () =>
-          import(
-            '@modules/comentario-producto/comentario-producto.module'
-          ).then((m) => m.ComentarioProductoModule),
+          import('@modules/opinion-producto/opinion-producto.module').then(
+            (m) => m.OpinionProductoModule
+          ),
       },
       {
         path: 'venta-producto',
