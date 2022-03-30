@@ -1,9 +1,4 @@
-import {
-  VentaView,
-  VentaProducto,
-  estado,
-} from '@models/liraki/venta.interface';
-import { PedidoProductoView } from './../../../shared/models/liraki/pedido.interface';
+import { VentaView, VentaProducto } from '@models/liraki/venta.interface';
 import { catchError } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { PedidoProducto } from '@models/liraki/pedido.interface';

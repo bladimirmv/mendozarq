@@ -230,8 +230,10 @@
         </ng-container>
         <ng-container matColumnDef="metodoDePago">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>MetodoPago</th>
-          <td mat-cell *matCellDef="let row" class="text-center">
-            {{ row.metodoDePago }}
+          <td mat-cell *matCellDef="let row" class="text-center td-longtext">
+            <span>
+              {{ row.metodoDePago }}
+            </span>
           </td>
         </ng-container>
         <ng-container matColumnDef="total">

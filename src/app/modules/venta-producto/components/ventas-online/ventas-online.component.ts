@@ -122,7 +122,6 @@ export class VentasOnlineComponent implements OnInit, OnDestroy {
             '😀 Se ha agregado correctamente',
             'Venta Realizado'
           );
-          // this.initData();
         }
       });
   }
