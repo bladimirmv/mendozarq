@@ -1,0 +1,34 @@
+<h1 align="center" mat-dialog-title>Editar Estado</h1>
+
+<mat-dialog-content>
+  <form class="edit-form" [formGroup]="opinionForm">
+    <mat-form-field class="full-width">
+      <mat-label>Estado</mat-label>
+      <mat-select formControlName="estado">
+        <mat-option [value]="1">Activo</mat-option>
+        <mat-option [value]="0">Inactivo</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Compra Verificado</mat-label>
+      <mat-select formControlName="verificado">
+        <mat-option [value]="1">Verificado</mat-option>
+        <mat-option [value]="0">No Verificado</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="false" class="mat-btn-secondary">
+    Cancelar
+  </button>
+  <button
+    mat-button
+    class="mat-btn-success"
+    (click)="updateOpinion(opinionForm.value)"
+  >
+    Actualizar
+  </button>
+</mat-dialog-actions>

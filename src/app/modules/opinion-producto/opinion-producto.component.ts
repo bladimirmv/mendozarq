@@ -1,4 +1,9 @@
-import { OpinionProductoService } from './../../core/services/liraki/opinion-producto.service';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { PdfService } from '@services/pdf/pdf.service';
+import { Chart } from 'chart.js';
+import { EditOpinionComponent } from './components/edit-opinion/edit-opinion.component';
+import { OpinionProductoService } from '@services/liraki/opinion-producto.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { SelectionModel } from '@angular/cdk/collections';
@@ -11,11 +16,10 @@ import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 
-import { DeleteModalComponent } from './../../shared/components/delete-modal/delete-modal.component';
-import { Personal } from '@models/mendozarq/personal.interface';
-import { PersonalService } from '@app/core/services/mendozarq/personal.service';
+import { DeleteModalComponent } from '@shared/components/delete-modal/delete-modal.component';
 import { OpinionProductoView } from '@app/shared/models/liraki/opinion.producto.interface';
-import { log10 } from 'chart.js/helpers';
+import * as moment from 'moment';
+
 @Component({
   selector: 'app-opinion-producto',
   templateUrl: './opinion-producto.component.html',
@@ -33,11 +37,11 @@ export class OpinionProductoComponent implements OnInit {
     'estado',
     'creadoEn',
     'cliente',
+    'puntuacion',
+    'nombreProducto',
+    'verificado',
     'titulo',
     'descripcion',
-    'verificado',
-    'puntuacion',
-    'producto',
     'edit',
   ];
 
@@ -47,11 +51,25 @@ export class OpinionProductoComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
+  // **Graficas y Reportes
+  public analiticas: OpinionProductoView[];
+  public reporteOption: number = 0;
+  public bar_chart: Chart;
+  public doughnut_chart: Chart;
+  public pdfResult: any;
+  public tabIndex: number = 0;
+  public loadIframe = false;
+  public rangeFirst: Date = new Date();
+  public rangeSecond: Date = new Date();
+  private fechaReporte: string = 'Todos';
+
   constructor(
     private toastSvc: ToastrService,
     public dialog: MatDialog,
-    private personalSvc: PersonalService,
-    private _opinionSvc: OpinionProductoService
+    private _opinionSvc: OpinionProductoService,
+    private _actRoute: ActivatedRoute,
+    private _route: Router,
+    private _pdfSvc: PdfService
   ) {}
 
   // =====================> onInit
@@ -69,47 +87,45 @@ export class OpinionProductoComponent implements OnInit {
   ngOnDestroy(): void {
     this.destroy$.next({});
     this.destroy$.complete();
-    // this.locationBarSvc.popLocation();
   }
 
-  // =====================> getAllPersonal
-  getAllOpiniones(): void {
+  // =====================> getAll
+  private getAllOpiniones(): void {
     this._opinionSvc
       .getAllOpinion()
       .subscribe((opiniones: OpinionProductoView[]) => {
         this.dataSource.data = opiniones;
         this.opiniones = opiniones;
+        this.analiticas = opiniones;
 
-        console.log(opiniones);
+        if (this.tabIndex === 1) {
+          this.initChart();
+        }
+
+        this._actRoute.queryParams.subscribe(
+          (params) =>
+            (this.tabIndex = params.tab === 'graficas_reportes' ? 1 : 0)
+        );
       });
   }
 
-  // =====================> onAddPersonal
-  onAddPersonal(): void {
-    // const dialogRef = this.dialog.open(NewPersonalComponent);
-    // dialogRef
-    //   .afterClosed()
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((res) => {
-    //     this.getAllPersonal();
-    //   });
+  public updateOpinion(opinion: OpinionProductoView): void {
+    const dialogRef = this.dialog.open(EditOpinionComponent, {
+      data: opinion,
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        if (res) {
+          this.getAllOpiniones();
+        }
+      });
   }
 
-  // =====================> oneditPersonal
-  onUpdatePersonal(personal: Personal): void {
-    // const dialogRef = this.dialog.open(EditPersonalComponent, {
-    //   data: personal,
-    // });
-    // dialogRef
-    //   .afterClosed()
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe(() => {
-    //     this.getAllPersonal();
-    //   });
-  }
-
-  // =====================> ondeletePersonal
-  async onDeletePersonal(): Promise<void> {
+  // =====================> ondelete
+  public onDelete(): void {
     const dialogRef = this.dialog.open(DeleteModalComponent);
 
     dialogRef
@@ -118,22 +134,22 @@ export class OpinionProductoComponent implements OnInit {
       .subscribe((res) => {
         if (res) {
           this.selected.length === 1
-            ? this.deleteOnePersonal()
-            : this.deleteMoreThanOnePersonal();
+            ? this.deleteOneOpinion()
+            : this.deleteMoreThanOneOpinion();
         }
       });
   }
 
-  // =====================> deleteOnePersonal
-  deleteOnePersonal(): void {
-    this.personalSvc
-      .deletePersonal(this.selected[0].uuid)
+  // =====================> deleteOne
+  private deleteOneOpinion(): void {
+    this._opinionSvc
+      .deleteOpinion(this.selected[0].uuid)
       .pipe(takeUntil(this.destroy$))
       .subscribe((usr) => {
         if (usr) {
           this.toastSvc.success(
-            'Se ha eliminado correctamente',
-            'Personal Eliminado',
+            '😀 Se ha eliminado correctamente',
+            'Opinion Eliminado',
             {
               timeOut: 2000,
               progressBar: true,
@@ -146,38 +162,28 @@ export class OpinionProductoComponent implements OnInit {
       });
   }
 
-  // =====================> deleteMoreThanOnePersonal
-  deleteMoreThanOnePersonal(): void {
+  // =====================> deleteMoreThanOne
+  private deleteMoreThanOneOpinion(): void {
     this.selected.forEach((personal, index) => {
-      const isLast: boolean = index + 1 === this.selected.length;
-      this.personalSvc
-        .deletePersonal(personal.uuid)
+      this._opinionSvc
+        .deleteOpinion(personal.uuid)
         .pipe(takeUntil(this.destroy$))
         .subscribe((res) => {
           if (res) {
             this.toastSvc.success(
-              'Se han eliminado correctamente',
-              'Personal Eliminado',
+              '😀 Se han eliminado correctamente',
+              'Opiniones Eliminados',
               {
                 timeOut: 2000,
                 progressBar: true,
                 progressAnimation: 'increasing',
               }
             );
-            this.getAllPersonal();
+            this.getAllOpiniones();
             this.clearCheckbox();
           }
         });
     });
-  }
-
-  // =====================> openSnackBarCopy
-  openSnackBarCopy(): void {
-    // this.snackBar.open('Copiado', 'Cerrar', {
-    //   duration: 500,
-    //   horizontalPosition: 'center',
-    //   verticalPosition: 'bottom',
-    // });
   }
 
   // !important, this part is for table.
@@ -220,5 +226,302 @@ export class OpinionProductoComponent implements OnInit {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
       row.uuid
     }`;
+  }
+
+  // **Graficas y reportes
+  public onLoadTab(e: MatTabChangeEvent): void {
+    switch (e.index) {
+      case 1:
+        this.initChart();
+        this._route.navigate([], {
+          queryParams: {
+            tab: 'graficas_reportes',
+          },
+          queryParamsHandling: 'merge',
+        });
+        break;
+
+      case 0:
+        this._route.navigate([], {
+          queryParams: {
+            tab: 'tabla',
+          },
+          queryParamsHandling: 'merge',
+        });
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  public async initChart(): Promise<void> {
+    const data = {
+      labels: [
+        '1 Estrella',
+        '2 Estrellas',
+        '3 Estrellas',
+        '4 Estrellas',
+        '5 Estrellas',
+      ],
+      datasets: [
+        {
+          label: 'Calificaciones',
+          data: [...this.getDataGraficas()],
+          backgroundColor: [
+            '#ff6058',
+            '#ffbd2d',
+            '#33b5e5',
+            '#2ac940',
+            '#a481d5',
+            '#a481d5',
+          ],
+        },
+      ],
+    };
+
+    const options = {
+      color: '#a5a5a5',
+      plugins: {
+        legend: {
+          labels: {
+            color: '#a5a5a5',
+          },
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: {
+            color: '#a5a5a5',
+            borderColor: '#a5a5a5',
+          },
+          ticks: {
+            color: '#a5a5a5',
+          },
+        },
+        x: {
+          grid: {
+            color: '#a5a5a5',
+            borderColor: '#a5a5a5',
+          },
+          ticks: {
+            color: '#a5a5a5',
+          },
+        },
+      },
+      responsive: true,
+    };
+
+    if (this.bar_chart) {
+      this.bar_chart.destroy();
+    }
+    if (this.doughnut_chart) {
+      this.doughnut_chart.destroy();
+    }
+
+    this.bar_chart = new Chart('bar', {
+      type: 'bar',
+      data,
+      options: {
+        ...options,
+        plugins: {
+          title: {
+            color: '#ff6e00',
+            display: true,
+            text: `Grafica de Barras de Calificaciones de Productos (${this.fechaReporte.toUpperCase()})`,
+            font: {
+              size: 16,
+              family: 'Montserrat',
+            },
+          },
+        },
+      },
+    });
+
+    this.doughnut_chart = new Chart('doughnut', {
+      type: 'doughnut',
+
+      data,
+      options: {
+        ...options,
+        plugins: {
+          title: {
+            color: '#ff6e00',
+            display: true,
+            text: `Grafica de Rosquilla de Calificaciones de Productos (${this.fechaReporte.toUpperCase()})`,
+            font: {
+              size: 16,
+              family: 'Montserrat',
+            },
+          },
+        },
+      },
+    });
+    this.loadIframe = false;
+    await this.addDelay(1);
+    this.loadIframe = true;
+    await this.generatePdf();
+  }
+
+  private addDelay(s: number): Promise<any> {
+    return new Promise((resolve) => setTimeout(resolve, s * 1000));
+  }
+
+  public filterRangeDate(): void {
+    this.analiticas = this.opiniones;
+    this.analiticas = this.analiticas.filter((usr) =>
+      moment(usr.creadoEn).isBetween(this.rangeFirst, this.rangeSecond)
+    );
+
+    this.fechaReporte = `${moment(this.rangeFirst).format(
+      'DD/MM/YYYY'
+    )}  - ${moment(this.rangeSecond).format('DD/MM/YYYY')}`;
+    this.initChart();
+  }
+
+  public filterGraficasReportes(): void {
+    switch (this.reporteOption) {
+      case 0:
+        this.analiticas = this.opiniones;
+        this.fechaReporte = 'Todos';
+        break;
+      case 1:
+        this.analiticas = this.opiniones;
+        this.analiticas = this.analiticas.filter(
+          (usr) =>
+            new Date(usr.creadoEn).getFullYear() === new Date().getFullYear()
+        );
+        this.fechaReporte = `Año ${new Date().getFullYear().toString()}`;
+        break;
+      case 2:
+        this.analiticas = this.opiniones;
+        this.analiticas = this.analiticas.filter(
+          (usr) => new Date(usr.creadoEn).getMonth() === new Date().getMonth()
+        );
+        this.fechaReporte = `${moment(new Date()).format('MMMM [de] YYYY')}`;
+        break;
+      case 3:
+        this.analiticas = this.opiniones;
+        this.analiticas = this.analiticas.filter(
+          (usr) => new Date(usr.creadoEn).getDay() === new Date().getDay()
+        );
+        this.fechaReporte = `${moment(new Date()).format(
+          'DD [de] MMMM [del] YYYY'
+        )}`;
+        break;
+
+      case 4:
+        this.analiticas = this.opiniones;
+        break;
+
+      default:
+        break;
+    }
+
+    this.initChart();
+  }
+
+  private getDataGraficas(): Array<number> {
+    let puntuacion: Array<number> = [0, 0, 0, 0, 0];
+
+    this.analiticas.forEach((op) => {
+      switch (op.puntuacion) {
+        case 1:
+          puntuacion[0]++;
+          break;
+        case 2:
+          puntuacion[1]++;
+          break;
+        case 3:
+          puntuacion[2]++;
+          break;
+        case 4:
+          puntuacion[3]++;
+          break;
+        case 5:
+          puntuacion[4]++;
+          break;
+        default:
+          break;
+      }
+    });
+
+    return puntuacion;
+  }
+
+  // ====================> generatePdf
+  public async generatePdf(): Promise<void> {
+    let pdf: Array<any> = [];
+    const img: HTMLCanvasElement = document.querySelector('#bar');
+    pdf = await this._pdfSvc.reporte(
+      pdf,
+      this.analiticas,
+      [
+        this.bar_chart.toBase64Image('image/png', 1.0),
+        this.doughnut_chart.toBase64Image('image/png', 1.0),
+      ],
+      'opiniones',
+      `Reporte de Calificaciones de Productos (${this.fechaReporte})`
+    );
+
+    const docDefinition = {
+      content: pdf,
+      watermark: {
+        text: '©MENDOZARQ',
+        color: '#FF6E00',
+        opacity: 0.06,
+        bold: true,
+        italics: false,
+      },
+      info: {
+        title: 'Reporte-Calificaciones',
+        author: '©MENDOZARQ',
+      },
+      pageMargins: [60, 40, 40, 60],
+      pageSize: 'letter',
+      defaultStyle: {
+        font: 'Roboto',
+      },
+      footer: (currentPage, pageCount) => {
+        if (currentPage) {
+          return {
+            fontSize: 10,
+            text: `Pagina ${currentPage} de ${pageCount}`,
+            alignment: 'center',
+            margin: [0, 20, 0, 0],
+            color: '#425066',
+          };
+        }
+      },
+    };
+
+    this.pdfResult = this._pdfSvc.createPdf(docDefinition);
+
+    const pdfIframe = document.querySelector(
+      '#pdf-iframe'
+    ) as HTMLIFrameElement;
+    pdfIframe.src = await this._pdfSvc.getPdfDataUrl(this.pdfResult);
+  }
+
+  // ====================> downloadPdf
+  public downloadPdf(): void {
+    if (this.pdfResult) {
+      this._pdfSvc.dowload(this.pdfResult, 'Reporte-Usuarios');
+    }
+  }
+
+  // ====================> openPdf
+  public openPdf(): void {
+    if (this.pdfResult) {
+      this._pdfSvc.open(this.pdfResult);
+    }
+  }
+
+  // ====================> printPdf
+  public printPdf(): void {
+    if (this.pdfResult) {
+      this._pdfSvc.print(this.pdfResult);
+    }
   }
 }

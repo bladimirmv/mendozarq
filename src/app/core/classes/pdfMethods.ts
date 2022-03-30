@@ -1,3 +1,4 @@
+import { OpinionProductoView } from '@app/shared/models/liraki/opinion.producto.interface';
 import { ProductoView } from '@app/shared/models/liraki/producto.interface';
 import { Producto } from '@models/liraki/producto.interface';
 import {
@@ -36,7 +37,8 @@ export type TypeReport =
   | 'proyecto'
   | 'producto'
   | 'pedidos'
-  | 'venta';
+  | 'venta'
+  | 'opiniones';
 
 export class PdfMethods {
   constructor() {
@@ -559,6 +561,167 @@ export class PdfMethods {
     return pdf;
   }
 
+  private opinionesTable(
+    pdf: Array<any>,
+    opiniones: Array<OpinionProductoView>
+  ): Array<any> {
+    const bodyInfo: Array<BodyTable[]> = [];
+
+    bodyInfo.push([
+      {
+        text: 'Estado',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Fecha',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Cliente',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Puntuacion',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Producto',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Verificado',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Titulo',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+
+      {
+        text: 'Descripcion',
+        style: 'tableHeader',
+        colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#FF6E00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+    ]);
+
+    opiniones.forEach((opinion) => {
+      bodyInfo.push([
+        {
+          text: `${opinion.estado ? 'Activo' : 'Inactivo'}`,
+          alignment: 'justify',
+          border: [false, false, false, true],
+        },
+        {
+          text: moment(opinion.creadoEn).format('DD/MM/YYYY[,] h:mm A'),
+          alignment: 'justify',
+          border: [false, false, false, true],
+        },
+        {
+          text: opinion.cliente,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: opinion.puntuacion.toString(),
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${opinion.nombreProducto}`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${opinion.verificado}`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${opinion.titulo}`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${opinion.descripcion}`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+      ]);
+    });
+
+    pdf.push(
+      this.centerObject({
+        style: 'tableExample',
+        table: {
+          body: bodyInfo,
+          alignment: 'center',
+        },
+        layout: {
+          hLineWidth: function (i, node) {
+            return i === 0 || i === node.table.body.length ? 1 : 1;
+          },
+          vLineWidth: function (i, node) {
+            return i === 0 || i === node.table.widths.length ? 0 : 1;
+          },
+          hLineColor: function (i, node) {
+            return '#425066';
+          },
+          vLineColor: function (i, node) {
+            return '#425066';
+          },
+        },
+      })
+    );
+    return pdf;
+  }
+
   public async reporte<T extends object>(
     pdf: Array<any>,
     data: Array<T>,
@@ -579,7 +742,7 @@ export class PdfMethods {
           color: '#425066',
         },
         {
-          text: moment(new Date()).format('MM/DD/YYYY[,] h:mm A'),
+          text: moment(new Date()).format('DD/M/YYYY[,] h:mm A'),
           alignment: 'right',
           margin: [0, 14, 0, 0],
           fontSize: 14,
@@ -611,7 +774,7 @@ export class PdfMethods {
           color: '#425066',
         },
         {
-          text: moment(new Date()).format('MM/DD/YYYY[,] h:mm A'),
+          text: moment(new Date()).format('DD/MM/YYYY[,] h:mm A'),
           alignment: 'right',
           margin: [0, 14, 0, 0],
           fontSize: 14,
@@ -639,6 +802,9 @@ export class PdfMethods {
         break;
       case 'producto':
         pdf = this.productoTable(pdf, data);
+        break;
+      case 'opiniones':
+        pdf = this.opinionesTable(pdf, data);
         break;
       default:
         break;

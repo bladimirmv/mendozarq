@@ -34,6 +34,18 @@ export class OpinionProductoService {
       .pipe(catchError((error) => this.handdleError(error)));
   }
 
+  public updateOpinion(opinion: OpinionProductoView): Observable<any> {
+    return this.http
+      .put(`${this.API_URL}/api/opinionProducto/${opinion.uuid}`, opinion)
+      .pipe(catchError((error) => this.handdleError(error)));
+  }
+
+  public deleteOpinion(uuid: string): Observable<any> {
+    return this.http
+      .delete(`${this.API_URL}/api/opinionProducto/${uuid}`)
+      .pipe(catchError((error) => this.handdleError(error)));
+  }
+
   // ====================> handdleError
   public handdleError(httpError: HttpErrorResponse | any): Observable<never> {
     let errorMessage = '';
