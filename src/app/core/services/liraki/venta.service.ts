@@ -55,6 +55,12 @@ export class VentaService {
       .pipe(catchError((err) => this.handdleError(err)));
   }
 
+  public addVentaOnline(venta: VentaProducto): Observable<any> {
+    return this.http
+      .post<PedidoProducto>(`${this.API_URL}/api/venta/online`, venta)
+      .pipe(catchError((err) => this.handdleError(err)));
+  }
+
   public handdleError(httpError: HttpErrorResponse | any): Observable<never> {
     let errorMessage = '';
 

@@ -1,3 +1,5 @@
+import { VentasOnlineComponent } from './../venta-producto/components/ventas-online/ventas-online.component';
+
 import { UsuarioResolverService } from './../../core/resolvers/usuario-resolver.service';
 import { PlanificacionResolverService } from '@core/resolvers/planificacion.resolver.service';
 import { NgModule } from '@angular/core';
@@ -99,11 +101,11 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'pedidos',
-        loadChildren: () =>
-          import('@modules/pedidos/pedidos.module').then(
-            (m) => m.PedidosModule
-          ),
+        path: 'ventas-online',
+        resolve: {
+          usuario: UsuarioResolverService,
+        },
+        component: VentasOnlineComponent,
       },
       {
         path: 'importaciones',

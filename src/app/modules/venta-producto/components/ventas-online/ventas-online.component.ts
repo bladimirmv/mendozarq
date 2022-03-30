@@ -2,9 +2,9 @@ import { warningDialog } from '@shared/components/warning-modal/warning-modal.co
 import { DeleteModalComponent } from '@shared/components/delete-modal/delete-modal.component';
 import { WebsocketService } from '@services/sockets/websocket.service';
 import { ToastrService } from 'ngx-toastr';
-import { EditVentaComponent } from './components/edit-venta/edit-venta.component';
-import { ActivatedRoute, Router, Resolve } from '@angular/router';
-import { NewVentaComponent } from './components/new-venta/new-venta.component';
+import { EditVentaComponent } from './../../components/edit-venta/edit-venta.component';
+import { ActivatedRoute } from '@angular/router';
+import { NewVentaComponent } from './../../components/new-venta/new-venta.component';
 import { MatDialog } from '@angular/material/dialog';
 import { VentaService } from '@services/liraki/venta.service';
 import { estado, VentaView } from '@models/liraki/venta.interface';
@@ -26,9 +26,9 @@ import { map, takeUntil } from 'rxjs/operators';
 import { WarningModalComponent } from '@app/shared/components/warning-modal/warning-modal.component';
 
 @Component({
-  selector: 'app-venta-producto',
-  templateUrl: './venta-producto.component.html',
-  styleUrls: ['./venta-producto.component.scss'],
+  selector: 'app-ventas-online',
+  templateUrl: './ventas-online.component.html',
+  styleUrls: ['./ventas-online.component.scss'],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -40,7 +40,7 @@ import { WarningModalComponent } from '@app/shared/components/warning-modal/warn
     ]),
   ],
 })
-export class VentaProductoComponent implements OnInit, OnDestroy {
+export class VentasOnlineComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<any>();
   private ventas: VentaView[] = [];
 
@@ -75,7 +75,7 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this._wsService.emit('ws:ventas');
+    this._wsService.emit('ws:ventas-online');
 
     this.initData();
 
@@ -95,7 +95,7 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
 
   private initData(): void {
     this._wsService
-      .listen('ws:ventas')
+      .listen('ws:ventas-online')
       .pipe(takeUntil(this.destroy$))
       .subscribe((ventas: VentaView[]) => {
         this.dataSourceVenta.data = ventas;
@@ -107,7 +107,7 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
     const dialog = this.dialog.open(NewVentaComponent, {
       data: {
         vendedor: this.route.snapshot.data['usuario']?.uuid,
-        tipoVenta: 'fisica',
+        tipoVenta: 'online',
       },
       disableClose: true,
       minWidth: '400px',
@@ -122,7 +122,7 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
             '😀 Se ha agregado correctamente',
             'Venta Realizado'
           );
-          this.initData();
+          // this.initData();
         }
       });
   }

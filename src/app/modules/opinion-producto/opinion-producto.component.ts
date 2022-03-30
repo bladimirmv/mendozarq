@@ -50,6 +50,10 @@ export class OpinionProductoComponent implements OnInit {
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+  public estados = {
+    activos: 0,
+    inactivos: 0,
+  };
 
   // **Graficas y Reportes
   public analiticas: OpinionProductoView[];
@@ -106,6 +110,9 @@ export class OpinionProductoComponent implements OnInit {
           (params) =>
             (this.tabIndex = params.tab === 'graficas_reportes' ? 1 : 0)
         );
+
+        this.estados.activos = opiniones.filter((op) => op.estado).length;
+        this.estados.inactivos = opiniones.filter((op) => !op.estado).length;
       });
   }
 

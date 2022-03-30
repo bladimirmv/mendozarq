@@ -1,6 +1,7 @@
 import { VentaService } from '@services/liraki/venta.service';
 import {
   ConceptoVentaView,
+  tipoVenta,
   VentaProducto,
 } from '@models/liraki/venta.interface';
 import { MatTableDataSource } from '@angular/material/table';
@@ -71,7 +72,8 @@ export class NewVentaComponent implements OnInit, OnDestroy {
     private router: Router,
     private dialogRef: MatDialogRef<NewVentaComponent>,
     private _ventaSvc: VentaService,
-    @Inject(MAT_DIALOG_DATA) private uuidVendedor
+    @Inject(MAT_DIALOG_DATA)
+    private data: { vendedor: string; tipoVenta: tipoVenta }
   ) {}
 
   ngOnInit(): void {
@@ -102,9 +104,17 @@ export class NewVentaComponent implements OnInit, OnDestroy {
       total: this.getImporteVenta(),
     };
 
-    this._ventaSvc.addVentaFisica(venta).subscribe(() => {
-      this.dialogRef.close(true);
-    });
+    if (venta.tipoVenta === 'fisica') {
+      this._ventaSvc.addVentaFisica(venta).subscribe(() => {
+        this.dialogRef.close(true);
+      });
+    }
+
+    if (venta.tipoVenta === 'online') {
+      this._ventaSvc.addVentaOnline(venta).subscribe(() => {
+        this.dialogRef.close(true);
+      });
+    }
   }
 
   public onSelectCliente(usuario: Usuario): void {
@@ -129,13 +139,13 @@ export class NewVentaComponent implements OnInit, OnDestroy {
       nombreFactura: ['', [Validators.required, Validators.maxLength(100)]],
       nitCiCex: ['', Validators.required],
       departamento: ['cbba', Validators.required],
-      tipoVenta: ['fisica'],
+      tipoVenta: [this.data.tipoVenta],
       tipoEnvio: ['personal', Validators.maxLength(200)],
       direccion: ['', [Validators.required, Validators.maxLength(200)]],
       descripcion: ['', Validators.maxLength(200)],
       metodoDePago: ['efectivo', Validators.required],
       estado: ['confirmado'],
-      uuidVendedor: [this.uuidVendedor],
+      uuidVendedor: [this.data.vendedor],
     });
 
     this.conceptoVentaForm = this.fb.group({

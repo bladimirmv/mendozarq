@@ -10,14 +10,14 @@
     <app-status-card [icon]="'how_to_reg'" color="success">
       <div slot="title">Activos</div>
       <div slot="count">
-        {{ 0 }}
+        {{ estados.activos }}
       </div>
     </app-status-card>
 
     <app-status-card [icon]="'block'" color="warn">
       <div slot="title">Inactivos</div>
       <div slot="count">
-        {{ 0 }}
+        {{ estados.inactivos }}
       </div>
     </app-status-card>
   </div>

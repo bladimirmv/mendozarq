@@ -9,9 +9,15 @@ import { MaterialModule } from '@app/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewVentaComponent } from './components/new-venta/new-venta.component';
 import { EditVentaComponent } from './components/edit-venta/edit-venta.component';
+import { VentasOnlineComponent } from './components/ventas-online/ventas-online.component';
 
 @NgModule({
-  declarations: [VentaProductoComponent, NewVentaComponent, EditVentaComponent],
+  declarations: [
+    VentaProductoComponent,
+    NewVentaComponent,
+    EditVentaComponent,
+    VentasOnlineComponent,
+  ],
   imports: [
     CommonModule,
     VentaProductoRoutingModule,
