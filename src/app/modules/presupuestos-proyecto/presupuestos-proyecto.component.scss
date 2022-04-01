@@ -1,6 +1,6 @@
 .content::after {
   content: "";
-  background-image: url('./../../../assets/bg.svg');
+  background-image: url("./../../../assets/bg.svg");
   background-position: bottom;
   background-repeat: no-repeat;
   background-size: 100%;
@@ -11,4 +11,23 @@
   right: 0;
   position: absolute;
   z-index: -1;
+  height: 100%;
+}
+
+.no-data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: calc(100vh - 60px);
+  gap: 10px;
+  justify-content: center;
+  img {
+    width: 400px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .no-data img {
+    width: 90%;
+  }
 }

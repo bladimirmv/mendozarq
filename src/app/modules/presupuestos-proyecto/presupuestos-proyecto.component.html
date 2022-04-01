@@ -1,8 +1,19 @@
-<div class="content">
+<div class="content" *ngIf="!presupuestoObra && !showChart">
+  <div class="no-data">
+    <img src="./assets/list.svg" alt="" />
 
-  <button mat-button-icon>
-    <mat-icon></mat-icon>
-  </button>
-
-
+    <button
+      mat-button
+      class="mat-btn-primary"
+      (click)="newPresupuestoProyecto()"
+    >
+      Crear Presupuesto
+    </button>
+  </div>
 </div>
+
+<ng-container *ngIf="presupuestoObra || showChart">
+  <app-presupuesto-proyecto
+    [uuidPresupuesto]="presupuestoObra.uuid"
+  ></app-presupuesto-proyecto>
+</ng-container>

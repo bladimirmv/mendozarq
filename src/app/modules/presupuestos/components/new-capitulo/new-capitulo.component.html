@@ -1,20 +1,27 @@
-<h1 mat-dialog-title align="center">
-  Nuevo Capitulo
-</h1>
+<h1 mat-dialog-title align="center">Nuevo Capitulo</h1>
 
 <mat-dialog-content>
-
   <form class="new-form" [formGroup]="capituloForm">
+    <mat-form-field
+      class="full-width full-colum"
+      [color]="isValidField('nombre').color"
+    >
+      <input
+        type="text"
+        placeholder="Pick one"
+        aria-label="Number"
+        matInput
+        formControlName="nombre"
+        [matAutocomplete]="auto"
+      />
 
-    <!-- *Nombre -->
-    <mat-form-field class="full-width full-colum" [color]="isValidField('nombre').color">
-      <mat-label>Nombre o Descripcion</mat-label>
-      <input matInput formControlName="nombre" autocomplete="off">
       <mat-icon matSuffix [color]="isValidField('nombre').color">
-        {{isValidField('nombre').icon}}
+        {{ isValidField("nombre").icon }}
       </mat-icon>
       <mat-hint align="end">
-        {{capituloForm.value.nombre ? capituloForm.value.nombre.length : 0}}/100
+        {{
+          capituloForm.value.nombre ? capituloForm.value.nombre.length : 0
+        }}/100
       </mat-hint>
       <mat-error *ngIf="capituloForm.get('nombre').errors?.required">
         Ingrese un nombre.
@@ -23,21 +30,39 @@
         Debe incluir solo letras en minuscula.
       </mat-error>
       <mat-error *ngIf="capituloForm.get('nombre').errors?.maxlength">
-        Debe contener {{capituloForm.get('nombre').errors?.maxlength?.requiredLength}} digitos como maximo.
+        Debe contener
+        {{ capituloForm.get("nombre").errors?.maxlength?.requiredLength }}
+        digitos como maximo.
       </mat-error>
+
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option
+          *ngFor="let option of filteredOptions"
+          [value]="option.nombre"
+        >
+          {{ option.nombre }}
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
 
     <!-- *Descuento -->
-    <mat-form-field class="full-width full-colum" [color]="isValidField('nombre').color">
+    <mat-form-field
+      class="full-width full-colum"
+      [color]="isValidField('nombre').color"
+    >
       <mat-label>Descuento</mat-label>
       <span matSuffix>porciento (%) &nbsp;</span>
-      <input matInput type="number" formControlName="descuento" autocomplete="off" style="text-align: center;">
+      <input
+        matInput
+        type="number"
+        formControlName="descuento"
+        autocomplete="off"
+        style="text-align: center"
+      />
       <mat-icon matSuffix [color]="isValidField('descuento').color">
-        {{isValidField('descuento').icon}}
+        {{ isValidField("descuento").icon }}
       </mat-icon>
-      <mat-hint align="end">
-        maximo 50%
-      </mat-hint>
+      <mat-hint align="end"> maximo 50% </mat-hint>
       <mat-error *ngIf="capituloForm.get('descuento').errors?.required">
         Ingrese un nombre.
       </mat-error>
@@ -45,18 +70,26 @@
         El minimo debe ser 0%.
       </mat-error>
       <mat-error *ngIf="capituloForm.get('descuento').errors?.max">
-        Maximo descuendo {{capituloForm.get('descuento').errors?.max.max}}%.
+        Maximo descuendo {{ capituloForm.get("descuento").errors?.max.max }}%.
       </mat-error>
     </mat-form-field>
-
-
   </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="center">
-  <button mat-button [mat-dialog-close]="false" class="mat-btn-secondary full-width">Cancelar</button>
-  <button mat-button class="mat-btn-success full-width" [disabled]="!capituloForm.valid"
-    (click)="addCapituloPresupuesto(capituloForm.value)">
+  <button
+    mat-button
+    [mat-dialog-close]="false"
+    class="mat-btn-secondary full-width"
+  >
+    Cancelar
+  </button>
+  <button
+    mat-button
+    class="mat-btn-success full-width"
+    [disabled]="!capituloForm.valid"
+    (click)="addCapituloPresupuesto(capituloForm.value)"
+  >
     Guardar
   </button>
 </mat-dialog-actions>

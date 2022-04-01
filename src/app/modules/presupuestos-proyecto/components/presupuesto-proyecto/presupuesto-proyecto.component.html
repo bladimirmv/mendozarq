@@ -1,0 +1,651 @@
+<div class="content">
+  <div class="form-container">
+    <div class="bar-actions mat-elevation-z2">
+      <button
+        mat-icon-button
+        matTooltip="Volver Atras"
+        matTooltipPosition="below"
+        (click)="onBack()"
+      >
+        <mat-icon> keyboard_backspace </mat-icon>
+      </button>
+
+      <button
+        mat-icon-button
+        matTooltip="Descargar"
+        matTooltipPosition="below"
+        (click)="downloadPdf()"
+      >
+        <mat-icon> download </mat-icon>
+      </button>
+
+      <button
+        mat-icon-button
+        matTooltip="Imprimir"
+        matTooltipPosition="below"
+        (click)="printPdf()"
+      >
+        <mat-icon> print </mat-icon>
+      </button>
+
+      <a
+        mat-icon-button
+        matTooltip="Abrir"
+        matTooltipPosition="below"
+        (click)="openPdf()"
+      >
+        <mat-icon> open_in_new </mat-icon>
+      </a>
+
+      <button mat-icon-button (click)="deletePresupuesto()">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+
+    <mat-tab-group
+      mat-align-tabs="center"
+      class="tab-form"
+      style="max-width: 99vw"
+    >
+      <mat-tab label="Capitulos">
+        <div class="table-container mat-elevation-z2" style="margin-top: 5px">
+          <div
+            class="header-table"
+            [style.display]="selectedCapitulo.length ? 'none' : 'grid'"
+          >
+            <mat-form-field>
+              <mat-label>Buscar</mat-label>
+              <input
+                matInput
+                autocomplete="off"
+                (keyup)="applyFilterCapitulo($event)"
+                placeholder="Ex. bladimir"
+                [(ngModel)]="filterValueCapitulo"
+                #inputSearch
+              />
+
+              <button
+                mat-button
+                *ngIf="filterValueCapitulo"
+                matSuffix
+                mat-icon-button
+                aria-label="Clear"
+                (click)="applyFilterCapitulo('')"
+                (click)="input.value = ''"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+
+            <button
+              mat-icon-button
+              matTooltip="Nuevo Capitulo"
+              matTooltipPosition="below"
+              class="btn-add"
+              (click)="onAddCapitulo()"
+            >
+              <mat-icon class="mat-18"> add </mat-icon>
+            </button>
+          </div>
+
+          <div *ngIf="selectedCapitulo.length">
+            <div class="delete-table">
+              <button
+                mat-icon-button
+                (click)="clearCheckbox()"
+                class="btn-clear"
+              >
+                <mat-icon>clear</mat-icon>
+              </button>
+              <span> Seleccionados {{ selectedCapitulo.length }} </span>
+              <button class="btn-delete" (click)="onDeleteCapitulo()">
+                Elminar
+              </button>
+            </div>
+          </div>
+
+          <div class="table-content">
+            <table
+              mat-table
+              [dataSource]="dataSourceCapitulo"
+              multiTemplateDataRows
+              class="mat-elevation-z2"
+              matSort
+            >
+              <ng-container matColumnDef="seleccion" sticky>
+                <th *matHeaderCellDef class="actions-table">
+                  <mat-checkbox
+                    color="warn"
+                    (change)="$event ? masterToggle() : null"
+                    [checked]="
+                      selectionCapitulo.hasValue() && isAllSelectedCapitulos()
+                    "
+                    [indeterminate]="
+                      selectionCapitulo.hasValue() && !isAllSelectedCapitulos()
+                    "
+                    [aria-label]="checkboxLabel()"
+                  >
+                  </mat-checkbox>
+                </th>
+                <td *matCellDef="let row" class="actions-table">
+                  <mat-checkbox
+                    color="warn"
+                    (click)="$event.stopPropagation()"
+                    (change)="$event ? selectionCapitulo.toggle(row) : null"
+                    [checked]="selectionCapitulo.isSelected(row)"
+                    [aria-label]="checkboxLabel(row)"
+                  >
+                  </mat-checkbox>
+                </td>
+
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container>
+
+              <!-- *descuento -->
+              <ng-container matColumnDef="descuento">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>DTO.</th>
+                <td mat-cell *matCellDef="let row" class="text-center">
+                  {{ row.descuento }}%
+                </td>
+
+                <td
+                  mat-footer-cell
+                  *matFooterCellDef
+                  class="text-center"
+                  colspan="2"
+                >
+                  <div
+                    class="total-bruto"
+                    style="background-color: var(--secondary); color: white"
+                  >
+                    TOTAL BRUTO
+                  </div>
+
+                  <div class="iva">I.V.A. {{ presupuesto.iva }}%</div>
+                  <div
+                    class="total"
+                    style="background-color: var(--primary); color: white"
+                  >
+                    TOTAL
+                  </div>
+                </td>
+              </ng-container>
+
+              <!-- *precio -->
+              <ng-container matColumnDef="precio">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Precio
+                </th>
+                <td mat-cell *matCellDef="let row" class="text-center">
+                  {{ row.precio | number: "1.2-2" }}
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container>
+
+              <!-- *precioDescuento -->
+              <ng-container matColumnDef="precioDescuento">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Precio(DTO)
+                </th>
+                <td
+                  mat-cell
+                  *matCellDef="let row"
+                  class="text-center"
+                  style="width: 150px"
+                >
+                  {{ row.totalDescuento }}
+                </td>
+
+                <td mat-footer-cell *matFooterCellDef class="text-center">
+                  <div class="total-bruto">
+                    {{
+                      presupuesto.totalBruto
+                        ? numberWithCommas(
+                            presupuesto.totalBruto | number: "1.2-2"
+                          )
+                        : 0
+                    }}
+                  </div>
+
+                  <div class="iva">
+                    {{
+                      presupuesto.totalWithIVA
+                        ? numberWithCommas(
+                            presupuesto.totalWithIVA | number: "1.2-2"
+                          )
+                        : 0
+                    }}
+                  </div>
+
+                  <div class="total">
+                    {{
+                      presupuesto.totalPresupuesto
+                        ? numberWithCommas(
+                            presupuesto.totalPresupuesto | number: "1.2-2"
+                          )
+                        : 0
+                    }}
+                  </div>
+                </td>
+              </ng-container>
+
+              <!-- *nombre -->
+              <ng-container matColumnDef="nombre">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Nombre
+                </th>
+                <td
+                  mat-cell
+                  *matCellDef="let row"
+                  class="td-longtext text-center"
+                  [matTooltip]="row.nombre"
+                  matTooltipPosition="below"
+                >
+                  <span>
+                    {{ row.nombre }}
+                  </span>
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container>
+
+              <!-- *total -->
+              <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Total</th>
+                <td mat-cell *matCellDef="let row" class="text-center">
+                  {{ row.total != 0 ? (row.total | number: "1.2-2") : 0 }}
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container>
+
+              <!-- *add -->
+              <ng-container matColumnDef="options" stickyEnd>
+                <th *matHeaderCellDef></th>
+                <td *matCellDef="let row" class="text-center">
+                  <div style="white-space: nowrap">
+                    <button
+                      mat-icon-button
+                      matTooltip="Nuevo detalle"
+                      (click)="
+                        expandedElement = expandedElement === row ? null : row
+                      "
+                      (click)="onAddDettalleCapitulo(row)"
+                      matTooltipPosition="below"
+                    >
+                      <mat-icon> post_add </mat-icon>
+                    </button>
+
+                    <button
+                      mat-icon-button
+                      matTooltip="Eliminar"
+                      (click)="
+                        expandedElement = expandedElement === row ? null : row
+                      "
+                      (click)="onUpdateCapitulo(row)"
+                      matTooltipPosition="below"
+                    >
+                      <mat-icon> edit </mat-icon>
+                    </button>
+                  </div>
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container>
+
+              <ng-container matColumnDef="expandedDetail">
+                <td
+                  mat-cell
+                  *matCellDef="let element"
+                  [attr.colspan]="columnsToDisplay.length"
+                  style="white-space: normal"
+                >
+                  <div
+                    class="detail-container"
+                    [@detailExpand]="
+                      element == expandedElement ? 'expanded' : 'collapsed'
+                    "
+                  >
+                    <table
+                      *ngIf="element.detalles.length"
+                      mat-table
+                      [dataSource]="element.detalles"
+                      class="mat-elevation-z2"
+                    >
+                      <!-- *descripcion -->
+                      <ng-container matColumnDef="descripcion">
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          class="text-center"
+                        >
+                          Descripcion
+                        </th>
+                        <td
+                          mat-cell
+                          class="td-longtext detalle-descripcion text-center"
+                          *matCellDef="let detalle"
+                        >
+                          <span>
+                            {{ detalle.descripcion }}
+                          </span>
+                        </td>
+                      </ng-container>
+
+                      <!-- *unidad -->
+                      <ng-container matColumnDef="unidad">
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          class="text-center"
+                        >
+                          Unidad
+                        </th>
+                        <td
+                          mat-cell
+                          class="text-center"
+                          *matCellDef="let detalle"
+                        >
+                          {{ detalle.unidad }}
+                        </td>
+                      </ng-container>
+
+                      <!-- *cantidad -->
+                      <ng-container matColumnDef="cantidad">
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          class="text-center"
+                        >
+                          Cantidad
+                        </th>
+                        <td
+                          mat-cell
+                          class="text-center"
+                          *matCellDef="let detalle"
+                        >
+                          {{ detalle.cantidad }}
+                        </td>
+                      </ng-container>
+
+                      <!-- *precioUnitario-->
+                      <ng-container matColumnDef="precioUnitario">
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          class="text-center"
+                        >
+                          Precio
+                        </th>
+                        <td
+                          mat-cell
+                          class="text-center"
+                          *matCellDef="let detalle"
+                        >
+                          {{ detalle.precioUnitario }}
+                        </td>
+                      </ng-container>
+
+                      <!-- *precioUnitario-->
+                      <ng-container matColumnDef="total">
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          class="text-center"
+                        >
+                          Total
+                        </th>
+                        <td
+                          mat-cell
+                          class="text-center"
+                          *matCellDef="let detalle"
+                        >
+                          {{ detalle.total }}
+                        </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="options" stickyEnd>
+                        <th *matHeaderCellDef></th>
+                        <td class="text-center" *matCellDef="let detalle">
+                          <button mat-icon-button [matMenuTriggerFor]="menu">
+                            <mat-icon> more_horiz </mat-icon>
+                            <mat-menu #menu="matMenu">
+                              <button
+                                mat-menu-item
+                                (click)="onUpdateDetalleCapitulo(detalle)"
+                              >
+                                <mat-icon>edit</mat-icon>
+                                <span>Editar</span>
+                              </button>
+                              <button
+                                mat-menu-item
+                                (click)="onDeleteDetalleCapitulo(detalle.uuid)"
+                              >
+                                <mat-icon>delete</mat-icon>
+                                <span>Eliminar</span>
+                              </button>
+                            </mat-menu>
+                          </button>
+                        </td>
+                      </ng-container>
+
+                      <tr
+                        mat-header-row
+                        *matHeaderRowDef="[
+                          'descripcion',
+                          'unidad',
+                          'cantidad',
+                          'precioUnitario',
+                          'total',
+                          'options'
+                        ]"
+                      ></tr>
+                      <tr
+                        mat-row
+                        *matRowDef="
+                          let row;
+                          columns: [
+                            'descripcion',
+                            'unidad',
+                            'cantidad',
+                            'precioUnitario',
+                            'total',
+                            'options'
+                          ]
+                        "
+                      ></tr>
+                    </table>
+                  </div>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+              <tr
+                mat-row
+                *matRowDef="let element; columns: columnsToDisplay"
+                class="example-element-row"
+                [class.example-expanded-row]="expandedElement === element"
+                (click)="
+                  expandedElement = expandedElement === element ? null : element
+                "
+              ></tr>
+              <tr
+                mat-row
+                *matRowDef="let row; columns: ['expandedDetail']"
+                class="example-detail-row"
+              ></tr>
+              <tr
+                mat-footer-row
+                *matFooterRowDef="columnsToDisplay; sticky: true"
+              ></tr>
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="10" align="center">
+                  <div *ngIf="inputSearch.value; else noData">
+                    No hay datos que coincidan con el filtro: "{{
+                      inputSearch.value
+                    }}"
+                  </div>
+                  <ng-template #noData align="center">
+                    <img
+                      src="./assets/no_data.svg"
+                      alt=""
+                      width="100"
+                      style="margin: 5px"
+                      class="no-select"
+                    />
+                    <p>
+                      Tabla vacía, aún no agregaste un capitulo al presupuesto.
+                    </p>
+                  </ng-template>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <mat-paginator
+            [pageSizeOptions]="[5, 10, 20, 100]"
+            showFirstLastButtons
+          ></mat-paginator>
+        </div>
+      </mat-tab>
+
+      <!-- *presupuesto ============================================ -->
+      <mat-tab label="Presupuesto">
+        <form class="edit-form mat-elevation-z2" [formGroup]="presupuestoForm">
+          <h2 class="full-column" align="center">Presupuesto de Obra</h2>
+
+          <!-- *Nombre -->
+          <mat-form-field
+            class="full-width full-column"
+            [color]="isValidField('nombre').color"
+          >
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="nombre" autocomplete="off" />
+            <mat-icon matSuffix [color]="isValidField('nombre').color">
+              {{ isValidField("nombre").icon }}
+            </mat-icon>
+            <mat-error *ngIf="presupuestoForm.get('nombre').errors?.required">
+              Ingrese un nombre.
+            </mat-error>
+            <mat-error *ngIf="presupuestoForm.get('nombre').errors?.pattern">
+              Debe incluir solo letras en minuscula.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field
+            class="full-width"
+            style="grid-column: span 2"
+            [color]="isValidField('cliente').color"
+          >
+            <mat-label>Cliente</mat-label>
+            <input matInput formControlName="cliente" autocomplete="off" />
+            <mat-icon matSuffix [color]="isValidField('cliente').color">
+              {{ isValidField("cliente").icon }}
+            </mat-icon>
+          </mat-form-field>
+
+          <!-- *IVA -->
+          <mat-form-field
+            class="full-width"
+            style="grid-column: auto"
+            [color]="isValidField('iva').color"
+          >
+            <mat-label>IVA %</mat-label>
+            <input
+              matInput
+              type="number"
+              min="0"
+              max="20"
+              formControlName="iva"
+              autocomplete="off"
+            />
+            <mat-icon matSuffix [color]="isValidField('iva').color">
+              {{ isValidField("iva").icon }}
+            </mat-icon>
+            <mat-error *ngIf="presupuestoForm.get('iva').errors?.required">
+              Ingrese el IVA.
+            </mat-error>
+            <mat-error *ngIf="presupuestoForm.get('iva').errors?.maxlength">
+              Debe contener
+              {{
+                presupuestoForm.get("descripcion").errors?.maxlength
+                  ?.requiredLength
+              }}
+              como maximo.
+            </mat-error>
+            <mat-error *ngIf="presupuestoForm.get('iva').errors?.minlength">
+              Debe contener
+              {{
+                presupuestoForm.get("descripcion").errors?.minlength
+                  ?.requiredLength
+              }}
+              como minimo.
+            </mat-error>
+          </mat-form-field>
+
+          <!-- *Descripcion -->
+          <mat-form-field
+            class="full-width full-column"
+            [color]="isValidField('descripcion').color"
+          >
+            <mat-label>Descripcion</mat-label>
+            <textarea
+              matInput
+              placeholder="Ex. servicio de carpinteria."
+              formControlName="descripcion"
+              autocomplete="off"
+            ></textarea>
+            <mat-hint align="end">
+              {{
+                presupuestoForm.value.descripcion
+                  ? presupuestoForm.value.descripcion.length
+                  : 0
+              }}/200
+            </mat-hint>
+            <mat-icon
+              matSuffix
+              [color]="isValidField('descripcion').color"
+              *ngIf="presupuestoForm.value.descripcion"
+            >
+              {{ isValidField("descripcion").icon }}
+            </mat-icon>
+            <mat-error
+              *ngIf="presupuestoForm.get('descripcion').errors?.required"
+            >
+              Ingrese una breve descripcion.
+            </mat-error>
+            <mat-error
+              *ngIf="presupuestoForm.get('descripcion').errors?.maxlength"
+            >
+              Debe contener
+              {{
+                presupuestoForm.get("descripcion").errors?.maxlength
+                  ?.requiredLength
+              }}
+              digitos como maximo.
+            </mat-error>
+          </mat-form-field>
+
+          <div class="actions-presupuesto full-column">
+            <button
+              mat-button
+              class="mat-btn-secondary full-width"
+              (click)="empty ? fillOutForm() : clearForm()"
+            >
+              {{ empty ? "Cancelar" : "Limpiar" }}
+            </button>
+
+            <button
+              mat-button
+              class="mat-btn-success full-width"
+              (click)="onUpdatePresupuesto(presupuestoForm.value)"
+              [disabled]="!presupuestoForm.valid"
+            >
+              Actualizar
+            </button>
+          </div>
+        </form>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+
+  <div class="iframe-container">
+    <iframe frameborder="0" id="pdf-iframe" onreset="true">Cargando</iframe>
+  </div>
+</div>

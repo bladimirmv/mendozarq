@@ -1,3 +1,4 @@
+import { PresupuestoPoryectoResolverService } from './../../core/services/mendozarq/presupuesto-poryecto-resolver.service';
 import { VentasOnlineComponent } from './../venta-producto/components/ventas-online/ventas-online.component';
 
 import { UsuarioResolverService } from './../../core/resolvers/usuario-resolver.service';
@@ -190,7 +191,11 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'presupuestos',
+        path: 'presupuesto-proyecto',
+        runGuardsAndResolvers: 'always',
+        resolve: {
+          presupuesto: PresupuestoPoryectoResolverService,
+        },
         loadChildren: () =>
           import(
             '@modules/presupuestos-proyecto/presupuestos-proyecto.module'

@@ -52,8 +52,18 @@ const routes: Routes = [
         (m) => m.PlanificacionModule
       ),
   },
-  { path: 'pedidos', loadChildren: () => import('./modules/pedidos/pedidos.module').then(m => m.PedidosModule) },
-  { path: 'opinionProducto', loadChildren: () => import('./modules/opinion-producto/opinion-producto.module').then(m => m.OpinionProductoModule) },
+  {
+    path: 'pedidos',
+    loadChildren: () =>
+      import('./modules/pedidos/pedidos.module').then((m) => m.PedidosModule),
+  },
+  {
+    path: 'opinionProducto',
+    loadChildren: () =>
+      import('./modules/opinion-producto/opinion-producto.module').then(
+        (m) => m.OpinionProductoModule
+      ),
+  },
 
   {
     path: '**',
@@ -65,7 +75,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, {
+      onSameUrlNavigation: 'reload',
+    }),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

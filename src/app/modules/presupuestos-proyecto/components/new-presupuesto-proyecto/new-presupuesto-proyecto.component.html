@@ -1,0 +1,67 @@
+<h1 mat-dialog-title align="center">Importar o Crear Presupuesto</h1>
+
+<mat-dialog-content>
+  <form class="new-form" [formGroup]="presupuestoForm">
+    <mat-form-field class="full-width full-column">
+      <mat-label>Presupuesto</mat-label>
+      <mat-select
+        style="position: relative"
+        formControlName="presupuesto"
+        (click)="loadSelectPresupuestos()"
+      >
+        <div class="search-container">
+          <mat-form-field>
+            <mat-label>Buscar</mat-label>
+            <input
+              class="search-input"
+              matInput
+              autocomplete="off"
+              [formControl]="searchPresupuesto"
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              *ngIf="searchPresupuesto.value"
+              (click)="loadSelectPresupuestos()"
+              class="btn-clear-input"
+            >
+              <mat-icon> clear </mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        <mat-option value="nuevo"> -- Crear uno Nuevo -- </mat-option>
+        <mat-option
+          *ngFor="let presupuesto of selectedPresupuestos"
+          [value]="presupuesto"
+        >
+          {{ presupuesto.nombre }}
+        </mat-option>
+      </mat-select>
+      <mat-icon matSuffix [color]="isValidField('presupuesto').color">
+        {{ isValidField("presupuesto").icon }}
+      </mat-icon>
+      <mat-error *ngIf="presupuestoForm.get('presupuesto').errors?.required">
+        Seleccione un presupuesto.
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button
+    mat-button
+    [mat-dialog-close]="false"
+    class="mat-btn-secondary full-width"
+  >
+    Cancelar
+  </button>
+  <button
+    mat-button
+    class="mat-btn-success full-width"
+    (click)="addPresupuesto(this.presupuestoForm.value.presupuesto)"
+  >
+    <!-- (click)="addCapituloPresupuesto(presupuestoForm.value)" -->
+    <!-- [disabled]="!presupuestoForm.valid" -->
+    Guardar
+  </button>
+</mat-dialog-actions>

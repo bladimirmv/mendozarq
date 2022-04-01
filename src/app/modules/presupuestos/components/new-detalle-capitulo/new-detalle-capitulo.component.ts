@@ -13,112 +13,143 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-new-detalle-capitulo',
   templateUrl: './new-detalle-capitulo.component.html',
-  styleUrls: ['./new-detalle-capitulo.component.scss']
+  styleUrls: ['./new-detalle-capitulo.component.scss'],
 })
 export class NewDetalleCapituloComponent implements OnInit, OnDestroy {
-
   private destroy$: Subject<any> = new Subject<any>();
 
   public detalleForm: FormGroup;
   public unidades: Array<Unidad> = [
     {
-      value: 'N/A', text: 'no aplica'
+      value: 'N/A',
+      text: 'no aplica',
     },
     {
-      value: 'µm', text: 'micra'
+      value: 'µm',
+      text: 'micra',
     },
     {
-      value: 'mm', text: 'milímetro'
+      value: 'mm',
+      text: 'milímetro',
     },
     {
-      value: 'cm', text: 'centímetro'
+      value: 'cm',
+      text: 'centímetro',
     },
     {
-      value: 'm', text: 'metro'
+      value: 'm',
+      text: 'metro',
     },
     {
-      value: 'km', text: 'kilómetro'
+      value: 'km',
+      text: 'kilómetro',
     },
     {
-      value: 'inch', text: 'pulgada'
+      value: 'inch',
+      text: 'pulgada',
     },
     {
-      value: 'ft', text: 'pie'
+      value: 'ft',
+      text: 'pie',
     },
     {
-      value: 'yd', text: 'yarda'
+      value: 'yd',
+      text: 'yarda',
     },
     {
-      value: 'mi', text: 'milla'
+      value: 'mi',
+      text: 'milla',
     },
     {
-      value: 'ft²', text: 'pie cuadrado'
+      value: 'ft²',
+      text: 'pie cuadrado',
     },
     {
-      value: 'yd²', text: 'yarda cuadrada'
+      value: 'yd²',
+      text: 'yarda cuadrada',
     },
     {
-      value: 'mi²', text: 'milla cuadrada'
+      value: 'mi²',
+      text: 'milla cuadrada',
     },
     {
-      value: 'm²', text: 'metro cuadrado'
+      value: 'm²',
+      text: 'metro cuadrado',
     },
     {
-      value: 'ha', text: 'hectárea'
+      value: 'ha',
+      text: 'hectárea',
     },
     {
-      value: 'km²', text: 'kilómetro cuadrado'
+      value: 'km²',
+      text: 'kilómetro cuadrado',
     },
     {
-      value: 'cc', text: 'centímetro cúbico'
+      value: 'cc',
+      text: 'centímetro cúbico',
     },
     {
-      value: 'm3', text: 'metro cúbico'
+      value: 'm3',
+      text: 'metro cúbico',
     },
     {
-      value: 'ft3', text: 'pie cúbico'
+      value: 'ft3',
+      text: 'pie cúbico',
     },
     {
-      value: 'yd3', text: 'yarda cúbica'
+      value: 'yd3',
+      text: 'yarda cúbica',
     },
     {
-      value: 'µl', text: 'microlitro'
+      value: 'µl',
+      text: 'microlitro',
     },
     {
-      value: 'ml', text: 'mililitro'
+      value: 'ml',
+      text: 'mililitro',
     },
     {
-      value: 'l', text: 'litro'
+      value: 'l',
+      text: 'litro',
     },
     {
-      value: 'µg', text: 'microgramo'
+      value: 'µg',
+      text: 'microgramo',
     },
     {
-      value: 'mg', text: 'miligramo'
+      value: 'mg',
+      text: 'miligramo',
     },
     {
-      value: 'g', text: 'gramo'
+      value: 'g',
+      text: 'gramo',
     },
     {
-      value: 'kg', text: 'kilogramo'
+      value: 'kg',
+      text: 'kilogramo',
     },
     { value: 't', text: 'tonelada' },
     {
-      value: 'oz', text: 'onza'
+      value: 'oz',
+      text: 'onza',
     },
     {
-      value: 'lb', text: 'libra'
+      value: 'lb',
+      text: 'libra',
     },
     {
-      value: 'gal', text: 'galón'
+      value: 'gal',
+      text: 'galón',
     },
     {
-      value: 'min', text: 'minuto'
+      value: 'min',
+      text: 'minuto',
     },
     { value: 'hr', text: 'hora' },
     {
-      value: 'kWhr', text: 'kilovatio-hora'
-    }
+      value: 'kWhr',
+      text: 'kilovatio-hora',
+    },
   ];
   public selectedUnidades: Array<Unidad> = this.unidades;
 
@@ -128,8 +159,7 @@ export class NewDetalleCapituloComponent implements OnInit, OnDestroy {
     private detalleCapituloSvc: DetalleCapituloService,
     private dialogRef: MatDialogRef<NewDetalleCapituloComponent>,
     private toastrSvc: ToastrService
-  ) { }
-
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -143,33 +173,40 @@ export class NewDetalleCapituloComponent implements OnInit, OnDestroy {
   private initForm(): void {
     this.detalleForm = this.fb.group({
       descripcion: ['', [Validators.required, Validators.maxLength(300)]],
-      unidad: ['', [Validators.required]],
+      unidad: ['N/A', [Validators.required]],
       cantidad: [0, [Validators.required]],
       precioUnitario: [0, [Validators.required]],
-      uuidCapituloPresupuesto: this.capituloView.uuid
+      uuidCapituloPresupuesto: this.capituloView.uuid,
     });
   }
 
   public addDetellaCapitulo(detalleCapitulo: DetalleCapitulo) {
-
-    this.detalleCapituloSvc.addDetalleCapitulo(detalleCapitulo)
+    this.detalleCapituloSvc
+      .addDetalleCapitulo(detalleCapitulo)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res) {
-          this.toastrSvc.success('El detalle se ha creado correctamente. 😀', 'Detalle Creado');
+          this.toastrSvc.success(
+            'El detalle se ha creado correctamente. 😀',
+            'Detalle Creado'
+          );
           this.dialogRef.close(true);
         }
       });
   }
 
   // ===========> isValidField
-  public isValidField(field: string): { color?: string; status?: boolean; icon?: string; } {
+  public isValidField(field: string): {
+    color?: string;
+    status?: boolean;
+    icon?: string;
+  } {
     const validateFIeld = this.detalleForm.get(field);
-    return (!validateFIeld.valid && validateFIeld.touched)
+    return !validateFIeld.valid && validateFIeld.touched
       ? { color: 'warn', status: false, icon: 'close' }
       : validateFIeld.valid
-        ? { color: 'accent', status: true, icon: 'done' }
-        : {};
+      ? { color: 'accent', status: true, icon: 'done' }
+      : {};
   }
 
   // ============> onKeySearch
@@ -180,8 +217,10 @@ export class NewDetalleCapituloComponent implements OnInit, OnDestroy {
     const filterValue = value.toLowerCase();
 
     return this.unidades.filter((unidad: Unidad) => {
-      return unidad.value.toLowerCase().indexOf(filterValue) === 0
-        || unidad.text.toLowerCase().indexOf(filterValue) === 0
-    })
+      return (
+        unidad.value.toLowerCase().indexOf(filterValue) === 0 ||
+        unidad.text.toLowerCase().indexOf(filterValue) === 0
+      );
+    });
   }
 }

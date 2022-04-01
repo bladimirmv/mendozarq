@@ -116,8 +116,6 @@ export class EditVentaComponent implements OnInit, OnDestroy {
       total: this.getImporteVenta(),
     };
 
-    console.log(venta);
-
     this._ventaSvc.updateVentaFisica(venta).subscribe(() => {
       this.dialogRef.close(true);
     });

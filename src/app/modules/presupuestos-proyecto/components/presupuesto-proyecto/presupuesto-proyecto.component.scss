@@ -1,0 +1,160 @@
+.content::after {
+  content: "";
+  background-image: url("./../../../../../assets/bg.svg");
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  opacity: 0.1;
+  top: 0;
+  left: 0;
+  bottom: 0px;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px;
+  height: calc(100% - 70px);
+
+  .options {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .options button {
+    flex-grow: 1;
+  }
+
+  .iframe-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px 0;
+    box-sizing: border-box;
+  }
+
+  .iframe-container iframe {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+  }
+
+  .bar-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 10px;
+    background-color: var(--card-bg);
+    border-radius: 25px;
+    padding: 0 10px;
+
+    mat-icon {
+      color: var(--text-color);
+    }
+  }
+
+  .tab-form {
+    margin-top: 5px;
+    max-width: 100vw;
+    overflow: auto;
+  }
+
+  .edit-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr) minmax(auto, 150px);
+    margin-top: 10px;
+    grid-gap: 10px;
+    padding: 10px;
+    background-color: var(--card-bg);
+    border-radius: 5px;
+    margin: 5px;
+  }
+
+  .actions-presupuesto {
+    display: flex;
+    gap: 10px;
+  }
+
+  .full-column {
+    grid-column: span 3;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  tr.mat-footer-row {
+    font-weight: bold;
+  }
+
+  .detalle {
+    background-color: red;
+  }
+}
+
+td {
+  cursor: pointer;
+}
+
+tr:hover {
+  // background-color: white;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  // background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.detail-container {
+  overflow: hidden;
+
+  &:hover {
+    background-color: red;
+  }
+}
+
+@media screen and (max-width: "1000px") {
+  .content {
+    grid-template-columns: 1fr;
+
+    .iframe-container iframe {
+      height: calc(100vh - 70px);
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .content {
+    .edit-form {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr) minmax(auto, 90px);
+      grid-gap: 5px;
+      padding: 0 5px;
+    }
+
+    .actions-presupuesto {
+      flex-wrap: wrap-reverse;
+      gap: 5px;
+      margin: 5px 0;
+    }
+  }
+
+  mat-dialog-content {
+    margin: 0;
+  }
+}

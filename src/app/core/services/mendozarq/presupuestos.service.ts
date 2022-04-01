@@ -7,47 +7,88 @@ import { catchError } from 'rxjs/operators';
 import { PresupuestoObra } from '@models/mendozarq/presupuestos.interface';
 import { environment } from '@env/environment.prod';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PresupuestosService {
   private API_URL = environment.API_URL;
 
-  constructor(private http: HttpClient, private toastrSvc: ToastrService) {
-  }
+  constructor(private http: HttpClient, private toastrSvc: ToastrService) {}
 
   // ====================> addPresupuestoObra
   public addPresupuestoObra(presupuestoObra: PresupuestoObra): Observable<any> {
     return this.http
-      .post<PresupuestoObra>(`${this.API_URL}/api/presupuestos`, presupuestoObra)
-      .pipe(catchError(error => this.handdleError(error)));
+      .post<PresupuestoObra>(
+        `${this.API_URL}/api/presupuestos`,
+        presupuestoObra
+      )
+      .pipe(catchError((error) => this.handdleError(error)));
   }
 
   // ====================> getOnePresupuestoObra
   public getOnePresupuestoObra(uuid: string): Observable<PresupuestoObra> {
     return this.http
-      .get<PresupuestoObra>(`${this.API_URL}/api/presupuestos/${uuid}`)
-      .pipe(catchError(error => this.handdleError(error)));
+      .get<PresupuestoObra>(`${this.API_URL}/api/presupuestos/obra/${uuid}`)
+      .pipe(catchError((error) => this.handdleError(error)));
   }
 
   // ====================> getAllPresupuestoObra
   public getAllPresupuestoObra(): Observable<PresupuestoObra[]> {
     return this.http
       .get<PresupuestoObra[]>(`${this.API_URL}/api/presupuestos/`)
-      .pipe(catchError(error => this.handdleError(error)));
+      .pipe(catchError((error) => this.handdleError(error)));
   }
 
   // ====================> updatePresupuestoObra
-  public updatePresupuestoObra(uuid: string, presupuestoObra: PresupuestoObra): Observable<any> {
+  public updatePresupuestoObra(
+    uuid: string,
+    presupuestoObra: PresupuestoObra
+  ): Observable<any> {
     return this.http
-      .put(`${this.API_URL}/api/presupuestos/${uuid}`, presupuestoObra)
-      .pipe(catchError(error => this.handdleError(error)));
+      .put(`${this.API_URL}/api/presupuestos/obra/${uuid}`, presupuestoObra)
+      .pipe(catchError((error) => this.handdleError(error)));
   }
 
   // ====================> deletePresupuestoObra
   public deletePresupuestoObra(uuid: string): Observable<any> {
     return this.http
-      .delete(`${this.API_URL}/api/presupuestos/${uuid}`)
-      .pipe(catchError(error => this.handdleError(error)));
+      .delete(`${this.API_URL}/api/presupuestos/obra/${uuid}`)
+      .pipe(catchError((error) => this.handdleError(error)));
+  }
+
+  // ====================> getOnePresupuestoObra
+  public getOnePresupuestoObraProyecto(
+    uuid: string
+  ): Observable<PresupuestoObra> {
+    return this.http
+      .get<PresupuestoObra>(`${this.API_URL}/api/presupuestos/proyecto/${uuid}`)
+      .pipe(catchError((error) => this.handdleError(error)));
+  }
+
+  // ====================> getAllPresupuestos
+  public getAllPresupuestos(): Observable<PresupuestoObra[]> {
+    return this.http
+      .get<PresupuestoObra[]>(`${this.API_URL}/api/presupuestos/proyecto`)
+      .pipe(catchError((error) => this.handdleError(error)));
+  }
+
+  // ====================> addPresupuestoObra
+  public importPresupuestoProyecto(
+    presupuestoObra: PresupuestoObra
+  ): Observable<any> {
+    return this.http
+      .post<PresupuestoObra>(
+        `${this.API_URL}/api/presupuestos/proyecto/import`,
+        presupuestoObra
+      )
+      .pipe(catchError((error) => this.handdleError(error)));
+  }
+
+  public addPresupuestoProyecto(uuidProyecto: string): Observable<any> {
+    return this.http
+      .post<PresupuestoObra>(`${this.API_URL}/api/presupuestos/proyecto`, {
+        uuidProyecto: uuidProyecto,
+      })
+      .pipe(catchError((error) => this.handdleError(error)));
   }
 
   // ====================> handdleError
@@ -59,10 +100,12 @@ export class PresupuestosService {
       } else if (httpError.error.message.errno) {
         switch (httpError.error.message.errno) {
           case -111:
-            errorMessage = 'No se ha podido establecer una conexion con la base de datos. 🙁';
+            errorMessage =
+              'No se ha podido establecer una conexion con la base de datos. 🙁';
             break;
           case 1451:
-            errorMessage = 'No se puede eliminar por que este presupuesto esta relacionado con un capitulo u otra tabla. 🙁';
+            errorMessage =
+              'No se puede eliminar por que este presupuesto esta relacionado con un capitulo u otra tabla. 🙁';
             break;
           default:
             errorMessage = `
@@ -75,7 +118,7 @@ export class PresupuestosService {
     console.log('this error', httpError);
     this.toastrSvc.error(errorMessage, 'Ocurrio un Error!', {
       timeOut: 7000,
-      enableHtml: true
+      enableHtml: true,
     });
     return throwError(httpError);
   }
