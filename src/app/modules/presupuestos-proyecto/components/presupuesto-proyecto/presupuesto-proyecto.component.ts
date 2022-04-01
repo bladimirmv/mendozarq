@@ -127,11 +127,7 @@ export class PresupuestoProyectoComponent implements OnInit, OnDestroy {
     this.presupuestoForm = this.fb.group({
       nombre: [
         this.presupuesto.nombre,
-        [
-          Validators.required,
-          Validators.maxLength(50),
-          Validators.pattern(/^[0-9a-z\s]+$/),
-        ],
+        [Validators.required, Validators.maxLength(50)],
       ],
       descripcion: [
         this.presupuesto.descripcion,

@@ -42,6 +42,28 @@
         <button
           mat-button
           class="btn-admin"
+          routerLink="participantes"
+          routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false"
+        >
+          <mat-icon class="mat-18 mr-3">people</mat-icon>
+          Participantes
+        </button>
+
+        <button
+          mat-button
+          class="btn-admin"
+          routerLink="presupuesto-proyecto"
+          routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false"
+        >
+          <mat-icon class="mat-18 mr-3">receipt_long</mat-icon>
+          Presupuesto Proyecto
+        </button>
+
+        <button
+          mat-button
+          class="btn-admin"
           routerLink="planificacion"
           routerLinkActive="active mat-raised-button"
           (click)="breakpoint ? drawer.close() : false"
@@ -49,7 +71,16 @@
           <mat-icon class="mat-18 mr-3">event_note</mat-icon>
           Planificacion
         </button>
-
+        <button
+          mat-button
+          class="btn-admin"
+          routerLink="servicios"
+          routerLinkActive="active mat-raised-button"
+          (click)="breakpoint ? drawer.close() : false"
+        >
+          <mat-icon class="mat-18 mr-3">view_list</mat-icon>
+          Servicios
+        </button>
         <button
           mat-button
           routerLink="visitas"
@@ -59,17 +90,6 @@
         >
           <mat-icon class="mat-18 mr-3">apartment</mat-icon>
           Visitas de la Obra
-        </button>
-
-        <button
-          mat-button
-          class="btn-admin"
-          routerLink="participantes"
-          routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false"
-        >
-          <mat-icon class="mat-18 mr-3">people</mat-icon>
-          Participantes
         </button>
 
         <button
@@ -86,17 +106,6 @@
         <button
           mat-button
           class="btn-admin"
-          routerLink="servicios"
-          routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false"
-        >
-          <mat-icon class="mat-18 mr-3">view_list</mat-icon>
-          Servicios
-        </button>
-
-        <button
-          mat-button
-          class="btn-admin"
           routerLink="jitsiMeet"
           routerLinkActive="active mat-raised-button"
           (click)="breakpoint ? drawer.close() : false"
@@ -104,24 +113,6 @@
           <mat-icon class="mat-18 mr-3">meeting_room</mat-icon>
           Jitsi Meet
         </button>
-
-        <button
-          mat-button
-          class="btn-admin"
-          routerLink="presupuesto-proyecto"
-          routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false"
-        >
-          <mat-icon class="mat-18 mr-3">receipt_long</mat-icon>
-          Presupuesto Proyecto
-        </button>
-
-        <!-- <button mat-button class="btn-admin" routerLink="presupuestos-obra" routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false">
-          <mat-icon class="mat-18 mr-3">
-            receipt_long</mat-icon>
-          Presupuestos
-        </button> -->
       </div>
 
       <div class="btn-extra">
