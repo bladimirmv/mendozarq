@@ -102,6 +102,16 @@ export class AuthService extends RoleValidator {
         this.router.navigate(['/admin']);
         this.toastrSvc.info(usuario.nombre, 'Bienvenido! 👋');
         break;
+
+      case 'arquitecto':
+        this.router.navigate(['/admin']);
+        this.toastrSvc.info(usuario.nombre, 'Bienvenido! 👋');
+        break;
+
+      case 'vendedor':
+        this.router.navigate(['/admin']);
+        this.toastrSvc.info(usuario.nombre, 'Bienvenido! 👋');
+        break;
       default:
         break;
     }

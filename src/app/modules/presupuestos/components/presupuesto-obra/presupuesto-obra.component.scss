@@ -158,6 +158,22 @@ tr.example-element-row:not(.example-expanded-row):active {
     margin: 0;
   }
 }
+.search-container {
+  padding: 5px 5px 0 5px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  mat-form-field {
+    width: 100% !important;
+  }
+
+  .btn-clear-input {
+    color: var(--warn);
+  }
+}
 
 // .example-list {
 //   width: 500px;

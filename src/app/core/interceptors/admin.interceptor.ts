@@ -70,17 +70,19 @@ export class AdminInterceptor implements HttpInterceptor {
 
         if (httpError.error.message) {
           if (typeof httpError.error.message === 'string') {
-            switch (httpError.status) {
-              case 401:
-                this.authSvc.logout();
-                this.toastrSvc.warning(
-                  'La sesion ha expirado, porfavor inicia sesion nuevamente',
-                  'Sesion Expirada!',
-                  {
-                    timeOut: 7000,
-                  }
-                );
-                break;
+            switch (
+              httpError.status
+              // case 401:
+              //   this.authSvc.logout();
+              //   this.toastrSvc.warning(
+              //     'La sesion ha expirado, porfavor inicia sesion nuevamente',
+              //     'Sesion Expirada!',
+              //     {
+              //       timeOut: 7000,
+              //     }
+              //   );
+              //   break;
+            ) {
             }
           } else if (httpError.error.message.errno) {
             switch (httpError.error.message.errno) {

@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { ProyectoService } from './../../../../core/services/mendozarq/proyecto.service';
 import { Proyecto } from './../../../../shared/models/mendozarq/proyecto.interface';
 import { EditPlanificacionProyectoComponent } from './../edit-planificacion-proyecto/edit-planificacion-proyecto.component';
@@ -55,7 +56,8 @@ export class GanttChartComponent implements OnInit {
     private matDialog: MatDialog,
     private toastrSvc: ToastrService,
     private proyectoSvc: ProyectoService,
-    private brightnessSvc: BrightnessService
+    private brightnessSvc: BrightnessService,
+    private router: Router
   ) {
     this.brightnessSvc.theme$.pipe(take(1)).subscribe((darkTheme: boolean) => {
       this.darkMode = darkTheme;
@@ -270,6 +272,30 @@ export class GanttChartComponent implements OnInit {
         this.planificacionProyecto = planificaion;
         this.canAddTarea = !!planificaion.capitulos.length;
         this.ganttChartInit();
+      });
+  }
+
+  public deletePlanificacion(): void {
+    const dialogRef = this.matDialog.open(DeleteModalComponent);
+
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        if (res) {
+          this.planificacionSvc
+            .deletePlanificacionProyecto(this.planificacionProyecto.uuid)
+            .subscribe(() => {
+              this.toastrSvc.success(
+                '😀 Se ha eliminado correctamente.',
+                'Planificacion Eliminada'
+              );
+              const PATH_URL = this.router.url;
+              this.router.navigateByUrl('blank').then(() => {
+                this.router.navigateByUrl(PATH_URL);
+              });
+            });
+        }
       });
   }
 

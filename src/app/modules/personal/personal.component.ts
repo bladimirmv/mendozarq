@@ -18,7 +18,7 @@ import { PersonalService } from '@app/core/services/mendozarq/personal.service';
 @Component({
   selector: 'app-personal',
   templateUrl: './personal.component.html',
-  styleUrls: ['./personal.component.scss']
+  styleUrls: ['./personal.component.scss'],
 })
 export class PersonalComponent implements OnInit {
   private destroy$ = new Subject<any>();
@@ -28,9 +28,17 @@ export class PersonalComponent implements OnInit {
   selection = new SelectionModel<Personal>(true, []);
   filterValue: string;
   displayedColumns: string[] = [
-    'seleccion', 'activo', 'nombre', 'apellidos',
-    'celular', 'correo', 'sueldo',
-    'descripcion', 'direccion', 'edit'];
+    'seleccion',
+    'activo',
+    'nombre',
+    'apellidos',
+    'celular',
+    'correo',
+    'sueldo',
+    'descripcion',
+    'direccion',
+    'edit',
+  ];
 
   dataSource: MatTableDataSource<Personal> = new MatTableDataSource();
 
@@ -40,8 +48,8 @@ export class PersonalComponent implements OnInit {
   constructor(
     private toastSvc: ToastrService,
     public dialog: MatDialog,
-    private personalSvc: PersonalService) {
-  }
+    private personalSvc: PersonalService
+  ) {}
 
   // =====================> onInit
   ngOnInit(): void {
@@ -51,14 +59,8 @@ export class PersonalComponent implements OnInit {
     this.dataSource.sort = this.sort;
 
     this.selection.changed
-      .pipe(map(a => a.source))
-      .subscribe(data => this.selected = data.selected);
-
-    // this.locationBarSvc.pushLocation({
-    //   icon: 'contacts',
-    //   name: 'Usuarios',
-    //   link: 'usuarios'
-    // });
+      .pipe(map((a) => a.source))
+      .subscribe((data) => (this.selected = data.selected));
   }
   // =====================> onDestroy
   ngOnDestroy(): void {
@@ -69,9 +71,10 @@ export class PersonalComponent implements OnInit {
 
   // =====================> getAllPersonal
   getAllPersonal(): void {
-    this.personalSvc.getAllPersonal()
+    this.personalSvc
+      .getAllPersonal()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(res => {
+      .subscribe((res) => {
         this.dataSource.data = res;
         this.personal = res;
       });
@@ -80,7 +83,8 @@ export class PersonalComponent implements OnInit {
   // =====================> onAddPersonal
   onAddPersonal(): void {
     const dialogRef = this.dialog.open(NewPersonalComponent);
-    dialogRef.afterClosed()
+    dialogRef
+      .afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         this.getAllPersonal();
@@ -89,8 +93,11 @@ export class PersonalComponent implements OnInit {
 
   // =====================> oneditPersonal
   onUpdatePersonal(personal: Personal): void {
-    const dialogRef = this.dialog.open(EditPersonalComponent, { data: personal });
-    dialogRef.afterClosed()
+    const dialogRef = this.dialog.open(EditPersonalComponent, {
+      data: personal,
+    });
+    dialogRef
+      .afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.getAllPersonal();
@@ -99,19 +106,18 @@ export class PersonalComponent implements OnInit {
 
   // =====================> ondeletePersonal
   async onDeletePersonal(): Promise<void> {
-
     const dialogRef = this.dialog.open(DeleteModalComponent);
 
-    dialogRef.afterClosed()
+    dialogRef
+      .afterClosed()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(res => {
+      .subscribe((res) => {
         if (res) {
           this.selected.length === 1
             ? this.deleteOnePersonal()
             : this.deleteMoreThanOnePersonal();
         }
       });
-
   }
 
   // =====================> deleteOnePersonal
@@ -119,13 +125,17 @@ export class PersonalComponent implements OnInit {
     this.personalSvc
       .deletePersonal(this.selected[0].uuid)
       .pipe(takeUntil(this.destroy$))
-      .subscribe(usr => {
+      .subscribe((usr) => {
         if (usr) {
-          this.toastSvc.success('Se ha eliminado correctamente', 'Personal Eliminado', {
-            timeOut: 2000,
-            progressBar: true,
-            progressAnimation: 'increasing'
-          });
+          this.toastSvc.success(
+            'Se ha eliminado correctamente',
+            'Personal Eliminado',
+            {
+              timeOut: 2000,
+              progressBar: true,
+              progressAnimation: 'increasing',
+            }
+          );
           this.getAllPersonal();
           this.clearCheckbox();
         }
@@ -139,36 +149,30 @@ export class PersonalComponent implements OnInit {
       this.personalSvc
         .deletePersonal(personal.uuid)
         .pipe(takeUntil(this.destroy$))
-        .subscribe(res => {
+        .subscribe((res) => {
           if (res) {
-            this.toastSvc.success('Se han eliminado correctamente', 'Personal Eliminado', {
-              timeOut: 2000,
-              progressBar: true,
-              progressAnimation: 'increasing'
-            });
-            this.getAllPersonal()
+            this.toastSvc.success(
+              'Se han eliminado correctamente',
+              'Personal Eliminado',
+              {
+                timeOut: 2000,
+                progressBar: true,
+                progressAnimation: 'increasing',
+              }
+            );
+            this.getAllPersonal();
             this.clearCheckbox();
           }
         });
-
     });
-  }
-
-  // =====================> openSnackBarCopy
-  openSnackBarCopy(): void {
-    // this.snackBar.open('Copiado', 'Cerrar', {
-    //   duration: 500,
-    //   horizontalPosition: 'center',
-    //   verticalPosition: 'bottom',
-    // });
   }
 
   // !important, this part is for table.
   // =====================> applyFilter
   applyFilter(event: Event | string): void {
     typeof event === 'string'
-      ? this.filterValue = event
-      : this.filterValue = (event.target as HTMLInputElement).value;
+      ? (this.filterValue = event)
+      : (this.filterValue = (event.target as HTMLInputElement).value);
 
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
     if (this.dataSource.paginator) {
@@ -185,9 +189,9 @@ export class PersonalComponent implements OnInit {
 
   // =====================> masterToggle
   masterToggle(): void {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.dataSource.data.forEach(row => this.selection.select(row));
+    this.isAllSelected()
+      ? this.selection.clear()
+      : this.dataSource.data.forEach((row) => this.selection.select(row));
   }
 
   // =====================> clearCheckbox
@@ -200,7 +204,8 @@ export class PersonalComponent implements OnInit {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.nombre}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
+      row.nombre
+    }`;
   }
-
 }

@@ -1,3 +1,4 @@
+import { UsuarioResolverService } from './core/resolvers/usuario-resolver.service';
 import { PermissionsGuard } from './core/guards/permissions.guard';
 import { AdminGuard } from './core/guards/admin.guard';
 import { RegisterComponent } from '@core/auth/register/register.component';
@@ -19,6 +20,9 @@ const routes: Routes = [
 
   {
     canActivate: [AdminGuard],
+    resolve: {
+      usuario: UsuarioResolverService,
+    },
     path: 'admin',
     loadChildren: () =>
       import('@modules/admin/admin.module').then((m) => m.AdminModule),

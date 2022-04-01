@@ -39,128 +39,144 @@
           Tablero
         </button>
 
-        <button
-          mat-button
-          class="btn-admin"
-          routerLink="usuarios"
-          routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false"
+        <ng-container
+          *ngIf="
+            current_usuario.rol === 'administrador' ||
+            current_usuario.rol === 'arquitecto'
+          "
         >
-          <mat-icon class="mat-18 mr-3">contacts</mat-icon>
-          Usuarios
-        </button>
+          <button
+            mat-button
+            class="btn-admin"
+            routerLink="usuarios"
+            routerLinkActive="active mat-raised-button"
+            (click)="breakpoint ? drawer.close() : false"
+          >
+            <mat-icon class="mat-18 mr-3">contacts</mat-icon>
+            Usuarios
+          </button>
 
-        <button
-          mat-button
-          class="btn-admin"
-          routerLink="personal"
-          routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false"
+          <button
+            mat-button
+            class="btn-admin"
+            routerLink="personal"
+            routerLinkActive="active mat-raised-button"
+            (click)="breakpoint ? drawer.close() : false"
+          >
+            <mat-icon class="mat-18 mr-3"> people</mat-icon>
+            Personal
+          </button>
+
+          <button
+            mat-button
+            class="btn-admin"
+            routerLink="proyectos"
+            routerLinkActive="active mat-raised-button"
+            (click)="breakpoint ? drawer.close() : false"
+          >
+            <mat-icon class="mat-18 mr-3">library_books</mat-icon>
+            Proyectos
+          </button>
+
+          <button
+            mat-button
+            class="btn-admin"
+            routerLink="presupuestos"
+            routerLinkActive="active mat-raised-button"
+            (click)="breakpoint ? drawer.close() : false"
+          >
+            <mat-icon class="mat-18 mr-3"> receipt_long</mat-icon>
+            Presupuesto de Obras
+          </button>
+        </ng-container>
+
+        <ng-container *ngIf="current_usuario.rol === 'administrador'">
+          <!-- <mat-divider></mat-divider> -->
+
+          <button
+            mat-button
+            class="btn-admin"
+            routerLink="recurso"
+            routerLinkActive="active mat-raised-button"
+            (click)="breakpoint ? drawer.close() : false"
+          >
+            <mat-icon class="mat-18 mr-3">construction</mat-icon>
+            Recursos
+          </button>
+
+          <button
+            mat-button
+            class="btn-admin"
+            routerLink="proveedor"
+            routerLinkActive="active mat-raised-button"
+            (click)="breakpoint ? drawer.close() : false"
+          >
+            <mat-icon class="mat-18 mr-3">book</mat-icon>
+            Proveedores
+          </button>
+        </ng-container>
+
+        <ng-container
+          *ngIf="
+            current_usuario.rol === 'administrador' ||
+            current_usuario.rol === 'vendedor'
+          "
         >
-          <mat-icon class="mat-18 mr-3"> people</mat-icon>
-          Personal
-        </button>
+          <button
+            mat-button
+            class="btn-admin"
+            routerLink="categoria-producto"
+            routerLinkActive="active mat-raised-button"
+            (click)="breakpoint ? drawer.close() : false"
+          >
+            <mat-icon class="mat-18 mr-3">category</mat-icon>
+            Categoria Producto
+          </button>
 
-        <button
-          mat-button
-          class="btn-admin"
-          routerLink="proyectos"
-          routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false"
-        >
-          <mat-icon class="mat-18 mr-3">library_books</mat-icon>
-          Proyectos
-        </button>
+          <button
+            mat-button
+            class="btn-admin"
+            routerLink="producto"
+            routerLinkActive="active mat-raised-button"
+            (click)="breakpoint ? drawer.close() : false"
+          >
+            <mat-icon class="mat-18 mr-3">widgets</mat-icon>
+            Producto
+          </button>
 
-        <button
-          mat-button
-          class="btn-admin"
-          routerLink="presupuestos"
-          routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false"
-        >
-          <mat-icon class="mat-18 mr-3"> receipt_long</mat-icon>
-          Presupuesto de Obras
-        </button>
+          <button
+            mat-button
+            class="btn-admin"
+            routerLink="ventas-online"
+            routerLinkActive="active mat-raised-button"
+            (click)="breakpoint ? drawer.close() : false"
+          >
+            <mat-icon class="mat-18 mr-3">list_alt</mat-icon>
+            Ventas Online
+          </button>
 
-        <!-- <button
-          mat-button
-          routerLink="reporteMendozarq"
-          class="btn-admin"
-          routerLinkActive="active  mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false"
-        >
-          <mat-icon class="mat-18 mr-3">analytics</mat-icon>
-          Reportes Mendozarq
-        </button> -->
+          <button
+            mat-button
+            class="btn-admin"
+            routerLink="venta-producto"
+            routerLinkActive="active mat-raised-button"
+            (click)="breakpoint ? drawer.close() : false"
+          >
+            <mat-icon class="mat-18 mr-3">storefront</mat-icon>
+            Ventas Fisicas
+          </button>
 
-        <mat-divider></mat-divider>
-
-        <button
-          mat-button
-          class="btn-admin"
-          routerLink="importaciones"
-          routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false"
-        >
-          <mat-icon class="mat-18 mr-3">input</mat-icon>
-          Importaciones
-        </button>
-
-        <button
-          mat-button
-          class="btn-admin"
-          routerLink="categoria-producto"
-          routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false"
-        >
-          <mat-icon class="mat-18 mr-3">category</mat-icon>
-          Categoria Producto
-        </button>
-
-        <button
-          mat-button
-          class="btn-admin"
-          routerLink="producto"
-          routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false"
-        >
-          <mat-icon class="mat-18 mr-3">widgets</mat-icon>
-          Producto
-        </button>
-
-        <button
-          mat-button
-          class="btn-admin"
-          routerLink="ventas-online"
-          routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false"
-        >
-          <mat-icon class="mat-18 mr-3">list_alt</mat-icon>
-          Ventas Online
-        </button>
-
-        <button
-          mat-button
-          class="btn-admin"
-          routerLink="venta-producto"
-          routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false"
-        >
-          <mat-icon class="mat-18 mr-3">storefront</mat-icon>
-          Ventas Fisicas
-        </button>
-
-        <button
-          mat-button
-          class="btn-admin"
-          routerLink="opiniones-producto"
-          routerLinkActive="active mat-raised-button"
-          (click)="breakpoint ? drawer.close() : false"
-        >
-          <mat-icon class="mat-18 mr-3">feedback</mat-icon>
-          Opiniones
-        </button>
+          <button
+            mat-button
+            class="btn-admin"
+            routerLink="opiniones-producto"
+            routerLinkActive="active mat-raised-button"
+            (click)="breakpoint ? drawer.close() : false"
+          >
+            <mat-icon class="mat-18 mr-3">feedback</mat-icon>
+            Opiniones
+          </button>
+        </ng-container>
       </div>
 
       <div class="btn-extra">

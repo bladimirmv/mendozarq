@@ -108,13 +108,22 @@ const routes: Routes = [
         },
         component: VentasOnlineComponent,
       },
+
       {
-        path: 'importaciones',
+        path: 'proveedor',
         loadChildren: () =>
-          import('@modules/importaciones/importaciones.module').then(
-            (m) => m.ImportacionesModule
+          import('@modules/proveedor/proveedor.module').then(
+            (m) => m.ProveedorModule
           ),
       },
+      {
+        path: 'recurso',
+        loadChildren: () =>
+          import('@modules/recurso/recurso.module').then(
+            (m) => m.RecursoModule
+          ),
+      },
+
       {
         path: 'recursos',
         loadChildren: () =>

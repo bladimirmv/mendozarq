@@ -14,7 +14,12 @@ export class AdminGuard implements CanActivate {
     return this.authSvc.usuario$.pipe(
       take(1),
       map((usuario: Usuario) => {
-        return usuario && this.authSvc.isAdmin(usuario);
+        return (
+          usuario &&
+          (this.authSvc.isAdmin(usuario) ||
+            this.authSvc.isArquitecto(usuario) ||
+            this.authSvc.isVendedor(usuario))
+        );
       }),
       tap((canEdit) => {
         if (!canEdit) {

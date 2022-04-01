@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { LocationBarService } from '../../core/services/mendozarq/location-bar.service';
 import { AuthService } from '@app/core/services/auth/auth.service';
 import { BrightnessService } from './../../core/services/brightness.service';
@@ -28,7 +29,8 @@ export class AdminComponent implements OnInit, OnDestroy {
     public brightnessSvc: BrightnessService,
     public authSvc: AuthService,
     public locationBarSvc: LocationBarService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private route: ActivatedRoute
   ) {
     this.brightnessSvc.theme$.pipe(take(1)).subscribe((res: boolean) => {
       this.brightnessSvc.toggleTheme(res);
@@ -36,6 +38,8 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.current_usuario = this.route.snapshot.data['usuario'];
+
     this.breakpointObserver
       .observe('(max-width: 700px)')
       .pipe(
@@ -45,11 +49,11 @@ export class AdminComponent implements OnInit, OnDestroy {
       )
       .subscribe((res) => (this.breakpoint = res));
 
-    this.authSvc.usuario$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((usuario: Usuario) => {
-        this.current_usuario = usuario;
-      });
+    // this.authSvc.usuario$
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((usuario: Usuario) => {
+    //     this.current_usuario = usuario;
+    //   });
   }
   ngOnDestroy(): void {
     this.destroy$.next({});

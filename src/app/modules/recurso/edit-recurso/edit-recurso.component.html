@@ -1,0 +1,120 @@
+<h2 align="center" mat-dialog-title>Nuevo Recurso</h2>
+<mat-dialog-content>
+  <form class="new-form" [formGroup]="recursoForm">
+    <!-- *Nombre -->
+    <mat-form-field
+      class="full-width full-column"
+      [color]="isValidField('nombre').color"
+    >
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre" autocomplete="off" />
+      <mat-icon matSuffix [color]="isValidField('nombre').color">
+        {{ isValidField("nombre").icon }}
+      </mat-icon>
+      <mat-error *ngIf="recursoForm.get('nombre').errors?.required">
+        Ingrese un nombre.
+      </mat-error>
+      <mat-error *ngIf="recursoForm.get('nombre').errors?.pattern">
+        Debe incluir solo letras en minuscula o numeros.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Area</mat-label>
+      <mat-select formControlName="area">
+        <mat-option value="mendozarq"> Mendozarq </mat-option>
+        <mat-option value="liraki"> Liraki </mat-option>
+        <mat-option value="mendoraki"> Mendoraki </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Tipo Recurso</mat-label>
+      <mat-select value="construccion" formControlName="tipoRecurso">
+        <mat-option value="materia_prima"> Materia Prima </mat-option>
+        <mat-option value="material_de_construccion">
+          Material de Construccion</mat-option
+        >
+        <mat-option value="maquinas"> Maquinas </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- *PrecioUnitario -->
+    <mat-form-field
+      class="full-width"
+      [color]="isValidField('precioUnitario').color"
+    >
+      <mat-label> Precio Unitario </mat-label>
+      <input
+        class="text-center"
+        matInput
+        type="number"
+        formControlName="precioUnitario"
+      />
+    </mat-form-field>
+
+    <!-- *PrecioUnitario -->
+    <mat-form-field
+      class="full-width"
+      [color]="isValidField('precioPorMayor').color"
+    >
+      <mat-label> Precio Unitario </mat-label>
+      <input
+        class="text-center"
+        matInput
+        type="number"
+        formControlName="precioPorMayor"
+      />
+    </mat-form-field>
+
+    <!-- *Descripcion -->
+    <mat-form-field
+      class="full-width full-column"
+      [color]="isValidField('descripcion').color"
+    >
+      <mat-label>Descripcion</mat-label>
+      <textarea
+        matInput
+        placeholder="Ex. Avenida Segunda"
+        formControlName="descripcion"
+      ></textarea>
+      <mat-hint align="end">
+        {{
+          recursoForm.value.descripcion
+            ? recursoForm.value.descripcion.length
+            : 0
+        }}/200
+      </mat-hint>
+      <mat-icon
+        matSuffix
+        [color]="isValidField('descripcion').color"
+        *ngIf="recursoForm.value.descripcion"
+      >
+        {{ isValidField("descripcion").icon }}
+      </mat-icon>
+      <mat-error *ngIf="recursoForm.get('descripcion').errors?.maxlength">
+        Debe contener
+        {{ recursoForm.get("descripcion").errors?.maxlength?.requiredLength }}
+        digitos como maximo.
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button
+    mat-button
+    [mat-dialog-close]="false"
+    class="mat-btn-secondary full-width"
+  >
+    Cancelar
+  </button>
+  <button
+    mat-button
+    class="mat-btn-success"
+    (click)="onEditRecurso(recursoForm.value)"
+    [disabled]="!recursoForm.valid"
+  >
+    Actualizar
+  </button>
+</mat-dialog-actions>
