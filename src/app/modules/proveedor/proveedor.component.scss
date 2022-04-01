@@ -1,0 +1,38 @@
+.content::after {
+  content: "";
+  background-image: url("./../../../assets/bg.svg");
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  opacity: 0.1;
+  top: 0;
+  left: 0;
+  bottom: 0px;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+.stats-container {
+  margin: 20px 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+@media screen and(max-width: 1020px) {
+  .stats-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and(max-width: 490px) {
+  .stats-container {
+    grid-template-columns: 1fr;
+  }
+
+  app-status-card:last-child {
+    grid-column: span 1;
+  }
+}
