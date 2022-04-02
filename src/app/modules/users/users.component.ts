@@ -425,14 +425,18 @@ export class UsersComponent implements OnInit, OnDestroy {
       case 2:
         this.analiticas = this.usuario;
         this.analiticas = this.analiticas.filter(
-          (usr) => new Date(usr.creadoEn).getMonth() === new Date().getMonth()
+          (usr) =>
+            moment(usr.creadoEn).format('MM-YYYY') ===
+            moment().format('MM-YYYY')
         );
         this.fechaReporte = `${moment(new Date()).format('MMMM [de] YYYY')}`;
         break;
       case 3:
         this.analiticas = this.usuario;
         this.analiticas = this.analiticas.filter(
-          (usr) => new Date(usr.creadoEn).getDay() === new Date().getDay()
+          (usr) =>
+            moment(usr.creadoEn).format('DD-MM-YYYY') ===
+            moment().format('DD-MM-YYYY')
         );
         this.fechaReporte = `${moment(new Date()).format(
           'DD [de] MMMM [del] YYYY'

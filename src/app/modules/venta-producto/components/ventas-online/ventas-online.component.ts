@@ -79,7 +79,7 @@ export class VentasOnlineComponent implements OnInit, OnDestroy {
   };
 
   // **Graficas y Reportes
-  public analiticas: VentaView[];
+  public analiticas: VentaView[] = [];
   public reporteOption: number = 0;
   public bar_chart: Chart;
   public doughnut_chart: Chart;
@@ -492,7 +492,7 @@ export class VentasOnlineComponent implements OnInit, OnDestroy {
         break;
       case 1:
         this.analiticas = this.ventas;
-        this.analiticas = this.analiticas.filter(
+        this.analiticas = this.ventas.filter(
           (usr) =>
             new Date(usr.creadoEn).getFullYear() === new Date().getFullYear()
         );
@@ -501,15 +501,21 @@ export class VentasOnlineComponent implements OnInit, OnDestroy {
       case 2:
         this.analiticas = this.ventas;
         this.analiticas = this.analiticas.filter(
-          (usr) => new Date(usr.creadoEn).getMonth() === new Date().getMonth()
+          (usr) =>
+            moment(usr.creadoEn).format('MM-YYYY') ===
+            moment().format('MM-YYYY')
         );
         this.fechaReporte = `${moment(new Date()).format('MMMM [de] YYYY')}`;
         break;
       case 3:
-        this.analiticas = this.ventas;
-        this.analiticas = this.analiticas.filter(
-          (usr) => new Date(usr.creadoEn).getDay() === new Date().getDay()
+        // this.analiticas = this.ventas;
+        this.analiticas = this.ventas.filter(
+          (usr) =>
+            moment(usr.creadoEn).format('DD-MM-YYYY') ===
+            moment().format('DD-MM-YYYY')
         );
+        console.log(this.analiticas);
+
         this.fechaReporte = `${moment(new Date()).format(
           'DD [de] MMMM [del] YYYY'
         )}`;
@@ -544,7 +550,6 @@ export class VentasOnlineComponent implements OnInit, OnDestroy {
   // ====================> generatePdf
   public async generatePdf(): Promise<void> {
     let pdf: Array<any> = [];
-    const img: HTMLCanvasElement = document.querySelector('#bar');
     pdf = await this._pdfSvc.reporte(
       pdf,
       this.analiticas,
@@ -552,7 +557,7 @@ export class VentasOnlineComponent implements OnInit, OnDestroy {
         this.bar_chart.toBase64Image('image/png', 1.0),
         this.doughnut_chart.toBase64Image('image/png', 1.0),
       ],
-      'usuario',
+      'ventas',
       `Reporte de Ventas (${this.fechaReporte})`
     );
 

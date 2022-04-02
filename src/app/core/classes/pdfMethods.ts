@@ -13,6 +13,7 @@ import {
 } from '@app/shared/models/mendozarq/presupuestos.interface';
 
 import * as moment from 'moment';
+import { VentaView } from '@app/shared/models/liraki/venta.interface';
 export interface BodyTable {
   text?: string;
   style?: 'tableHeader';
@@ -38,7 +39,8 @@ export type TypeReport =
   | 'producto'
   | 'pedidos'
   | 'venta'
-  | 'opiniones';
+  | 'opiniones'
+  | 'ventas';
 
 export class PdfMethods {
   constructor() {
@@ -722,6 +724,385 @@ export class PdfMethods {
     return pdf;
   }
 
+  private ventasTable(pdf: Array<any>, ventas: Array<VentaView>): Array<any> {
+    const bodyInfo: Array<BodyTable[]> = [];
+
+    if (!ventas.length) {
+      bodyInfo.push([
+        {
+          text: 'Estado',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: '#FF6E00',
+          bold: true,
+          border: [false, false, false, false],
+        },
+        {
+          text: 'Fecha',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: '#FF6E00',
+          bold: true,
+          border: [false, false, false, false],
+        },
+        {
+          text: 'Nro. Venta',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: '#FF6E00',
+          bold: true,
+          border: [false, false, false, false],
+        },
+        {
+          text: 'Cliente',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: '#FF6E00',
+          bold: true,
+          border: [false, false, false, false],
+        },
+        {
+          text: 'NIT/CI/CEX',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: '#FF6E00',
+          bold: true,
+          border: [false, false, false, false],
+        },
+        {
+          text: 'Depto.',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: '#FF6E00',
+          bold: true,
+          border: [false, false, false, false],
+        },
+        {
+          text: 'TipoEnvio',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: '#FF6E00',
+          bold: true,
+          border: [false, false, false, false],
+        },
+
+        {
+          text: 'MetodoPago',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: '#FF6E00',
+          bold: true,
+          border: [false, false, false, false],
+        },
+        {
+          text: 'Nombre Factura',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: '#FF6E00',
+          bold: true,
+          border: [false, false, false, false],
+        },
+      ]);
+    }
+
+    ventas.forEach((v) => {
+      bodyInfo.push([
+        {
+          text: 'Estado',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: '#FF6E00',
+          bold: true,
+          border: [false, false, false, false],
+        },
+        {
+          text: 'Fecha',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: '#FF6E00',
+          bold: true,
+          border: [false, false, false, false],
+        },
+        {
+          text: 'Nro. Venta',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: '#FF6E00',
+          bold: true,
+          border: [false, false, false, false],
+        },
+        {
+          text: 'Cliente',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: '#FF6E00',
+          bold: true,
+          border: [false, false, false, false],
+        },
+        {
+          text: 'NIT/CI/CEX',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: '#FF6E00',
+          bold: true,
+          border: [false, false, false, false],
+        },
+        {
+          text: 'Depto.',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: '#FF6E00',
+          bold: true,
+          border: [false, false, false, false],
+        },
+        {
+          text: 'TipoEnvio',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: '#FF6E00',
+          bold: true,
+          border: [false, false, false, false],
+        },
+
+        {
+          text: 'MetodoPago',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: '#FF6E00',
+          bold: true,
+          border: [false, false, false, false],
+        },
+        {
+          text: 'Nombre Factura',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: '#FF6E00',
+          bold: true,
+          border: [false, false, false, false],
+        },
+      ]);
+      bodyInfo.push([
+        {
+          text: `${v.estado}`,
+          alignment: 'justify',
+          color: v.estado === 'completado' ? '#2ac940' : '#ff6058',
+          border: [false, false, false, true],
+        },
+        {
+          text: moment(v.creadoEn).format('DD/MM/YYYY[,] h:mm A'),
+          alignment: 'justify',
+          border: [false, false, false, true],
+        },
+        {
+          text: v.numeroVenta.toString(),
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: v.cliente,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: v.nitCiCex,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${v.departamento}`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${v.tipoEnvio}`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${v.metodoDePago}`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${v.nombreFactura}`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+      ]);
+
+      bodyInfo.push([
+        {
+          text: 'Producto',
+          style: 'tableHeader',
+          colSpan: 4,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: '#425066',
+          bold: true,
+          border: [false, false, false, false],
+        },
+        {},
+        {},
+        {},
+        {
+          text: 'Cantidad',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: '#425066',
+          bold: true,
+          border: [false, false, false, false],
+        },
+        {
+          text: 'Precio Unitario',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: '#425066',
+          bold: true,
+          border: [false, false, false, false],
+        },
+        {
+          text: 'Descuento',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: '#425066',
+          bold: true,
+          border: [false, false, false, false],
+        },
+        {
+          text: 'Importe',
+          style: 'tableHeader',
+          colSpan: 2,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: '#425066',
+          bold: true,
+          border: [false, false, false, false],
+        },
+        {},
+      ]);
+
+      v.conceptos.forEach((c) => {
+        bodyInfo.push([
+          {
+            text: `${c.nombre}`,
+            alignment: 'justify',
+            border: [false, false, false, true],
+            colSpan: 4,
+          },
+          {},
+          {},
+          {},
+          {
+            text: c.cantidad.toString(),
+            alignment: 'center',
+            border: [false, false, false, true],
+          },
+          {
+            text: `${c.precioUnitario.toString()} Bs.`,
+            alignment: 'center',
+            border: [false, false, false, true],
+          },
+          {
+            text: `${c.descuento.toString()}%`,
+            alignment: 'center',
+            border: [false, false, false, true],
+          },
+          {
+            text: `${c.importe.toString()} Bs.`,
+            alignment: 'center',
+            border: [false, false, false, true],
+            colSpan: 2,
+          },
+          {},
+        ]);
+      });
+
+      bodyInfo.push([
+        { text: '', border: [false, false, false, true] },
+        { text: '', border: [false, false, false, true] },
+        { text: '', border: [false, false, false, true] },
+        { text: '', border: [false, false, false, true] },
+        { text: '', border: [false, false, false, true] },
+        { text: '', border: [false, false, false, true] },
+        { text: 'TOTAL: ', border: [false, false, false, true] },
+        {
+          text: `${v.total} Bs.`,
+          alignment: 'center',
+          border: [false, false, false, true],
+          colSpan: 2,
+        },
+        {},
+      ]);
+    });
+
+    pdf.push(
+      this.centerObject({
+        style: 'tableExample',
+        table: {
+          body: bodyInfo,
+          alignment: 'center',
+        },
+        layout: {
+          hLineWidth: function (i, node) {
+            return i === 0 || i === node.table.body.length ? 1 : 1;
+          },
+          vLineWidth: function (i, node) {
+            return i === 0 || i === node.table.widths.length ? 0 : 1;
+          },
+          hLineColor: function (i, node) {
+            return '#425066';
+          },
+          vLineColor: function (i, node) {
+            return '#425066';
+          },
+        },
+      })
+    );
+    return pdf;
+  }
+
   public async reporte<T extends object>(
     pdf: Array<any>,
     data: Array<T>,
@@ -805,6 +1186,9 @@ export class PdfMethods {
         break;
       case 'opiniones':
         pdf = this.opinionesTable(pdf, data);
+        break;
+      case 'ventas':
+        pdf = this.ventasTable(pdf, data);
         break;
       default:
         break;

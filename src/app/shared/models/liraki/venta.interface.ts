@@ -18,19 +18,19 @@ export type estado =
 export interface Venta {
   uuid?: string;
   creadoEn?: Date;
-  numeroVenta: number;
-  nombreFactura: string;
-  nitCiCex: string;
-  departamento: departamento;
-  direccion: string;
+  numeroVenta?: number;
+  nombreFactura?: string;
+  nitCiCex?: string;
+  departamento?: departamento;
+  direccion?: string;
   descripcion?: string;
-  tipoVenta: tipoVenta;
-  tipoEnvio: tipoEnvio;
-  metodoDePago: metodoDePago;
-  estado: estado;
+  tipoVenta?: tipoVenta;
+  tipoEnvio?: tipoEnvio;
+  metodoDePago?: metodoDePago;
+  estado?: estado;
   total?: number;
-  uuidCliente: string;
-  uuidVendedor: string;
+  uuidCliente?: string;
+  uuidVendedor?: string;
 }
 
 export interface ConceptoVenta {
@@ -57,5 +57,5 @@ export interface VentaProducto extends Venta {
 export interface VentaView extends Venta {
   vendedor?: string;
   cliente?: string;
-  conceptos: ConceptoVentaView[];
+  conceptos?: ConceptoVentaView[];
 }
