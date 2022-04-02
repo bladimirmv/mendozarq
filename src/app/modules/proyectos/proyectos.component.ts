@@ -486,7 +486,7 @@ export class ProyectosComponent implements OnInit {
         italics: false,
       },
       info: {
-        title: 'Reporte-Usuarios',
+        title: 'Reporte-Proyectos',
         author: '©MENDOZARQ',
       },
       pageMargins: [60, 40, 40, 60],
