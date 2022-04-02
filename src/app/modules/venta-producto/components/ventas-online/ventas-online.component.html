@@ -3,35 +3,35 @@
     <app-status-card [icon]="'support_agent'" color="primary">
       <div slot="title">Pendientes</div>
       <div slot="count">
-        {{ 0 }}
+        {{ stats.pendientes }}
       </div>
     </app-status-card>
 
     <app-status-card [icon]="'verified'" color="info">
       <div slot="title">Confirmados</div>
       <div slot="count">
-        {{ 0 }}
+        {{ stats.confirmados }}
       </div>
     </app-status-card>
 
     <app-status-card [icon]="'store'" color="purple">
       <div slot="title">Para Recoger</div>
       <div slot="count">
-        {{ 0 }}
+        {{ stats.paraRecoger }}
       </div>
     </app-status-card>
 
     <app-status-card [icon]="'local_shipping'" color="accent">
       <div slot="title">En envío</div>
       <div slot="count">
-        {{ 0 }}
+        {{ stats.enEnvio }}
       </div>
     </app-status-card>
 
     <app-status-card [icon]="'done_all'" color="success">
       <div slot="title">Completados</div>
       <div slot="count">
-        {{ 0 }}
+        {{ stats.completados }}
       </div>
     </app-status-card>
   </div>

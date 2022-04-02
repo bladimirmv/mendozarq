@@ -66,6 +66,14 @@ export class VentasOnlineComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   panelOpenState = false;
+  public stats = {
+    pendientes: 0,
+    confirmados: 0,
+    paraRecoger: 0,
+    enEnvio: 0,
+    completados: 0,
+  };
+
   constructor(
     private _ventaSvc: VentaService,
     private dialog: MatDialog,
@@ -100,6 +108,28 @@ export class VentasOnlineComponent implements OnInit, OnDestroy {
       .subscribe((ventas: VentaView[]) => {
         this.dataSourceVenta.data = ventas;
         this.ventas = ventas;
+
+        ventas.forEach((v) => {
+          switch (v.estado) {
+            case 'pendiente':
+              this.stats.pendientes++;
+              break;
+            case 'confirmado':
+              this.stats.confirmados++;
+              break;
+            case 'para_recoger':
+              this.stats.paraRecoger++;
+              break;
+            case 'en_envio':
+              this.stats.enEnvio++;
+              break;
+            case 'completado':
+              this.stats.completados++;
+              break;
+            default:
+              break;
+          }
+        });
       });
   }
 
