@@ -1,16 +1,21 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { takeUntil, startWith } from 'rxjs/operators';
+import {
+  FormGroup,
+  Validators,
+  FormBuilder,
+  FormControl,
+} from '@angular/forms';
 
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { ToastrService } from 'ngx-toastr';
 import { ProveedorService } from '@services/mendoraki/proveedor.service';
-import { UsuarioService } from '@services/auth/usuario.service';
 
 import { Proveedor } from '@app/shared/models/mendoraki/proveedor.interface';
+import { RecursoService } from '@app/core/services/mendoraki/recurso.service';
+import { Recurso } from '@app/shared/models/mendoraki/recurso.interface';
 @Component({
   selector: 'app-add-proveedor',
   templateUrl: './add-proveedor.component.html',
@@ -18,19 +23,28 @@ import { Proveedor } from '@app/shared/models/mendoraki/proveedor.interface';
 })
 export class AddProveedorComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<any>();
-
   public proveedorForm: FormGroup;
+
+  private recursos: Recurso[] = [];
+  public selectedRecursos: Recurso[] = [];
+  public searchRecurso: FormControl = new FormControl();
 
   constructor(
     private proveedorSvc: ProveedorService,
     private toastrSvc: ToastrService,
     private fb: FormBuilder,
     public dialog: MatDialog,
-    private dialogRef: MatDialogRef<AddProveedorComponent>
+    private dialogRef: MatDialogRef<AddProveedorComponent>,
+    private recursoSvc: RecursoService
   ) {}
 
   ngOnInit(): void {
+    this.initRecursos();
     this.initForm();
+
+    this.searchRecurso.valueChanges.pipe(startWith('')).subscribe((value) => {
+      this.selectedRecursos = this._filter(value);
+    });
   }
 
   ngOnDestroy(): void {
@@ -38,15 +52,51 @@ export class AddProveedorComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  private initRecursos(): void {
+    this.recursoSvc.getAllRecurso().subscribe((recursos: Recurso[]) => {
+      this.recursos = [
+        {
+          nombre: '-- Ninguno --',
+          uuid: 'null',
+        },
+        ...recursos,
+      ];
+      this.selectedRecursos = this.recursos;
+    });
+  }
+
+  public loadSelectRecursos(): void {
+    this.selectedRecursos = this.recursos;
+    this.searchRecurso.setValue('');
+  }
+
+  private _filter(value: string): Recurso[] {
+    const filterValue = this._normalizeValue(value);
+
+    return this.recursos.filter((r: Recurso) =>
+      this._normalizeValue(r.nombre).includes(filterValue)
+    );
+  }
+  private _normalizeValue(value: string): string {
+    return value.toLowerCase();
+  }
+
   // =====================> onInitForm
   private initForm(): void {
     this.proveedorForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.maxLength(50)]],
-      tipoProveedor: ['materia_prima', Validators.required],
-      area: ['mendozarq', Validators.required],
-      precioUnitario: [0, Validators.maxLength(200)],
-      precioPorMayor: [0, Validators.required],
+      celular: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(7),
+          Validators.maxLength(8),
+          Validators.pattern(/^[0-9]*$/),
+        ],
+      ],
+      direccion: ['', Validators.maxLength(200)],
       descripcion: ['', Validators.maxLength(200)],
+      uuidRecurso: ['null', Validators.required],
     });
   }
 
@@ -61,7 +111,7 @@ export class AddProveedorComponent implements OnInit, OnDestroy {
             'El proveedor se ha creado correctamente. 😀',
             'Proveedor Creado'
           );
-          this.dialogRef.close();
+          this.dialogRef.close(true);
         }
       });
   }
@@ -78,5 +128,9 @@ export class AddProveedorComponent implements OnInit, OnDestroy {
       : validateFIeld.valid
       ? { color: 'accent', status: true, icon: 'done' }
       : {};
+  }
+
+  public getString(num: number): string {
+    return String(num);
   }
 }

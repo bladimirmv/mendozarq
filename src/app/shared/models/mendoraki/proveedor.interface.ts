@@ -7,3 +7,7 @@ export interface Proveedor {
   descripcion: string;
   uuidRecurso?: string;
 }
+
+export interface ProveedorView extends Proveedor {
+  recurso?: string | null;
+}

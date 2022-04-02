@@ -1,3 +1,4 @@
+import { ProveedorView } from './../../shared/models/mendoraki/proveedor.interface';
 import { EditProveedorComponent } from './components/edit-proveedor/edit-proveedor.component';
 import { AddProveedorComponent } from './components/add-proveedor/add-proveedor.component';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
@@ -23,7 +24,7 @@ import { ProveedorService } from '@app/core/services/mendoraki/proveedor.service
 })
 export class ProveedorComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<any>();
-  public proveedor: Proveedor[];
+  public proveedor: ProveedorView[];
 
   public stats = {
     total: 0,
@@ -32,21 +33,20 @@ export class ProveedorComponent implements OnInit, OnDestroy {
     mendoraki: 0,
   };
 
-  selected: Proveedor[] = [];
-  selection = new SelectionModel<Proveedor>(true, []);
+  selected: ProveedorView[] = [];
+  selection = new SelectionModel<ProveedorView>(true, []);
   filterValue: string;
   displayedColumns: string[] = [
     'seleccion',
     'nombre',
-    'tipoProveedor',
-    'area',
-    'precioUnitario',
-    'precioPorMayor',
+    'celular',
+    'direccion',
+    'uuidRecurso',
     'descripcion',
     'edit',
   ];
 
-  dataSource: MatTableDataSource<Proveedor> = new MatTableDataSource();
+  dataSource: MatTableDataSource<ProveedorView> = new MatTableDataSource();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -97,20 +97,24 @@ export class ProveedorComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        this.getAllProveedor();
+        if (res) {
+          this.getAllProveedor();
+        }
       });
   }
 
   // =====================> oneditProveedor
-  onUpdateProveedor(proveedor: Proveedor): void {
+  onUpdateProveedor(proveedor: ProveedorView): void {
     const dialogRef = this.dialog.open(EditProveedorComponent, {
       data: proveedor,
     });
     dialogRef
       .afterClosed()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.getAllProveedor();
+      .subscribe((res) => {
+        if (res) {
+          this.getAllProveedor();
+        }
       });
   }
 
@@ -210,7 +214,7 @@ export class ProveedorComponent implements OnInit, OnDestroy {
   }
 
   // =====================> checkboxLabel
-  checkboxLabel(row?: Proveedor): string {
+  checkboxLabel(row?: ProveedorView): string {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
