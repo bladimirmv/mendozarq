@@ -1,3 +1,6 @@
+import { CapituloPresupuestoService } from '@app/core/services/mendozarq/capitulo-presupuesto.service';
+import { startWith } from 'rxjs/operators';
+import { CapituloPresupuesto } from './../../../../shared/models/mendozarq/presupuestos.interface';
 import { CapituloPlanificacionProyecto } from './../../../../shared/models/charts/planificacion.interface';
 import {
   TareaPlanificacionProyecto,
@@ -22,6 +25,9 @@ export class NewCapituloPlanificacionComponent implements OnInit, OnDestroy {
   public capitulos: TareaPlanificacionProyecto[] = [];
   public dependencias: TareaPlanificacionProyecto[] = [];
 
+  public filteredOptions: CapituloPresupuesto[] = [];
+  public capitulosOptions: CapituloPresupuesto[] = [];
+
   selectedOption: number = 1;
   constructor(
     private fb: FormBuilder,
@@ -29,13 +35,28 @@ export class NewCapituloPlanificacionComponent implements OnInit, OnDestroy {
     private dialogRef: MatDialogRef<NewCapituloPlanificacionComponent>,
     private planificacionSvc: PlanificacionService,
     @Inject(MAT_DIALOG_DATA)
-    public planificacionView: PlanificacionProyectoView
+    public planificacionView: PlanificacionProyectoView,
+    private capituloSvc: CapituloPresupuestoService
   ) {}
 
   ngOnInit(): void {
     this.dependencias = this.planificacionView.tareas;
 
     this.initForm();
+
+    this.capituloSvc
+      .getAllCapitulosByProyecto(this.planificacionView.uuidProyecto)
+      .subscribe((caps: CapituloPresupuesto[]) => {
+        this.filteredOptions = caps;
+        this.capitulosOptions = caps;
+      });
+
+    this.capituloPlanificacionForm
+      .get('nombre')
+      .valueChanges.pipe(startWith(''))
+      .subscribe((value) => {
+        this._filter(value);
+      });
   }
 
   ngOnDestroy(): void {
@@ -43,6 +64,13 @@ export class NewCapituloPlanificacionComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  private _filter(value: string): void {
+    const filterValue = value.toLowerCase();
+
+    this.filteredOptions = this.capitulosOptions.filter(
+      (cap) => cap.nombre.toLowerCase().indexOf(filterValue) === 0
+    );
+  }
   private initForm(): void {
     this.capituloPlanificacionForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.maxLength(200)]],

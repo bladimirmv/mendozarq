@@ -1,3 +1,6 @@
+import { startWith } from 'rxjs/operators';
+import { DetalleCapituloService } from '@services/mendozarq/detalle-capitulo.service';
+import { DetalleCapitulo } from './../../../../shared/models/mendozarq/presupuestos.interface';
 import {
   TareaPlanificacionProyecto,
   PlanificacionProyectoView,
@@ -20,6 +23,9 @@ export class NewTareaPlanificacionComponent implements OnInit, OnDestroy {
   public capitulos: TareaPlanificacionProyecto[] = [];
   public dependencias: TareaPlanificacionProyecto[] = [];
 
+  public filteredOptions: DetalleCapitulo[] = [];
+  public detalles: DetalleCapitulo[] = [];
+
   selectedOption: number = 1;
   constructor(
     private fb: FormBuilder,
@@ -27,7 +33,8 @@ export class NewTareaPlanificacionComponent implements OnInit, OnDestroy {
     private dialogRef: MatDialogRef<NewTareaPlanificacionComponent>,
     private planificacionSvc: PlanificacionService,
     @Inject(MAT_DIALOG_DATA)
-    public planificacionView: PlanificacionProyectoView
+    public planificacionView: PlanificacionProyectoView,
+    private detalleCapituloSvc: DetalleCapituloService
   ) {}
 
   ngOnInit(): void {
@@ -35,11 +42,33 @@ export class NewTareaPlanificacionComponent implements OnInit, OnDestroy {
     this.dependencias = this.planificacionView.tareas;
 
     this.initForm();
+
+    this.detalleCapituloSvc
+      .getAllDetalleCapituloByProyecto(this.planificacionView.uuidProyecto)
+      .subscribe((detalles: DetalleCapitulo[]) => {
+        this.detalles = detalles;
+        this.filteredOptions = detalles;
+      });
+
+    this.tareaPlanificacionForm
+      .get('nombre')
+      .valueChanges.pipe(startWith(''))
+      .subscribe((value) => {
+        this._filterNombre(value);
+      });
   }
 
   ngOnDestroy(): void {
     this.destroy$.next({});
     this.destroy$.complete();
+  }
+
+  private _filterNombre(value: string): void {
+    const filterValue = value.toLowerCase();
+
+    this.filteredOptions = this.detalles.filter(
+      (d) => d.descripcion.toLowerCase().indexOf(filterValue) === 0
+    );
   }
 
   private initForm(): void {

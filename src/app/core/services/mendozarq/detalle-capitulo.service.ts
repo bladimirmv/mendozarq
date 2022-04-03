@@ -7,42 +7,60 @@ import { catchError } from 'rxjs/operators';
 
 import { environment } from '@env/environment.prod';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DetalleCapituloService {
   private API_URL = environment.API_URL;
 
-  constructor(private http: HttpClient, private toastrSvc: ToastrService) {
-  }
+  constructor(private http: HttpClient, private toastrSvc: ToastrService) {}
 
   // ====================>
   public addDetalleCapitulo(detalleCapitulo: DetalleCapitulo): Observable<any> {
     return this.http
-      .post<DetalleCapitulo>(`${this.API_URL}/api/detalleCapitulo`, detalleCapitulo)
-      .pipe(catchError(error => this.handdleError(error)));
+      .post<DetalleCapitulo>(
+        `${this.API_URL}/api/detalleCapitulo`,
+        detalleCapitulo
+      )
+      .pipe(catchError((error) => this.handdleError(error)));
   }
 
   // ====================>
   public getOneDetalleCapitulo(uuid: string): Observable<DetalleCapitulo> {
     return this.http
       .get<DetalleCapitulo>(`${this.API_URL}/api/detalleCapitulo/${uuid}`)
-      .pipe(catchError(error => this.handdleError(error)));
+      .pipe(catchError((error) => this.handdleError(error)));
+  }
+  public getAllDetalleCapitulo(): Observable<DetalleCapitulo[]> {
+    return this.http
+      .get<DetalleCapitulo[]>(`${this.API_URL}/api/detalleCapitulo`)
+      .pipe(catchError((error) => this.handdleError(error)));
   }
 
+  public getAllDetalleCapituloByProyecto(
+    uuid: string
+  ): Observable<DetalleCapitulo[]> {
+    return this.http
+      .get<DetalleCapitulo[]>(
+        `${this.API_URL}/api/detalleCapitulo/proyecto/${uuid}`
+      )
+      .pipe(catchError((error) => this.handdleError(error)));
+  }
   // ====================>
-  public updateDetalleCapitulo(uuid: string, detalleCapitulo: DetalleCapitulo): Observable<any> {
+  public updateDetalleCapitulo(
+    uuid: string,
+    detalleCapitulo: DetalleCapitulo
+  ): Observable<any> {
     return this.http
       .put(`${this.API_URL}/api/detalleCapitulo/${uuid}`, detalleCapitulo)
-      .pipe(catchError(error => this.handdleError(error)));
+      .pipe(catchError((error) => this.handdleError(error)));
   }
 
   // ====================>
   public deleteDetalleCapitulo(uuid: string): Observable<any> {
     return this.http
       .delete(`${this.API_URL}/api/detalleCapitulo/${uuid}`)
-      .pipe(catchError(error => this.handdleError(error)));
+      .pipe(catchError((error) => this.handdleError(error)));
   }
 
   // ====================>
@@ -54,10 +72,12 @@ export class DetalleCapituloService {
       } else if (httpError.error.message.errno) {
         switch (httpError.error.message.errno) {
           case -111:
-            errorMessage = 'No se ha podido establecer una conexion con la base de datos. 🙁';
+            errorMessage =
+              'No se ha podido establecer una conexion con la base de datos. 🙁';
             break;
           case 1451:
-            errorMessage = 'No se puede eliminar por que este detalle esta relacionado con un capitulo u otra tabla. 🙁';
+            errorMessage =
+              'No se puede eliminar por que este detalle esta relacionado con un capitulo u otra tabla. 🙁';
             break;
           default:
             errorMessage = `
@@ -70,9 +90,8 @@ export class DetalleCapituloService {
     console.log('this error', httpError);
     this.toastrSvc.error(errorMessage, 'Ocurrio un Error!', {
       timeOut: 7000,
-      enableHtml: true
+      enableHtml: true,
     });
     return throwError(httpError);
   }
-
 }

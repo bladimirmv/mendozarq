@@ -1,4 +1,4 @@
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, startWith } from 'rxjs/operators';
 import { DetalleCapituloService } from '@services/mendozarq/detalle-capitulo.service';
 import { DetalleCapitulo } from '@models/mendozarq/presupuestos.interface';
 import { Unidad } from '@models/mendozarq/presupuestos.interface';
@@ -152,6 +152,8 @@ export class NewDetalleCapituloComponent implements OnInit, OnDestroy {
     },
   ];
   public selectedUnidades: Array<Unidad> = this.unidades;
+  public filteredOptions: DetalleCapitulo[] = [];
+  public detalles: DetalleCapitulo[] = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public capituloView: CapituloPresupuestoView,
@@ -163,11 +165,33 @@ export class NewDetalleCapituloComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initForm();
+
+    this.detalleCapituloSvc
+      .getAllDetalleCapitulo()
+      .subscribe((detalles: DetalleCapitulo[]) => {
+        this.detalles = detalles;
+        this.filteredOptions = detalles;
+      });
+
+    this.detalleForm
+      .get('descripcion')
+      .valueChanges.pipe(startWith(''))
+      .subscribe((value) => {
+        this._filterNombre(value);
+      });
   }
 
   ngOnDestroy(): void {
     this.destroy$.next({});
     this.destroy$.complete();
+  }
+
+  private _filterNombre(value: string): void {
+    const filterValue = value.toLowerCase();
+
+    this.filteredOptions = this.detalles.filter(
+      (d) => d.descripcion.toLowerCase().indexOf(filterValue) === 0
+    );
   }
 
   private initForm(): void {

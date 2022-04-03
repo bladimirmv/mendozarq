@@ -177,7 +177,8 @@
                   Precio
                 </th>
                 <td mat-cell *matCellDef="let row" class="text-center">
-                  {{ row.precio | number: "1.2-2" }}
+                  {{ row.precio | number: "1.2-2"
+                  }}<span class="primary-color">Bs.</span>
                 </td>
                 <td mat-footer-cell *matFooterCellDef></td>
               </ng-container>
@@ -193,38 +194,32 @@
                   class="text-center"
                   style="width: 150px"
                 >
-                  {{ row.totalDescuento }}
+                  {{ row.totalDescuento }}<span class="primary-color">Bs.</span>
                 </td>
 
                 <td mat-footer-cell *matFooterCellDef class="text-center">
                   <div class="total-bruto">
                     {{
                       presupuesto.totalBruto
-                        ? numberWithCommas(
-                            presupuesto.totalBruto | number: "1.2-2"
-                          )
+                        ? (presupuesto.totalBruto | number: "1.2-2")
                         : 0
-                    }}
+                    }}<span class="primary-color">Bs.</span>
                   </div>
 
                   <div class="iva">
                     {{
                       presupuesto.totalWithIVA
-                        ? numberWithCommas(
-                            presupuesto.totalWithIVA | number: "1.2-2"
-                          )
+                        ? (presupuesto.totalWithIVA | number: "1.2-2")
                         : 0
-                    }}
+                    }}<span class="primary-color">Bs.</span>
                   </div>
 
                   <div class="total">
                     {{
                       presupuesto.totalPresupuesto
-                        ? numberWithCommas(
-                            presupuesto.totalPresupuesto | number: "1.2-2"
-                          )
+                        ? (presupuesto.totalPresupuesto | number: "1.2-2")
                         : 0
-                    }}
+                    }}<span class="primary-color">Bs.</span>
                   </div>
                 </td>
               </ng-container>
@@ -252,7 +247,8 @@
               <ng-container matColumnDef="total">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Total</th>
                 <td mat-cell *matCellDef="let row" class="text-center">
-                  {{ row.total != 0 ? (row.total | number: "1.2-2") : 0 }}
+                  {{ row.total != 0 ? (row.total | number: "1.2-2") : 0
+                  }}<span class="primary-color">Bs.</span>
                 </td>
                 <td mat-footer-cell *matFooterCellDef></td>
               </ng-container>
@@ -379,7 +375,8 @@
                           class="text-center"
                           *matCellDef="let detalle"
                         >
-                          {{ detalle.precioUnitario }}
+                          {{ detalle.precioUnitario
+                          }}<span class="primary-color">Bs.</span>
                         </td>
                       </ng-container>
 
@@ -397,7 +394,8 @@
                           class="text-center"
                           *matCellDef="let detalle"
                         >
-                          {{ detalle.total }}
+                          {{ detalle.total
+                          }}<span class="primary-color">Bs.</span>
                         </td>
                       </ng-container>
 

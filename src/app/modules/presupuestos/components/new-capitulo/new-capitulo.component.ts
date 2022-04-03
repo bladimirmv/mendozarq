@@ -33,8 +33,6 @@ export class NewCapituloComponent implements OnInit, OnDestroy {
       .subscribe((caps: CapituloPresupuesto[]) => {
         this.filteredOptions = caps;
         this.capitulos = caps;
-
-        console.log(caps);
       });
 
     this.capituloForm

@@ -1404,7 +1404,7 @@ export class PdfMethods {
           border: [false, false, false, true],
         },
         {
-          text: `${capitulo.total}`,
+          text: `${capitulo.total} Bs.`,
           alignment: 'center',
           border: [false, false, false, true],
         },
@@ -1414,12 +1414,12 @@ export class PdfMethods {
           border: [false, false, false, true],
         },
         {
-          text: `${capitulo.totalDescuento}`,
+          text: `${capitulo.totalDescuento} Bs.`,
           alignment: 'center',
           border: [false, false, false, true],
         },
         {
-          text: `${capitulo.total != 0 ? capitulo.total : 0}`,
+          text: `${capitulo.total != 0 ? capitulo.total : 0} Bs.`,
           alignment: 'center',
           border: [false, false, false, true],
         },
@@ -1452,7 +1452,7 @@ export class PdfMethods {
           presupuesto
             ? this.numberWithCommas(presupuesto.totalBruto.toLocaleString())
             : 0
-        }`,
+        }Bs.`,
         colSpan: 1,
         border: [false],
 
@@ -1493,7 +1493,7 @@ export class PdfMethods {
           presupuesto
             ? this.numberWithCommas(presupuesto.totalWithIVA.toLocaleString())
             : 0
-        }`,
+        }Bs.`,
         colSpan: 1,
         border: [false],
 
@@ -1530,7 +1530,7 @@ export class PdfMethods {
                 presupuesto.totalPresupuesto.toLocaleString()
               )
             : 0
-        }`,
+        }Bs.`,
         colSpan: 1,
         border: [false],
 
@@ -1679,7 +1679,7 @@ export class PdfMethods {
           {},
           {},
           {
-            text: `${capitulo.total}`,
+            text: `${capitulo.total} Bs.`,
             style: 'tableHeader',
             colSpan: 1,
             alignment: 'center',
@@ -1714,12 +1714,12 @@ export class PdfMethods {
                 border: [false, false, false, true],
               },
               {
-                text: `${detalle.precioUnitario}`,
+                text: `${detalle.precioUnitario}Bs.`,
                 alignment: 'center',
                 border: [false, false, false, true],
               },
               {
-                text: `${detalle.precioUnitario * detalle.cantidad}`,
+                text: `${detalle.precioUnitario * detalle.cantidad}Bs.`,
                 alignment: 'center',
                 border: [false, false, false, true],
               },

@@ -1,6 +1,6 @@
 import { EditDetalleCapituloComponent } from './../edit-detalle-capitulo/edit-detalle-capitulo.component';
-import { DetalleCapitulo } from './../../../../shared/models/mendozarq/presupuestos.interface';
-import { DetalleCapituloService } from './../../../../core/services/mendozarq/detalle-capitulo.service';
+import { DetalleCapitulo } from '@models/mendozarq/presupuestos.interface';
+import { DetalleCapituloService } from '@services/mendozarq/detalle-capitulo.service';
 import { EditCapituloComponent } from './../edit-capitulo/edit-capitulo.component';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
@@ -393,12 +393,6 @@ export class PresupuestoObraComponent implements OnInit, OnDestroy {
   // =====================>
   public getTotalPresupuesto(): number {
     return Number((this.getTotalBruto() + this.getTotalWithIVA()).toFixed(2));
-  }
-
-  // =====================>
-  public numberWithCommas(x: number): string {
-    console.log(x);
-    return x != 0 ? x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '0';
   }
 
   // ===========> getString

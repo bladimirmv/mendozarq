@@ -2,18 +2,19 @@
 
 <mat-dialog-content>
   <form class="new-form" [formGroup]="detalleForm">
-    <!-- *Descripcion -->
     <mat-form-field
       class="full-width full-column"
       [color]="isValidField('descripcion').color"
     >
-      <mat-label>Descripcion</mat-label>
-      <textarea
+      <input
+        type="text"
+        placeholder="Descripcion"
+        aria-label="Number"
         matInput
-        placeholder="Ex. servicio de carpinteria."
         formControlName="descripcion"
-        autocomplete="off"
-      ></textarea>
+        [matAutocomplete]="auto"
+      />
+
       <mat-icon matSuffix [color]="isValidField('descripcion').color">
         {{ isValidField("descripcion").icon }}
       </mat-icon>
@@ -22,16 +23,28 @@
           detalleForm.value.descripcion
             ? detalleForm.value.descripcion.length
             : 0
-        }}/300
+        }}/100
       </mat-hint>
       <mat-error *ngIf="detalleForm.get('descripcion').errors?.required">
-        Ingrese una descripcion.
+        Ingrese un descripcion.
+      </mat-error>
+      <mat-error *ngIf="detalleForm.get('descripcion').errors?.pattern">
+        Debe incluir solo letras en minuscula.
       </mat-error>
       <mat-error *ngIf="detalleForm.get('descripcion').errors?.maxlength">
         Debe contener
         {{ detalleForm.get("descripcion").errors?.maxlength?.requiredLength }}
         digitos como maximo.
       </mat-error>
+
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option
+          *ngFor="let option of filteredOptions"
+          [value]="option.descripcion"
+        >
+          {{ option.descripcion }}
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
 
     <!-- *Unidad -->

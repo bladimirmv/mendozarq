@@ -391,12 +391,6 @@ export class PresupuestoProyectoComponent implements OnInit, OnDestroy {
     return Number((this.getTotalBruto() + this.getTotalWithIVA()).toFixed(2));
   }
 
-  // =====================>
-  public numberWithCommas(x: number): string {
-    console.log(x);
-    return x != 0 ? x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '0';
-  }
-
   // ===========> getString
   getString(num: number): string {
     return String(num);

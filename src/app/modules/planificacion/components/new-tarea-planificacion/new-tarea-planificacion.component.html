@@ -6,20 +6,30 @@
       class="full-width full-column"
       [color]="isValidField('nombre').color"
     >
-      <mat-label>Nombre</mat-label>
-      <input matInput formControlName="nombre" autocomplete="off" />
+      <input
+        type="text"
+        placeholder="Nombre"
+        aria-label="Number"
+        matInput
+        formControlName="nombre"
+        [matAutocomplete]="auto"
+      />
+
+      <mat-icon matSuffix [color]="isValidField('nombre').color">
+        {{ isValidField("nombre").icon }}
+      </mat-icon>
       <mat-hint align="end">
         {{
           tareaPlanificacionForm.value.nombre
             ? tareaPlanificacionForm.value.nombre.length
             : 0
-        }}/50
+        }}/100
       </mat-hint>
-      <mat-icon matSuffix [color]="isValidField('nombre').color">
-        {{ isValidField("nombre").icon }}
-      </mat-icon>
       <mat-error *ngIf="tareaPlanificacionForm.get('nombre').errors?.required">
         Ingrese un nombre.
+      </mat-error>
+      <mat-error *ngIf="tareaPlanificacionForm.get('nombre').errors?.pattern">
+        Debe incluir solo letras en minuscula.
       </mat-error>
       <mat-error *ngIf="tareaPlanificacionForm.get('nombre').errors?.maxlength">
         Debe contener
@@ -28,6 +38,15 @@
         }}
         digitos como maximo.
       </mat-error>
+
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option
+          *ngFor="let option of filteredOptions"
+          [value]="option.descripcion"
+        >
+          {{ option.descripcion }}
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
 
     <mat-form-field class="full-width full-column">

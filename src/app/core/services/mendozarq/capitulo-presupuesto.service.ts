@@ -35,6 +35,17 @@ export class CapituloPresupuestoService {
   }
 
   // ====================>
+  public getAllCapitulosByProyecto(
+    uuid: string
+  ): Observable<CapituloPresupuesto[]> {
+    return this.http
+      .get<CapituloPresupuesto[]>(
+        `${this.API_URL}/api/capitulopresupuesto/proyecto/${uuid}`
+      )
+      .pipe(catchError((error) => this.handdleError(error)));
+  }
+
+  // ====================>
   public getAllCapituloPresupuesto(
     uuid: string
   ): Observable<CapituloPresupuestoView[]> {
