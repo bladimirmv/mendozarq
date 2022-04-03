@@ -9,7 +9,6 @@
   grid-column: span 2;
 }
 
-
 mat-dialog-actions {
   display: grid;
   grid-template-areas: "secondary success";
@@ -25,7 +24,7 @@ mat-dialog-actions {
   }
 }
 
-@media screen and (max-width:400px) {
+@media screen and (max-width: 400px) {
   mat-dialog-actions {
     margin: 0;
     padding: 0;
@@ -38,11 +37,10 @@ mat-dialog-actions {
       margin: 5px 0;
       width: 100%;
     }
-
   }
 }
 
-@media screen and (max-width:625px) {
+@media screen and (max-width: 625px) {
   .new-form {
     display: grid;
     grid-template-columns: minmax(100%, 1fr);
@@ -53,4 +51,12 @@ mat-dialog-actions {
   .full-column {
     grid-column: 1;
   }
+}
+
+mat-chip > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }

@@ -35,8 +35,12 @@
           [selectable]="selectable"
           [removable]="removable"
           (removed)="remove(tarea)"
+          [matTooltip]="tarea"
+          matTooltipPosition="below"
         >
-          {{ tarea }}
+          <span>
+            {{ tarea }}
+          </span>
           <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
         </mat-chip>
         <input

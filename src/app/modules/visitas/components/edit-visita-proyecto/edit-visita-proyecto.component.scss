@@ -30,24 +30,23 @@ mat-dialog-actions {
   }
 }
 
-@media screen and (max-width:400px) {
+@media screen and (max-width: 400px) {
   mat-dialog-actions {
     margin: 0;
     padding: 0;
     grid-template-columns: auto;
     grid-gap: 10px;
-    grid-template-areas: "success"
+    grid-template-areas:
+      "success"
       "secondary";
 
     .mat-btn-success {
       margin: 0;
     }
-
   }
 }
 
-
-@media screen and (max-width:625px) {
+@media screen and (max-width: 625px) {
   .new-form {
     display: grid;
     grid-template-columns: minmax(100%, 1fr);
@@ -58,4 +57,11 @@ mat-dialog-actions {
   .full-column {
     grid-column: 1;
   }
+}
+mat-chip > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
