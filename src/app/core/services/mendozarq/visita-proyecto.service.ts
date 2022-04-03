@@ -6,51 +6,70 @@ import { catchError } from 'rxjs/operators';
 
 import { VisitaProyecto } from '@models/mendozarq/visita.proyecto.interface';
 import { environment } from '@env/environment.prod';
-
+import { TareaPlanificacionProyecto } from '@app/shared/models/charts/planificacion.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class VisitaProyectoService {
   private API_URL = environment.API_URL;
 
-  constructor(private http: HttpClient, private toastrSvc: ToastrService) {
-
-  }
+  constructor(private http: HttpClient, private toastrSvc: ToastrService) {}
 
   // ====================> addVisitaProyecto
   public addVisitaProyecto(visitaProyecto: VisitaProyecto): Observable<any> {
     return this.http
-      .post<VisitaProyecto>(`${this.API_URL}/api/visitaProyecto`, visitaProyecto)
-      .pipe(catchError(error => this.handdleError(error)));
+      .post<VisitaProyecto>(
+        `${this.API_URL}/api/visitaProyecto`,
+        visitaProyecto
+      )
+      .pipe(catchError((error) => this.handdleError(error)));
   }
 
   // ====================> getOneVisitaProyecto
   public getOneVisitaProyecto(uuid: string): Observable<VisitaProyecto> {
     return this.http
       .get<VisitaProyecto>(`${this.API_URL}/api/visitaProyecto/${uuid}`)
-      .pipe(catchError(error => this.handdleError(error)));
+      .pipe(catchError((error) => this.handdleError(error)));
   }
 
   // ====================> getAllVisitaProyecto
-  public getAllVisitaProyecto(uuidProyecto: string): Observable<VisitaProyecto[]> {
+  public getAllVisitaProyecto(
+    uuidProyecto: string
+  ): Observable<VisitaProyecto[]> {
     return this.http
-      .get<VisitaProyecto[]>(`${this.API_URL}/api/visitaProyecto/proyecto/${uuidProyecto}`)
-      .pipe(catchError(error => this.handdleError(error)));
+      .get<VisitaProyecto[]>(
+        `${this.API_URL}/api/visitaProyecto/proyecto/${uuidProyecto}`
+      )
+      .pipe(catchError((error) => this.handdleError(error)));
   }
 
   // ====================> updateVisitaProyecto
-  public updateVisitaProyecto(uuid: string, visitaProyecto: VisitaProyecto): Observable<any> {
+  public updateVisitaProyecto(
+    uuid: string,
+    visitaProyecto: VisitaProyecto
+  ): Observable<any> {
     return this.http
       .put(`${this.API_URL}/api/visitaProyecto/${uuid}`, visitaProyecto)
-      .pipe(catchError(error => this.handdleError(error)));
+      .pipe(catchError((error) => this.handdleError(error)));
   }
 
   // ====================> deleteVisitaProyecto
   public deleteVisitaProyecto(uuid: string): Observable<any> {
     return this.http
       .delete(`${this.API_URL}/api/visitaProyecto/${uuid}`)
-      .pipe(catchError(error => this.handdleError(error)));
+      .pipe(catchError((error) => this.handdleError(error)));
+  }
+
+  // ====================> getAllVisitaProyecto
+  public getAllTareasProyecto(
+    uuidProyecto: string
+  ): Observable<TareaPlanificacionProyecto[]> {
+    return this.http
+      .get<TareaPlanificacionProyecto[]>(
+        `${this.API_URL}/api/visitaProyecto/tarea/proyecto/${uuidProyecto}`
+      )
+      .pipe(catchError((error) => this.handdleError(error)));
   }
 
   // ====================> handdleError
@@ -62,10 +81,12 @@ export class VisitaProyectoService {
       } else if (httpError.error.message.errno) {
         switch (httpError.error.message.errno) {
           case -111:
-            errorMessage = 'No se ha podido establecer una conexion con el servidor. 🙁';
+            errorMessage =
+              'No se ha podido establecer una conexion con el servidor. 🙁';
             break;
           case 1451:
-            errorMessage = 'No se puede eliminar por que este visita esta relacionado con una observacion u otra tabla. 🙁';
+            errorMessage =
+              'No se puede eliminar por que este visita esta relacionado con una observacion u otra tabla. 🙁';
             break;
           default:
             errorMessage = `
@@ -78,9 +99,8 @@ export class VisitaProyectoService {
     console.log('this error', httpError);
     this.toastrSvc.error(errorMessage, 'Ocurrio un Error!', {
       timeOut: 7000,
-      enableHtml: true
+      enableHtml: true,
     });
     return throwError(httpError);
   }
-
 }
