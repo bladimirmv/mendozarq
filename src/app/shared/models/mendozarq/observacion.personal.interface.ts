@@ -1,6 +1,12 @@
-import { Personal } from "./personal.interface";
+import { Personal } from './personal.interface';
 
-export type Estado = 'En curso' | 'Pendiente' | 'Fecha limite' | 'Aprobar' | 'Con retraso' | 'Finalizado';
+export type Estado =
+  | 'En curso'
+  | 'Pendiente'
+  | 'Fecha limite'
+  | 'Aprobar'
+  | 'Con retraso'
+  | 'Finalizado';
 
 export interface ObservacionPersonal {
   uuid?: string;
@@ -13,5 +19,5 @@ export interface ObservacionPersonal {
 }
 
 export interface ObservacionesByPersonal extends Personal {
-  observaciones?: Array<ObservacionPersonal>
+  observaciones?: Array<ObservacionPersonal>;
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatSort } from '@angular/material/sort';
@@ -20,7 +20,7 @@ import { PersonalService } from '@app/core/services/mendozarq/personal.service';
   templateUrl: './personal.component.html',
   styleUrls: ['./personal.component.scss'],
 })
-export class PersonalComponent implements OnInit {
+export class PersonalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<any>();
   public personal: Personal[];
 
@@ -66,7 +66,6 @@ export class PersonalComponent implements OnInit {
   ngOnDestroy(): void {
     this.destroy$.next({});
     this.destroy$.complete();
-    // this.locationBarSvc.popLocation();
   }
 
   // =====================> getAllPersonal

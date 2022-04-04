@@ -68,6 +68,7 @@ const routes: Routes = [
         (m) => m.OpinionProductoModule
       ),
   },
+  { path: 'observacionObra', loadChildren: () => import('./modules/observacion-obra/observacion-obra.module').then(m => m.ObservacionObraModule) },
 
   {
     path: '**',

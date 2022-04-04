@@ -251,10 +251,10 @@ const routes: Routes = [
           ).then((m) => m.ObservacionServicioModule),
       },
       {
-        path: 'asistencia',
+        path: 'observacion-obra',
         loadChildren: () =>
-          import('@modules/visita-asistencia/visita-asistencia.module').then(
-            (m) => m.VisitaAsistenciaModule
+          import('@modules/observacion-obra/observacion-obra.module').then(
+            (m) => m.ObservacionObraModule
           ),
       },
     ],

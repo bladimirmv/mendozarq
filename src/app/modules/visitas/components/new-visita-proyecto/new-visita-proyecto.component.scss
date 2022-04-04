@@ -52,11 +52,15 @@ mat-dialog-actions {
     grid-column: 1;
   }
 }
-
-mat-chip > span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
+mat-chip {
+  background-color: var(--accent) !important;
+  color: var(--secondary) !important;
+  font-weight: bold;
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
 }
