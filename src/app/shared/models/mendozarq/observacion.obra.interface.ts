@@ -10,11 +10,11 @@ export interface ObservacionObra {
 export interface FotoObservacionObra {
   uuid?: string;
   creadoEn?: Date;
-  keyName: string;
-  fileName: string;
-  location: string;
-  size: string;
-  uuidObservacionObra: string;
+  keyName?: string;
+  fileName?: string;
+  location?: string;
+  size?: number;
+  uuidObservacionObra?: string;
 }
 
 export interface ObservacionObraView extends ObservacionObra {

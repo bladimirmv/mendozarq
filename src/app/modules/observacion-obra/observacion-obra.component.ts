@@ -1,3 +1,6 @@
+import { UploadImagesComponent } from './components/upload-images/upload-images.component';
+import { DeleteModalComponent } from './../../shared/components/delete-modal/delete-modal.component';
+import { EditObservacionObraComponent } from './components/edit-observacion-obra/edit-observacion-obra.component';
 import { ActivatedRoute } from '@angular/router';
 import { NewObservacionObraComponent } from './components/new-observacion-obra/new-observacion-obra.component';
 import { takeUntil } from 'rxjs/operators';
@@ -23,7 +26,7 @@ import {
 } from '@angular/core';
 import { VisitaProyectoService } from '@app/core/services/mendozarq/visita-proyecto.service';
 import { VisitaProyecto } from '@app/shared/models/mendozarq/visita.proyecto.interface';
-
+import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-observacion-obra',
   templateUrl: './observacion-obra.component.html',
@@ -65,8 +68,11 @@ export class ObservacionObraComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.uuidVisita = this._route.snapshot.parent.parent.params.uuid;
-    this.generatePdf();
     this.getVisita();
+
+    this.selection.changed
+      .pipe(map((a) => a.source))
+      .subscribe((data) => (this.selected = data.selected));
   }
 
   ngOnDestroy(): void {
@@ -110,78 +116,95 @@ export class ObservacionObraComponent implements OnInit, OnDestroy {
   }
 
   // =====================> oneditObservacionObra
-  onUpdateObservacionObra(personal: ObservacionObra): void {
-    // const dialogRef = this.dialog.open(EditObservacionObraComponent, {
-    //   data: personal,
-    // });
-    // dialogRef
-    //   .afterClosed()
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe(() => {
-    //     this.getAllObservacionObra();
-    //   });
+  onUpdateObservacionObra(observacion: ObservacionObra): void {
+    const dialogRef = this.dialog.open(EditObservacionObraComponent, {
+      data: observacion,
+      width: '500px',
+      maxWidth: '100%',
+    });
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        if (res) {
+          this.getAllObservacionObra();
+        }
+      });
   }
 
   // =====================> ondeleteObservacionObra
   async onDeleteObservacionObra(): Promise<void> {
-    // const dialogRef = this.dialog.open(DeleteModalComponent);
-    // dialogRef
-    //   .afterClosed()
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((res) => {
-    //     if (res) {
-    //       this.selected.length === 1
-    //         ? this.deleteOneObservacionObra()
-    //         : this.deleteMoreThanOneObservacionObra();
-    //     }
-    //   });
+    const dialogRef = this.dialog.open(DeleteModalComponent);
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        if (res) {
+          this.selected.length === 1
+            ? this.deleteOneObservacionObra()
+            : this.deleteMoreThanOneObservacionObra();
+        }
+      });
   }
 
   // =====================> deleteOneObservacionObra
   deleteOneObservacionObra(): void {
-    // this.personalSvc
-    //   .deleteObservacionObra(this.selected[0].uuid)
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((usr) => {
-    //     if (usr) {
-    //       this.toastSvc.success(
-    //         'Se ha eliminado correctamente',
-    //         'ObservacionObra Eliminado',
-    //         {
-    //           timeOut: 2000,
-    //           progressBar: true,
-    //           progressAnimation: 'increasing',
-    //         }
-    //       );
-    //       this.getAllObservacionObra();
-    //       this.clearCheckbox();
-    //     }
-    //   });
+    this.observacionSvc
+      .deleteObservacionObra(this.selected[0].uuid)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((usr) => {
+        if (usr) {
+          this.toastSvc.success(
+            'Se ha eliminado correctamente',
+            'Observacion Eliminado',
+            {
+              timeOut: 2000,
+              progressBar: true,
+              progressAnimation: 'increasing',
+            }
+          );
+          this.getAllObservacionObra();
+          this.clearCheckbox();
+        }
+      });
   }
 
   // =====================> deleteMoreThanOneObservacionObra
   deleteMoreThanOneObservacionObra(): void {
-    // this.selected.forEach((personal, index) => {
-    //   const isLast: boolean = index + 1 === this.selected.length;
-    //   this.personalSvc
-    //     .deleteObservacionObra(personal.uuid)
-    //     .pipe(takeUntil(this.destroy$))
-    //     .subscribe((res) => {
-    //       if (res) {
-    //         this.toastSvc.success(
-    //           'Se han eliminado correctamente',
-    //           'ObservacionObra Eliminado',
-    //           {
-    //             timeOut: 2000,
-    //             progressBar: true,
-    //             progressAnimation: 'increasing',
-    //           }
-    //         );
-    //         this.getAllObservacionObra();
-    //         this.clearCheckbox();
-    //       }
-    //     });
-    // });
+    this.selected.forEach((personal, index) => {
+      this.observacionSvc
+        .deleteObservacionObra(personal.uuid)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          if (res) {
+            this.toastSvc.success(
+              'Se han eliminado correctamente',
+              'Observacion Eliminado',
+              {
+                timeOut: 2000,
+                progressBar: true,
+                progressAnimation: 'increasing',
+              }
+            );
+            this.getAllObservacionObra();
+            this.clearCheckbox();
+          }
+        });
+    });
+  }
+
+  public fotoObservacionObra(observacion: ObservacionObraView): void {
+    const dialogRef = this.dialog.open(UploadImagesComponent, {
+      data: observacion,
+      // width: '500px',
+      // maxWidth: '100%',
+    });
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.getAllObservacionObra();
+      });
   }
 
   // !important, this part is for table.
@@ -228,6 +251,7 @@ export class ObservacionObraComponent implements OnInit, OnDestroy {
 
   // ====================> generatePdf
   private async generatePdf(): Promise<void> {
+    this.pdfResult = undefined;
     let pdf: Array<any> = [];
 
     if (this.showPDF) {
@@ -271,10 +295,10 @@ export class ObservacionObraComponent implements OnInit, OnDestroy {
 
     this.pdfResult = this.pdfSvc.createPdf(docDefinition);
 
-    const pdfIframe = document.querySelector(
-      '#pdf-iframe'
-    ) as HTMLIFrameElement;
-    pdfIframe.src = await this.pdfSvc.getPdfDataUrl(this.pdfResult);
+    // const pdfIframe = document.querySelector(
+    //   '#pdf-iframe'
+    // ) as HTMLIFrameElement;
+    // pdfIframe.src = await this.pdfSvc.getPdfDataUrl(this.pdfResult);
   }
 
   // ====================> downloadPdf

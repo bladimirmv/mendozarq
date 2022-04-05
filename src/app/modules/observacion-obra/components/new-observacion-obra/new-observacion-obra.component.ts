@@ -1,14 +1,11 @@
 import { ObservacionObra } from '@models/mendozarq/observacion.obra.interface';
 import { Component, OnInit, Inject } from '@angular/core';
-import { Subject } from 'rxjs';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-
 import {
   MatDialog,
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-
 import { ToastrService } from 'ngx-toastr';
 import { ObservacionObraService } from '@app/core/services/mendozarq/observacion-obra.service';
 

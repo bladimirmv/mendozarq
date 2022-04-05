@@ -1,3 +1,4 @@
+import { async } from '@angular/core/testing';
 import { VisitaProyecto } from './../../shared/models/mendozarq/visita.proyecto.interface';
 import { ObservacionObraView } from './../../shared/models/mendozarq/observacion.obra.interface';
 import { OpinionProductoView } from '@app/shared/models/liraki/opinion.producto.interface';
@@ -35,6 +36,8 @@ export interface BodyTable {
   background?: string;
   fit?: string;
   stack?: Array<any>;
+  image?: any;
+  width?: any;
 }
 
 export type TypeReport =
@@ -1768,270 +1771,340 @@ export class PdfMethods {
     return pdf;
   }
 
+  delay = (s) => {
+    return new Promise((resolve) => setTimeout(resolve, s * 1000));
+  };
+
   // !TRBAJANDO AQUI ================================================
-  public async observacionObra(
+  public observacionObra(
     pdf: Array<any>,
     observaciones: Array<ObservacionObraView>,
     visita: VisitaProyecto
   ): Promise<Array<any>> {
-    const bodyTable: Array<BodyTable[]> = [];
-    const bodyInfo: Array<BodyTable[]> = [];
+    return new Promise(async (resolve) => {
+      const bodyInfo: Array<BodyTable[]> = [];
 
-    if (visita) {
-      pdf.push({
-        columns: [
-          {
-            image: await this.getBase64ImageFromURL('./assets/logo-wave.svg'),
-            width: 50,
-          },
-          {
-            text: 'MENDOZARQ',
-            margin: [0, 14, 0, 0],
-            fontSize: 14,
-            color: '#425066',
-          },
-          {
-            text: moment(visita.fecha).format('MM/DD/YYYY').toUpperCase(),
-            alignment: 'right',
-            margin: [0, 14, 0, 0],
-            fontSize: 14,
-            color: '#425066',
-          },
-        ],
-      });
-
-      bodyInfo.push([
-        {
-          text: 'Visita:',
-          style: 'tableHeader',
-          colSpan: 1,
-          color: '#000000',
-          bold: true,
-          border: [false],
-        },
-        {
-          text: `${visita.nombre}`,
-          style: 'tableHeader',
-          color: '#425066',
-          colSpan: 1,
-          border: [false],
-          fontSize: 10,
-          margin: [0, 2, 0, 0],
-        },
-
-        {
-          qr: `${visita.uuidProyecto}`,
-          background: '#FFFFFF',
-          foreground: '#425066',
-          fit: '65',
-          rowSpan: 3,
-          border: [false],
-        },
-      ]);
-
-      bodyInfo.push([
-        {
-          text: 'Descripción:',
-          style: 'tableHeader',
-          colSpan: 1,
-          color: '#000000',
-          bold: true,
-          border: [false],
-        },
-        {
-          text: `${visita.nombre}`,
-          style: 'tableHeader',
-          colSpan: 1,
-          color: '#425066',
-          fontSize: 10,
-          border: [false],
-          margin: [0, 2, 0, 0],
-        },
-        {},
-      ]);
-
-      bodyInfo.push([
-        {
-          text: 'Fase del Proyecto:',
-          style: 'tableHeader',
-          colSpan: 1,
-          color: '#000000',
-          bold: true,
-          border: [false, false, false, false],
-        },
-        {
-          stack: [
+      if (visita) {
+        pdf.push({
+          columns: [
             {
+              image: await this.getBase64ImageFromURL('./assets/logo-wave.svg'),
+              width: 50,
+            },
+            {
+              text: 'MENDOZARQ',
+              margin: [0, 14, 0, 0],
+              fontSize: 14,
               color: '#425066',
-              fontSize: 10,
-              ul: visita.faseDelProyecto.split(' <=> '),
+            },
+            {
+              text: moment(visita.fecha).format('MM/DD/YYYY').toUpperCase(),
+              alignment: 'right',
+              margin: [0, 14, 0, 0],
+              fontSize: 14,
+              color: '#425066',
             },
           ],
-
-          border: [false, false, false, false],
-        },
-        {},
-      ]);
-
-      pdf.push({
-        style: 'tableExample',
-        margin: [0, 10, 0, 0],
-        table: {
-          body: bodyInfo,
-          alignment: 'center',
-          widths: ['auto', '*', 'auto'],
-        },
-        layout: {
-          hLineWidth: function (i, node) {
-            return i === 0 || i === node.table.body.length ? 1 : 1;
-          },
-          vLineWidth: function (i, node) {
-            return i === 0 || i === node.table.widths.length ? 1 : 1;
-          },
-          hLineColor: function (i, node) {
-            return '#425066';
-          },
-          vLineColor: function (i, node) {
-            return '#425066';
-          },
-        },
-      });
-
-      pdf.push([{ text: '\n' }]);
-    }
-
-    if (!observaciones.length) {
-      bodyTable.push([
-        {
-          text: 'Punto de Inspeccion',
-          style: 'tableHeader',
-          colSpan: 1,
-          alignment: 'center',
-          color: '#FFFFFF',
-          fillColor: '#FF6E00',
-          bold: true,
-          border: [false, false, false, false],
-        },
-        {
-          text: 'Observacion',
-          style: 'tableHeader',
-          colSpan: 1,
-          alignment: 'center',
-          color: '#FFFFFF',
-          fillColor: '#FF6E00',
-          bold: true,
-          border: [false, false, false, false],
-        },
-        {
-          text: 'Levantamiento de Observacion',
-          style: 'tableHeader',
-          colSpan: 1,
-          alignment: 'center',
-          color: '#FFFFFF',
-          fillColor: '#FF6E00',
-          bold: true,
-          border: [false, false, false, false],
-        },
-      ]);
-    }
-
-    observaciones.forEach((obs) => {
-      bodyTable.push([
-        {
-          text: 'Punto de Inspeccion',
-          style: 'tableHeader',
-          colSpan: 1,
-          alignment: 'center',
-          color: '#FFFFFF',
-          fillColor: '#FF6E00',
-          bold: true,
-          border: [false, false, false, false],
-        },
-        {
-          text: 'Observacion',
-          style: 'tableHeader',
-          colSpan: 1,
-          alignment: 'center',
-          color: '#FFFFFF',
-          fillColor: '#FF6E00',
-          bold: true,
-          border: [false, false, false, false],
-        },
-        {
-          text: 'Levantamiento de Observacion',
-          style: 'tableHeader',
-          colSpan: 1,
-          alignment: 'center',
-          color: '#FFFFFF',
-          fillColor: '#FF6E00',
-          bold: true,
-          border: [false, false, false, false],
-        },
-      ]);
-
-      bodyTable.push([
-        {
-          text: `${obs?.puntoDeInspeccion}`,
-          alignment: 'justify',
-          border: [false, false, false, true],
-        },
-        {
-          text: `${obs?.observacion}`,
-          alignment: 'justify',
-          border: [false, false, false, true],
-        },
-        {
-          text: `${obs?.levantamientoObservacion}`,
-          alignment: 'center',
-          border: [false, false, false, true],
-        },
-      ]);
-
-      bodyTable.push([
-        {
-          text: '\n',
-          border: [false, false, false, false],
-          colSpan: 3,
-        },
-        {},
-        {},
-      ]);
-
-      obs.fotos.forEach((f) => {
-        pdf.push({
-          image: `${this.getImage(f.keyName)}`,
-          width: 400,
-          alignment: 'center',
         });
-      });
+
+        bodyInfo.push([
+          {
+            text: 'Visita:',
+            style: 'tableHeader',
+            colSpan: 1,
+            color: '#000000',
+            bold: true,
+            border: [false],
+          },
+          {
+            text: `${visita.nombre}`,
+            style: 'tableHeader',
+            color: '#425066',
+            colSpan: 1,
+            border: [false],
+            fontSize: 10,
+            margin: [0, 2, 0, 0],
+          },
+
+          {
+            qr: `${visita.uuidProyecto}`,
+            background: '#FFFFFF',
+            foreground: '#425066',
+            fit: '65',
+            rowSpan: 3,
+            border: [false],
+          },
+        ]);
+
+        bodyInfo.push([
+          {
+            text: 'Descripción:',
+            style: 'tableHeader',
+            colSpan: 1,
+            color: '#000000',
+            bold: true,
+            border: [false],
+          },
+          {
+            text: `${visita.nombre}`,
+            style: 'tableHeader',
+            colSpan: 1,
+            color: '#425066',
+            fontSize: 10,
+            border: [false],
+            margin: [0, 2, 0, 0],
+          },
+          {},
+        ]);
+
+        bodyInfo.push([
+          {
+            text: 'Fase del Proyecto:',
+            style: 'tableHeader',
+            colSpan: 1,
+            color: '#000000',
+            bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            stack: [
+              {
+                color: '#425066',
+                fontSize: 10,
+                ul: visita.faseDelProyecto
+                  ? visita.faseDelProyecto.split(' <=> ')
+                  : [],
+              },
+            ],
+
+            border: [false, false, false, false],
+          },
+          {},
+        ]);
+
+        pdf.push({
+          style: 'tableExample',
+          margin: [0, 10, 0, 0],
+          table: {
+            body: bodyInfo,
+            alignment: 'center',
+            widths: ['auto', '*', 'auto'],
+          },
+          layout: {
+            hLineWidth: function (i, node) {
+              return i === 0 || i === node.table.body.length ? 1 : 1;
+            },
+            vLineWidth: function (i, node) {
+              return i === 0 || i === node.table.widths.length ? 1 : 1;
+            },
+            hLineColor: function (i, node) {
+              return '#425066';
+            },
+            vLineColor: function (i, node) {
+              return '#425066';
+            },
+          },
+        });
+
+        pdf.push([{ text: '\n' }]);
+      }
+
+      for (const obs of observaciones) {
+        const bodyTable: Array<BodyTable[]> = [];
+        bodyTable.push([
+          {
+            text: 'Punto de Inspeccion',
+            style: 'tableHeader',
+            colSpan: 1,
+            alignment: 'center',
+            color: '#FFFFFF',
+            fillColor: '#FF6E00',
+            bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            text: 'Observacion',
+            style: 'tableHeader',
+            colSpan: 1,
+            alignment: 'center',
+            color: '#FFFFFF',
+            fillColor: '#FF6E00',
+            bold: true,
+            border: [false, false, false, false],
+          },
+          {
+            text: 'Levantamiento de Observacion',
+            style: 'tableHeader',
+            colSpan: 1,
+            alignment: 'center',
+            color: '#FFFFFF',
+            fillColor: '#FF6E00',
+            bold: true,
+            border: [false, false, false, false],
+          },
+        ]);
+        bodyTable.push([
+          {
+            text: `${obs?.puntoDeInspeccion}`,
+            alignment: 'justify',
+            border: [false, false, false, true],
+          },
+          {
+            text: `${obs?.observacion}`,
+            alignment: 'justify',
+            border: [false, false, false, true],
+          },
+          {
+            text: `${obs?.levantamientoObservacion}`,
+            alignment: 'center',
+            border: [false, false, false, true],
+          },
+        ]);
+        bodyTable.push([
+          {
+            text: '\n',
+            border: [false, false, false, false],
+            colSpan: 3,
+          },
+          {},
+          {},
+        ]);
+
+        pdf.push(
+          this.centerObject({
+            style: 'tableExample',
+            table: {
+              body: bodyTable,
+              alignment: 'center',
+              widths: [155, 155, 155],
+            },
+            layout: {
+              hLineWidth: function (i, node) {
+                return i === 0 || i === node.table.body.length ? 1 : 1;
+              },
+              vLineWidth: function (i, node) {
+                return i === 0 || i === node.table.widths.length ? 0 : 1;
+              },
+              hLineColor: function (i, node) {
+                return '#425066';
+              },
+              vLineColor: function (i, node) {
+                return '#425066';
+              },
+            },
+          })
+        );
+
+        for (const f of obs.fotos) {
+          // observaciones[0].fotos[0].keyName
+
+          pdf.push({
+            image: await this.getBase64ImageFromURL(this.getImage(f.keyName)),
+            width: 400,
+            alignment: 'center',
+          });
+        }
+      }
+
+      // for (const obs of observaciones) {
+      //   const bodyTable: Array<BodyTable[]> = [];
+      //   bodyTable.push([
+      //     {
+      //       text: 'Punto de Inspeccion',
+      //       style: 'tableHeader',
+      //       colSpan: 1,
+      //       alignment: 'center',
+      //       color: '#FFFFFF',
+      //       fillColor: '#FF6E00',
+      //       bold: true,
+      //       border: [false, false, false, false],
+      //     },
+      //     {
+      //       text: 'Observacion',
+      //       style: 'tableHeader',
+      //       colSpan: 1,
+      //       alignment: 'center',
+      //       color: '#FFFFFF',
+      //       fillColor: '#FF6E00',
+      //       bold: true,
+      //       border: [false, false, false, false],
+      //     },
+      //     {
+      //       text: 'Levantamiento de Observacion',
+      //       style: 'tableHeader',
+      //       colSpan: 1,
+      //       alignment: 'center',
+      //       color: '#FFFFFF',
+      //       fillColor: '#FF6E00',
+      //       bold: true,
+      //       border: [false, false, false, false],
+      //     },
+      //   ]);
+      //   bodyTable.push([
+      //     {
+      //       text: `${obs?.puntoDeInspeccion}`,
+      //       alignment: 'justify',
+      //       border: [false, false, false, true],
+      //     },
+      //     {
+      //       text: `${obs?.observacion}`,
+      //       alignment: 'justify',
+      //       border: [false, false, false, true],
+      //     },
+      //     {
+      //       text: `${obs?.levantamientoObservacion}`,
+      //       alignment: 'center',
+      //       border: [false, false, false, true],
+      //     },
+      //   ]);
+      //   bodyTable.push([
+      //     {
+      //       text: '\n',
+      //       border: [false, false, false, false],
+      //       colSpan: 3,
+      //     },
+      //     {},
+      //     {},
+      //   ]);
+
+      //   pdf.push(
+      //     this.centerObject({
+      //       style: 'tableExample',
+      //       table: {
+      //         body: bodyTable,
+      //         alignment: 'center',
+      //         widths: [155, 155, 155],
+      //       },
+      //       layout: {
+      //         hLineWidth: function (i, node) {
+      //           return i === 0 || i === node.table.body.length ? 1 : 1;
+      //         },
+      //         vLineWidth: function (i, node) {
+      //           return i === 0 || i === node.table.widths.length ? 0 : 1;
+      //         },
+      //         hLineColor: function (i, node) {
+      //           return '#425066';
+      //         },
+      //         vLineColor: function (i, node) {
+      //           return '#425066';
+      //         },
+      //       },
+      //     })
+      //   );
+
+      //   for (const fotos of obs.fotos) {
+      //     pdf.push({
+      //       image: await this.getBase64ImageFromURL(
+      //         this.getImage(fotos.keyName)
+      //       ),
+      //       width: 400,
+      //       alignment: 'center',
+      //     });
+      //   }
+      // }
+
+      resolve(pdf);
     });
-
-    pdf.push(
-      this.centerObject({
-        style: 'tableExample',
-        table: {
-          body: bodyTable,
-          alignment: 'center',
-          widths: [155, 155, 155],
-        },
-        layout: {
-          hLineWidth: function (i, node) {
-            return i === 0 || i === node.table.body.length ? 1 : 1;
-          },
-          vLineWidth: function (i, node) {
-            return i === 0 || i === node.table.widths.length ? 0 : 1;
-          },
-          hLineColor: function (i, node) {
-            return '#425066';
-          },
-          vLineColor: function (i, node) {
-            return '#425066';
-          },
-        },
-      })
-    );
-
-    return pdf;
   }
 
   // ====================> header

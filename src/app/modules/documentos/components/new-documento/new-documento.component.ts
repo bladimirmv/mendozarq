@@ -13,7 +13,6 @@ import { ToastrService } from 'ngx-toastr';
 import { Subject, throwError, Observable, forkJoin, of } from 'rxjs';
 import { catchError, take, takeUntil, tap } from 'rxjs/operators';
 import * as moment from 'moment';
-import { ImgPreviewComponent } from '@app/shared/components/img-preview/img-preview.component';
 
 export class uploadFile {
   file: File;

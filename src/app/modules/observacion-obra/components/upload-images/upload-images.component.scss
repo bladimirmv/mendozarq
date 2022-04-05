@@ -1,0 +1,177 @@
+.dropzone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: auto;
+  min-height: 200px;
+  height: auto;
+  font-weight: 200;
+  border: 2px dashed var(--secondary);
+  border-radius: 5px;
+  background: var(--sobreCard-bg);
+
+  margin: 10px 0;
+  color: var(--text-color);
+
+  .text-hovering {
+    display: none;
+  }
+
+  &.hovering {
+    border: 2px solid var(--primary);
+    color: rgb(189, 182, 182) !important;
+  }
+
+  &.hovering .file-label {
+    background-color: rgb(189, 182, 182) !important;
+    color: white !important;
+  }
+
+  .file-label {
+    font-size: 1.2em;
+    background-color: var(--primary);
+    padding: 5px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+  }
+
+  .file-input {
+    display: none;
+  }
+
+  .upload-icon {
+    width: auto;
+    height: auto;
+    font-size: 80px;
+    color: var(--info);
+  }
+
+  &.hovering .upload-icon {
+    color: rgb(189, 182, 182) !important;
+  }
+}
+
+progress::-webkit-progress-value {
+  transition: width 0.1s ease;
+}
+
+img {
+  width: 250px;
+}
+
+.documento {
+  padding: 5px;
+  margin: 5px 0;
+  border: 2px dashed var(--secondary);
+  width: auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: repeat(3, auto);
+  max-width: 400px;
+
+  grid-template-areas:
+    "icon_doc title icon_delete"
+    "icon_doc tam icon_delete"
+    "icon_doc prog icon_delete";
+
+  .icon-type {
+    grid-area: icon_doc;
+    position: relative;
+    display: grid;
+    place-items: center;
+  }
+
+  .icon-type .type {
+    position: absolute;
+    font-size: 10px;
+    font-weight: bold;
+    color: white;
+    z-index: 100;
+  }
+
+  .icon-type .icon-documento {
+    color: var(--secondary);
+    font-size: 50px;
+    width: auto;
+    height: auto;
+  }
+
+  .title {
+    grid-area: title;
+    font-size: 14px;
+    white-space: nowrap;
+    width: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .size {
+    grid-area: tam;
+    font-size: 10px;
+  }
+
+  .delete-documento {
+    grid-area: icon_delete;
+    color: red;
+    display: grid;
+    place-items: center;
+  }
+
+  .progress {
+    grid-area: prog;
+    height: 6px;
+
+    color: white;
+  }
+
+  &.error {
+    border: 2px solid var(--warn);
+  }
+
+  &.success {
+    border: 2px solid var(--success);
+  }
+
+  .icon-type .c-error {
+    color: var(--warn);
+  }
+
+  .icon-type .c-success {
+    color: var(--success);
+  }
+}
+
+mat-dialog-actions {
+  display: grid;
+  grid-template-areas: "secondary success";
+  grid-template-columns: repeat(2, 1fr);
+  place-items: 🇨enter;
+
+  .mat-btn-success {
+    grid-area: success;
+  }
+
+  .mat-btn-secondary {
+    grid-area: secondary;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  mat-dialog-actions {
+    margin: 0;
+    padding: 0;
+    grid-template-columns: auto;
+    grid-gap: 10px;
+    grid-template-areas:
+      "success"
+      "secondary";
+
+    .mat-btn-success {
+      margin: 0;
+    }
+  }
+}
