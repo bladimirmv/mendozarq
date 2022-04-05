@@ -28,9 +28,8 @@ export class ProveedorComponent implements OnInit, OnDestroy {
 
   public stats = {
     total: 0,
-    mendozarq: 0,
-    liraki: 0,
-    mendoraki: 0,
+    conRecurso: 0,
+    sinRecurso: 0,
   };
 
   selected: ProveedorView[] = [];
@@ -83,9 +82,9 @@ export class ProveedorComponent implements OnInit, OnDestroy {
         this.dataSource.data = res;
         this.proveedor = res;
 
-        // this.stats.total = res.length;
-        // this.stats.mendozarq = res.filter((r) => r.area === 'mendozarq').length;
-        // this.stats.liraki = res.filter((r) => r.area === 'liraki').length;
+        this.stats.total = res.length;
+        this.stats.conRecurso = res.filter((r) => r.uuidRecurso).length;
+        this.stats.sinRecurso = res.filter((r) => !r.uuidRecurso).length;
         // this.stats.mendoraki = res.filter((r) => r.area === 'mendoraki').length;
       });
   }

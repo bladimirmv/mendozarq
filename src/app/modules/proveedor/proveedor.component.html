@@ -7,24 +7,17 @@
       </div>
     </app-status-card>
 
-    <app-status-card [icon]="'domain'" color="success">
-      <div slot="title">Mendozarq</div>
+    <app-status-card [icon]="'construction'" color="success">
+      <div slot="title">Con recurso</div>
       <div slot="count">
-        {{ stats.mendozarq }}
+        {{ stats.conRecurso }}
       </div>
     </app-status-card>
 
-    <app-status-card [icon]="'store'" color="warn">
-      <div slot="title">Liraki</div>
+    <app-status-card [icon]="'warning'" color="warn">
+      <div slot="title">Sin recurso</div>
       <div slot="count">
-        {{ stats.liraki }}
-      </div>
-    </app-status-card>
-
-    <app-status-card [icon]="'maps_home_work'" color="warn">
-      <div slot="title">Mendoraki</div>
-      <div slot="count">
-        {{ stats.mendoraki }}
+        {{ stats.sinRecurso }}
       </div>
     </app-status-card>
   </div>
