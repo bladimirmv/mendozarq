@@ -14,6 +14,7 @@ import { NewPlanificacionProyectoComponent } from './components/new-planificacio
 import { NewCapituloPlanificacionComponent } from './components/new-capitulo-planificacion/new-capitulo-planificacion.component';
 import { EditCapituloPlanificacionComponent } from './components/edit-capitulo-planificacion/edit-capitulo-planificacion.component';
 import { EditPlanificacionProyectoComponent } from './components/edit-planificacion-proyecto/edit-planificacion-proyecto.component';
+import { InfoActividadesComponent } from './components/info-actividades/info-actividades.component';
 @NgModule({
   declarations: [
     PlanificacionComponent,
@@ -24,6 +25,7 @@ import { EditPlanificacionProyectoComponent } from './components/edit-planificac
     NewCapituloPlanificacionComponent,
     EditCapituloPlanificacionComponent,
     EditPlanificacionProyectoComponent,
+    InfoActividadesComponent,
   ],
   imports: [
     CommonModule,

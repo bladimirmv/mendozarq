@@ -124,6 +124,80 @@
       color="primary"
     ></mat-slider>
 
+    <div class="full-width full-column">
+      <h4 align="center">Lista de Actividades</h4>
+      <div
+        class="editable"
+        contenteditable="true"
+        id="ul-text"
+        style="padding: 5px"
+      ></div>
+
+      <br />
+
+      <div style="display: grid; place-items: center">
+        <mat-button-toggle-group #group="matButtonToggleGroup" align="center">
+          <mat-button-toggle
+            onclick="document.execCommand('bold',false,null);"
+            value="left"
+            aria-label="Text align left"
+          >
+            <mat-icon>format_bold</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle
+            onclick="document.execCommand('italic',false,null);"
+            value="center"
+            aria-label="Text align center"
+          >
+            <mat-icon>format_italic</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle
+            onclick="document.execCommand('underline',false,null);"
+            value="right"
+            aria-label="Text align right"
+          >
+            <mat-icon>format_underlined</mat-icon>
+          </mat-button-toggle>
+
+          <mat-button-toggle
+            color="warn"
+            onclick="document.execCommand('foreColor',false, 'red');"
+            value="justify"
+            aria-label="Text align justify"
+          >
+            <mat-icon style="color: red">format_color_text</mat-icon>
+          </mat-button-toggle>
+
+          <mat-button-toggle
+            color="warn"
+            onclick="document.execCommand('foreColor',false, '#425066');"
+            value="justify"
+            aria-label="Text align justify"
+          >
+            <mat-icon>format_color_text</mat-icon>
+          </mat-button-toggle>
+
+          <mat-button-toggle
+            color="warn"
+            (click)="addList('li')"
+            value="justify"
+            aria-label="Text align justify"
+          >
+            <mat-icon>format_list_bulleted</mat-icon>
+          </mat-button-toggle>
+
+          <mat-button-toggle
+            color="warn"
+            (click)="addList('ol')"
+            value="justify"
+            aria-label="Text align justify"
+          >
+            <mat-icon>format_list_numbered</mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div>
+
     <mat-checkbox formControlName="hito" class="full-width full-column"
       >Milestone o Hito</mat-checkbox
     >

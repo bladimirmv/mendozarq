@@ -1,9 +1,11 @@
+import { FormControl } from '@angular/forms';
 import { NewPlanificacionProyectoComponent } from './components/new-planificacion-proyecto/new-planificacion-proyecto.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { PlanificacionProyecto } from '@app/shared/models/charts/planificacion.interface';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { P } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-planificacion',
@@ -13,6 +15,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 export class PlanificacionComponent
   implements OnInit, OnDestroy, AfterViewInit
 {
+  descripcion = '';
   private destroy$: Subject<any> = new Subject<any>();
   public planificacionProyecto: PlanificacionProyecto | null =
     {} as PlanificacionProyecto;

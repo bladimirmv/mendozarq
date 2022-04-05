@@ -33,6 +33,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 import { ToastrModule } from 'ngx-toastr';
 const matModules = [
@@ -69,6 +70,7 @@ const matModules = [
   MatRadioModule,
   MatBadgeModule,
   MatStepperModule,
+  MatButtonToggleModule,
 ];
 
 @NgModule({

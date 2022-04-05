@@ -29,6 +29,7 @@ export interface TareaPlanificacionProyecto {
   hito?: boolean;
   color?: string;
   uuidCapitulo?: string;
+  actividades?: string;
 }
 
 export interface PlanificacionProyectoView extends PlanificacionProyecto {

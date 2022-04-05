@@ -6,6 +6,25 @@
       {{ !darkMode ? "dark_mode" : "light_mode" }}
     </mat-icon>
   </button>
+  <mat-divider [vertical]="true" style="height: 30px"></mat-divider>
+
+  <button
+    mat-icon-button
+    [disabled]="!canEdit"
+    matTooltip="Completar"
+    (click)="onCompleteCapituloOrTarea()"
+  >
+    <mat-icon [ngClass]="{ 'accent-color': canEdit }"> money </mat-icon>
+  </button>
+
+  <button
+    mat-icon-button
+    [disabled]="!canEdit"
+    matTooltip="Actividades"
+    (click)="viewInfoActividades()"
+  >
+    <mat-icon [ngClass]="{ 'info-color': canEdit }"> info </mat-icon>
+  </button>
 
   <button
     mat-icon-button
@@ -22,6 +41,7 @@
       delete
     </mat-icon>
   </button>
+
   <button
     mat-icon-button
     [disabled]="!canEdit"
@@ -30,6 +50,8 @@
   >
     <mat-icon [ngClass]="{ 'accent-color': canEdit }"> edit </mat-icon>
   </button>
+
+  <mat-divider [vertical]="true" style="height: 30px"></mat-divider>
 
   <button
     mat-icon-button
@@ -47,6 +69,8 @@
   >
     <mat-icon class="success-color"> add </mat-icon>
   </button>
+
+  <mat-divider [vertical]="true" style="height: 30px"></mat-divider>
 
   <button
     mat-icon-button

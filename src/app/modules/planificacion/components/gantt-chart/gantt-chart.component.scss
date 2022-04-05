@@ -14,7 +14,13 @@
   width: 100%;
   margin: 10px auto;
   max-width: 100%;
-  align-items: center;
+}
+
+@media screen and (max-width: 380px) {
+  .bar-options {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }
 
 .info-color {

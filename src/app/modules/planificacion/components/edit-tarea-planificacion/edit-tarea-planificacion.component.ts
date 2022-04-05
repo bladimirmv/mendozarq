@@ -70,11 +70,16 @@ export class EditTareaPlanificacionComponent implements OnInit {
       color: [this.data.tarea.color ? this.data.tarea.color : '#ffffff'],
       uuidCapitulo: [this.data.tarea.uuidCapitulo, Validators.required],
     });
+
+    const ul = document.querySelector('#ul-text');
+
+    ul.innerHTML = this.data?.tarea?.actividades;
   }
 
   public editPlanificacionProyecto(tarea: TareaPlanificacionProyecto): void {
     tarea.color = tarea.color == '#ffffff' ? '' : tarea.color;
     tarea.uuid = this.data.tarea.uuid;
+    tarea.actividades = document.querySelector('#ul-text').innerHTML;
 
     this.planificacionSvc
       .updateTareaPlanificacionProyecto(tarea.uuid, tarea)
@@ -121,5 +126,17 @@ export class EditTareaPlanificacionComponent implements OnInit {
       : validateFIeld.valid
       ? { color: 'accent', status: true, icon: 'done' }
       : {};
+  }
+
+  addList(type: string): void {
+    const ul = document.querySelector('#ul-text');
+
+    if (type === 'li') {
+      ul.innerHTML += `<li>Nuevo</li>`;
+    }
+
+    if (type === 'ol') {
+      ul.innerHTML += `<li>Nuevo<ol><li>Sub</li></ol></li>`;
+    }
   }
 }

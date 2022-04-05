@@ -86,6 +86,7 @@ export class NewTareaPlanificacionComponent implements OnInit, OnDestroy {
 
   public newPlanificacionProyecto(tarea: TareaPlanificacionProyecto): void {
     tarea.color = tarea.color == '#ffffff' ? '' : tarea.color;
+    tarea.actividades = document.querySelector('#ul-text').innerHTML;
     this.planificacionSvc
       .addTareaPlanificacionProyecto(tarea)
       .subscribe((res) => {
@@ -111,5 +112,17 @@ export class NewTareaPlanificacionComponent implements OnInit, OnDestroy {
       : validateFIeld.valid
       ? { color: 'accent', status: true, icon: 'done' }
       : {};
+  }
+
+  addList(type: string): void {
+    const ul = document.querySelector('#ul-text');
+
+    if (type === 'li') {
+      ul.innerHTML += `<li>Nuevo</li>`;
+    }
+
+    if (type === 'ol') {
+      ul.innerHTML += `<li>Nuevo<ol><li>Sub</li></ol></li>`;
+    }
   }
 }

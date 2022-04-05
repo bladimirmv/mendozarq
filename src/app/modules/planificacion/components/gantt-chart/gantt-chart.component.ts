@@ -1,3 +1,4 @@
+import { InfoActividadesComponent } from './../info-actividades/info-actividades.component';
 import { Router } from '@angular/router';
 import { ProyectoService } from './../../../../core/services/mendozarq/proyecto.service';
 import { Proyecto } from './../../../../shared/models/mendozarq/proyecto.interface';
@@ -111,6 +112,7 @@ export class GanttChartComponent implements OnInit {
   public onAddTareaPlanificacion(): void {
     const dialogRef = this.matDialog.open(NewTareaPlanificacionComponent, {
       data: this.planificacionProyecto,
+      maxWidth: '500px',
     });
 
     dialogRef.afterClosed().subscribe((res: boolean) => {
@@ -118,6 +120,74 @@ export class GanttChartComponent implements OnInit {
         this.initPlanificacionProyecto();
       }
     });
+  }
+
+  public viewInfoActividades(): void {
+    const points: any = this.chart.getSelectedPoints()[0];
+    let capitulo: CapituloPlanificacionProyecto;
+    let tarea: TareaPlanificacionProyecto;
+
+    if (!points.parent) {
+      return;
+    }
+
+    tarea = this.planificacionProyecto.tareas.filter(
+      (tarea) => tarea.uuid === points.id
+    )[0];
+    const tareaDialogRef = this.matDialog.open(InfoActividadesComponent, {
+      data: { tarea, planificacion: this.planificacionProyecto },
+      maxWidth: '500px',
+    });
+
+    tareaDialogRef
+      .afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: boolean) => {
+        if (res) {
+          this.canDelete = false;
+          this.canEdit = false;
+          this.selectedPoints = 0;
+          this.initPlanificacionProyecto();
+        }
+      });
+  }
+
+  public onCompleteCapituloOrTarea(): void {
+    const points: any = this.chart.getSelectedPoints()[0];
+    let capitulo: CapituloPlanificacionProyecto;
+    let tarea: TareaPlanificacionProyecto;
+
+    if (!points.parent) {
+      capitulo = this.planificacionProyecto.capitulos.filter(
+        (tarea) => tarea.uuid === points.id
+      )[0];
+
+      capitulo.avance = 100;
+
+      this.planificacionSvc
+        .updateCapituloPlanificacionProyecto(capitulo.uuid, capitulo)
+        .subscribe(() => {
+          this.canDelete = false;
+          this.canEdit = false;
+          this.selectedPoints = 0;
+          this.initPlanificacionProyecto();
+        });
+
+      return;
+    }
+
+    tarea = this.planificacionProyecto.tareas.filter(
+      (tarea) => tarea.uuid === points.id
+    )[0];
+
+    this.planificacionSvc
+      .updateTareaPlanificacionProyecto(tarea.uuid, tarea)
+      .subscribe(() => {
+        this.canDelete = false;
+        this.canEdit = false;
+        this.selectedPoints = 0;
+        this.initPlanificacionProyecto();
+      });
   }
 
   public onAddCapituloPlanificacion(): void {
@@ -231,6 +301,7 @@ export class GanttChartComponent implements OnInit {
       EditTareaPlanificacionComponent,
       {
         data: { tarea, planificacion: this.planificacionProyecto },
+        maxWidth: '500px',
       }
     );
 
