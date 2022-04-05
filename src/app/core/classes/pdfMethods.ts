@@ -1996,112 +1996,22 @@ export class PdfMethods {
         );
 
         for (const f of obs.fotos) {
-          // observaciones[0].fotos[0].keyName
+          pdf.push({
+            text: 'FOTOS DE LA OBSERVACION',
+            bold: true,
+            style: 'header',
+            alignment: 'center',
+            decoration: 'underline',
+            decorationStyle: 'solid',
+          });
 
           pdf.push({
             image: await this.getBase64ImageFromURL(this.getImage(f.keyName)),
-            width: 400,
+            width: 300,
             alignment: 'center',
           });
         }
       }
-
-      // for (const obs of observaciones) {
-      //   const bodyTable: Array<BodyTable[]> = [];
-      //   bodyTable.push([
-      //     {
-      //       text: 'Punto de Inspeccion',
-      //       style: 'tableHeader',
-      //       colSpan: 1,
-      //       alignment: 'center',
-      //       color: '#FFFFFF',
-      //       fillColor: '#FF6E00',
-      //       bold: true,
-      //       border: [false, false, false, false],
-      //     },
-      //     {
-      //       text: 'Observacion',
-      //       style: 'tableHeader',
-      //       colSpan: 1,
-      //       alignment: 'center',
-      //       color: '#FFFFFF',
-      //       fillColor: '#FF6E00',
-      //       bold: true,
-      //       border: [false, false, false, false],
-      //     },
-      //     {
-      //       text: 'Levantamiento de Observacion',
-      //       style: 'tableHeader',
-      //       colSpan: 1,
-      //       alignment: 'center',
-      //       color: '#FFFFFF',
-      //       fillColor: '#FF6E00',
-      //       bold: true,
-      //       border: [false, false, false, false],
-      //     },
-      //   ]);
-      //   bodyTable.push([
-      //     {
-      //       text: `${obs?.puntoDeInspeccion}`,
-      //       alignment: 'justify',
-      //       border: [false, false, false, true],
-      //     },
-      //     {
-      //       text: `${obs?.observacion}`,
-      //       alignment: 'justify',
-      //       border: [false, false, false, true],
-      //     },
-      //     {
-      //       text: `${obs?.levantamientoObservacion}`,
-      //       alignment: 'center',
-      //       border: [false, false, false, true],
-      //     },
-      //   ]);
-      //   bodyTable.push([
-      //     {
-      //       text: '\n',
-      //       border: [false, false, false, false],
-      //       colSpan: 3,
-      //     },
-      //     {},
-      //     {},
-      //   ]);
-
-      //   pdf.push(
-      //     this.centerObject({
-      //       style: 'tableExample',
-      //       table: {
-      //         body: bodyTable,
-      //         alignment: 'center',
-      //         widths: [155, 155, 155],
-      //       },
-      //       layout: {
-      //         hLineWidth: function (i, node) {
-      //           return i === 0 || i === node.table.body.length ? 1 : 1;
-      //         },
-      //         vLineWidth: function (i, node) {
-      //           return i === 0 || i === node.table.widths.length ? 0 : 1;
-      //         },
-      //         hLineColor: function (i, node) {
-      //           return '#425066';
-      //         },
-      //         vLineColor: function (i, node) {
-      //           return '#425066';
-      //         },
-      //       },
-      //     })
-      //   );
-
-      //   for (const fotos of obs.fotos) {
-      //     pdf.push({
-      //       image: await this.getBase64ImageFromURL(
-      //         this.getImage(fotos.keyName)
-      //       ),
-      //       width: 400,
-      //       alignment: 'center',
-      //     });
-      //   }
-      // }
 
       resolve(pdf);
     });
