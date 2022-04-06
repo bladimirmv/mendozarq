@@ -139,6 +139,7 @@ $mendozarq-dark-theme: mat-dark-theme(
 
   --text-color: var(--secondary);
   --reverse-text-color: white;
+  --bg-header-logs: var(--gray2);
 
   --border-gradient: var(--secondary);
   --nav-shadow: 4px 0 10px -3px #010101;
@@ -156,7 +157,6 @@ $mendozarq-dark-theme: mat-dark-theme(
   --card-radius: 0.25em;
   --footer-bg: var(--secondary);
   --sobreCard-bg: whitesmoke;
-
   --bar-bg: var(--gray0);
 
   transition: all 0.3s ease;
@@ -178,6 +178,8 @@ $mendozarq-dark-theme: mat-dark-theme(
   --h-border: 2px dashed var(--gray1);
   --card-border: 1px solid var(--gray1);
   --footer-bg: var(--secondary);
+  --bg-header-logs: var(--gray2);
+
   // transition: all 0.5s ease;
 }
 
@@ -204,6 +206,7 @@ $mendozarq-dark-theme: mat-dark-theme(
   --card-radius: 0.25em;
   --footer-bg: var(--nav-bg);
   --sobreCard-bg: var(--gray4);
+  --bg-header-logs: var(--gray4);
 
   // transition: all 0.3s ease;
 }

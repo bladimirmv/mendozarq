@@ -1,18 +1,31 @@
 <div class="content">
   <div class="stats-container">
-    <app-status-card [icon]="'library_books'" color="info">
-      <div slot="title">Proyectos Totales</div>
-      <div slot="count">50</div>
+    <app-status-card [icon]="'admin_panel_settings'" color="error">
+      <div slot="title">Administradores</div>
+      <div slot="count">
+        {{ stats.administrador }}
+      </div>
     </app-status-card>
 
     <app-status-card [icon]="'engineering'" color="accent">
-      <div slot="title">Proyectos en Curso</div>
-      <div slot="count">50</div>
+      <div slot="title">Arquitectos</div>
+      <div slot="count">
+        {{ stats.arquitecto }}
+      </div>
     </app-status-card>
 
-    <app-status-card [icon]="'done_all'" color="success">
-      <div slot="title">Proyectos Finzalizados</div>
-      <div slot="count">50</div>
+    <app-status-card [icon]="'assignment_ind'" color="info">
+      <div slot="title">Vendedores</div>
+      <div slot="count">
+        {{ stats.vendedor }}
+      </div>
+    </app-status-card>
+
+    <app-status-card [icon]="'groups'" color="success">
+      <div slot="title">Clientes</div>
+      <div slot="count">
+        {{ stats.cliente }}
+      </div>
     </app-status-card>
   </div>
 
@@ -33,7 +46,7 @@
         height="18px"
         width="18px"
         viewBox="0 0 24 24"
-        fill="#ffffff"
+        fill="var(--text-color)"
       >
         <path d="M24 24H0V0h24v24z" fill="none" opacity=".87" />
         <path

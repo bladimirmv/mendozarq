@@ -1,3 +1,4 @@
+import { UsuarioService } from '@services/auth/usuario.service';
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { map, shareReplay, takeUntil } from 'rxjs/operators';
@@ -17,8 +18,18 @@ import { InfoLogComponent } from '../info-log/info-log.component';
 export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   public Logs: Logs[] = [] as Logs[];
   private destroy$: Subject<any> = new Subject<any>();
+  public stats = {
+    administrador: 0,
+    arquitecto: 0,
+    vendedor: 0,
+    cliente: 0,
+  };
 
-  constructor(private wsService: WebsocketService, private dialog: MatDialog) {}
+  constructor(
+    private wsService: WebsocketService,
+    private dialog: MatDialog,
+    private _usrSvc: UsuarioService
+  ) {}
 
   ngAfterViewInit(): void {
     moment.locale('es');
@@ -28,6 +39,10 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     this.wsService.emit('ws:getLogs');
     this.getDataSocket();
+    this._usrSvc.getAllStatsUsuarios().subscribe((stats) => {
+      this.stats = stats;
+      console.log(stats);
+    });
   }
 
   getDataSocket(): void {
