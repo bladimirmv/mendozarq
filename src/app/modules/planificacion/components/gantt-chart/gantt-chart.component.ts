@@ -180,6 +180,8 @@ export class GanttChartComponent implements OnInit {
       (tarea) => tarea.uuid === points.id
     )[0];
 
+    tarea.avance = 100;
+
     this.planificacionSvc
       .updateTareaPlanificacionProyecto(tarea.uuid, tarea)
       .subscribe(() => {
