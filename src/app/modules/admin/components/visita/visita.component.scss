@@ -1,4 +1,4 @@
-@import './../../../../../styles/side-nav.scss';
+@import "./../../../../../styles/side-nav.scss";
 
 .btn-admin {
   font-size: 14px;
@@ -7,7 +7,6 @@
     margin: 0 10px;
     font-size: 22px;
   }
-
 }
 
 .toolbar-between {
@@ -21,7 +20,6 @@
 }
 
 .img-user {
-
   img {
     border-radius: 50px;
     background-color: whitesmoke;
@@ -30,7 +28,6 @@
     height: 50px;
     width: 50px;
     object-fit: cover;
-
   }
 }
 
@@ -39,5 +36,18 @@
 
   .backIcon {
     color: var(--secondary);
+  }
+}
+
+.circle-profile {
+  cursor: pointer;
+  background-color: var(--primary);
+  span {
+    color: white;
+    display: grid;
+    place-items: center;
+    font-size: 24px !important;
+    text-transform: capitalize;
+    font-family: cubano;
   }
 }

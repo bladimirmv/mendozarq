@@ -18,7 +18,6 @@ export class AppearanceComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         this.darkTheme = res;
-        // console.log(res);
       });
   }
 
@@ -30,15 +29,10 @@ export class AppearanceComponent implements OnInit, OnDestroy {
   }
 
   formatLabel(value: number) {
-    // if (value >= 1000) {
     return Math.round(((value - 40) * 100) / 60);
-    // }
-
-    return value;
   }
 
   public changeRadio(value: boolean): void {
-    // this.darkTheme ? (this.darkTheme = false) : (this.darkTheme = true);
     this.darkTheme = value;
     this.toogleTheme();
   }

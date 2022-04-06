@@ -1,3 +1,14 @@
+<!-- <h2 align="center" class="title-1 gradient-text">
+  Avance del Proyecto {{ proyecto.porcentaje }}%
+</h2> -->
+<mat-progress-bar
+  [matTooltip]="proyecto.porcentaje + '%'"
+  mode="determinate"
+  [value]="proyecto.porcentaje"
+  class="mat-elevation-z"
+>
+</mat-progress-bar>
+
 <div class="bar-options mat-elevation-z2">
   <button mat-icon-button (click)="toggleMode()" matTooltip="Apariencia">
     <mat-icon

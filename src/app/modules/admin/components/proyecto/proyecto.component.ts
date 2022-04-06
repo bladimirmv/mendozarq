@@ -1,3 +1,4 @@
+import { Usuario } from './../../../../shared/models/usuario.interface';
 import { AuthService } from './../../../../core/services/auth/auth.service';
 import { Location } from '@angular/common';
 import { map, shareReplay, takeUntil } from 'rxjs/operators';
@@ -16,16 +17,18 @@ export class ProyectoComponent implements OnInit, OnDestroy {
   public modeSidenav = 'side';
   public breakpoint: boolean;
   private destroy$: Subject<any> = new Subject<any>();
+  public current_usuario: Usuario = [] as Usuario;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     private location: Location,
     private brightnessSvc: BrightnessService,
     private activatedRoute: ActivatedRoute,
-    private authSvs: AuthService
+    public authSvc: AuthService
   ) {}
   idPost: string;
   ngOnInit(): void {
+    this.current_usuario = this.activatedRoute.snapshot.data['usuario'];
     this.brightnessSvc.theme$
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
@@ -50,7 +53,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
   }
 
   onLogout(): void {
-    this.authSvs.logout();
+    this.authSvc.logout();
   }
 
   ngOnDestroy(): void {

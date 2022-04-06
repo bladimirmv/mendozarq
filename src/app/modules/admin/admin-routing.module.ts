@@ -23,6 +23,14 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
+        path: 'perfil',
+        resolve: {
+          usuario: UsuarioResolverService,
+        },
+        loadChildren: () =>
+          import('@modules/perfil/perfil.module').then((m) => m.PerfilModule),
+      },
+      {
         path: 'reporteMendozarq',
         loadChildren: () =>
           import('@modules/reporte-mendozarq/reporte-mendozarq.module').then(

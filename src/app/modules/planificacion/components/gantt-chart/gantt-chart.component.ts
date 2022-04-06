@@ -69,6 +69,10 @@ export class GanttChartComponent implements OnInit {
     this.initPlanificacionProyecto();
   }
   ngOnInit(): void {
+    this.initProyecto();
+  }
+
+  initProyecto(): void {
     this.proyectoSvc
       .getOneProyecto(this.uuidProyecto)
       .pipe(takeUntil(this.destroy$))
@@ -117,6 +121,7 @@ export class GanttChartComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((res: boolean) => {
       if (res) {
+        this.initProyecto();
         this.initPlanificacionProyecto();
       }
     });
@@ -170,6 +175,7 @@ export class GanttChartComponent implements OnInit {
           this.canDelete = false;
           this.canEdit = false;
           this.selectedPoints = 0;
+          this.initProyecto();
           this.initPlanificacionProyecto();
         });
 
@@ -188,6 +194,7 @@ export class GanttChartComponent implements OnInit {
         this.canDelete = false;
         this.canEdit = false;
         this.selectedPoints = 0;
+        this.initProyecto();
         this.initPlanificacionProyecto();
       });
   }
@@ -199,6 +206,7 @@ export class GanttChartComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((res: boolean) => {
       if (res) {
+        this.initProyecto();
         this.initPlanificacionProyecto();
       }
     });
@@ -245,6 +253,7 @@ export class GanttChartComponent implements OnInit {
             this.canDelete = false;
             this.canEdit = false;
             this.selectedPoints = 0;
+            this.initProyecto();
             this.initPlanificacionProyecto();
           });
         }
@@ -259,6 +268,7 @@ export class GanttChartComponent implements OnInit {
             this.canDelete = false;
             this.canEdit = false;
             this.selectedPoints = 0;
+            this.initProyecto();
             this.initPlanificacionProyecto();
           });
         }
@@ -289,6 +299,7 @@ export class GanttChartComponent implements OnInit {
             this.canDelete = false;
             this.canEdit = false;
             this.selectedPoints = 0;
+            this.initProyecto();
             this.initPlanificacionProyecto();
           }
         });
@@ -315,6 +326,7 @@ export class GanttChartComponent implements OnInit {
           this.canDelete = false;
           this.canEdit = false;
           this.selectedPoints = 0;
+          this.initProyecto();
           this.initPlanificacionProyecto();
         }
       });

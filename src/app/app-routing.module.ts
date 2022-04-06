@@ -35,11 +35,6 @@ const routes: Routes = [
     path: 'registro/:id',
     component: RegisterComponent,
   },
-  {
-    path: 'perfil',
-    loadChildren: () =>
-      import('@modules/perfil/perfil.module').then((m) => m.PerfilModule),
-  },
 
   {
     path: 'participante-visita',
@@ -68,7 +63,13 @@ const routes: Routes = [
         (m) => m.OpinionProductoModule
       ),
   },
-  { path: 'observacionObra', loadChildren: () => import('./modules/observacion-obra/observacion-obra.module').then(m => m.ObservacionObraModule) },
+  {
+    path: 'observacionObra',
+    loadChildren: () =>
+      import('./modules/observacion-obra/observacion-obra.module').then(
+        (m) => m.ObservacionObraModule
+      ),
+  },
 
   {
     path: '**',

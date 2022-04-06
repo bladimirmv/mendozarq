@@ -102,16 +102,24 @@
       </div>
 
       <div class="user-details">
-        <!-- <button mat-icon-button>
-          <mat-icon>
-            settings
-          </mat-icon>
-        </button> -->
-        <a routerLink="/perfil" class="img-user">
-          <picture>
-            <img src="./assets/avatar.svg" alt="" />
-          </picture>
-        </a>
+        <button
+          mat-icon-button
+          class="circle-profile"
+          [matMenuTriggerFor]="menu"
+          aria-label="Example icon-button with a menu"
+          *ngIf="authSvc.isLogged | async"
+        >
+          <span>
+            {{ current_usuario.nombre.substring(0, 1) }}
+          </span>
+        </button>
+
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item routerLink="/admin/perfil">
+            <mat-icon>account_circle</mat-icon>
+            <span>Ver perfil</span>
+          </button>
+        </mat-menu>
       </div>
     </mat-toolbar>
 

@@ -1,3 +1,4 @@
+import { Usuario } from './../../../../shared/models/usuario.interface';
 import { catchError, map, shareReplay, takeUntil } from 'rxjs/operators';
 import { Subject, Subscription, throwError } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -17,6 +18,7 @@ import { BrightnessService } from '@app/core/services/brightness.service';
 export class VisitaComponent implements OnInit, OnDestroy {
   public modeSidenav = 'side';
   public breakpoint: boolean;
+  public current_usuario: Usuario = [] as Usuario;
 
   private destroy$: Subject<any> = new Subject<any>();
   private uuidProyecto: string;
@@ -29,12 +31,14 @@ export class VisitaComponent implements OnInit, OnDestroy {
     private visitaProyectoSvc: VisitaProyectoService,
     private brightnessSvc: BrightnessService,
     private router: Router,
-    private authSvc: AuthService
+    public authSvc: AuthService
   ) {
     this.uuidVisita = this.activatedRoute.snapshot.params.uuid;
     this.checkProyecto();
   }
   ngOnInit(): void {
+    this.current_usuario = this.activatedRoute.snapshot.data['usuario'];
+
     this.brightnessSvc.theme$
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {});
