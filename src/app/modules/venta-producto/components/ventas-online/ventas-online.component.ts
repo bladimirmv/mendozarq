@@ -620,4 +620,34 @@ export class VentasOnlineComponent implements OnInit, OnDestroy {
       this._pdfSvc.print(this.pdfResult);
     }
   }
+
+  public async generatePdfVenta(venta: VentaView): Promise<void> {
+    let pdf: Array<any> = [];
+
+    pdf = await this._pdfSvc.ventaCliente(pdf, venta);
+
+    const docDefinition = {
+      content: pdf,
+      watermark: {
+        text: '©LIRAKI',
+        color: '#FF6E00',
+        opacity: 0.06,
+        bold: true,
+        italics: false,
+      },
+      info: {
+        title: 'VENTA',
+        author: '©LIRAKI',
+      },
+      pageMargins: [60, 40, 40, 60],
+      pageSize: 'letter',
+      defaultStyle: {
+        font: 'Roboto',
+      },
+    };
+
+    const pdfResult = this._pdfSvc.createPdf(docDefinition);
+
+    this._pdfSvc.open(pdfResult);
+  }
 }
