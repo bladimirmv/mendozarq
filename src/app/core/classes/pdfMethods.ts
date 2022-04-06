@@ -1210,6 +1210,372 @@ export class PdfMethods {
     return pdf;
   }
 
+  public async ventaCliente<T extends object>(
+    pdf: Array<any>,
+    venta: VentaView
+  ): Promise<Array<any>> {
+    const bodyInfo: Array<BodyTable[]> = [];
+    const bodyDetalle: Array<BodyTable[]> = [];
+
+    pdf.push({
+      columns: [
+        {
+          image: await this.getBase64ImageFromURL(
+            './assets/liraki_isotipo.svg'
+          ),
+          width: 50,
+        },
+        {
+          text: 'LIRAKI',
+          margin: [14, 8, 0, 0],
+          fontSize: 24,
+          color: '#425066',
+        },
+        {
+          text: moment(venta.creadoEn).format('DD/MM/YYYY[,] h:mm A'),
+          alignment: 'right',
+          margin: [0, 14, 0, 0],
+          fontSize: 14,
+          color: '#425066',
+        },
+      ],
+    });
+
+    bodyInfo.push([
+      {
+        text: 'Nombre:',
+        style: 'tableHeader',
+        colSpan: 1,
+        color: '#000000',
+        bold: true,
+        border: [false],
+      },
+      {
+        text: `${venta.nombreFactura}`,
+        style: 'tableHeader',
+        color: '#425066',
+        colSpan: 1,
+        border: [false],
+        fontSize: 10,
+        margin: [0, 2, 0, 0],
+      },
+
+      {
+        qr: venta.uuid,
+        background: '#FFFFFF',
+        foreground: '#425066',
+        fit: '90',
+        rowSpan: 5,
+        border: [false],
+        alignment: 'center',
+      },
+    ]);
+
+    bodyInfo.push([
+      {
+        text: 'NIT/CI/CEX:',
+        style: 'tableHeader',
+        colSpan: 1,
+        color: '#000000',
+        bold: true,
+        border: [false],
+      },
+      {
+        text: `${venta.nitCiCex}`,
+        style: 'tableHeader',
+        color: '#425066',
+        colSpan: 1,
+        border: [false],
+        fontSize: 10,
+        margin: [0, 2, 0, 0],
+      },
+
+      {},
+    ]);
+
+    bodyInfo.push([
+      {
+        text: 'Cliente:',
+        style: 'tableHeader',
+        colSpan: 1,
+        color: '#000000',
+        bold: true,
+        border: [false],
+      },
+      {
+        text: `${venta.cliente}`,
+        style: 'tableHeader',
+        colSpan: 1,
+        color: '#425066',
+        border: [false],
+        fontSize: 10,
+        margin: [0, 2, 0, 0],
+      },
+      {},
+    ]);
+    bodyInfo.push([
+      {
+        text: 'Departamento:',
+        style: 'tableHeader',
+        colSpan: 1,
+
+        color: '#000000',
+        bold: true,
+        border: [false],
+      },
+      {
+        text: `${venta.departamento}`.toUpperCase(),
+        style: 'tableHeader',
+        colSpan: 1,
+
+        color: '#425066',
+        border: [false],
+        fontSize: 10,
+        margin: [0, 2, 0, 0],
+      },
+      {},
+    ]);
+
+    bodyInfo.push([
+      {
+        text: 'Dirección:',
+        style: 'tableHeader',
+        colSpan: 1,
+        rowSpan: 2,
+
+        color: '#000000',
+        bold: true,
+        border: [false],
+      },
+      {
+        text: `${venta.direccion}`,
+        style: 'tableHeader',
+        colSpan: 1,
+        rowSpan: 2,
+
+        color: '#425066',
+        border: [false],
+        fontSize: 10,
+        margin: [0, 2, 0, 0],
+      },
+      {},
+    ]);
+
+    bodyInfo.push([
+      {},
+      {},
+      {
+        text: `Nro. ${venta.numeroVenta}`,
+        style: 'tableHeader',
+        color: '#ff6058',
+        colSpan: 1,
+        border: [false],
+        fontSize: 14,
+        margin: [0, 2, 0, 0],
+      },
+    ]);
+
+    // *data
+    pdf.push({
+      style: 'tableExample',
+      margin: [0, 10, 0, 0],
+      table: {
+        body: bodyInfo,
+        alignment: 'center',
+        widths: ['auto', '*', 'auto'],
+      },
+      layout: {
+        hLineWidth: function (i, node) {
+          return i === 0 || i === node.table.body.length ? 1 : 1;
+        },
+        vLineWidth: function (i, node) {
+          return i === 0 || i === node.table.widths.length ? 1 : 1;
+        },
+        hLineColor: function (i, node) {
+          return '#425066';
+        },
+        vLineColor: function (i, node) {
+          return '#425066';
+        },
+      },
+    });
+
+    pdf.push({
+      text: `${'DETALLE DE LA VENTA'}`.toUpperCase(),
+      fontSize: 16,
+      alignment: 'center',
+      bold: true,
+      margin: [0, 30, 0, 10],
+      tocItem: true,
+      tocMargin: [20, 0, 0, 0],
+    });
+
+    bodyDetalle.push([
+      {
+        text: 'Producto',
+        style: 'tableHeader',
+        // colSpan: 2,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#ff6e00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+
+      {
+        text: 'Cantidad',
+        style: 'tableHeader',
+        // colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#ff6e00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Precio Unitario',
+        style: 'tableHeader',
+        // colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#ff6e00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Descuento',
+        style: 'tableHeader',
+        // colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#ff6e00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Importe',
+        style: 'tableHeader',
+        // colSpan: 2,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#ff6e00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      // {},
+    ]);
+
+    venta.conceptos.forEach((c) => {
+      bodyDetalle.push([
+        {
+          text: `${c.nombre}`,
+          // alignment: 'justify',
+          border: [false, false, false, true],
+          // colSpan: 2,
+        },
+
+        // {},
+        {
+          text: c.cantidad.toString(),
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${c.precioUnitario.toString()} Bs.`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${c.descuento.toString()}%`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${c.importe.toString()} Bs.`,
+          alignment: 'center',
+          border: [false, false, false, true],
+          // colSpan: 2,
+        },
+        // {},
+      ]);
+    });
+
+    bodyDetalle.push([
+      // { text: '', border: [false, false, false, true] },
+      { text: '', border: [false, false, false, true] },
+      { text: '', border: [false, false, false, true] },
+      { text: '', border: [false, false, false, true] },
+      { text: 'TOTAL: ', border: [false, false, false, true] },
+      {
+        text: `${venta.total} Bs.`,
+        alignment: 'center',
+        border: [false, false, false, true],
+        // colSpan: 2,
+      },
+      // {},
+    ]);
+
+    pdf.push(
+      this.centerObject({
+        style: 'tableExample',
+        table: {
+          body: bodyDetalle,
+          alignment: 'center',
+          widths: ['*', 50, 100, 58, 100],
+        },
+        layout: {
+          hLineWidth: function (i, node) {
+            return i === 0 || i === node.table.body.length ? 1 : 1;
+          },
+          vLineWidth: function (i, node) {
+            return i === 0 || i === node.table.widths.length ? 0 : 1;
+          },
+          hLineColor: function (i, node) {
+            return '#425066';
+          },
+          vLineColor: function (i, node) {
+            return '#425066';
+          },
+        },
+      })
+    );
+
+    pdf.push({
+      text: '\t',
+      margin: [0, 30, 0, 10],
+    });
+
+    pdf.push(
+      this.centerObject({
+        style: 'tableExample',
+        table: {
+          body: [
+            [
+              {
+                border: [false, true, false, false],
+                text: 'LIRAKI',
+                alignment: 'center',
+              },
+
+              {
+                border: [false, false, false, false],
+                text: '',
+              },
+              {
+                border: [false, true, false, false],
+                text: 'CLIENTE',
+                alignment: 'center',
+              },
+            ],
+          ],
+          alignment: 'center',
+          widths: [80, 100, 80],
+        },
+      })
+    );
+
+    return pdf;
+  }
   // ====================> presupuesto
   public async presupuesto(
     pdf: Array<any>,

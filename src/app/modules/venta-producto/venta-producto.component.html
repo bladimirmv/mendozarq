@@ -319,6 +319,18 @@
                     (click)="
                       expandedElement = expandedElement === row ? null : row
                     "
+                    (click)="generatePdfVenta(row)"
+                    matTooltipPosition="below"
+                    [disabled]="row.estado !== 'completado'"
+                  >
+                    <mat-icon> open_in_new </mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    matTooltip="Editar"
+                    (click)="
+                      expandedElement = expandedElement === row ? null : row
+                    "
                     (click)="updateVenta(row)"
                     matTooltipPosition="below"
                   >
