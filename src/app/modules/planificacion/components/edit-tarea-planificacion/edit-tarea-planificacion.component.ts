@@ -28,6 +28,7 @@ export class EditTareaPlanificacionComponent implements OnInit {
   private destroy$: Subject<any> = new Subject<any>();
   public capitulos: TareaPlanificacionProyecto[] = [];
   public dependencias: TareaPlanificacionProyecto[] = [];
+  public currentColor: string = '#ff0000';
 
   selectedOption: number = 1;
   constructor(
@@ -56,6 +57,10 @@ export class EditTareaPlanificacionComponent implements OnInit {
     this.destroy$.complete();
   }
 
+  public changeColor(): void {
+    document.execCommand('foreColor', false, this.currentColor);
+  }
+
   private initForm(): void {
     this.tareaPlanificacionForm = this.fb.group({
       nombre: [
@@ -68,6 +73,7 @@ export class EditTareaPlanificacionComponent implements OnInit {
       dependencia: [this.data.tarea.dependencia],
       hito: [this.data.tarea.hito],
       color: [this.data.tarea.color ? this.data.tarea.color : '#ffffff'],
+      colorText: '#ff0000',
       uuidCapitulo: [this.data.tarea.uuidCapitulo, Validators.required],
     });
 
@@ -76,7 +82,10 @@ export class EditTareaPlanificacionComponent implements OnInit {
     ul.innerHTML = this.data?.tarea?.actividades;
   }
 
-  public editPlanificacionProyecto(tarea: TareaPlanificacionProyecto): void {
+  public editPlanificacionProyecto(
+    t: TareaPlanificacionProyecto & { colorText: string }
+  ): void {
+    const { colorText, ...tarea } = t;
     tarea.color = tarea.color == '#ffffff' ? '' : tarea.color;
     tarea.uuid = this.data.tarea.uuid;
     tarea.actividades = document.querySelector('#ul-text').innerHTML;

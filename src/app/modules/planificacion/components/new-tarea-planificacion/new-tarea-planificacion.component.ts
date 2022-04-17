@@ -25,6 +25,7 @@ export class NewTareaPlanificacionComponent implements OnInit, OnDestroy {
 
   public filteredOptions: DetalleCapitulo[] = [];
   public detalles: DetalleCapitulo[] = [];
+  public currentColor: string = '#ff0000';
 
   selectedOption: number = 1;
   constructor(
@@ -63,6 +64,10 @@ export class NewTareaPlanificacionComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  public changeColor(): void {
+    document.execCommand('foreColor', false, this.currentColor);
+  }
+
   private _filterNombre(value: string): void {
     const filterValue = value.toLowerCase();
 
@@ -80,11 +85,15 @@ export class NewTareaPlanificacionComponent implements OnInit, OnDestroy {
       dependencia: [''],
       hito: [false],
       color: ['#ffffff'],
+      colorText: '#ff0000',
       uuidCapitulo: ['', Validators.required],
     });
   }
 
-  public newPlanificacionProyecto(tarea: TareaPlanificacionProyecto): void {
+  public newPlanificacionProyecto(
+    t: TareaPlanificacionProyecto & { colorText: string }
+  ): void {
+    const { colorText, ...tarea } = t;
     tarea.color = tarea.color == '#ffffff' ? '' : tarea.color;
     tarea.actividades = document.querySelector('#ul-text').innerHTML;
     this.planificacionSvc

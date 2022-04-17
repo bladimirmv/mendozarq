@@ -185,27 +185,28 @@
           </mat-button-toggle>
 
           <mat-button-toggle
-            color="warn"
-            onclick="document.execCommand('foreColor',false, 'red');"
+            (click)="changeColor()"
             value="justify"
             aria-label="Text align justify"
           >
-            <mat-icon style="color: red">format_color_text</mat-icon>
+            <mat-icon [style]="'color:' + currentColor"
+              >format_color_text</mat-icon
+            >
           </mat-button-toggle>
 
           <mat-button-toggle
-            color="warn"
-            onclick="document.execCommand('foreColor',false, '#425066');"
+            [style]="'color:' + currentColor"
             value="justify"
             aria-label="Text align justify"
           >
-            <mat-icon>format_color_text</mat-icon>
+            <!-- <mat-icon>format_color_text</mat-icon> -->
 
-            <!-- <input
+            <input
               type="color"
-              class="full-width full-column"
-              formControlName="color"
-            /> -->
+              style="width: 25px"
+              [(ngModel)]="currentColor"
+              formControlName="colorText"
+            />
           </mat-button-toggle>
 
           <mat-button-toggle
