@@ -29,7 +29,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
     private wsService: WebsocketService,
     private dialog: MatDialog,
     private _usrSvc: UsuarioService
-  ) {}
+  ) { }
 
   ngAfterViewInit(): void {
     moment.locale('es');
@@ -41,7 +41,6 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getDataSocket();
     this._usrSvc.getAllStatsUsuarios().subscribe((stats) => {
       this.stats = stats;
-      console.log(stats);
     });
   }
 
