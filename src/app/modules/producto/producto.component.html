@@ -160,6 +160,16 @@
               </td>
             </ng-container>
 
+            <!-- *stock-->
+            <ng-container matColumnDef="descuento">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Descuento
+              </th>
+              <td mat-cell *matCellDef="let row" class="text-center">
+                {{ row.descuento }}%
+              </td>
+            </ng-container>
+
             <!-- *categorias-->
             <ng-container matColumnDef="categorias">
               <th mat-header-cell *matHeaderCellDef mat-sort-header>

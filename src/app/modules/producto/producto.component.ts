@@ -65,6 +65,7 @@ export class ProductoComponent implements OnInit, OnDestroy {
     'nombre',
     'precio',
     'stock',
+    'descuento',
     'categorias',
     'descripcion',
     'barcode',

@@ -321,7 +321,7 @@
                     "
                     (click)="generatePdfVenta(row)"
                     matTooltipPosition="below"
-                    [disabled]="row.estado == 'pendiente'"
+                    [disabled]="row.estado !== 'completado'"
                   >
                     <mat-icon> open_in_new </mat-icon>
                   </button>

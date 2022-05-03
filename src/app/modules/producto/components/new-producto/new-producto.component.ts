@@ -45,6 +45,7 @@ export class uploadFile {
 })
 export class NewProductoComponent implements OnInit, OnDestroy {
   private destroy$: Subject<any> = new Subject<any>();
+  public currentColor: string = '#ff0000';
 
   public productoForm: FormGroup;
   private categorias: CategoriaProducto[] = [];
@@ -94,7 +95,9 @@ export class NewProductoComponent implements OnInit, OnDestroy {
         [Validators.required, Validators.pattern(/^[+]?\d+([.]\d+)?$/)],
       ],
       stock: [0, [Validators.required, Validators.pattern(/^(0|[1-9]\d*)$/)]],
-      descripcion: ['', Validators.maxLength(1000)],
+      // descripcion: ['', Validators.maxLength(1000)],
+      colorText: '#ff0000',
+
       descuento: [
         0,
         [
@@ -151,7 +154,10 @@ export class NewProductoComponent implements OnInit, OnDestroy {
       });
   }
 
-  public addProducto(producto: ProductoView): void {
+  public addProducto(p: ProductoView & { colorText: string }): void {
+    const { colorText, ...producto } = p;
+
+    producto.descripcion = document.querySelector('#ul-text').innerHTML;
     this.productoSvc
       .addProducto(producto)
       .pipe(takeUntil(this.destroy$))
@@ -304,5 +310,27 @@ export class NewProductoComponent implements OnInit, OnDestroy {
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  }
+
+  //*list descripcion
+  addList(type: string): void {
+    const ul = document.querySelector('#ul-text');
+
+    if (type === 'li') {
+      ul.innerHTML += `<li>Nuevo</li>`;
+    }
+
+    if (type === 'ol') {
+      ul.innerHTML += `<li>Nuevo<ol><li>Sub</li></ol></li>`;
+    }
+  }
+
+  newLine(): void {
+    const ul = document.querySelector('#ul-text');
+    ul.innerHTML += `</br>`;
+  }
+
+  public changeColor(): void {
+    document.execCommand('foreColor', false, this.currentColor);
   }
 }
