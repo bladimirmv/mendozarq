@@ -605,7 +605,9 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
   public async generatePdfVenta(venta: VentaView): Promise<void> {
     let pdf: Array<any> = [];
 
-    pdf = await this._pdfSvc.ventaCliente(pdf, venta);
+    // pdf = await this._pdfSvc.ventaCliente(pdf, venta);
+
+    pdf = await this._pdfSvc.factura(pdf, venta);
 
     const docDefinition = {
       content: pdf,

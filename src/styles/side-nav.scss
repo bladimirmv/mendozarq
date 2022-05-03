@@ -101,15 +101,6 @@ mat-toolbar {
     overflow: hidden;
     white-space: nowrap;
     font-size: 18px;
-    // background-image: linear-gradient(
-    //   90deg,
-    //   var(--orange-light),
-    //   var(--primary)
-    // );
-    // -webkit-background-clip: text;
-    // background-clip: text;
-    // color: transparent;
-    // -webkit-text-fill-color: transparent;
   }
 }
 
@@ -183,9 +174,12 @@ mat-toolbar {
   }
 
   span {
-    animation: type-2 1s steps(9);
+    font-family: var(--font-head);
+    color: var(--text-color);
+    animation: type 1.5s steps(12);
     overflow: hidden;
     white-space: nowrap;
+    font-size: 18px;
   }
 }
 .btn-admin {

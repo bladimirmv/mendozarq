@@ -321,10 +321,11 @@
                     "
                     (click)="generatePdfVenta(row)"
                     matTooltipPosition="below"
-                    [disabled]="row.estado !== 'completado'"
+                    [disabled]="row.estado == 'pendiente'"
                   >
                     <mat-icon> open_in_new </mat-icon>
                   </button>
+
                   <button
                     mat-icon-button
                     matTooltip="Editar"

@@ -1210,7 +1210,7 @@ export class PdfMethods {
     return pdf;
   }
 
-  public async ventaCliente<T extends object>(
+  public async ventaCliente(
     pdf: Array<any>,
     venta: VentaView
   ): Promise<Array<any>> {
@@ -1576,6 +1576,479 @@ export class PdfMethods {
 
     return pdf;
   }
+
+  public async factura(pdf: Array<any>, venta: VentaView): Promise<Array<any>> {
+    const bodyInfo: Array<BodyTable[]> = [];
+    const bodyDetalle: Array<BodyTable[]> = [];
+    const moreInfo: Array<BodyTable[]> = [];
+    const footerInfo: Array<BodyTable[]> = [];
+
+    pdf.push({
+      columns: [
+        {
+          image: await this.getBase64ImageFromURL('./assets/liraki_logo.jpeg'),
+          width: 150,
+          style: 'tableHeader',
+        },
+        {},
+        {},
+        {},
+      ],
+    });
+
+    bodyInfo.push([
+      {
+        text: 'CASA MATRIZ',
+        style: 'tableHeader',
+        colSpan: 2,
+        color: '#000000',
+        bold: true,
+        alignment: 'center',
+        border: [false, false, false, false],
+        fontSize: 12,
+      },
+      {},
+      {
+        text: '',
+        border: [false, false, false, false],
+      },
+
+      {
+        text: 'NIT',
+        style: 'tableHeader',
+        colSpan: 1,
+        color: '#000000',
+        bold: true,
+        border: [false, false, false, false],
+        fontSize: 12,
+      },
+      {
+        text: '34857631',
+        style: 'tableHeader',
+        colSpan: 1,
+        color: '#425066',
+        fontSize: 12,
+        border: [false, false, false, false],
+        alignment: 'right',
+      },
+    ]);
+
+    bodyInfo.push([
+      {
+        text: `Av. Ingavi Nº 2450, Chimba, Cochabamba, Bolivia`,
+        style: 'tableHeader',
+        colSpan: 2,
+        rowSpan: 2,
+        color: '#000000',
+        alignment: 'center',
+        border: [false, false, false, false],
+        fontSize: 12,
+      },
+      {},
+      {
+        text: '',
+        border: [false, false, false, false],
+      },
+
+      {
+        text: 'FACTURA N°',
+        style: 'tableHeader',
+        colSpan: 1,
+        color: '#000000',
+        bold: true,
+        border: [false, false, false, false],
+        fontSize: 12,
+      },
+      {
+        text: `${venta.numeroVenta}`,
+        style: 'tableHeader',
+        colSpan: 1,
+        color: '#ff0000',
+        fontSize: 12,
+        border: [false, false, false, false],
+        alignment: 'right',
+      },
+    ]);
+
+    bodyInfo.push([
+      {},
+      {},
+      {
+        text: '',
+        border: [false, false, false, false],
+      },
+      {
+        text: 'CÓD. AUTORIZACIÓN',
+        style: 'tableHeader',
+        colSpan: 2,
+        color: '#000000',
+        bold: true,
+        border: [false, false, false, false],
+        alignment: 'center',
+        fontSize: 12,
+      },
+      {},
+    ]);
+
+    bodyInfo.push([
+      {
+        text: 'TELEFONOS:',
+        style: 'tableHeader',
+        colSpan: 1,
+        color: '#000000',
+        bold: true,
+        alignment: 'center',
+        border: [false, false, false, false],
+        fontSize: 12,
+      },
+      {
+        stack: [
+          {
+            color: '#425066',
+            fontSize: 12,
+            ul: ['4446257', '77413166', '77499792'],
+          },
+        ],
+        border: [false, false, false, false],
+      },
+      {
+        text: '',
+        border: [false, false, false, false],
+      },
+      {
+        text: `8ee6d45713154c9bbfae7d7e04ac75`.toUpperCase(),
+        style: 'tableHeader',
+        colSpan: 2,
+        color: '#425066',
+        fontSize: 10,
+        border: [false, false, false, false],
+        alignment: 'center',
+      },
+      {},
+    ]);
+
+    // *data
+    pdf.push({
+      style: 'tableExample',
+      margin: [0, 10, 0, 0],
+      table: {
+        body: bodyInfo,
+        alignment: 'center',
+        widths: [75, 75, '*', 'auto', 'auto'],
+      },
+      layout: {
+        hLineWidth: function (i, node) {
+          return i === 0 || i === node.table.body.length ? 1 : 1;
+        },
+        vLineWidth: function (i, node) {
+          return i === 0 || i === node.table.widths.length ? 1 : 1;
+        },
+        hLineColor: function (i, node) {
+          return '#425066';
+        },
+        vLineColor: function (i, node) {
+          return '#425066';
+        },
+      },
+    });
+
+    pdf.push({
+      text: `${'FACTURA'}`.toUpperCase(),
+      fontSize: 16,
+      alignment: 'center',
+      bold: true,
+      margin: [0, 30, 0, 0],
+      tocItem: true,
+      tocMargin: [20, 0, 0, 0],
+    });
+
+    pdf.push({
+      text: '(Con Derecho a Crédito Fiscal)',
+      fontSize: 12,
+      alignment: 'center',
+      margin: [0, 0, 0, 20],
+      tocItem: true,
+      tocMargin: [20, 0, 0, 0],
+    });
+
+    moreInfo.push([
+      {
+        text: 'Fecha:',
+        border: [false, false, false, false],
+        bold: true,
+        fontSize: 12,
+      },
+      {
+        text: moment(venta.creadoEn).format('DD/MM/YYYY[,] h:mm A'),
+        fontSize: 12,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'NIT/CI/CEX:',
+        border: [false, false, false, false],
+        bold: true,
+        fontSize: 12,
+      },
+      {
+        text: `${venta.nitCiCex}`,
+        fontSize: 12,
+        border: [false, false, false, false],
+      },
+    ]);
+
+    moreInfo.push([
+      {
+        text: 'Nombre/Razon Social:',
+        border: [false, false, false, false],
+        bold: true,
+        fontSize: 12,
+      },
+      {
+        text: `${venta.nombreFactura}`,
+        fontSize: 12,
+        border: [false, false, false, false],
+      },
+      {
+        text: '',
+        border: [false, false, false, false],
+        bold: true,
+        fontSize: 12,
+      },
+      {
+        text: '',
+        fontSize: 12,
+        border: [false, false, false, false],
+      },
+    ]);
+
+    // *data
+    pdf.push({
+      style: 'tableExample',
+      margin: [0, 10, 0, 0],
+      table: {
+        body: moreInfo,
+        alignment: 'center',
+        widths: ['auto', '*', 'auto', 'auto'],
+      },
+      layout: {
+        hLineWidth: function (i, node) {
+          return i === 0 || i === node.table.body.length ? 1 : 1;
+        },
+        vLineWidth: function (i, node) {
+          return i === 0 || i === node.table.widths.length ? 1 : 1;
+        },
+        hLineColor: function (i, node) {
+          return '#425066';
+        },
+        vLineColor: function (i, node) {
+          return '#425066';
+        },
+      },
+    });
+
+    pdf.push({
+      text: '\t',
+      margin: [0, 0, 0, 0],
+    });
+
+    bodyDetalle.push([
+      {
+        text: 'Producto',
+        style: 'tableHeader',
+        // colSpan: 2,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#ff6e00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+
+      {
+        text: 'Cantidad',
+        style: 'tableHeader',
+        // colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#ff6e00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Precio Unitario',
+        style: 'tableHeader',
+        // colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#ff6e00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Descuento',
+        style: 'tableHeader',
+        // colSpan: 1,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#ff6e00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        text: 'Importe',
+        style: 'tableHeader',
+        // colSpan: 2,
+        alignment: 'center',
+        color: '#FFFFFF',
+        fillColor: '#ff6e00',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      // {},
+    ]);
+
+    venta.conceptos.forEach((c) => {
+      bodyDetalle.push([
+        {
+          text: `${c.nombre}`,
+          // alignment: 'justify',
+          border: [false, false, false, true],
+          // colSpan: 2,
+        },
+
+        // {},
+        {
+          text: c.cantidad.toString(),
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${c.precioUnitario.toString()} Bs.`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${c.descuento.toString()}%`,
+          alignment: 'center',
+          border: [false, false, false, true],
+        },
+        {
+          text: `${c.importe.toString()} Bs.`,
+          alignment: 'center',
+          border: [false, false, false, true],
+          // colSpan: 2,
+        },
+        // {},
+      ]);
+    });
+
+    bodyDetalle.push([
+      // { text: '', border: [false, false, false, true] },
+      { text: '', border: [false, false, false, true] },
+      { text: '', border: [false, false, false, true] },
+      { text: '', border: [false, false, false, true] },
+      { text: 'TOTAL: ', border: [false, false, false, true] },
+      {
+        text: `${venta.total} Bs.`,
+        alignment: 'center',
+        border: [false, false, false, true],
+        // colSpan: 2,
+      },
+      // {},
+    ]);
+
+    pdf.push(
+      this.centerObject({
+        style: 'tableExample',
+        table: {
+          body: bodyDetalle,
+          alignment: 'center',
+          widths: ['*', 50, 100, 58, 100],
+        },
+        layout: {
+          hLineWidth: function (i, node) {
+            return i === 0 || i === node.table.body.length ? 1 : 1;
+          },
+          vLineWidth: function (i, node) {
+            return i === 0 || i === node.table.widths.length ? 0 : 1;
+          },
+          hLineColor: function (i, node) {
+            return '#425066';
+          },
+          vLineColor: function (i, node) {
+            return '#425066';
+          },
+        },
+      })
+    );
+
+    pdf.push({
+      text: '\t',
+      margin: [0, 10, 0, 0],
+    });
+
+    footerInfo.push([
+      {
+        text: 'ESTA FACTURA CONTRIBUYE AL DESARROLLO DEL PAÍS, EL USO ILÍCITO SERÁ SANCIONADO PENALMENTE DE ACUERDO A LEY',
+        alignment: 'center',
+        bold: true,
+        border: [false, false, false, false],
+      },
+      {
+        qr: venta.uuid,
+        background: '#FFFFFF',
+        foreground: '#425066',
+        fit: '90',
+        rowSpan: 3,
+        border: [false],
+        alignment: 'center',
+      },
+    ]);
+
+    footerInfo.push([
+      {
+        text: 'Ley Nro. 453: El proveedor debe brindar atención sin discriminar, con respeto, calidez y cordialidad a los usuarios y consumidores.',
+        alignment: 'justify',
+        border: [false, false, false, false],
+      },
+      {},
+    ]);
+    footerInfo.push([
+      {
+        text: '“Este documento es la Representación Gráfica de un Documento Fiscal Digital emitido en una modalidad de facturación en línea”',
+        alignment: 'justify',
+        border: [false, false, false, false],
+      },
+      {},
+    ]);
+
+    // *data
+    pdf.push({
+      style: 'tableExample',
+      margin: [0, 10, 0, 0],
+      table: {
+        body: footerInfo,
+        alignment: 'center',
+        widths: ['*', 'auto'],
+      },
+      layout: {
+        hLineWidth: function (i, node) {
+          return i === 0 || i === node.table.body.length ? 1 : 1;
+        },
+        vLineWidth: function (i, node) {
+          return i === 0 || i === node.table.widths.length ? 1 : 1;
+        },
+        hLineColor: function (i, node) {
+          return '#425066';
+        },
+        vLineColor: function (i, node) {
+          return '#425066';
+        },
+      },
+    });
+
+    return pdf;
+  }
+
   // ====================> presupuesto
   public async presupuesto(
     pdf: Array<any>,
