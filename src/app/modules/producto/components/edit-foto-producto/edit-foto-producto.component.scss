@@ -43,11 +43,12 @@ mat-dialog-actions {
   min-height: 200px;
   height: auto;
   font-weight: 200;
-  border: 2px dashed var(--secondary);
+  border: 2px dashed var(--text-color);
   border-radius: 5px;
-  background: white;
+  background: var(--sobreCard-bg);
   margin: 10px 0;
-  color: var(--secondary);
+  color: var(--text-color);
+
 
   .text-hovering {
     display: none;
@@ -93,16 +94,17 @@ progress::-webkit-progress-value {
 }
 
 .documento {
-  background-color: white;
   cursor: pointer;
   padding: 5px;
   margin: 5px 0;
-  border: 2px dashed var(--secondary);
   box-sizing: border-box;
   width: auto;
   display: grid;
   grid-template-columns: auto 1fr auto;
   grid-template-rows: repeat(3, auto);
+
+    border: 2px dashed var(--text-color);
+  background-color: var(--card-bg);
 
   grid-template-areas:
     "icon_doc title icon_delete"
@@ -182,7 +184,7 @@ progress::-webkit-progress-value {
   border: dashed 1px #ccc;
   min-height: 60px;
   display: block;
-  background: white;
+  background-color: var(--sobreCard-bg);
   border-radius: 4px;
   overflow: hidden;
 }

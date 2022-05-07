@@ -99,7 +99,7 @@ export class ProductoComponent implements OnInit, OnDestroy {
     private _route: Router,
     private _actRoute: ActivatedRoute,
     private _pdfSvc: PdfService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     moment().locale('es');
@@ -189,6 +189,7 @@ export class ProductoComponent implements OnInit, OnDestroy {
   public editProducto(producto: Producto): void {
     const dialogRef = this.dialog.open(EditProductoComponent, {
       data: producto,
+      maxWidth: '600px'
     });
 
     dialogRef
@@ -338,9 +339,8 @@ export class ProductoComponent implements OnInit, OnDestroy {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
-      row.uuid
-    }`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.uuid
+      }`;
   }
 
   // **Graficas y reportes
