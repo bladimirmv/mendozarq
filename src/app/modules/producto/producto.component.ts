@@ -99,7 +99,7 @@ export class ProductoComponent implements OnInit, OnDestroy {
     private _route: Router,
     private _actRoute: ActivatedRoute,
     private _pdfSvc: PdfService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     moment().locale('es');
@@ -152,6 +152,8 @@ export class ProductoComponent implements OnInit, OnDestroy {
       .getAllProductos()
       .pipe(takeUntil(this.destroy$))
       .subscribe((productos: Producto[]) => {
+        console.log(productos);
+
         this.source.data = productos;
         this.productos = productos;
         this.activos = 0;
@@ -175,7 +177,9 @@ export class ProductoComponent implements OnInit, OnDestroy {
   }
 
   public addProducto(): void {
-    const dialogRef = this.dialog.open(NewProductoComponent);
+    const dialogRef = this.dialog.open(NewProductoComponent, {
+      disableClose: true,
+    });
     dialogRef
       .afterClosed()
       .pipe(takeUntil(this.destroy$))
@@ -189,7 +193,7 @@ export class ProductoComponent implements OnInit, OnDestroy {
   public editProducto(producto: Producto): void {
     const dialogRef = this.dialog.open(EditProductoComponent, {
       data: producto,
-      maxWidth: '600px'
+      maxWidth: '600px',
     });
 
     dialogRef
@@ -339,8 +343,9 @@ export class ProductoComponent implements OnInit, OnDestroy {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.uuid
-      }`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
+      row.uuid
+    }`;
   }
 
   // **Graficas y reportes

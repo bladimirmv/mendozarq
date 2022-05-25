@@ -410,109 +410,121 @@ export class PdfMethods {
   ): Array<any> {
     const bodyInfo: Array<BodyTable[]> = [];
 
-    bodyInfo.push([
-      {
-        text: 'Estado',
-        style: 'tableHeader',
-        colSpan: 1,
-        alignment: 'center',
-        color: '#FFFFFF',
-        fillColor: '#FF6E00',
-        bold: true,
-        border: [false, false, false, false],
-      },
-      {
-        text: 'Nombre',
-        style: 'tableHeader',
-        colSpan: 1,
-        alignment: 'center',
-        color: '#FFFFFF',
-        fillColor: '#FF6E00',
-        bold: true,
-        border: [false, false, false, false],
-      },
-      {
-        text: 'Precio',
-        style: 'tableHeader',
-        colSpan: 1,
-        alignment: 'center',
-        color: '#FFFFFF',
-        fillColor: '#FF6E00',
-        bold: true,
-        border: [false, false, false, false],
-      },
-      {
-        text: 'Descuento',
-        style: 'tableHeader',
-        colSpan: 1,
-        alignment: 'center',
-        color: '#FFFFFF',
-        fillColor: '#FF6E00',
-        bold: true,
-        border: [false, false, false, false],
-      },
-      {
-        text: 'Stock',
-        style: 'tableHeader',
-        colSpan: 1,
-        alignment: 'center',
-        color: '#FFFFFF',
-        fillColor: '#FF6E00',
-        bold: true,
-        border: [false, false, false, false],
-      },
-      {
-        text: 'Categorias',
-        style: 'tableHeader',
-        colSpan: 1,
-        alignment: 'center',
-        color: '#FFFFFF',
-        fillColor: '#FF6E00',
-        bold: true,
-        border: [false, false, false, false],
-      },
-
-      {
-        text: 'Descripcion',
-        style: 'tableHeader',
-        colSpan: 1,
-        alignment: 'center',
-        color: '#FFFFFF',
-        fillColor: '#FF6E00',
-        bold: true,
-        border: [false, false, false, false],
-      },
-
-      {
-        text: 'QR',
-        style: 'tableHeader',
-        colSpan: 1,
-        alignment: 'center',
-        color: '#FFFFFF',
-        fillColor: '#FF6E00',
-        bold: true,
-        border: [false, false, false, false],
-      },
-    ]);
-
-    producto.forEach((data) => {
+    producto.forEach((data, index) => {
       const categories: Array<string> = data.categorias.map(
         (cat) => cat.nombre
       );
 
       bodyInfo.push([
         {
-          text: `${data.estado ? 'activo' : 'inactivo'}`,
-          alignment: 'justify',
-          border: [false, false, false, true],
+          text: index % 2 === 0 ? 'Estado' : 'QR',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: index % 2 === 0 ? '#FF6E00' : '#425066',
+          bold: true,
+          border: [false, false, false, false],
         },
+        {
+          text: 'Nombre',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: index % 2 === 0 ? '#FF6E00' : '#425066',
+
+          bold: true,
+          border: [false, false, false, false],
+        },
+        {
+          text: 'Precio',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: index % 2 === 0 ? '#FF6E00' : '#425066',
+
+          bold: true,
+          border: [false, false, false, false],
+        },
+        {
+          text: 'Descuento',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: index % 2 === 0 ? '#FF6E00' : '#425066',
+
+          bold: true,
+          border: [false, false, false, false],
+        },
+        {
+          text: 'Stock',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: index % 2 === 0 ? '#FF6E00' : '#425066',
+
+          bold: true,
+          border: [false, false, false, false],
+        },
+        {
+          text: 'Categorias',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: index % 2 === 0 ? '#FF6E00' : '#425066',
+
+          bold: true,
+          border: [false, false, false, false],
+        },
+
+        // {
+        //   text: 'Descripcion',
+        //   style: 'tableHeader',
+        //   colSpan: 1,
+        //   alignment: 'center',
+        //   color: '#FFFFFF',
+        //   fillColor: '#FF6E00',
+        //   bold: true,
+        //   border: [false, false, false, false],
+        // },
+
+        {
+          text: index % 2 === 0 ? 'QR' : 'Estado',
+          style: 'tableHeader',
+          colSpan: 1,
+          alignment: 'center',
+          color: '#FFFFFF',
+          fillColor: index % 2 === 0 ? '#FF6E00' : '#425066',
+          bold: true,
+          border: [false, false, false, false],
+        },
+      ]);
+
+      bodyInfo.push([
+        index % 2 === 0
+          ? {
+              text: `${data.estado ? 'activo' : 'inactivo'}`,
+              alignment: 'center',
+              border: [false, false, false, true],
+            }
+          : {
+              qr: data.uuid ? data.uuid : 'sin uuid',
+              background: '#FFFFFF',
+              fit: '70',
+              border: [false, false, false, true],
+            },
         {
           text: `${data.nombre}`,
           alignment: 'justify',
           border: [false, false, false, true],
         },
         {
-          text: `${data.precio}`,
+          text: `${data.precio}Bs.`,
           alignment: 'center',
           border: [false, false, false, true],
         },
@@ -527,26 +539,35 @@ export class PdfMethods {
           border: [false, false, false, true],
         },
         {
-          text: categories
-            .slice(0, -1)
-            .join(', \n')
-            .concat(' y ' + categories.slice(-1)),
+          text:
+            categories.length === 1
+              ? categories[0]
+              : categories
+                  .slice(0, -1)
+                  .join(', \n')
+                  .concat(' y ' + categories.slice(-1)),
           alignment: 'center',
           border: [false, false, false, true],
         },
 
-        {
-          text: `${data.descripcion}`,
-          alignment: 'center',
-          border: [false, false, false, true],
-        },
+        // {
+        //   text: `${data.descripcion}`,
+        //   alignment: 'center',
+        //   border: [false, false, false, true],
+        // },
 
-        {
-          qr: data.uuid ? data.uuid : 'sin uuid',
-          background: '#FFFFFF',
-          fit: '70',
-          border: [false, false, false, true],
-        },
+        index % 2 === 0
+          ? {
+              qr: data.uuid ? data.uuid : 'sin uuid',
+              background: '#FFFFFF',
+              fit: '70',
+              border: [false, false, false, true],
+            }
+          : {
+              text: `${data.estado ? 'activo' : 'inactivo'}`,
+              alignment: 'center',
+              border: [false, false, false, true],
+            },
       ]);
     });
 
