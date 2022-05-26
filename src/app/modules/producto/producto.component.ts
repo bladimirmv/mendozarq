@@ -179,6 +179,7 @@ export class ProductoComponent implements OnInit, OnDestroy {
   public addProducto(): void {
     const dialogRef = this.dialog.open(NewProductoComponent, {
       disableClose: true,
+      maxWidth: '600px',
     });
     dialogRef
       .afterClosed()

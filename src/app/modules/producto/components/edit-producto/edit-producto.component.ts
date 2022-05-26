@@ -87,7 +87,7 @@ export class EditProductoComponent implements OnInit, OnDestroy {
       estado: [this.data.estado ? true : false, [Validators.required]],
       nombre: [
         this.data.nombre,
-        [Validators.required, Validators.maxLength(100)],
+        [Validators.required, Validators.maxLength(200)],
       ],
       categorias: [mRows, [Validators.required]],
       precio: [

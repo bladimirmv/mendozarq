@@ -88,7 +88,7 @@ export class NewProductoComponent implements OnInit, OnDestroy {
   private initForm(): void {
     this.productoForm = this.fb.group({
       estado: [true, [Validators.required]],
-      nombre: ['', [Validators.required, Validators.maxLength(100)]],
+      nombre: ['', [Validators.required, Validators.maxLength(200)]],
       categorias: ['', [Validators.required]],
       precio: [
         0,
