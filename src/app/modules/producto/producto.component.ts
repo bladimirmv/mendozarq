@@ -381,7 +381,7 @@ export class ProductoComponent implements OnInit, OnDestroy {
       labels: ['En Stock', 'Agotado'],
       datasets: [
         {
-          label: 'Roles',
+          label: 'Productos',
           data: [...this.getDataGraficas()],
           backgroundColor: [
             '#2ac940',
@@ -443,7 +443,7 @@ export class ProductoComponent implements OnInit, OnDestroy {
           title: {
             color: '#ff6e00',
             display: true,
-            text: `Grafica de Barras de Proyectos (${this.fechaReporte.toUpperCase()})`,
+            text: `Grafica de Barras de Productos (${this.fechaReporte.toUpperCase()})`,
             font: {
               size: 16,
               family: 'Montserrat',
@@ -463,7 +463,7 @@ export class ProductoComponent implements OnInit, OnDestroy {
           title: {
             color: '#ff6e00',
             display: true,
-            text: `Grafica de Rosquilla de Proyectos (${this.fechaReporte.toUpperCase()})`,
+            text: `Grafica de Rosquilla de Productos (${this.fechaReporte.toUpperCase()})`,
             font: {
               size: 16,
               family: 'Montserrat',

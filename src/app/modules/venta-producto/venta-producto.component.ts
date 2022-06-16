@@ -129,6 +129,14 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
         this.dataSourceVenta.data = ventas;
         this.ventas = ventas;
 
+        this.stats = {
+          pendientes: 0,
+          confirmados: 0,
+          paraRecoger: 0,
+          enEnvio: 0,
+          completados: 0,
+        };
+
         ventas.forEach((v) => {
           switch (v.estado) {
             case 'pendiente':
@@ -437,7 +445,7 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
           title: {
             color: '#ff6e00',
             display: true,
-            text: `Grafica de Barras de Ventas (${this.fechaReporte.toUpperCase()})`,
+            text: `Grafica de Barras de Ventas Físicas (${this.fechaReporte.toUpperCase()})`,
             font: {
               size: 16,
               family: 'Montserrat',
@@ -457,7 +465,7 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
           title: {
             color: '#ff6e00',
             display: true,
-            text: `Grafica de Rosquilla de Ventas (${this.fechaReporte.toUpperCase()})`,
+            text: `Grafica de Rosquilla de Ventas Físicas (${this.fechaReporte.toUpperCase()})`,
             font: {
               size: 16,
               family: 'Montserrat',
@@ -560,7 +568,7 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
         this.doughnut_chart.toBase64Image('image/png', 1.0),
       ],
       'ventas',
-      `Reporte de Ventas (${this.fechaReporte})`
+      `Reporte de Ventas Físicas (${this.fechaReporte})`
     );
 
     const docDefinition = {
@@ -573,7 +581,7 @@ export class VentaProductoComponent implements OnInit, OnDestroy {
         italics: false,
       },
       info: {
-        title: 'Reporte-Ventas',
+        title: 'Reporte-Ventas Fisicas',
         author: '©MENDOZARQ',
       },
       pageMargins: [60, 40, 40, 60],

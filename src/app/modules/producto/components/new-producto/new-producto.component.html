@@ -209,7 +209,29 @@
           color: #425066 !important;
         "
       >
-        <li>Ninguno</li>
+        <li><b>Material</b><br /></li>
+        <div>Material</div>
+        <li><b>Dimensiones</b><br /></li>
+        <div>Dimensiones</div>
+        <div>
+          <div>
+            <li><b>COLOR&nbsp;</b><br /></li>
+            <div>A elección</div>
+            <div>
+              <li><b>DETALLE</b><br /></li>
+              Detalle
+            </div>
+          </div>
+          <div>
+            <font color="#ff0000"
+              ><b>* Fabricamos a medida, espesor, color y madera a gusto del</b
+              ><br
+            /></font>
+          </div>
+          <div>
+            <font color="#ff0000"><b>cliente.</b></font>
+          </div>
+        </div>
       </div>
 
       <br />
@@ -236,6 +258,14 @@
             aria-label="Text align right"
           >
             <mat-icon>format_underlined</mat-icon>
+          </mat-button-toggle>
+
+          <mat-button-toggle
+            onclick="document.execCommand('foreColor',false,'#425066');"
+            value="justify"
+            aria-label="Text align justify"
+          >
+            <mat-icon> format_color_reset </mat-icon>
           </mat-button-toggle>
 
           <mat-button-toggle
