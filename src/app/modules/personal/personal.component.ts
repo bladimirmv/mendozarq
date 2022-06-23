@@ -15,6 +15,7 @@ import { EditPersonalComponent } from './components/edit-personal/edit-personal.
 import { DeleteModalComponent } from './../../shared/components/delete-modal/delete-modal.component';
 import { Personal } from '@models/mendozarq/personal.interface';
 import { PersonalService } from '@app/core/services/mendozarq/personal.service';
+
 @Component({
   selector: 'app-personal',
   templateUrl: './personal.component.html',

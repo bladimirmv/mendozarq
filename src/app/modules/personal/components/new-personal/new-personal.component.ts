@@ -7,6 +7,7 @@ import { PersonalService } from '@app/core/services/mendozarq/personal.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
 @Component({
   selector: 'app-new-personal',
   templateUrl: './new-personal.component.html',
@@ -26,6 +27,28 @@ export class NewPersonalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initForm();
+
+    // const personel: Personal = {
+    //   nombre: faker.name.firstName(),
+    //   apellidoPaterno: faker.name.lastName(),
+    //   apellidoMaterno: faker.name.lastName(),
+    //   celular: Number(faker.phone.phoneNumber('########')),
+    //   correo: faker.internet.email(),
+    //   sueldo: Number(faker.random.numeric(4)),
+    // };
+
+    // this.personalSvc
+    //   .addPersonal(personel)
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((usr) => {
+    //     if (usr) {
+    //       this.toastrSvc.success(
+    //         'El personal se ha creado correctamente. 😀',
+    //         'Personal Creado'
+    //       );
+    //       this.dialogRef.close(true);
+    //     }
+    //   });
   }
 
   ngOnDestroy(): void {

@@ -1,6 +1,10 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { PresupuestosService } from '@app/core/services/mendozarq/presupuestos.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
@@ -15,10 +19,9 @@ import { AuthService } from '@app/core/services/auth/auth.service';
 @Component({
   selector: 'app-edit-presupuesto',
   templateUrl: './edit-presupuesto.component.html',
-  styleUrls: ['./edit-presupuesto.component.scss']
+  styleUrls: ['./edit-presupuesto.component.scss'],
 })
 export class EditPresupuestoComponent implements OnInit, OnDestroy {
-
   private destroy$ = new Subject<any>();
   public presupuestoForm: FormGroup;
 
@@ -35,7 +38,7 @@ export class EditPresupuestoComponent implements OnInit, OnDestroy {
     private router: Router,
     private authSvc: AuthService,
     @Inject(MAT_DIALOG_DATA) private data: PresupuestoObra
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -50,8 +53,14 @@ export class EditPresupuestoComponent implements OnInit, OnDestroy {
   // ============> onInitForm
   private initForm(): void {
     this.presupuestoForm = this.fb.group({
-      nombre: [this.data.nombre, [Validators.required, Validators.maxLength(50), Validators.pattern(/^[0-9a-z\s]+$/)]],
-      descripcion: [this.data.descripcion, [Validators.required, Validators.maxLength(200)]],
+      nombre: [
+        this.data.nombre,
+        [Validators.required, Validators.maxLength(50)],
+      ],
+      descripcion: [
+        this.data.descripcion,
+        [Validators.required, Validators.maxLength(200)],
+      ],
       iva: [this.data.iva, [Validators.required]],
       uuidCliente: [this.data.uuidCliente, Validators.required],
     });
@@ -59,17 +68,22 @@ export class EditPresupuestoComponent implements OnInit, OnDestroy {
 
   // ===================> initDataClientes
   private initDataClientes(): void {
-    this.usuarioSvc.getAllUsuarios()
-      .pipe(map((usuarios: Usuario[]) =>
-        usuarios.filter((usuario: Usuario) => usuario.rol === 'cliente')
-      ), takeUntil(this.destroy$))
+    this.usuarioSvc
+      .getAllUsuarios()
+      .pipe(
+        map((usuarios: Usuario[]) =>
+          usuarios.filter((usuario: Usuario) => usuario.rol === 'cliente')
+        ),
+        takeUntil(this.destroy$)
+      )
       .subscribe((clientes: Usuario[]) => {
         if (!clientes.length) {
           const dialogRef = this.dialog.open(ClienteModalComponent);
 
-          dialogRef.afterClosed()
+          dialogRef
+            .afterClosed()
             .pipe(takeUntil(this.destroy$))
-            .subscribe(res => {
+            .subscribe((res) => {
               if (res) {
                 dialogRef.close();
                 this.dialogRef.close(this.presupuestoForm);
@@ -89,24 +103,32 @@ export class EditPresupuestoComponent implements OnInit, OnDestroy {
   public onUpdatePresupuesto(presupuestoObra: PresupuestoObra): void {
     presupuestoObra.uuid = this.data.uuid;
 
-    this.presupuestoObraSvc.updatePresupuestoObra(presupuestoObra.uuid, presupuestoObra)
+    this.presupuestoObraSvc
+      .updatePresupuestoObra(presupuestoObra.uuid, presupuestoObra)
       .pipe(takeUntil(this.destroy$))
-      .subscribe(res => {
+      .subscribe((res) => {
         if (res) {
-          this.toastrSvc.success('El presupuesto se ha actualizado correctamente. 😀', 'Presupuesto Actualizado');
+          this.toastrSvc.success(
+            'El presupuesto se ha actualizado correctamente. 😀',
+            'Presupuesto Actualizado'
+          );
           this.dialogRef.close(true);
         }
       });
   }
 
   // ===========> isValidField
-  public isValidField(field: string): { color?: string; status?: boolean; icon?: string; } {
+  public isValidField(field: string): {
+    color?: string;
+    status?: boolean;
+    icon?: string;
+  } {
     const validateFIeld = this.presupuestoForm.get(field);
-    return (!validateFIeld.valid && validateFIeld.touched)
+    return !validateFIeld.valid && validateFIeld.touched
       ? { color: 'warn', status: false, icon: 'close' }
       : validateFIeld.valid
-        ? { color: 'accent', status: true, icon: 'done' }
-        : {};
+      ? { color: 'accent', status: true, icon: 'done' }
+      : {};
   }
 
   // ===========> getString
@@ -121,21 +143,21 @@ export class EditPresupuestoComponent implements OnInit, OnDestroy {
     return value;
   }
 
-
   // ============> filterCliente
   private _filter(value: string): Usuario[] {
     const filterValue = value.toLowerCase();
 
-    return this.clientes.filter(cliente => {
-      return cliente.nombre.toLowerCase().indexOf(filterValue) === 0
-        || cliente.apellidoPaterno.toLowerCase().indexOf(filterValue) === 0
-        || cliente.apellidoMaterno.toLowerCase().indexOf(filterValue) === 0;
-    })
+    return this.clientes.filter((cliente) => {
+      return (
+        cliente.nombre.toLowerCase().indexOf(filterValue) === 0 ||
+        cliente.apellidoPaterno.toLowerCase().indexOf(filterValue) === 0 ||
+        cliente.apellidoMaterno.toLowerCase().indexOf(filterValue) === 0
+      );
+    });
   }
 
   // ============> onKeySearch
   public onKey(value) {
     this.selectedClientes = this._filter(value);
   }
-
 }

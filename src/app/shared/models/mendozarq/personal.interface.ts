@@ -1,6 +1,6 @@
 export interface Personal {
-  uuid: string;
-  creadoEn: Date;
+  uuid?: string;
+  creadoEn?: Date;
   nombre: string;
   apellidoPaterno: string;
   apellidoMaterno?: string;
