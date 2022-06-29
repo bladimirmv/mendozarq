@@ -2855,16 +2855,17 @@ export class PdfMethods {
           })
         );
 
-        for (const f of obs.fotos) {
-          pdf.push({
-            text: 'FOTOS DE LA OBSERVACION',
-            bold: true,
-            style: 'header',
-            alignment: 'center',
-            decoration: 'underline',
-            decorationStyle: 'solid',
-          });
+        pdf.push({
+          text: 'FOTOS DE LA OBSERVACION',
+          bold: true,
+          style: 'header',
+          alignment: 'center',
+          decoration: 'underline',
+          decorationStyle: 'solid',
+        });
 
+        for (const f of obs.fotos) {
+          pdf.push([{ text: '\n' }]);
           pdf.push({
             image: await this.getBase64ImageFromURL(this.getImage(f.keyName)),
             width: 300,

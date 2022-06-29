@@ -61,7 +61,7 @@ export class EditProductoComponent implements OnInit, OnDestroy {
     private categoriaSvc: CategoriaProductoService,
     private matdialog: MatDialog,
     private router: Router,
-    @Inject(MAT_DIALOG_DATA) private data: ProductoView
+    @Inject(MAT_DIALOG_DATA) public data: ProductoView
   ) {
     this.initVCurrentFotos();
   }
@@ -112,8 +112,7 @@ export class EditProductoComponent implements OnInit, OnDestroy {
     });
 
     const ul = document.querySelector('#ul-text');
-
-    ul.innerHTML = this.data?.descripcion;
+    ul.innerHTML = this.data.descripcion;
   }
   private initVCurrentFotos(): void {
     this.images = [];
@@ -259,6 +258,8 @@ export class EditProductoComponent implements OnInit, OnDestroy {
   ): void {
     const { colorText, ...producto } = p;
     producto.descripcion = document.querySelector('#ul-text').innerHTML;
+
+    console.log(producto);
 
     this.productoSvc
       .updateProducto(producto.uuid, producto)

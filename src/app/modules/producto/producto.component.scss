@@ -81,16 +81,21 @@ tr.example-detail-row {
 }
 
 .expanded-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  flex-wrap: wrap;
+  gap: 5px;
+  place-items: center;
+}
+
+.expanded-container .images {
   display: flex;
   flex-direction: row;
   overflow: hidden;
   flex-wrap: wrap;
   gap: 5px;
   justify-content: center;
-
-  // &:hover {
-  //   background-color: white;
-  // }
 }
 
 .expanded-container .foto-producto {
@@ -224,4 +229,10 @@ tr.example-detail-row {
     transform: scaleY(1);
     -webkit-transform: scaleY(1);
   }
+}
+
+.descripcion {
+  // background-color: red;
+  overflow: hidden;
+  max-height: 20px;
 }

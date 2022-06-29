@@ -67,7 +67,7 @@ export class ProductoComponent implements OnInit, OnDestroy {
     'stock',
     'descuento',
     'categorias',
-    'descripcion',
+    // 'descripcion',
     'barcode',
     'edit',
   ];
@@ -152,8 +152,6 @@ export class ProductoComponent implements OnInit, OnDestroy {
       .getAllProductos()
       .pipe(takeUntil(this.destroy$))
       .subscribe((productos: Producto[]) => {
-        console.log(productos);
-
         this.source.data = productos;
         this.productos = productos;
         this.activos = 0;

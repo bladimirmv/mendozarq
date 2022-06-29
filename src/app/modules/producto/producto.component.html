@@ -200,8 +200,8 @@
                 [matTooltip]="row.descripcion"
                 matTooltipPosition="below"
               >
-                <span>
-                  {{ row.descripcion ? row.descripcion : "Sin descripcion" }}
+                <span class="descripcion">
+                  {{ row.descripcion ? "Click para ver" : "Sin descripcion" }}
                 </span>
               </td>
             </ng-container>
@@ -253,31 +253,37 @@
                     element == expandedElement ? 'expanded' : 'collapsed'
                   "
                 >
-                  <picture
-                    *ngFor="let foto of element.fotos"
-                    style="position: relative"
-                  >
-                    <button
-                      class="button-img"
-                      mat-icon-button
-                      matTooltip="descargar"
-                      matTooltipPosition="below"
-                      style="
-                        background-color: rgba(0, 0, 0, 0.158);
-                        color: white;
-                      "
-                      (click)="downloadFile(foto)"
+                  <div
+                    contenteditable="false"
+                    [innerHtml]="element.descripcion"
+                  ></div>
+                  <div class="images">
+                    <picture
+                      *ngFor="let foto of element.fotos"
+                      style="position: relative"
                     >
-                      <mat-icon class="mat-18"> cloud_download </mat-icon>
-                    </button>
-                    <img
-                      loading="lazy"
-                      [src]="getImage(foto.keyName)"
-                      alt=""
-                      class="foto-producto"
-                      (click)="modalPreview(element.fotos, foto)"
-                    />
-                  </picture>
+                      <button
+                        class="button-img"
+                        mat-icon-button
+                        matTooltip="descargar"
+                        matTooltipPosition="below"
+                        style="
+                          background-color: rgba(0, 0, 0, 0.158);
+                          color: white;
+                        "
+                        (click)="downloadFile(foto)"
+                      >
+                        <mat-icon class="mat-18"> cloud_download </mat-icon>
+                      </button>
+                      <img
+                        loading="lazy"
+                        [src]="getImage(foto.keyName)"
+                        alt=""
+                        class="foto-producto"
+                        (click)="modalPreview(element.fotos, foto)"
+                      />
+                    </picture>
+                  </div>
                 </div>
               </td>
             </ng-container>
