@@ -508,16 +508,16 @@ export class PdfMethods {
       bodyInfo.push([
         index % 2 === 0
           ? {
-              text: `${data.estado ? 'activo' : 'inactivo'}`,
-              alignment: 'center',
-              border: [false, false, false, true],
-            }
+            text: `${data.estado ? 'activo' : 'inactivo'}`,
+            alignment: 'center',
+            border: [false, false, false, true],
+          }
           : {
-              qr: data.uuid ? data.uuid : 'sin uuid',
-              background: '#FFFFFF',
-              fit: '70',
-              border: [false, false, false, true],
-            },
+            qr: data.uuid ? data.uuid : 'sin uuid',
+            background: '#FFFFFF',
+            fit: '70',
+            border: [false, false, false, true],
+          },
         {
           text: `${data.nombre}`,
           alignment: 'justify',
@@ -543,9 +543,9 @@ export class PdfMethods {
             categories.length === 1
               ? categories[0]
               : categories
-                  .slice(0, -1)
-                  .join(', \n')
-                  .concat(' y ' + categories.slice(-1)),
+                .slice(0, -1)
+                .join(', \n')
+                .concat(' y ' + categories.slice(-1)),
           alignment: 'center',
           border: [false, false, false, true],
         },
@@ -558,16 +558,16 @@ export class PdfMethods {
 
         index % 2 === 0
           ? {
-              qr: data.uuid ? data.uuid : 'sin uuid',
-              background: '#FFFFFF',
-              fit: '70',
-              border: [false, false, false, true],
-            }
+            qr: data.uuid ? data.uuid : 'sin uuid',
+            background: '#FFFFFF',
+            fit: '70',
+            border: [false, false, false, true],
+          }
           : {
-              text: `${data.estado ? 'activo' : 'inactivo'}`,
-              alignment: 'center',
-              border: [false, false, false, true],
-            },
+            text: `${data.estado ? 'activo' : 'inactivo'}`,
+            alignment: 'center',
+            border: [false, false, false, true],
+          },
       ]);
     });
 
@@ -2321,11 +2321,10 @@ export class PdfMethods {
       },
       {},
       {
-        text: `${
-          presupuesto
-            ? this.numberWithCommas(presupuesto.totalBruto.toLocaleString())
-            : 0
-        }Bs.`,
+        text: `${presupuesto
+          ? this.numberWithCommas(presupuesto.totalBruto.toLocaleString())
+          : 0
+          }Bs.`,
         colSpan: 1,
         border: [false],
 
@@ -2362,11 +2361,10 @@ export class PdfMethods {
         fillColor: '#F5F5F5',
       },
       {
-        text: `${
-          presupuesto
-            ? this.numberWithCommas(presupuesto.totalWithIVA.toLocaleString())
-            : 0
-        }Bs.`,
+        text: `${presupuesto
+          ? this.numberWithCommas(presupuesto.totalWithIVA.toLocaleString())
+          : 0
+          }Bs.`,
         colSpan: 1,
         border: [false],
 
@@ -2397,13 +2395,12 @@ export class PdfMethods {
       },
       {},
       {
-        text: `${
-          presupuesto
-            ? this.numberWithCommas(
-                presupuesto.totalPresupuesto.toLocaleString()
-              )
-            : 0
-        }Bs.`,
+        text: `${presupuesto
+          ? this.numberWithCommas(
+            presupuesto.totalPresupuesto.toLocaleString()
+          )
+          : 0
+          }Bs.`,
         colSpan: 1,
         border: [false],
 
@@ -2677,7 +2674,7 @@ export class PdfMethods {
             border: [false],
           },
           {
-            text: `${visita.nombre}`,
+            text: `${visita.nombre.toUpperCase()}`,
             style: 'tableHeader',
             color: '#425066',
             colSpan: 1,
@@ -2706,7 +2703,7 @@ export class PdfMethods {
             border: [false],
           },
           {
-            text: `${visita.nombre}`,
+            text: `${visita.descripcion}`,
             style: 'tableHeader',
             colSpan: 1,
             color: '#425066',
