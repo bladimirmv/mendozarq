@@ -1,3 +1,4 @@
+import { PdfService } from './../../../../core/services/pdf/pdf.service';
 import { InfoActividadesComponent } from './../info-actividades/info-actividades.component';
 import { Router } from '@angular/router';
 import { ProyectoService } from './../../../../core/services/mendozarq/proyecto.service';
@@ -51,14 +52,15 @@ export class GanttChartComponent implements OnInit {
   private planificacionProyecto: PlanificacionProyectoView =
     {} as PlanificacionProyectoView;
   public proyecto: Proyecto = {} as Proyecto;
-
+  public pdfResult: any;
   constructor(
     private planificacionSvc: PlanificacionService,
     private matDialog: MatDialog,
     private toastrSvc: ToastrService,
     private proyectoSvc: ProyectoService,
     private brightnessSvc: BrightnessService,
-    private router: Router
+    private router: Router,
+    private _pdfSvc: PdfService
   ) {
     this.brightnessSvc.theme$.pipe(take(1)).subscribe((darkTheme: boolean) => {
       this.darkMode = darkTheme;
@@ -357,6 +359,7 @@ export class GanttChartComponent implements OnInit {
         this.planificacionProyecto = planificaion;
         this.canAddTarea = !!planificaion.capitulos.length;
         this.ganttChartInit();
+        this.generatePdf();
       });
   }
 
@@ -610,5 +613,75 @@ export class GanttChartComponent implements OnInit {
     );
 
     this.series = this.chart.series[0];
+  }
+
+  // ====================> generatePdf
+  public async generatePdf(): Promise<void> {
+    let pdf: Array<any> = [];
+    const img: HTMLCanvasElement = document.querySelector('#bar');
+    pdf = await this._pdfSvc.planificacion(
+      pdf,
+      this.planificacionProyecto,
+      this.proyecto
+    );
+
+    const docDefinition = {
+      content: pdf,
+      watermark: {
+        text: '©MENDOZARQ',
+        color: '#FF6E00',
+        opacity: 0.06,
+        bold: true,
+        italics: false,
+      },
+      info: {
+        title: 'Reporte-Usuarios',
+        author: '©MENDOZARQ',
+      },
+      pageMargins: [60, 40, 40, 60],
+      pageSize: 'letter',
+      defaultStyle: {
+        font: 'Roboto',
+      },
+      footer: (currentPage, pageCount) => {
+        if (currentPage) {
+          return {
+            fontSize: 10,
+            text: `Pagina ${currentPage} de ${pageCount}`,
+            alignment: 'center',
+            margin: [0, 20, 0, 0],
+            color: '#425066',
+          };
+        }
+      },
+    };
+
+    this.pdfResult = this._pdfSvc.createPdf(docDefinition);
+
+    const pdfIframe = document.querySelector(
+      '#pdf-iframe'
+    ) as HTMLIFrameElement;
+    pdfIframe.src = await this._pdfSvc.getPdfDataUrl(this.pdfResult);
+  }
+
+  // ====================> downloadPdf
+  public downloadPdf(): void {
+    if (this.pdfResult) {
+      this._pdfSvc.dowload(this.pdfResult, 'Reporte-Usuarios');
+    }
+  }
+
+  // ====================> openPdf
+  public openPdf(): void {
+    if (this.pdfResult) {
+      this._pdfSvc.open(this.pdfResult);
+    }
+  }
+
+  // ====================> printPdf
+  public printPdf(): void {
+    if (this.pdfResult) {
+      this._pdfSvc.print(this.pdfResult);
+    }
   }
 }

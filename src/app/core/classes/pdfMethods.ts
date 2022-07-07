@@ -1,3 +1,7 @@
+import {
+  PlanificacionProyectoView,
+  CapituloPlanificacionProyecto,
+} from './../../shared/models/charts/planificacion.interface';
 import { async } from '@angular/core/testing';
 import { VisitaProyecto } from './../../shared/models/mendozarq/visita.proyecto.interface';
 import { ObservacionObraView } from './../../shared/models/mendozarq/observacion.obra.interface';
@@ -508,16 +512,16 @@ export class PdfMethods {
       bodyInfo.push([
         index % 2 === 0
           ? {
-            text: `${data.estado ? 'activo' : 'inactivo'}`,
-            alignment: 'center',
-            border: [false, false, false, true],
-          }
+              text: `${data.estado ? 'activo' : 'inactivo'}`,
+              alignment: 'center',
+              border: [false, false, false, true],
+            }
           : {
-            qr: data.uuid ? data.uuid : 'sin uuid',
-            background: '#FFFFFF',
-            fit: '70',
-            border: [false, false, false, true],
-          },
+              qr: data.uuid ? data.uuid : 'sin uuid',
+              background: '#FFFFFF',
+              fit: '70',
+              border: [false, false, false, true],
+            },
         {
           text: `${data.nombre}`,
           alignment: 'justify',
@@ -543,9 +547,9 @@ export class PdfMethods {
             categories.length === 1
               ? categories[0]
               : categories
-                .slice(0, -1)
-                .join(', \n')
-                .concat(' y ' + categories.slice(-1)),
+                  .slice(0, -1)
+                  .join(', \n')
+                  .concat(' y ' + categories.slice(-1)),
           alignment: 'center',
           border: [false, false, false, true],
         },
@@ -558,16 +562,16 @@ export class PdfMethods {
 
         index % 2 === 0
           ? {
-            qr: data.uuid ? data.uuid : 'sin uuid',
-            background: '#FFFFFF',
-            fit: '70',
-            border: [false, false, false, true],
-          }
+              qr: data.uuid ? data.uuid : 'sin uuid',
+              background: '#FFFFFF',
+              fit: '70',
+              border: [false, false, false, true],
+            }
           : {
-            text: `${data.estado ? 'activo' : 'inactivo'}`,
-            alignment: 'center',
-            border: [false, false, false, true],
-          },
+              text: `${data.estado ? 'activo' : 'inactivo'}`,
+              alignment: 'center',
+              border: [false, false, false, true],
+            },
       ]);
     });
 
@@ -2321,10 +2325,11 @@ export class PdfMethods {
       },
       {},
       {
-        text: `${presupuesto
-          ? this.numberWithCommas(presupuesto.totalBruto.toLocaleString())
-          : 0
-          }Bs.`,
+        text: `${
+          presupuesto
+            ? this.numberWithCommas(presupuesto.totalBruto.toLocaleString())
+            : 0
+        }Bs.`,
         colSpan: 1,
         border: [false],
 
@@ -2361,10 +2366,11 @@ export class PdfMethods {
         fillColor: '#F5F5F5',
       },
       {
-        text: `${presupuesto
-          ? this.numberWithCommas(presupuesto.totalWithIVA.toLocaleString())
-          : 0
-          }Bs.`,
+        text: `${
+          presupuesto
+            ? this.numberWithCommas(presupuesto.totalWithIVA.toLocaleString())
+            : 0
+        }Bs.`,
         colSpan: 1,
         border: [false],
 
@@ -2395,12 +2401,13 @@ export class PdfMethods {
       },
       {},
       {
-        text: `${presupuesto
-          ? this.numberWithCommas(
-            presupuesto.totalPresupuesto.toLocaleString()
-          )
-          : 0
-          }Bs.`,
+        text: `${
+          presupuesto
+            ? this.numberWithCommas(
+                presupuesto.totalPresupuesto.toLocaleString()
+              )
+            : 0
+        }Bs.`,
         colSpan: 1,
         border: [false],
 
@@ -2632,7 +2639,6 @@ export class PdfMethods {
     return new Promise((resolve) => setTimeout(resolve, s * 1000));
   };
 
-  // !TRBAJANDO AQUI ================================================
   public observacionObra(
     pdf: Array<any>,
     observaciones: Array<ObservacionObraView>,
@@ -2875,6 +2881,388 @@ export class PdfMethods {
     });
   }
 
+  // !TRBAJANDO AQUI ================================================
+  public planificacion(
+    pdf: Array<any>,
+    planificacion: PlanificacionProyectoView,
+    proyecto: Proyecto
+  ): Promise<Array<any>> {
+    return new Promise(async (resolve) => {
+      const bodyInfo: Array<BodyTable[]> = [];
+      const bodyTable: Array<BodyTable[]> = [];
+      const bodyTareas: Array<BodyTable[]> = [];
+
+      pdf.push({
+        columns: [
+          {
+            image: await this.getBase64ImageFromURL('./assets/logo-wave.svg'),
+            width: 50,
+          },
+          {
+            text: 'MENDOZARQ',
+            margin: [0, 14, 0, 0],
+            fontSize: 14,
+            color: '#425066',
+          },
+          {
+            text: moment(planificacion.creadoEn)
+              .format('MM/DD/YYYY')
+              .toUpperCase(),
+            alignment: 'right',
+            margin: [0, 14, 0, 0],
+            fontSize: 14,
+            color: '#425066',
+          },
+        ],
+      });
+
+      bodyInfo.push([
+        {
+          text: 'Planificacion:',
+          style: 'tableHeader',
+          colSpan: 1,
+          color: '#000000',
+          bold: true,
+          border: [false],
+        },
+        {
+          text: `${planificacion.titulo.toUpperCase()}`,
+          style: 'tableHeader',
+          color: '#425066',
+          colSpan: 1,
+          border: [false],
+          fontSize: 10,
+          margin: [0, 2, 0, 0],
+        },
+
+        {
+          qr: `${planificacion.uuidProyecto}`,
+          background: '#FFFFFF',
+          foreground: '#425066',
+          fit: '65',
+          rowSpan: 3,
+          border: [false],
+        },
+      ]);
+
+      bodyInfo.push([
+        {
+          text: 'Descripción:',
+          style: 'tableHeader',
+          colSpan: 1,
+          color: '#000000',
+          bold: true,
+          border: [false],
+        },
+        {
+          text: `${planificacion.subtitulo}`,
+          style: 'tableHeader',
+          colSpan: 1,
+          color: '#425066',
+          fontSize: 10,
+          border: [false],
+          margin: [0, 2, 0, 0],
+        },
+        {},
+      ]);
+
+      bodyInfo.push([
+        {
+          text: '',
+          style: 'tableHeader',
+          colSpan: 1,
+          color: '#000000',
+          bold: true,
+          border: [false, false, false, false],
+        },
+        {
+          text: '',
+          style: 'tableHeader',
+          colSpan: 1,
+          color: '#000000',
+          bold: true,
+          border: [false, false, false, false],
+
+          // stack: [
+          //   {
+          //     color: '#425066',
+          //     fontSize: 10,
+          //     ul: planificacion.
+          //   },
+          // ],
+          // border: [false, false, false, false],
+        },
+        {},
+      ]);
+
+      pdf.push({
+        style: 'tableExample',
+        margin: [0, 10, 0, 0],
+        table: {
+          body: bodyInfo,
+          alignment: 'center',
+          widths: ['auto', '*', 'auto'],
+        },
+        layout: {
+          hLineWidth: function (i, node) {
+            return i === 0 || i === node.table.body.length ? 1 : 1;
+          },
+          vLineWidth: function (i, node) {
+            return i === 0 || i === node.table.widths.length ? 1 : 1;
+          },
+          hLineColor: function (i, node) {
+            return '#425066';
+          },
+          vLineColor: function (i, node) {
+            return '#425066';
+          },
+        },
+      });
+
+      pdf.push([{ text: '\n' }]);
+
+      // *Header
+
+      planificacion.capitulos.forEach(
+        (capitulo: CapituloPlanificacionProyecto, detalleIndex: number) => {
+          bodyTable.push([
+            {
+              text: 'Nombre',
+              style: 'tableHeader',
+              colSpan: 3,
+              alignment: 'center',
+              color: '#FFFFFF',
+              fillColor: '#FF6E00',
+              bold: true,
+              border: [false, false, false, false],
+            },
+            {},
+            {},
+            {
+              text: 'Avance',
+              style: 'tableHeader',
+              colSpan: 1,
+              alignment: 'center',
+              color: '#FFFFFF',
+              fillColor: '#FF6E00',
+              bold: true,
+              border: [false, false, false, false],
+            },
+
+            {
+              text: 'Fecha Inicio',
+              style: 'tableHeader',
+              colSpan: 1,
+              alignment: 'center',
+              color: '#FFFFFF',
+              fillColor: '#FF6E00',
+              bold: true,
+              border: [false, false, false, false],
+            },
+            {
+              text: 'Fecha Final',
+              style: 'tableHeader',
+              colSpan: 1,
+              alignment: 'center',
+              color: '#FFFFFF',
+              fillColor: '#FF6E00',
+              bold: true,
+              border: [false, false, false, false],
+            },
+          ]);
+
+          bodyTable.push([
+            {
+              text: `${capitulo.nombre}`,
+              alignment: 'center',
+              border: [false, false, false, true],
+              colSpan: 3,
+            },
+            {},
+            {},
+            {
+              text: `${capitulo.avance}%`,
+              alignment: 'justify',
+              border: [false, false, false, true],
+            },
+
+            {
+              text: `${moment(capitulo.fechaInicio).format(
+                'DD [de] MMMM YYYY'
+              )}`,
+              alignment: 'center',
+              border: [false, false, false, true],
+            },
+            {
+              text: `${moment(capitulo.fechaFinal).format(
+                'DD [de] MMMM YYYY'
+              )}`,
+              alignment: 'center',
+              border: [false, false, false, true],
+            },
+          ]);
+
+          bodyTable.push([
+            {
+              text: 'Nombre',
+              style: 'tableHeader',
+              colSpan: 1,
+              alignment: 'center',
+              color: '#FFFFFF',
+              fillColor: '#425066',
+              bold: true,
+              border: [false, false, false, false],
+            },
+            {
+              text: 'Hito',
+              style: 'tableHeader',
+              colSpan: 1,
+              alignment: 'center',
+              color: '#FFFFFF',
+              fillColor: '#425066',
+              bold: true,
+              border: [false, false, false, false],
+            },
+            {
+              text: 'Actividades',
+              style: 'tableHeader',
+              colSpan: 1,
+              alignment: 'center',
+              color: '#FFFFFF',
+              fillColor: '#425066',
+              bold: true,
+              border: [false, false, false, false],
+            },
+            {
+              text: 'Avance',
+              style: 'tableHeader',
+              colSpan: 1,
+              alignment: 'center',
+              color: '#FFFFFF',
+              fillColor: '#425066',
+              bold: true,
+              border: [false, false, false, false],
+            },
+
+            {
+              text: 'Fecha Inicio',
+              style: 'tableHeader',
+              colSpan: 1,
+              alignment: 'center',
+              color: '#FFFFFF',
+              fillColor: '#425066',
+              bold: true,
+              border: [false, false, false, false],
+            },
+            {
+              text: 'Fecha Final',
+              style: 'tableHeader',
+              colSpan: 1,
+              alignment: 'center',
+              color: '#FFFFFF',
+              fillColor: '#425066',
+              bold: true,
+              border: [false, false, false, false],
+            },
+          ]);
+
+          planificacion.tareas
+            .filter((t) => t.uuidCapitulo === capitulo.uuid)
+            .forEach((tarea) => {
+              if (tarea) {
+                let div = document.createElement('div');
+                div.innerHTML = tarea.actividades;
+
+                let textActividades: string[] = [];
+
+                let actividades = div.getElementsByTagName('li');
+
+                for (let i = 0; i < actividades.length; i++) {
+                  textActividades.push('* ' + actividades.item(i).textContent);
+                }
+                console.log(textActividades.join('\n'));
+
+                bodyTable.push([
+                  {
+                    text: `${tarea.nombre}`,
+                    alignment: 'center',
+                    border: [false, false, false, true],
+                  },
+                  {
+                    text: `${textActividades.join('\n')}`,
+                    // text: tarea.actividades.replace(/<\/?[^>]+>/gi, ''),
+                    // alignment: 'left',
+                    border: [false, false, false, true],
+                    colSpan: 2,
+                  },
+                  {},
+                  {
+                    text: `${tarea.avance}%`,
+                    alignment: 'justify',
+                    border: [false, false, false, true],
+                  },
+
+                  {
+                    text: `${moment(tarea.fechaInicio).format(
+                      'DD [de] MMMM YYYY'
+                    )}`,
+                    alignment: 'center',
+                    border: [false, false, false, true],
+                  },
+                  {
+                    text: `${moment(tarea.fechaFinal).format(
+                      'DD [de] MMMM YYYY'
+                    )}`,
+                    alignment: 'center',
+                    border: [false, false, false, true],
+                  },
+                ]);
+              }
+            });
+
+          bodyTable.push([
+            {
+              text: '\n \n',
+              colSpan: 6,
+            },
+            {},
+            {},
+            {},
+            {},
+            {},
+          ]);
+        }
+      );
+
+      pdf.push(
+        this.centerObject({
+          style: 'tableExample',
+          table: {
+            body: bodyTable,
+            alignment: 'center',
+            widths: ['auto', 'auto', 100, 'auto', 'auto', 'auto'],
+          },
+          layout: {
+            hLineWidth: function (i, node) {
+              return i === 0 || i === node.table.body.length ? 1 : 1;
+            },
+            vLineWidth: function (i, node) {
+              return i === 0 || i === node.table.widths.length ? 0 : 1;
+            },
+            hLineColor: function (i, node) {
+              return '#425066';
+            },
+            vLineColor: function (i, node) {
+              return '#425066';
+            },
+          },
+        })
+      );
+
+      resolve(pdf);
+    });
+  }
+
   // ====================> header
   public pageBreak(pdf: any): Array<any> {
     pdf.push({
@@ -2952,4 +3340,7 @@ export class PdfMethods {
       }
     });
   }
+}
+function li(li: any) {
+  throw new Error('Function not implemented.');
 }
