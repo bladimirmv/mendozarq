@@ -49,7 +49,7 @@ export class GanttChartComponent implements OnInit {
 
   private destroy$: Subject<any> = new Subject<any>();
   private chart: any;
-  private planificacionProyecto: PlanificacionProyectoView =
+  public planificacionProyecto: PlanificacionProyectoView =
     {} as PlanificacionProyectoView;
   public proyecto: Proyecto = {} as Proyecto;
   public pdfResult: any;
@@ -667,7 +667,10 @@ export class GanttChartComponent implements OnInit {
   // ====================> downloadPdf
   public downloadPdf(): void {
     if (this.pdfResult) {
-      this._pdfSvc.dowload(this.pdfResult, 'Reporte-Usuarios');
+      this._pdfSvc.dowload(
+        this.pdfResult,
+        'Planificacion-' + this.planificacionProyecto.uuidProyecto
+      );
     }
   }
 

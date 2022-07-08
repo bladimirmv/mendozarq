@@ -1,4 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MapProyectoComponent } from './../map-proyecto/map-proyecto.component';
+import {
+  Marker,
+  LatLng,
+} from './../../../../../../node_modules/@types/leaflet/index.d';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
@@ -14,17 +19,30 @@ import { ClienteModalComponent } from './../cliente-modal/cliente-modal.componen
 import { Proyecto } from '@app/shared/models/mendozarq/proyecto.interface';
 import { Usuario } from '@app/shared/models/usuario.interface';
 
+import { Map, marker, tileLayer, Icon } from 'leaflet';
 @Component({
   selector: 'app-new-proyecto',
   templateUrl: './new-proyecto.component.html',
   styleUrls: ['./new-proyecto.component.scss'],
 })
-export class NewProyectoComponent implements OnInit, OnDestroy {
+export class NewProyectoComponent implements OnInit, OnDestroy, AfterViewInit {
   private destroy$ = new Subject<any>();
 
   public proyectoForm: FormGroup;
   private clientes: Usuario[] = [];
   public selectedClientes: Usuario[] = [];
+  mapa: Map;
+  projectMarker: Array<Marker> = [];
+
+  customIcon = new Icon({
+    iconUrl: './assets/marker.svg',
+    shadowUrl:
+      'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [32, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  });
 
   constructor(
     private proyectoSvc: ProyectoService,
@@ -35,6 +53,85 @@ export class NewProyectoComponent implements OnInit, OnDestroy {
     private router: Router,
     private dialogRef: MatDialogRef<NewProyectoComponent>
   ) {}
+
+  ngAfterViewInit(): void {
+    this.mapa = new Map('map').setView([-17.40199, -66.18258], 18);
+
+    tileLayer(
+      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      // 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png',
+      // 'https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png',
+      // 'https://tile.openstreetmap.bzh/br/{z}/{x}/{y}.png',
+      // 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+      // 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+      // 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+      {
+        maxZoom: 19,
+        attribution: '',
+      }
+    ).addTo(this.mapa);
+
+    this.projectMarker.push(
+      marker([-17.40199, -66.18258], {
+        draggable: true,
+        title: 'titulo',
+        icon: this.customIcon,
+      }).addTo(this.mapa)
+      // .bindPopup(`Lugar del Proyecto`)
+      // .openPopup()
+    );
+
+    this.mapa.fitBounds;
+    [
+      [
+        this.projectMarker[0].getLatLng().lat,
+        this.projectMarker[0].getLatLng().lng,
+      ],
+    ];
+
+    this.mapa.on('click', (e: any) => {
+      this.projectMarker.forEach((m: Marker, i) => {
+        this.mapa.removeLayer(this.projectMarker[i]);
+      });
+
+      this.projectMarker = [];
+
+      this.projectMarker.push(
+        marker([e.latlng.lat, e.latlng.lng], {
+          draggable: true,
+          icon: this.customIcon,
+        }).addTo(this.mapa)
+      );
+    });
+  }
+
+  fullMap(): void {
+    const dialogRef = this.dialog.open(MapProyectoComponent, {
+      data: this.projectMarker[0].getLatLng(),
+      width: '100%',
+      height: '100%',
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((res: Marker) => {
+      this.projectMarker.forEach((m: Marker, i) => {
+        this.mapa.removeLayer(this.projectMarker[i]);
+      });
+      this.projectMarker = [];
+      this.mapa.fitBounds([[res.getLatLng().lat, res.getLatLng().lng]]);
+
+      this.projectMarker.push(
+        marker([res.getLatLng().lat, res.getLatLng().lng], {
+          draggable: true,
+          icon: this.customIcon,
+        }).addTo(this.mapa)
+      );
+    });
+  }
+
+  getLocation() {
+    console.log(this.projectMarker[0].getLatLng());
+  }
 
   ngOnInit(): void {
     this.initForm();

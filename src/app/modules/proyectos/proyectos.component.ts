@@ -126,7 +126,10 @@ export class ProyectosComponent implements OnInit {
 
   // =====================> onAddProyecto
   onAddProyecto(): void {
-    const dialogRef = this.dialog.open(NewProyectoComponent);
+    const dialogRef = this.dialog.open(NewProyectoComponent, {
+      width: '600%',
+      maxWidth: '700px',
+    });
     dialogRef
       .afterClosed()
       .pipe(takeUntil(this.destroy$))

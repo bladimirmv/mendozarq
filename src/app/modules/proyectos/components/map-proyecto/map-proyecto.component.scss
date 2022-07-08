@@ -1,0 +1,30 @@
+main {
+  height: 100% !important;
+  width: 100% !important;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 100% !important;
+  grid-template-rows: auto 1fr !important;
+  .options {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+#map-proyecto {
+  height: 100% !important;
+  width: 100% !important;
+}
+@media screen and (max-width: 510px) {
+  .options {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .input-location {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}

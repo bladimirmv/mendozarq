@@ -1,0 +1,21 @@
+<main>
+  <section class="options">
+    <div class="input-location">
+      <mat-form-field>
+        <mat-label>Latitud y Longitud</mat-label>
+        <input
+          matInput
+          placeholder="-17.40199, -66.18258"
+          autocomplete="off"
+          [(ngModel)]="currentMarker"
+        />
+      </mat-form-field>
+
+      <button mat-button (click)="searchLocation()">Buscar</button>
+    </div>
+
+    <button mat-button (click)="saveLocation()">Guardar</button>
+  </section>
+
+  <div class="full-column" id="map-proyecto"></div>
+</main>

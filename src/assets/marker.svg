@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   height="40"
+   width="32"
+   version="1.1"
+   id="svg4"
+   sodipodi:docname="marker.svg"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs8" />
+  <sodipodi:namedview
+     id="namedview6"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     showgrid="false"
+     inkscape:zoom="21.949773"
+     inkscape:cx="13.371437"
+     inkscape:cy="21.116391"
+     inkscape:window-width="3440"
+     inkscape:window-height="1411"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g4031" />
+  <g
+     id="g4031"
+     transform="translate(43.349609,-4.3867188)">
+    <path
+       id="path1219"
+       style="fill:#ff0000;fill-opacity:1"
+       d="m -27.349609,4.3867188 c -4.233333,0 -7.959115,1.482552 -11.175782,4.4492187 -3.216666,2.9666665 -4.824218,6.9511715 -4.824218,11.9511715 0,3.333333 1.324609,6.958333 3.974609,10.875 2.65,3.916667 6.658724,8.157943 12.025391,12.72461 5.366667,-4.566667 9.373437,-8.807943 12.023437,-12.72461 2.65,-3.916667 3.976563,-7.541667 3.976563,-10.875 0,-5 -1.609505,-8.984505 -4.826172,-11.9511715 -3.216667,-2.9666667 -6.940495,-4.4492187 -11.173828,-4.4492187 z"
+       sodipodi:nodetypes="sssscssss" />
+    <path
+       d="M -36.169559,28.117839 V 14.520416 h 4.042476 V 10.47794 h 9.554946 v 8.084954 h 4.042477 v 9.554945 h -7.521457 v -4.042477 h -2.596985 v 4.042477 z m 1.469991,-1.469991 h 2.572485 v -2.572486 h -2.572485 z m 0,-4.042477 h 2.572485 v -2.572485 h -2.572485 z m 0,-4.042477 h 2.572485 v -2.572486 h -2.572485 z m 4.042477,4.042477 h 2.572486 v -2.572485 h -2.572486 z m 0,-4.042477 h 2.572486 v -2.572486 h -2.572486 z m 0,-4.042478 h 2.572486 v -2.572485 h -2.572486 z m 4.042477,8.084955 h 2.572485 v -2.572485 h -2.572485 z m 0,-4.042477 h 2.572485 v -2.572486 h -2.572485 z m 0,-4.042478 h 2.572485 v -2.572485 h -2.572485 z m 4.042477,12.127432 h 2.572486 v -2.572486 h -2.572486 z m 0,-4.042477 h 2.572486 v -2.572485 h -2.572486 z"
+       id="path2156"
+       style="stroke-width:0.489997;fill:#ffffff;fill-opacity:1" />
+  </g>
+</svg>
