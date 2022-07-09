@@ -175,33 +175,6 @@
         Debe incluir solo letras en minuscula o numeros.
       </mat-error>
     </mat-form-field>
-    <div style="display: grid; place-items: center">
-      <mat-button-toggle-group #group="matButtonToggleGroup" align="center">
-        <mat-button-toggle
-          (click)="fullMap()"
-          value="left"
-          aria-label="Text align left"
-        >
-          <mat-icon>format_bold</mat-icon>
-        </mat-button-toggle>
-        <mat-button-toggle
-          onclick="document.execCommand('italic',false,null);"
-          value="center"
-          aria-label="Text align center"
-        >
-          <mat-icon>format_italic</mat-icon>
-        </mat-button-toggle>
-        <mat-button-toggle
-          onclick="document.execCommand('underline',false,null);"
-          value="right"
-          aria-label="Text align right"
-        >
-          <mat-icon>format_underlined</mat-icon>
-        </mat-button-toggle>
-      </mat-button-toggle-group>
-    </div>
-
-    <div class="full-column" style="height: 500px !important" id="map"></div>
 
     <!-- *LugarProyecto -->
     <mat-form-field
@@ -236,6 +209,17 @@
         digitos como maximo.
       </mat-error>
     </mat-form-field>
+
+    <br />
+
+    <div class="full-width full-column" align="right">
+      <button mat-button (click)="fullMap()" class="mat-btn-success">
+        <mat-icon> fullscreen </mat-icon>
+        Ver en pantalla completa
+      </button>
+    </div>
+
+    <div class="full-column" style="height: 400px !important" id="map"></div>
   </form>
 </mat-dialog-content>
 

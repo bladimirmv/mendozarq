@@ -10,11 +10,15 @@
           [(ngModel)]="currentMarker"
         />
       </mat-form-field>
-
+      &nbsp;
       <button mat-button (click)="searchLocation()">Buscar</button>
     </div>
 
-    <button mat-button (click)="saveLocation()">Guardar</button>
+    <div class="continue-container">
+      <button mat-button class="mat-btn-success" (click)="saveLocation()">
+        Continuar
+      </button>
+    </div>
   </section>
 
   <div class="full-column" id="map-proyecto"></div>

@@ -1,7 +1,7 @@
 import { MapProyectoComponent } from './../map-proyecto/map-proyecto.component';
 import {
-  Marker,
   LatLng,
+  Marker,
 } from './../../../../../../node_modules/@types/leaflet/index.d';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -19,7 +19,16 @@ import { ClienteModalComponent } from './../cliente-modal/cliente-modal.componen
 import { Proyecto } from '@app/shared/models/mendozarq/proyecto.interface';
 import { Usuario } from '@app/shared/models/usuario.interface';
 
-import { Map, marker, tileLayer, Icon } from 'leaflet';
+import {
+  Map,
+  marker,
+  tileLayer,
+  Icon,
+  polygon,
+  control,
+  circle,
+} from 'leaflet';
+import * as l from 'leaflet-control-geocoder';
 @Component({
   selector: 'app-new-proyecto',
   templateUrl: './new-proyecto.component.html',
@@ -27,14 +36,14 @@ import { Map, marker, tileLayer, Icon } from 'leaflet';
 })
 export class NewProyectoComponent implements OnInit, OnDestroy, AfterViewInit {
   private destroy$ = new Subject<any>();
-
   public proyectoForm: FormGroup;
   private clientes: Usuario[] = [];
   public selectedClientes: Usuario[] = [];
-  mapa: Map;
-  projectMarker: Array<Marker> = [];
 
-  customIcon = new Icon({
+  // *maps leaflet =====================================================>
+  private mapa: Map;
+  private projectMarker: Array<Marker> = [];
+  private customIcon = new Icon({
     iconUrl: './assets/marker.svg',
     shadowUrl:
       'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -54,42 +63,82 @@ export class NewProyectoComponent implements OnInit, OnDestroy, AfterViewInit {
     private dialogRef: MatDialogRef<NewProyectoComponent>
   ) {}
 
-  ngAfterViewInit(): void {
-    this.mapa = new Map('map').setView([-17.40199, -66.18258], 18);
+  ngOnInit(): void {
+    this.initForm();
+    this.initDataClientes();
+  }
 
-    tileLayer(
-      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      // 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png',
-      // 'https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png',
-      // 'https://tile.openstreetmap.bzh/br/{z}/{x}/{y}.png',
-      // 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
-      // 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
-      // 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
-      {
-        maxZoom: 19,
-        attribution: '',
-      }
-    ).addTo(this.mapa);
+  ngOnDestroy(): void {
+    this.destroy$.next({});
+    this.destroy$.complete();
+  }
+
+  ngAfterViewInit(): void {
+    this.mapa = new Map('map', {
+      maxZoom: 19,
+    }).setView([-17.401848609775207, -66.18253244641603], 19);
+    tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+    }).addTo(this.mapa);
+
+    control.scale({ position: 'bottomleft' }).addTo(this.mapa);
+
+    // **Geocoder map ============================================>
+    l.geocoder({
+      defaultMarkGeocode: false,
+      placeholder: 'Buscar...',
+      errorMessage: 'No se encontró la dirección',
+      iconLabel: '📍',
+      suggestMinLength: 10,
+    })
+      .addTo(this.mapa)
+      .on('markgeocode', (e) => {
+        this.projectMarker.forEach((m: Marker, i) => {
+          this.mapa.removeLayer(this.projectMarker[i]);
+        });
+
+        this.projectMarker = [];
+
+        this.projectMarker.push(
+          marker([e.geocode.center.lat, e.geocode.center.lng], {
+            draggable: true,
+            icon: this.customIcon,
+          })
+            .addTo(this.mapa)
+            .bindPopup(e.geocode.name, {
+              closeOnClick: false,
+              autoClose: false,
+              closeButton: false,
+            })
+            .openPopup()
+        );
+
+        const bbox = e.geocode.bbox;
+        this.mapa.fitBounds([
+          [bbox.getSouthEast().lat, bbox.getSouthEast().lng],
+          [bbox.getNorthEast().lat, bbox.getNorthEast().lng],
+          [bbox.getNorthWest().lat, bbox.getNorthWest().lng],
+          [bbox.getSouthWest().lat, bbox.getSouthWest().lng],
+        ]);
+      });
 
     this.projectMarker.push(
       marker([-17.40199, -66.18258], {
         draggable: true,
-        title: 'titulo',
+        title: 'map mendozarq',
         icon: this.customIcon,
       }).addTo(this.mapa)
-      // .bindPopup(`Lugar del Proyecto`)
-      // .openPopup()
     );
 
-    this.mapa.fitBounds;
-    [
+    this.mapa.fitBounds([
       [
         this.projectMarker[0].getLatLng().lat,
         this.projectMarker[0].getLatLng().lng,
       ],
-    ];
+    ]);
 
-    this.mapa.on('click', (e: any) => {
+    // **On click map ============================================>
+    this.mapa.on('click', (e: { latlng: LatLng }) => {
       this.projectMarker.forEach((m: Marker, i) => {
         this.mapa.removeLayer(this.projectMarker[i]);
       });
@@ -100,47 +149,48 @@ export class NewProyectoComponent implements OnInit, OnDestroy, AfterViewInit {
         marker([e.latlng.lat, e.latlng.lng], {
           draggable: true,
           icon: this.customIcon,
-        }).addTo(this.mapa)
+        })
+          .addTo(this.mapa)
+          .bindPopup(e.latlng.toString(), {
+            closeOnClick: false,
+            autoClose: false,
+            closeButton: false,
+          })
+          .openPopup()
       );
     });
   }
 
-  fullMap(): void {
+  // **On open full map ============================================>
+  public fullMap(): void {
     const dialogRef = this.dialog.open(MapProyectoComponent, {
-      data: this.projectMarker[0].getLatLng(),
+      data: {
+        latLng: this.projectMarker[0].getLatLng(),
+      },
       width: '100%',
       height: '100%',
       disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe((res: Marker) => {
-      this.projectMarker.forEach((m: Marker, i) => {
-        this.mapa.removeLayer(this.projectMarker[i]);
-      });
-      this.projectMarker = [];
-      this.mapa.fitBounds([[res.getLatLng().lat, res.getLatLng().lng]]);
+      console.log('res', res);
+      if (res) {
+        this.projectMarker.forEach((m: Marker, i) => {
+          this.mapa.removeLayer(this.projectMarker[i]);
+        });
 
-      this.projectMarker.push(
-        marker([res.getLatLng().lat, res.getLatLng().lng], {
-          draggable: true,
-          icon: this.customIcon,
-        }).addTo(this.mapa)
-      );
+        this.projectMarker = [];
+
+        this.projectMarker.push(
+          marker([res.getLatLng().lat, res.getLatLng().lng], {
+            draggable: true,
+            icon: this.customIcon,
+          }).addTo(this.mapa)
+        );
+
+        this.mapa.fitBounds([[res.getLatLng().lat, res.getLatLng().lng]]);
+      }
     });
-  }
-
-  getLocation() {
-    console.log(this.projectMarker[0].getLatLng());
-  }
-
-  ngOnInit(): void {
-    this.initForm();
-    this.initDataClientes();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next({});
-    this.destroy$.complete();
   }
 
   // =====================> onInitForm

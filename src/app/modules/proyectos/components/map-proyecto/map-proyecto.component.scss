@@ -9,6 +9,11 @@ main {
     display: flex;
     justify-content: space-between;
   }
+
+  .continue-container {
+    display: flex;
+    align-items: center;
+  }
 }
 
 #map-proyecto {
