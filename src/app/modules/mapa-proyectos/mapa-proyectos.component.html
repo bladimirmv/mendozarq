@@ -1,5 +1,25 @@
-<div
-  class="full-column"
-  style="height: calc(100% - 60px) !important"
-  id="map"
-></div>
+<main
+  style="
+    height: calc(100% - 70px) !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  "
+>
+  <br />
+  <mat-form-field>
+    <mat-label>Proyectos</mat-label>
+    <mat-select value="todos">
+      <mat-option value="todos" (click)="onSelectAll()">VER TODOS </mat-option>
+      <mat-option
+        *ngFor="let p of proyectos"
+        [value]="p.uuid"
+        (click)="onSelect(p)"
+      >
+        {{ p.nombre }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="full-column" style="height: 100%; width: 100%" id="map"></div>
+</main>

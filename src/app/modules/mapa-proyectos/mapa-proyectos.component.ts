@@ -5,6 +5,7 @@ import { ProyectoService } from '@services/mendozarq/proyecto.service';
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Map, marker, tileLayer, Icon, control, LatLng, Marker } from 'leaflet';
 import * as l from 'leaflet-control-geocoder';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-mapa-proyectos',
@@ -19,10 +20,32 @@ export class MapaProyectosComponent
   public proyectos: Array<ProyectoView> = [];
 
   // *maps leaflet =====================================================>
+  private bounds: Array<Number[]> = [];
+
   private mapa: Map;
   private projectMarker: Array<Marker> = [];
-  private customIcon = new Icon({
-    iconUrl: './assets/marker.svg',
+  private greenIcon = new Icon({
+    iconUrl: './assets/green_marker.png',
+    shadowUrl:
+      'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [32, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  });
+
+  private redIcon = new Icon({
+    iconUrl: './assets/red_marker.png',
+    shadowUrl:
+      'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [32, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  });
+
+  private purpleIcon = new Icon({
+    iconUrl: './assets/purple_marker.png',
     shadowUrl:
       'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
     iconSize: [32, 41],
@@ -32,7 +55,9 @@ export class MapaProyectosComponent
   });
   constructor(private proyectoSvc: ProyectoService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    moment().locale('es');
+  }
   // =====================> onDestroy
   ngOnDestroy(): void {
     this.destroy$.next({});
@@ -49,60 +74,6 @@ export class MapaProyectosComponent
 
     control.scale({ position: 'bottomleft' }).addTo(this.mapa);
 
-    // **Geocoder map ============================================>
-    // l.geocoder({
-    //   defaultMarkGeocode: false,
-    //   placeholder: 'Buscar...',
-    //   errorMessage: 'No se encontró la dirección',
-    //   iconLabel: '📍',
-    //   suggestMinLength: 10,
-    // })
-    //   .addTo(this.mapa)
-    //   .on('markgeocode', (e) => {
-    //     this.projectMarker.forEach((m: Marker, i) => {
-    //       this.mapa.removeLayer(this.projectMarker[i]);
-    //     });
-
-    //     this.projectMarker = [];
-
-    //     this.projectMarker.push(
-    //       marker([e.geocode.center.lat, e.geocode.center.lng], {
-    //         draggable: true,
-    //         icon: this.customIcon,
-    //       })
-    //         .addTo(this.mapa)
-    //         .bindPopup(e.geocode.name, {
-    //           closeOnClick: false,
-    //           autoClose: false,
-    //           closeButton: false,
-    //         })
-    //         .openPopup()
-    //     );
-
-    //     const bbox = e.geocode.bbox;
-    //     this.mapa.fitBounds([
-    //       [bbox.getSouthEast().lat, bbox.getSouthEast().lng],
-    //       [bbox.getNorthEast().lat, bbox.getNorthEast().lng],
-    //       [bbox.getNorthWest().lat, bbox.getNorthWest().lng],
-    //       [bbox.getSouthWest().lat, bbox.getSouthWest().lng],
-    //     ]);
-    //   });
-
-    // this.projectMarker.push(
-    //   marker([-17.40199, -66.18258], {
-    //     draggable: true,
-    //     title: 'map mendozarq',
-    //     icon: this.customIcon,
-    //   }).addTo(this.mapa)
-    // );
-
-    // this.mapa.fitBounds([
-    //   [
-    //     this.projectMarker[0].getLatLng().lat,
-    //     this.projectMarker[0].getLatLng().lng,
-    //   ],
-    // ]);
-
     this.getAllProyecto();
   }
 
@@ -118,33 +89,59 @@ export class MapaProyectosComponent
   }
 
   initMarkers(): void {
-    let bounds: Array<Number[]> = [];
-
+    this.bounds = [];
     this.proyectos.forEach((p, i) => {
       marker([Number(p.latLng.split(',')[0]), Number(p.latLng.split(',')[1])], {
-        icon: this.customIcon,
+        icon: !p.estado
+          ? this.purpleIcon
+          : p.porcentaje === 100
+          ? this.greenIcon
+          : this.redIcon,
       })
         .addTo(this.mapa)
         .bindPopup(
           `
         <h1>${p.nombre}</h1>
-        <div><b>Descripcion:</b> ${p.descripcion}</div>
         <div><b>Avance:</b> ${p.porcentaje}%</div>
-        <div><b>Cliente:</b> ${p.nombreCliente} ${p.apellidoPaterno} ${p.apellidoMaterno}</div>
-        <div><b>Avance:</b> ${p.fechaInicio}%</div>
-        <div><b>Direccion: </b>${p.lugarProyecto}</div>`,
+        <div><b>Estado:</b> ${p.estado ? 'Activo' : 'Inactivo'}</div>
+        <div><b>Descripcion:</b> ${p.descripcion}</div>
+        <div><b>Cliente:</b> ${p.nombreCliente} ${p.apellidoPaterno} ${
+            p.apellidoMaterno
+          }</div>
+        <div><b>Fecha:</b> ${moment(p.fechaInicio).format(
+          'DD/MM/YYYY'
+        )} - ${moment(p.fechaFinal).format('DD/MM/YYYY')}</div>
+        <div><b>Direccion: </b>${p.lugarProyecto}</div>
+        <a href="/admin/proyecto/${p.uuid}">Ir al proyecto</a>
+
+        `,
 
           {
             closeButton: false,
           }
         );
+      // .openPopup();
 
-      bounds.push([
+      this.bounds.push([
         Number(p.latLng.split(',')[0]),
         Number(p.latLng.split(',')[1]),
       ]);
     });
 
-    this.mapa.fitBounds(bounds as [[number, number]]);
+    this.mapa.fitBounds(this.bounds as [[number, number]]);
+  }
+
+  public onSelectAll(): void {
+    this.mapa.fitBounds(this.bounds as [[number, number]]);
+  }
+
+  public onSelect(proyecto: ProyectoView): void {
+    console.log(proyecto.nombre);
+    this.mapa.fitBounds([
+      [
+        Number(proyecto.latLng.split(',')[0]),
+        Number(proyecto.latLng.split(',')[1]),
+      ],
+    ]);
   }
 }
