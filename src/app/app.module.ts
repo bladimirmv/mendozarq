@@ -23,6 +23,7 @@ import { AdminInterceptor } from './core/interceptors/admin.interceptor';
 
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { ReporteMendozarqModule } from './modules/reporte-mendozarq/reporte-mendozarq.module';
+import { MapaProyectosModule } from './modules/mapa-proyectos/mapa-proyectos.module';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { ReporteMendozarqModule } from './modules/reporte-mendozarq/reporte-mend
     ReactiveFormsModule,
     HttpClientModule,
     ReporteMendozarqModule,
+    MapaProyectosModule,
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },

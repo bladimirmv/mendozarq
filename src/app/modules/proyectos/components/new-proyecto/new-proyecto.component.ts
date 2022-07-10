@@ -1,8 +1,4 @@
 import { MapProyectoComponent } from './../map-proyecto/map-proyecto.component';
-import {
-  LatLng,
-  Marker,
-} from './../../../../../../node_modules/@types/leaflet/index.d';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -19,15 +15,7 @@ import { ClienteModalComponent } from './../cliente-modal/cliente-modal.componen
 import { Proyecto } from '@app/shared/models/mendozarq/proyecto.interface';
 import { Usuario } from '@app/shared/models/usuario.interface';
 
-import {
-  Map,
-  marker,
-  tileLayer,
-  Icon,
-  polygon,
-  control,
-  circle,
-} from 'leaflet';
+import { Map, marker, tileLayer, Icon, control, LatLng, Marker } from 'leaflet';
 import * as l from 'leaflet-control-geocoder';
 @Component({
   selector: 'app-new-proyecto',
@@ -173,7 +161,6 @@ export class NewProyectoComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((res: Marker) => {
-      console.log('res', res);
       if (res) {
         this.projectMarker.forEach((m: Marker, i) => {
           this.mapa.removeLayer(this.projectMarker[i]);
@@ -242,6 +229,10 @@ export class NewProyectoComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // ===================> onAddProyecto
   public onAddProyecto(proyecto: Proyecto): void {
+    proyecto.latLng =
+      this.projectMarker[0].getLatLng().lat +
+      ',' +
+      this.projectMarker[0].getLatLng().lng;
     proyecto.porcentaje = 0;
     this.proyectoSvc
       .addProyecto(proyecto)

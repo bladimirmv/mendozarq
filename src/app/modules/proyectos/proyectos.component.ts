@@ -3,7 +3,13 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Chart } from 'chart.js';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PdfService } from './../../core/services/pdf/pdf.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  OnDestroy,
+  AfterViewInit,
+} from '@angular/core';
 import { map, takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 
@@ -29,7 +35,7 @@ import * as moment from 'moment';
   templateUrl: './proyectos.component.html',
   styleUrls: ['./proyectos.component.scss'],
 })
-export class ProyectosComponent implements OnInit {
+export class ProyectosComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<any>();
   public proyectos: Array<ProyectoView> = [];
 
@@ -117,18 +123,33 @@ export class ProyectosComponent implements OnInit {
           this.initChart();
         }
 
-        this._actRoute.queryParams.subscribe(
-          (params) =>
-            (this.tabIndex = params.tab === 'graficas_reportes' ? 1 : 0)
-        );
+        this._actRoute.queryParams.subscribe((params) => {
+          switch (params.tab) {
+            case 'graficas_reportes':
+              this.tabIndex = 1;
+              break;
+
+            // case 'mapa':
+            //   this.tabIndex = 2;
+            //   break;
+
+            case 'tabla':
+              this.tabIndex = 0;
+              break;
+
+            default:
+              break;
+          }
+          // this.tabIndex = params.tab === 'graficas_reportes' ? 1 : 0;
+        });
       });
   }
 
   // =====================> onAddProyecto
   onAddProyecto(): void {
     const dialogRef = this.dialog.open(NewProyectoComponent, {
-      width: '100%',
-      maxWidth: '700px',
+      // width: '100%',
+      // maxWidth: '700px',
       disableClose: true,
     });
     dialogRef
@@ -271,6 +292,15 @@ export class ProyectosComponent implements OnInit {
   // **Graficas y reportes
   public onLoadTab(e: MatTabChangeEvent): void {
     switch (e.index) {
+      // case 2:
+      //   this._route.navigate([], {
+      //     queryParams: {
+      //       tab: 'mapa',
+      //     },
+      //     queryParamsHandling: 'merge',
+      //   });
+      //   break;
+
       case 1:
         this.initChart();
         this._route.navigate([], {

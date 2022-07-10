@@ -8,6 +8,7 @@ export interface Proyecto {
   fechaInicio?: Date;
   fechaFinal?: Date;
   lugarProyecto?: string;
+  latLng?: string;
   porcentaje?: number;
   uuidCliente?: string;
 }

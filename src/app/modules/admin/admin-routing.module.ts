@@ -43,6 +43,13 @@ const routes: Routes = [
         component: DashboardComponent,
       },
       {
+        path: 'mapaProyectos',
+        loadChildren: () =>
+          import('@modules/mapa-proyectos/mapa-proyectos.module').then(
+            (m) => m.MapaProyectosModule
+          ),
+      },
+      {
         path: 'usuarios',
         loadChildren: () =>
           import('@modules/users/users.module').then((m) => m.UsersModule),

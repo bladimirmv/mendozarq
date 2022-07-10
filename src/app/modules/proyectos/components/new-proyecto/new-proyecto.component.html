@@ -159,23 +159,6 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field
-      class="full-width full-column"
-      [color]="isValidField('nombre').color"
-    >
-      <mat-label>Latitud y Longitud</mat-label>
-      <input matInput formControlName="nombre" autocomplete="off" />
-      <mat-icon matSuffix [color]="isValidField('nombre').color">
-        {{ isValidField("nombre").icon }}
-      </mat-icon>
-      <mat-error *ngIf="proyectoForm.get('nombre').errors?.required">
-        Ingrese un nombre.
-      </mat-error>
-      <mat-error *ngIf="proyectoForm.get('nombre').errors?.pattern">
-        Debe incluir solo letras en minuscula o numeros.
-      </mat-error>
-    </mat-form-field>
-
     <!-- *LugarProyecto -->
     <mat-form-field
       class="full-width full-column"

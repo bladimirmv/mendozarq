@@ -86,6 +86,17 @@
             <mat-icon class="mat-18 mr-3">library_books</mat-icon>
             Proyectos
           </button>
+
+          <button
+            mat-button
+            class="btn-admin"
+            routerLink="mapaProyectos"
+            routerLinkActive="active mat-raised-button"
+            (click)="breakpoint ? drawer.close() : false"
+          >
+            <mat-icon class="mat-18 mr-3">mapa</mat-icon>
+            Mapa de Proyectos
+          </button>
         </ng-container>
 
         <ng-container *ngIf="current_usuario.rol === 'administrador'">
