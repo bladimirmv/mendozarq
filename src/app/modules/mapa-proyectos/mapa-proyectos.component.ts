@@ -23,7 +23,6 @@ export class MapaProyectosComponent
   private bounds: Array<Number[]> = [];
 
   private mapa: Map;
-  private projectMarker: Array<Marker> = [];
   private greenIcon = new Icon({
     iconUrl: './assets/green_marker.png',
     shadowUrl:
@@ -105,9 +104,9 @@ export class MapaProyectosComponent
         <div><b>Avance:</b> ${p.porcentaje}%</div>
         <div><b>Estado:</b> ${p.estado ? 'Activo' : 'Inactivo'}</div>
         <div><b>Descripcion:</b> ${p.descripcion}</div>
-        <div><b>Cliente:</b> ${p.nombreCliente} ${p.apellidoPaterno} ${
-            p.apellidoMaterno
-          }</div>
+        <div><b>Cliente:</b> <a href="/admin/usuarios?s=${p.uuidCliente}"> ${
+            p.nombreCliente
+          } ${p.apellidoPaterno} ${p.apellidoMaterno}</a></div>
         <div><b>Fecha:</b> ${moment(p.fechaInicio).format(
           'DD/MM/YYYY'
         )} - ${moment(p.fechaFinal).format('DD/MM/YYYY')}</div>
@@ -119,8 +118,8 @@ export class MapaProyectosComponent
           {
             closeButton: false,
           }
-        );
-      // .openPopup();
+        )
+        .openPopup();
 
       this.bounds.push([
         Number(p.latLng.split(',')[0]),
@@ -136,7 +135,6 @@ export class MapaProyectosComponent
   }
 
   public onSelect(proyecto: ProyectoView): void {
-    console.log(proyecto.nombre);
     this.mapa.fitBounds([
       [
         Number(proyecto.latLng.split(',')[0]),

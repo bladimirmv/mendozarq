@@ -575,7 +575,7 @@ export class ProductoComponent implements OnInit, OnDestroy {
         italics: false,
       },
       info: {
-        title: 'Reporte-Usuarios',
+        title: 'Reporte-Productos',
         author: '©MENDOZARQ',
       },
       pageMargins: [60, 40, 40, 60],

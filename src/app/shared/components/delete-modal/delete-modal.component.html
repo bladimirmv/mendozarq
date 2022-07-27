@@ -1,15 +1,20 @@
 <mat-dialog-content align="center">
+  <mat-icon> warning </mat-icon>
 
-  <mat-icon>
-    warning
-  </mat-icon>
-
-  <h1 align="center" style="font-weight: bold;">¿Estas Seguro?</h1>
+  <h1 align="center" style="font-weight: bold">¿Estas Segur@?</h1>
   <h2>No podras revertir el cambio!</h2>
-
 </mat-dialog-content>
 
 <mat-dialog-actions mat-dialog-actions align="center">
-  <button mat-button [mat-dialog-close]="false" class="mat-btn-secondary" mat-dialog-close>Cancelar</button>
-  <button mat-button [mat-dialog-close]="true" class="mat-btn-warn">Eliminar</button>
+  <button
+    mat-button
+    [mat-dialog-close]="false"
+    class="mat-btn-secondary"
+    mat-dialog-close
+  >
+    Cancelar
+  </button>
+  <button mat-button [mat-dialog-close]="true" class="mat-btn-warn">
+    Eliminar
+  </button>
 </mat-dialog-actions>
