@@ -1,24 +1,24 @@
-import { ImgPreviewComponent } from './../../../../shared/components/img-preview/img-preview.component';
-import { DeleteModalComponent } from './../../../../shared/components/delete-modal/delete-modal.component';
-import {
-  ObservacionObraView,
-  FotoObservacionObra,
-} from './../../../../shared/models/mendozarq/observacion.obra.interface';
-import { ObservacionObraService } from '@app/core/services/mendozarq/observacion-obra.service';
-import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
-import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
   MatDialog,
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
+import { ObservacionObraService } from '@app/core/services/mendozarq/observacion-obra.service';
+import { DeleteModalComponent } from '@shared/components/delete-modal/delete-modal.component';
+import { ImgPreviewComponent } from '@shared/components/img-preview/img-preview.component';
+import {
+  FotoObservacionObra,
+  ObservacionObraView,
+} from '@shared/models/mendozarq/observacion.obra.interface';
 
-import { ToastrService } from 'ngx-toastr';
-import { Subject, throwError, Observable, forkJoin, of } from 'rxjs';
-import { catchError, take, takeUntil, tap } from 'rxjs/operators';
-import * as moment from 'moment';
 import { environment } from '@env/environment';
+import * as moment from 'moment';
+import { ToastrService } from 'ngx-toastr';
+import { forkJoin, Observable, of, Subject } from 'rxjs';
+import { catchError, takeUntil, tap } from 'rxjs/operators';
 
 class uploadFile {
   file?: File;

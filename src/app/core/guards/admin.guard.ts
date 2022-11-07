@@ -1,9 +1,9 @@
-import { Usuario } from './../../shared/models/usuario.interface';
-import { AuthService } from '@app/core/services/auth/auth.service';
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
+import { AuthService } from '@app/core/services/auth/auth.service';
+import { Usuario } from '@shared/models/usuario.interface';
 import { Observable } from 'rxjs';
-import { take, map, tap } from 'rxjs/operators';
+import { map, take, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',

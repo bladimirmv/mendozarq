@@ -1,9 +1,8 @@
-import { Observable } from 'rxjs';
-import { PlanificacionProyecto } from '@models/charts/planificacion.interface';
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
-
+import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { PlanificacionProyecto } from '@models/charts/planificacion.interface';
 import { PlanificacionService } from '@services/mendozarq/planificacion.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',

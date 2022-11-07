@@ -1,18 +1,17 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 
-import { ToastrService } from 'ngx-toastr';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { ToastrService } from 'ngx-toastr';
 
-import { Observable, throwError, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-import { RoleValidator } from '@core/helpers/roleValidator';
-import { Usuario } from '@app/shared/models/usuario.interface';
-import { UsuarioResponse } from '@shared/models/usuario.interface';
-import { environment } from '@env/environment';
 import { Router } from '@angular/router';
-import { BrightnessService } from '../brightness.service';
+import { Usuario } from '@app/shared/models/usuario.interface';
+import { RoleValidator } from '@core/helpers/roleValidator';
+import { environment } from '@env/environment';
+import { UsuarioResponse } from '@shared/models/usuario.interface';
 
 const helper = new JwtHelperService();
 @Injectable({
